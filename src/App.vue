@@ -98,9 +98,18 @@ function resetMap() {
           <div class="panel mode-card">
             <p class="mode-label">Zakres PDF</p>
             <div class="mode-switch">
-              <button class="mode-button" :class="{ active: activeMode === 'both' }" @click="activeMode = 'both'">▣ Oba formularze</button>
-              <button class="mode-button" :class="{ active: activeMode === 'incident' }" @click="activeMode = 'incident'">□ Karta zdarzenia</button>
-              <button class="mode-button" :class="{ active: activeMode === 'map' }" @click="activeMode = 'map'">◇ Mapa środowiska</button>
+              <button class="mode-button" :class="{ active: activeMode === 'both' }" @click="activeMode = 'both'">
+                <span class="mode-indicator" aria-hidden="true">{{ activeMode === 'both' ? '✓' : '' }}</span>
+                <span>Oba formularze</span>
+              </button>
+              <button class="mode-button" :class="{ active: activeMode === 'incident' }" @click="activeMode = 'incident'">
+                <span class="mode-indicator" aria-hidden="true">{{ activeMode === 'incident' ? '✓' : '' }}</span>
+                <span>Karta zdarzenia</span>
+              </button>
+              <button class="mode-button" :class="{ active: activeMode === 'map' }" @click="activeMode = 'map'">
+                <span class="mode-indicator" aria-hidden="true">{{ activeMode === 'map' ? '✓' : '' }}</span>
+                <span>Mapa środowiska</span>
+              </button>
             </div>
             <div class="note">Dane pozostają w tej przeglądarce do czasu odświeżenia strony. PDF powstaje lokalnie po kliknięciu przycisku.</div>
           </div>

@@ -14,10 +14,6 @@ function selectedList(items, other) {
   return values.length ? values.join(", ") : "........................................";
 }
 
-function checkboxText(options, selected) {
-  return options.map((option) => `${selected.includes(option) ? "[x]" : "[ ]"} ${option}`).join("\n");
-}
-
 function section(title, body) {
   return [{ text: title, style: "sectionHeader", margin: [0, 10, 0, 5] }, ...body];
 }
@@ -45,7 +41,7 @@ export function makeDoc(env, data, mode) {
       { text: [{ text: "Czynniki obciążające: ", bold: true }, selectedList(incident.burdens, incident.burdensOther)] }
     ]),
     ...section("1. Co działo się bezpośrednio przed zdarzeniem (do 5 minut przed)?", [
-      { text: checkboxText(env.antecedents, incident.antecedents) },
+      { text: [{ text: "Zaznaczone: ", bold: true }, selectedList(incident.antecedents)] },
       fieldLine("Doprecyzowanie", incident.antecedentsDetails),
       fieldLine("Krótki opis sytuacji (fakty, bez interpretacji)", incident.factDescription)
     ]),
@@ -54,15 +50,14 @@ export function makeDoc(env, data, mode) {
     ]),
     ...section("3. Czy wcześniej pojawiły się sygnały zmiany stanu?", [
       fieldLine("Czy pojawiły się sygnały", incident.signalsAppeared),
-      { text: checkboxText(commonSignals, incident.signals) },
-      fieldLine("Inne sygnały", incident.signalsOther),
+      { text: [{ text: "Zaznaczone sygnały: ", bold: true }, selectedList(incident.signals, incident.signalsOther)] },
       fieldLine("Czas od pierwszych sygnałów do eskalacji", incident.timeToEscalation),
       fieldLine("Co zwykle pojawia się najpierw", incident.firstSignal),
       fieldLine("Czy ten sygnał zwykle zapowiada trudniejsze zachowanie", incident.predicts)
     ]),
     ...section("3A. Faza regulacyjna w momencie interwencji", [fieldLine("Faza", incident.phase)]),
     ...section("4. Jakie działania podjęto przed eskalacją?", [
-      { text: checkboxText(env.interventions, incident.interventions) },
+      { text: [{ text: "Zaznaczone działania: ", bold: true }, selectedList(incident.interventions)] },
       fieldLine("Doprecyzowanie", incident.interventionDetails),
       fieldLine("Czy to było dostępne bez warunku", incident.unconditional),
       fieldLine(`Czy ${env.personShort} z tego skorzystał`, incident.usedRegulator),
@@ -76,8 +71,7 @@ export function makeDoc(env, data, mode) {
       { text: [{ text: "Czy doszło do: ", bold: true }, selectedList(incident.harms)] }
     ]),
     ...section("6. Co wydarzyło się po zdarzeniu?", [
-      { text: checkboxText(env.after, incident.after) },
-      fieldLine("Inne", incident.afterOther),
+      { text: [{ text: "Zaznaczone po zdarzeniu: ", bold: true }, selectedList(incident.after, incident.afterOther)] },
       fieldLine("Czas trwania eskalacji", incident.escalationDuration),
       fieldLine("Czas do pełnego uspokojenia", incident.calmTime)
     ]),
@@ -126,7 +120,7 @@ export function makeDoc(env, data, mode) {
         fieldLine("Co najczęściej obniża napięcie lub pomaga wrócić do równowagi", map.reducers)
       ]),
       ...section("3. Czy zachowanie zmienia się w zależności od:", [
-        { text: checkboxText(env.dependencies, map.dependsOn) },
+        { text: [{ text: "Zaznaczone zależności: ", bold: true }, selectedList(map.dependsOn)] },
         fieldLine("Opis", map.dependsDescription)
       ]),
       ...section("4. W których sytuacjach najczęściej dochodzi do eskalacji?", [

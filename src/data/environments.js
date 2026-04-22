@@ -37,7 +37,7 @@ export const environments = {
   home: {
     icon: "⌂",
     label: "Dom",
-    header: "Autorskie narzędzie monitorowania sytuacji domowych",
+    header: "Narzędzie monitorowania sytuacji domowych",
     footer: "© 2026 Małgorzata Mikołajczyk | Powielanie do użytku rodziny i specjalistów wyłącznie w pełnej, niezmienionej wersji",
     incidentTitle: "KARTA MONITOROWANIA SYTUACJI - DOM",
     mapTitle: "MAPA ŚRODOWISKA DOMOWEGO",
@@ -126,7 +126,7 @@ export const environments = {
   center: {
     icon: "⌾",
     label: "Ośrodek",
-    header: "Autorskie narzędzie monitorowania sytuacji w ośrodku / placówce pobytowej",
+    header: "Narzędzie monitorowania sytuacji w ośrodku / placówce pobytowej",
     footer: "© 2026 Małgorzata Mikołajczyk | Powielanie do użytku placówki i rodziny wyłącznie w pełnej, niezmienionej wersji",
     incidentTitle: "KARTA MONITOROWANIA SYTUACJI - OŚRODEK / PLACÓWKA POBYTOWA",
     mapTitle: "MAPA ŚRODOWISKA - OŚRODEK / PLACÓWKA POBYTOWA",
@@ -148,7 +148,7 @@ export const environments = {
   school: {
     icon: "✎",
     label: "Szkoła",
-    header: "Autorskie narzędzie monitorowania sytuacji szkolnych",
+    header: "Narzędzie monitorowania sytuacji szkolnych",
     footer: "© 2026 Małgorzata Mikołajczyk | Powielanie do użytku szkolnego wyłącznie w pełnej, niezmienionej wersji",
     incidentTitle: "KARTA MONITOROWANIA SYTUACJI - SZKOŁA",
     mapTitle: "MAPA ŚRODOWISKA SZKOLNEGO",

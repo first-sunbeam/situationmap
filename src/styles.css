@@ -202,12 +202,34 @@ button {
   color: var(--ink);
   text-align: left;
   font-weight: 700;
+  border: 1px solid #d8e0dc;
+}
+
+.mode-indicator {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid #b8c7c1;
+  background: #ffffff;
+  color: transparent;
+  flex: 0 0 22px;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .mode-button.active {
-  background: #e3f1ee;
+  background: var(--teal);
+  color: #ffffff;
+  border-color: var(--teal-dark);
+  outline: 3px solid rgba(15, 118, 110, 0.22);
+}
+
+.mode-button.active .mode-indicator {
+  background: #ffffff;
+  border-color: #ffffff;
   color: var(--teal-dark);
-  outline: 2px solid rgba(15, 118, 110, 0.18);
 }
 
 .note {
