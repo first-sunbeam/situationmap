@@ -1,6 +1,11 @@
 # Narzędzie monitorowania sytuacji
 
-Statyczna aplikacja Vue do wypełniania dwóch formularzy dla trzech środowisk:
+Aplikacja zbudowana w Vue 3 + Vite do wypełniania dwóch formularzy:
+
+- Karta zdarzenia
+- Mapa środowiska
+
+Dostępne środowiska:
 
 - Dom
 - Ośrodek / placówka pobytowa
@@ -8,30 +13,68 @@ Statyczna aplikacja Vue do wypełniania dwóch formularzy dla trzech środowisk:
 
 PDF generowany jest lokalnie w przeglądarce przez `pdfmake`. Dane nie są wysyłane na serwer.
 
-## Uruchomienie
+## Stack
 
-Najprościej otworzyć plik `index.html` w przeglądarce.
+- Vue 3
+- Vite
+- pdfmake
 
-Wygodny wariant lokalny:
+## Uruchomienie lokalnie
 
-```bash
-python3 -m http.server 5173
-```
-
-Potem otwórz:
-
-```text
-http://localhost:5173
-```
-
-Jeśli port 5173 jest zajęty, użyj innego, np.:
+Instalacja zależności:
 
 ```bash
-python3 -m http.server 8787
+npm install
 ```
+
+Tryb developerski:
+
+```bash
+npm run dev
+```
+
+Aplikacja będzie dostępna pod adresem:
 
 ```text
-http://localhost:8787
+http://localhost:5173/
 ```
 
-Do działania potrzebny jest dostęp przeglądarki do CDN z bibliotekami Vue i pdfmake.
+## Build produkcyjny
+
+```bash
+npm run build
+```
+
+Podgląd buildu:
+
+```bash
+npm run preview
+```
+
+## Struktura projektu
+
+```text
+src/
+  components/
+    EnvironmentMapForm.vue
+    IncidentForm.vue
+  data/
+    environments.js
+  lib/
+    pdf.js
+  App.vue
+  main.js
+```
+
+## Ważne informacje
+
+- `Mapa środowiska` jest osobnym formularzem w interfejsie.
+- W PDF wypisywane są zaznaczone odpowiedzi i dopiski użytkownika, zamiast pełnych list opcji.
+- Lokalnie aplikacja działa z base `/`.
+- Build produkcyjny jest przygotowany pod ścieżkę `/ongoing-monitoring/`.
+
+## Repozytorium
+
+```bash
+git clone git@github.com:first-sunbeam/ongoing-monitoring.git
+```
