@@ -219,6 +219,11 @@ button {
   line-height: 1.45;
 }
 
+.forms-stack {
+  display: grid;
+  gap: 24px;
+}
+
 .form-panel {
   padding: 24px;
 }
@@ -230,6 +235,13 @@ button {
   gap: 16px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--line);
+}
+
+.heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .form-heading h2 {
