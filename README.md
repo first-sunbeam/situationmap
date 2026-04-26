@@ -1,4 +1,4 @@
-# Narzędzie monitorowania sytuacji
+# SituationMap
 
 Aplikacja zbudowana w Vue 3 + Vite do wypełniania dwóch formularzy:
 
@@ -71,10 +71,10 @@ src/
 - `Mapa środowiska` jest osobnym formularzem w interfejsie.
 - W PDF wypisywane są zaznaczone odpowiedzi i dopiski użytkownika, zamiast pełnych list opcji.
 - Lokalnie aplikacja działa z base `/`.
-- Build produkcyjny jest przygotowany pod ścieżkę `/ongoing-monitoring/`.
+- Build produkcyjny jest przygotowany pod ścieżkę `/situationmap/`.
 
 ## Repozytorium
 
 ```bash
-git clone git@github.com:first-sunbeam/ongoing-monitoring.git
+git clone git@github.com:first-sunbeam/situationmap.git
 ```

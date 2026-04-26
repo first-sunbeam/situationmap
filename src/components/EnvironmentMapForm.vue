@@ -4,6 +4,7 @@ defineProps({
   form: { type: Object, required: true },
   toggle: { type: Function, required: true },
   buildPdf: { type: Function, required: true },
+  sendEmail: { type: Function, required: true },
   resetMap: { type: Function, required: true }
 });
 </script>
@@ -51,7 +52,7 @@ defineProps({
 
     <div class="footer-actions">
       <button class="secondary-button" @click="buildPdf('open')">↗ Podgląd</button>
-      <button class="secondary-button" @click="buildPdf('email')">✉ Wyślij</button>
+      <button class="secondary-button" @click="sendEmail">✉ Wyślij</button>
       <button class="primary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
     </div>
   </section>

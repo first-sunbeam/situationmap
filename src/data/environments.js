@@ -171,6 +171,15 @@ export const environments = {
 export function blankForm(env) {
   return {
     meta: { date: "", time: "", place: "", lead: "", present: "" },
+    simple: {
+      factDescription: "",
+      antecedents: "",
+      signals: "",
+      interventions: "",
+      behavior: "",
+      helped: "",
+      notes: ""
+    },
     incident: {
       tension: "",
       tired: "",
