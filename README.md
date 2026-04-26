@@ -1,17 +1,36 @@
 # SituationMap
 
-Aplikacja zbudowana w Vue 3 + Vite do wypełniania dwóch formularzy:
+SituationMap to aplikacja zbudowana w Vue 3 + Vite do opisu sytuacji w różnych środowiskach i przygotowania zgłoszenia w dwóch wariantach:
 
-- Karta zdarzenia
-- Mapa środowiska
+- **formularz prosty** — szybkie zgłoszenie sytuacji przez e-mail,
+- **formularz rozszerzony** — karta zdarzenia i mapa środowiska z możliwością generowania PDF.
 
-Dostępne środowiska:
+## Dostępne środowiska
 
 - Dom
 - Ośrodek / placówka pobytowa
 - Szkoła
 
-PDF generowany jest lokalnie w przeglądarce przez `pdfmake`. Dane nie są wysyłane na serwer.
+## Najważniejsze funkcje
+
+- wybór środowiska pracy,
+- przełączanie między wersją **prostą** i **rozszerzoną** formularza,
+- formularz prosty wysyłany przez domyślny program pocztowy,
+- formularz rozszerzony obejmujący:
+  - kartę zdarzenia,
+  - mapę środowiska,
+- lokalne generowanie PDF przez `pdfmake`,
+- brak wysyłki danych na serwer aplikacji.
+
+## Jak działa wysyłka
+
+Po kliknięciu przycisku **Wyślij** aplikacja otwiera domyślny program pocztowy z przygotowaną wiadomością na adres:
+
+```text
+kontakt@autyzm.poznan.pl
+```
+
+Treść wiadomości jest budowana na podstawie danych wpisanych do formularza.
 
 ## Stack
 
@@ -41,6 +60,8 @@ http://localhost:5173/
 
 ## Build produkcyjny
 
+Budowanie aplikacji:
+
 ```bash
 npm run build
 ```
@@ -58,9 +79,11 @@ src/
   components/
     EnvironmentMapForm.vue
     IncidentForm.vue
+    SimpleForm.vue
   data/
     environments.js
   lib/
+    email.js
     pdf.js
   App.vue
   main.js
@@ -68,10 +91,12 @@ src/
 
 ## Ważne informacje
 
-- `Mapa środowiska` jest osobnym formularzem w interfejsie.
-- W PDF wypisywane są zaznaczone odpowiedzi i dopiski użytkownika, zamiast pełnych list opcji.
-- Lokalnie aplikacja działa z base `/`.
-- Build produkcyjny jest przygotowany pod ścieżkę `/situationmap/`.
+- formularz prosty i formularz rozszerzony korzystają ze wspólnych danych podstawowych,
+- `Mapa środowiska` jest osobnym formularzem w wersji rozszerzonej,
+- w PDF wypisywane są zaznaczone odpowiedzi i dopiski użytkownika, zamiast pełnych list opcji,
+- dane pozostają w przeglądarce do czasu odświeżenia strony,
+- lokalnie aplikacja działa z base `/`,
+- build produkcyjny jest przygotowany pod ścieżkę `/situationmap/`.
 
 ## Repozytorium
 
