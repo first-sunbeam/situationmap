@@ -65,7 +65,12 @@ function validate({ variant, mode, form }) {
 
   if (variant === "simple" && !String(form.simple.factDescription || "").trim()) {
     fieldErrors["simple.factDescription"] = "Uzupełnij krótki opis sytuacji.";
-    summary.push("Uzupełnij krótki opis sytuacji w formularzu prostym.");
+    summary.push("Formularz prosty: uzupełnij krótki opis sytuacji.");
+  }
+
+  if (variant === "simple" && !String(form.simple.helped || "").trim()) {
+    fieldErrors["simple.helped"] = "Uzupełnij pole „Co pomogło?” albo wpisz, że nic nie pomogło.";
+    summary.push("Formularz prosty: uzupełnij pole „Co pomogło?”.");
   }
 
   if (variant === "extended" && mode !== "map") {
@@ -99,16 +104,28 @@ function validate({ variant, mode, form }) {
       },
       {
         key: "incident.signalsSection",
-        summary: "Sygnały zmiany stanu: uzupełnij przynajmniej jedno pole.",
-        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-        valid: hasAnyValue([
-          form.incident.signalsAppeared,
-          form.incident.signals,
-          form.incident.signalsOther,
-          form.incident.timeToEscalation,
-          form.incident.firstSignal,
-          form.incident.predicts
-        ])
+        summary: form.incident.signalsAppeared === "Tak"
+          ? "Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie."
+          : "Pierwsze oznaki narastającego napięcia: uzupełnij przynajmniej jedno pole.",
+        message: form.incident.signalsAppeared === "Tak"
+          ? "Skoro sygnały się pojawiły, wskaż jakie."
+          : "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        valid: form.incident.signalsAppeared === "Tak"
+          ? hasAnyValue([
+            form.incident.signals,
+            form.incident.signalsOther,
+            form.incident.firstSignal,
+            form.incident.timeToEscalation,
+            form.incident.predicts
+          ])
+          : hasAnyValue([
+            form.incident.signalsAppeared,
+            form.incident.signals,
+            form.incident.signalsOther,
+            form.incident.timeToEscalation,
+            form.incident.firstSignal,
+            form.incident.predicts
+          ])
       },
       {
         key: "incident.actionsSection",
@@ -152,15 +169,11 @@ function validate({ variant, mode, form }) {
       },
       {
         key: "incident.regulationSection",
-        summary: "Regulacja i wpływ: uzupełnij przynajmniej jedno pole.",
-        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło w tej sytuacji.",
+        message: "Zaznacz, co najbardziej pomogło w tej sytuacji.",
         valid: hasAnyValue([
-          form.incident.helped,
           form.incident.endedBy,
-          form.incident.endedByOther,
-          form.incident.worsened,
-          form.incident.regulators,
-          form.incident.rewards
+          form.incident.endedByOther
         ])
       }
     ];
@@ -271,6 +284,7 @@ function createFormState() {
     const index = list.indexOf(option);
     if (index >= 0) list.splice(index, 1);
     else list.push(option);
+    if (validationErrors.value.length) applyValidation();
   }
 
   async function buildPdf(action) {
@@ -352,8 +366,8 @@ function createFormState() {
   }, { deep: true });
 
   watch([activeEnvKey, activeVariant, activeMode], clearValidation);
-  watch(form, () => {
-    if (validationErrors.value.length) applyValidation();
+  watch(forms, () => {
+    if (validationErrors.value.length || Object.keys(fieldErrors.value).length) applyValidation();
   }, { deep: true });
 
   return {

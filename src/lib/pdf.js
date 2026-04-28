@@ -41,8 +41,6 @@ export function makeDoc(env, data, mode) {
     ]),
     ...section("1. Co działo się bezpośrednio przed zdarzeniem (do 5 minut przed)?", [
       { text: [{ text: "Zaznaczone: ", bold: true }, selectedList(incident.antecedents)] },
-      fieldLine("Jeśli zaznaczono inne - co konkretnie", incident.antecedentsOther),
-      fieldLine("Dodatkowy opis sytuacji przed zdarzeniem", incident.antecedentsDetails),
       fieldLine("Krótki opis sytuacji (fakty, bez interpretacji)", incident.factDescription)
     ]),
     ...section(`2. Co było oczekiwane od ${env.person} w tym momencie?`, [
@@ -81,14 +79,13 @@ export function makeDoc(env, data, mode) {
       fieldLine("Czy po wcześniejszych interwencjach próg eskalacji wydawał się niższy", incident.lowerThreshold),
       fieldLine("Krótka notatka", incident.physicalNote)
     ]),
-    ...section("7. Co pomogło obniżyć napięcie?", [
-      fieldLine("Opis", incident.helped),
-      { text: [{ text: "Co najprawdopodobniej zakończyło lub wyraźnie obniżyło zachowanie: ", bold: true }, selectedList(incident.endedBy, incident.endedByOther)] }
+    ...section("7. Co najbardziej pomogło w tej sytuacji?", [
+      { text: [{ text: "Zaznaczone odpowiedzi: ", bold: true }, selectedList(incident.endedBy, incident.endedByOther)] }
     ]),
     ...section("8. Co mogło nasilić napięcie?", [fieldLine("Opis", incident.worsened)]),
-    ...section("9. Regulatory vs nagrody (krótka obserwacja)", [
-      fieldLine("Co obniżało napięcie / pomagało się uspokoić", incident.regulators),
-      fieldLine("Co było zachętą / nagrodą", incident.rewards)
+    ...section("9. Regulacja i dokańczanie zadania", [
+      fieldLine("Co pomogło obniżyć napięcie", incident.regulators),
+      fieldLine("Co pomagało dokończyć aktywność mimo napięcia", incident.rewards)
     ])
   ];
 

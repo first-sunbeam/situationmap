@@ -60,8 +60,6 @@ export function buildEmail({ env, form, variant, mode }) {
           line("Czynniki obciążające", form.incident.burdens),
           line("Inne czynniki obciążające", form.incident.burdensOther),
           line("Co działo się przed", form.incident.antecedents),
-          line("Jeśli zaznaczono inne - co konkretnie", form.incident.antecedentsOther),
-          line("Dodatkowy opis sytuacji przed zdarzeniem", form.incident.antecedentsDetails),
           line("Opis sytuacji", form.incident.factDescription),
           line("Oczekiwania", form.incident.expectations),
           line("Inne oczekiwania", form.incident.expectationOther),
@@ -90,12 +88,11 @@ export function buildEmail({ env, form, variant, mode }) {
           line("Ile razy", form.incident.physicalCount),
           line("Niższy próg / szybsza reakcja", form.incident.lowerThreshold),
           line("Notatka o interwencji fizycznej", form.incident.physicalNote),
-          line("Co pomogło obniżyć napięcie", form.incident.helped),
-          line("Co zakończyło / obniżyło zachowanie", form.incident.endedBy),
-          line("Inne zakończenie", form.incident.endedByOther),
+          line("Co najbardziej pomogło w tej sytuacji", form.incident.endedBy),
+          line("Inne odpowiedzi", form.incident.endedByOther),
           line("Co mogło nasilić napięcie", form.incident.worsened),
-          line("Co obniżało napięcie / regulatory", form.incident.regulators),
-          line("Co było zachętą / nagrodą", form.incident.rewards)
+          line("Co pomogło obniżyć napięcie", form.incident.regulators),
+          line("Co pomagało dokończyć aktywność mimo napięcia", form.incident.rewards)
         ])
       );
     }
