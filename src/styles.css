@@ -552,6 +552,23 @@ button {
   font-weight: 700;
 }
 
+.site-footer {
+  width: min(1220px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 0 0 28px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a {
+  color: inherit;
+  font-weight: 700;
+}
+
 @media (max-width: 900px) {
   .topbar-inner,
   .form-heading,

@@ -115,5 +115,9 @@ const {
         </div>
       </div>
     </main>
+
+    <footer class="site-footer">
+      <p><a href="http://autyzm.poznan.pl/" target="_blank" rel="noreferrer">Małgorzata Mikołajczyk</a> · Psycholog · Analityk zachowania (BCBA)</p>
+    </footer>
   </div>
 </template>
