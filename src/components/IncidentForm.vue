@@ -126,7 +126,8 @@ const {
               <label class="choice" v-for="item in env.antecedents" :key="item"><input type="checkbox" :checked="form.incident.antecedents.includes(item)" @change="toggle(form.incident.antecedents, item)" />{{ item }}</label>
             </div>
           </div>
-          <label class="field full"><span class="field-label">Doprecyzowanie</span><input class="text-input" v-model="form.incident.antecedentsDetails" /></label>
+          <label v-if="hasOther(form.incident.antecedents, form.incident.antecedentsOther)" class="field full"><span class="field-label">Jeśli zaznaczono „Inne”, wpisz co konkretnie się działo</span><input class="text-input" v-model="form.incident.antecedentsOther" /></label>
+          <label class="field full"><span class="field-label">Dodatkowy opis sytuacji przed zdarzeniem</span><input class="text-input" v-model="form.incident.antecedentsDetails" /></label>
           <label class="field full"><span class="field-label">Krótki opis sytuacji (fakty, bez interpretacji)</span><textarea class="text-area" :class="{ invalid: fieldErrors['incident.factDescription'] }" v-model="form.incident.factDescription"></textarea><span v-if="fieldErrors['incident.factDescription']" class="field-error">{{ fieldErrors['incident.factDescription'] }}</span></label>
         </div>
       </section>

@@ -190,6 +190,7 @@ export function blankForm(env) {
       burdens: [],
       burdensOther: "",
       antecedents: [],
+      antecedentsOther: "",
       antecedentsDetails: "",
       factDescription: "",
       expectations: [],

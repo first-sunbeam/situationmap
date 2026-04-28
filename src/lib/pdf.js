@@ -41,7 +41,8 @@ export function makeDoc(env, data, mode) {
     ]),
     ...section("1. Co działo się bezpośrednio przed zdarzeniem (do 5 minut przed)?", [
       { text: [{ text: "Zaznaczone: ", bold: true }, selectedList(incident.antecedents)] },
-      fieldLine("Doprecyzowanie", incident.antecedentsDetails),
+      fieldLine("Jeśli zaznaczono inne - co konkretnie", incident.antecedentsOther),
+      fieldLine("Dodatkowy opis sytuacji przed zdarzeniem", incident.antecedentsDetails),
       fieldLine("Krótki opis sytuacji (fakty, bez interpretacji)", incident.factDescription)
     ]),
     ...section(`2. Co było oczekiwane od ${env.person} w tym momencie?`, [
