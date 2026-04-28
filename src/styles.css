@@ -424,6 +424,12 @@ button {
   font-weight: 750;
 }
 
+.field-hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
 .required-mark {
   color: #b14b3f;
 }

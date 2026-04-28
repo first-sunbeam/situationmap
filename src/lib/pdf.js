@@ -54,7 +54,7 @@ export function makeDoc(env, data, mode) {
       fieldLine("Czy ten sygnał zwykle zapowiada trudniejsze zachowanie", incident.predicts)
     ]),
     ...section("3A. Faza napięcia i 4. Działania", [
-      fieldLine("Faza regulacyjna", incident.phase),
+      fieldLine("W jakiej fazie napięcia była osoba", incident.phase),
       { text: [{ text: "Zaznaczone działania: ", bold: true }, selectedList(incident.interventions)] },
       fieldLine("Doprecyzowanie", incident.interventionDetails),
       fieldLine("Czy to było dostępne bez warunku", incident.unconditional),
@@ -83,7 +83,7 @@ export function makeDoc(env, data, mode) {
       { text: [{ text: "Co najbardziej pomogło w tej sytuacji: ", bold: true }, selectedList(incident.endedBy, incident.endedByOther)] },
       fieldLine("Co mogło nasilić napięcie", incident.worsened),
       fieldLine("Co pomogło obniżyć napięcie", incident.regulators),
-      fieldLine("Co pomagało dokończyć aktywność mimo napięcia", incident.rewards)
+      fieldLine("Co podtrzymywało wykonywanie aktywności mimo napięcia", incident.rewards)
     ])
   ];
 
@@ -157,10 +157,10 @@ export function buildPdf({ env, form, mode, modeLabel, action, setStatus }) {
 
   if (action === "download") {
     pdf.download(fileName);
-    setStatus(`Gotowe: wygenerowano PDF (${modeLabel}).`);
+    setStatus(`PDF gotowy — został pobrany (${modeLabel}).`);
     return;
   }
 
   pdf.open();
-  setStatus("PDF otwarty w nowej karcie.");
+  setStatus("PDF gotowy — został otwarty w nowej karcie.");
 }

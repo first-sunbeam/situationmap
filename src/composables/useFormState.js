@@ -98,7 +98,7 @@ function validate({ variant, mode, form }) {
       },
       {
         key: "incident.expectationsSection",
-        summary: "Oczekiwania w tym momencie: uzupełnij przynajmniej jedno pole.",
+        summary: "Czego oczekiwano w tym momencie: uzupełnij przynajmniej jedno pole.",
         message: "Zaznacz przynajmniej jedną opcję albo wpisz własną odpowiedź.",
         valid: hasAnyValue([form.incident.expectations, form.incident.expectationOther])
       },
@@ -248,6 +248,7 @@ function createFormState() {
   const fieldErrors = ref({});
   const validationRequestId = ref(0);
   const forms = reactive(createForms());
+  let saveStatusTimeout;
 
   for (const key of Object.keys(forms)) {
     forms[key] = hydrateForm(key, initial.forms[key]);
@@ -324,33 +325,33 @@ function createFormState() {
       mode: activeMode.value
     });
     openEmail(email);
-    status.value = "Otworzono wiadomość e-mail do kontakt@autyzm.poznan.pl z uzupełnioną treścią formularza.";
+    status.value = "E-mail został przygotowany w domyślnym programie pocztowym.";
   }
 
   function resetCurrent() {
     forms[activeEnvKey.value] = blankForm(env.value);
     clearValidation();
-    status.value = "Wyczyszczono formularze dla bieżącego środowiska.";
+    status.value = "Wyczyszczono wszystkie formularze dla bieżącego środowiska.";
   }
 
   function resetSimple() {
     forms[activeEnvKey.value].meta = blankForm(env.value).meta;
     forms[activeEnvKey.value].simple = blankForm(env.value).simple;
     clearValidation();
-    status.value = "Wyczyszczono formularz prosty.";
+    status.value = "Wyczyszczono tylko formularz prosty.";
   }
 
   function resetIncident() {
     forms[activeEnvKey.value].meta = blankForm(env.value).meta;
     forms[activeEnvKey.value].incident = blankForm(env.value).incident;
     clearValidation();
-    status.value = "Wyczyszczono kartę zdarzenia.";
+    status.value = "Wyczyszczono tylko kartę zdarzenia.";
   }
 
   function resetMap() {
     forms[activeEnvKey.value].map = blankForm(env.value).map;
     clearValidation();
-    status.value = "Wyczyszczono mapę środowiska.";
+    status.value = "Wyczyszczono tylko mapę środowiska.";
   }
 
   watch([activeEnvKey, activeVariant, activeMode, forms], () => {
@@ -360,6 +361,12 @@ function createFormState() {
       activeMode: activeMode.value,
       forms
     }));
+
+    clearTimeout(saveStatusTimeout);
+    status.value = "Formularz zapisano lokalnie.";
+    saveStatusTimeout = setTimeout(() => {
+      if (status.value === "Formularz zapisano lokalnie.") status.value = "";
+    }, 1800);
   }, { deep: true });
 
   watch([activeEnvKey, activeVariant, activeMode], clearValidation);

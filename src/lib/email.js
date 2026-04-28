@@ -69,7 +69,7 @@ export function buildEmail({ env, form, variant, mode }) {
           line("Czas do eskalacji", form.incident.timeToEscalation),
           line("Pierwszy sygnał", form.incident.firstSignal),
           line("Czy zapowiada trudne zachowanie", form.incident.predicts),
-          line("Faza regulacyjna", form.incident.phase),
+          line("W jakiej fazie napięcia była osoba", form.incident.phase),
           line("Działania przed eskalacją", form.incident.interventions),
           line("Doprecyzowanie działań", form.incident.interventionDetails),
           line("Dostępne bez warunku", form.incident.unconditional),
@@ -92,7 +92,7 @@ export function buildEmail({ env, form, variant, mode }) {
           line("Inne odpowiedzi", form.incident.endedByOther),
           line("Co mogło nasilić napięcie", form.incident.worsened),
           line("Co pomogło obniżyć napięcie", form.incident.regulators),
-          line("Co pomagało dokończyć aktywność mimo napięcia", form.incident.rewards)
+          line("Co podtrzymywało wykonywanie aktywności mimo napięcia", form.incident.rewards)
         ])
       );
     }

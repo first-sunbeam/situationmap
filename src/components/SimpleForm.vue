@@ -36,12 +36,12 @@ defineProps({
       <section class="section">
         <h3>Opis sytuacji</h3>
         <div class="field-grid">
-          <label class="field full"><span class="field-label">Krótki opis sytuacji <span class="required-mark">*</span></span><textarea class="text-area" :class="{ invalid: fieldErrors['simple.factDescription'] }" v-model="form.simple.factDescription"></textarea><span v-if="fieldErrors['simple.factDescription']" class="field-error">{{ fieldErrors['simple.factDescription'] }}</span></label>
-          <label class="field full"><span class="field-label">Co wydarzyło się tuż przed?</span><textarea class="text-area" v-model="form.simple.antecedents"></textarea></label>
-          <label class="field full"><span class="field-label">Jakie były pierwsze sygnały?</span><textarea class="text-area" v-model="form.simple.signals"></textarea></label>
+          <label class="field full"><span class="field-label">Krótki opis sytuacji <span class="required-mark">*</span></span><span class="field-hint">Krótko, fakty bez interpretacji.</span><textarea class="text-area" :class="{ invalid: fieldErrors['simple.factDescription'] }" v-model="form.simple.factDescription"></textarea><span v-if="fieldErrors['simple.factDescription']" class="field-error">{{ fieldErrors['simple.factDescription'] }}</span></label>
+          <label class="field full"><span class="field-label">Co wydarzyło się tuż przed?</span><span class="field-hint">Np. zmiana planu, hałas, oczekiwanie.</span><textarea class="text-area" v-model="form.simple.antecedents"></textarea></label>
+          <label class="field full"><span class="field-label">Jakie były pierwsze sygnały?</span><span class="field-hint">Np. milczenie, napięcie ciała, protest.</span><textarea class="text-area" v-model="form.simple.signals"></textarea></label>
           <label class="field full"><span class="field-label">Jak zareagowano na pierwsze sygnały?</span><textarea class="text-area" v-model="form.simple.interventions"></textarea></label>
           <label class="field full"><span class="field-label">Opis zachowania</span><textarea class="text-area" v-model="form.simple.behavior"></textarea></label>
-          <label class="field full"><span class="field-label">Co pomogło obniżyć napięcie lub uspokoić sytuację? <span class="required-mark">*</span></span><textarea class="text-area" :class="{ invalid: fieldErrors['simple.helped'] }" v-model="form.simple.helped"></textarea><span v-if="fieldErrors['simple.helped']" class="field-error">{{ fieldErrors['simple.helped'] }}</span></label>
+          <label class="field full"><span class="field-label">Co pomogło obniżyć napięcie lub uspokoić sytuację? <span class="required-mark">*</span></span><span class="field-hint">Jeśli nic nie pomogło, wpisz to wprost.</span><textarea class="text-area" :class="{ invalid: fieldErrors['simple.helped'] }" v-model="form.simple.helped"></textarea><span v-if="fieldErrors['simple.helped']" class="field-error">{{ fieldErrors['simple.helped'] }}</span></label>
           <label class="field full"><span class="field-label">Dodatkowe uwagi</span><textarea class="text-area" v-model="form.simple.notes"></textarea></label>
         </div>
       </section>

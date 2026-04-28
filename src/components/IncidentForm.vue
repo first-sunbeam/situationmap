@@ -10,7 +10,7 @@ const steps = [
   { id: "meta", label: "Dane podstawowe" },
   { id: "baseline", label: "Kontekst dnia" },
   { id: "before", label: "Przed zdarzeniem" },
-  { id: "expectations", label: "Oczekiwania" },
+  { id: "expectations", label: "Czego oczekiwano" },
   { id: "signals", label: "Sygnały" },
   { id: "actions", label: "Działania" },
   { id: "behavior", label: "Opis zachowania" },
@@ -120,7 +120,7 @@ watch(validationRequestId, () => {
         <h3>0. Poziom bazowy i kontekst dnia <span class="required-mark">*</span></h3>
         <p v-if="fieldErrors['incident.baselineSection']" class="field-error">{{ fieldErrors['incident.baselineSection'] }}</p>
         <div class="field-grid">
-          <label class="field"><span class="field-label">Poziom napięcia</span><select class="text-input" v-model="form.incident.tension"><option value="">Wybierz</option><option v-for="item in tensionLevels" :key="item">{{ item }}</option></select></label>
+          <label class="field"><span class="field-label">Poziom napięcia</span><span class="field-hint">Jak wyglądał stan osoby przed zdarzeniem?</span><select class="text-input" v-model="form.incident.tension"><option value="">Wybierz</option><option v-for="item in tensionLevels" :key="item">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Zmęczenie / senność</span><select class="text-input" v-model="form.incident.tired"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="item">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Sen / odpoczynek w ciągu dnia</span><select class="text-input" v-model="form.incident.slept"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-slept`">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">O której i jak długo?</span><input class="text-input" v-model="form.incident.sleepDetails" /></label>
@@ -144,17 +144,18 @@ watch(validationRequestId, () => {
         <div class="field-grid">
           <div class="field full">
             <span class="field-label">Co działo się do 5 minut przed?</span>
+            <span class="field-hint">Zaznacz opcje lub krótko opisz sytuację.</span>
             <span v-if="fieldErrors['incident.beforeSection']" class="field-error">{{ fieldErrors['incident.beforeSection'] }}</span>
             <div class="choice-grid">
               <label class="choice" v-for="item in env.antecedents" :key="item"><input type="checkbox" :checked="form.incident.antecedents.includes(item)" @change="toggle(form.incident.antecedents, item)" />{{ item }}</label>
             </div>
           </div>
-          <label class="field full"><span class="field-label">Krótki opis sytuacji (fakty, bez interpretacji)</span><textarea class="text-area" :class="{ invalid: fieldErrors['incident.factDescription'] }" v-model="form.incident.factDescription"></textarea><span v-if="fieldErrors['incident.factDescription']" class="field-error">{{ fieldErrors['incident.factDescription'] }}</span></label>
+          <label class="field full"><span class="field-label">Krótki opis sytuacji (fakty, bez interpretacji)</span><span class="field-hint">Krótko opisz, co się wydarzyło przed eskalacją.</span><textarea class="text-area" :class="{ invalid: fieldErrors['incident.factDescription'] }" v-model="form.incident.factDescription"></textarea><span v-if="fieldErrors['incident.factDescription']" class="field-error">{{ fieldErrors['incident.factDescription'] }}</span></label>
         </div>
       </section>
 
       <section v-show="activeStep === 'expectations'" class="section" :class="{ invalidSection: fieldErrors['incident.expectationsSection'] }">
-        <h3>2. Oczekiwania w tym momencie <span class="required-mark">*</span></h3>
+        <h3>2. Czego oczekiwano w tym momencie? <span class="required-mark">*</span></h3>
         <p v-if="fieldErrors['incident.expectationsSection']" class="field-error">{{ fieldErrors['incident.expectationsSection'] }}</p>
         <div class="choice-grid">
           <label class="choice" v-for="item in env.expectations" :key="item"><input type="checkbox" :checked="form.incident.expectations.includes(item)" @change="toggle(form.incident.expectations, item)" />{{ item }}</label>
@@ -184,7 +185,7 @@ watch(validationRequestId, () => {
         <h3>3A. Faza napięcia i 4. Działania <span class="required-mark">*</span></h3>
         <p v-if="fieldErrors['incident.actionsSection']" class="field-error">{{ fieldErrors['incident.actionsSection'] }}</p>
         <div class="field-grid">
-          <label class="field full"><span class="field-label">Faza regulacyjna</span><select class="text-input" v-model="form.incident.phase"><option value="">Wybierz</option><option v-for="item in regulationPhase" :key="item">{{ item }}</option></select></label>
+          <label class="field full"><span class="field-label">W jakiej fazie napięcia była osoba?</span><span class="field-hint">Np. możliwa współpraca, narastające napięcie, pełna eskalacja.</span><select class="text-input" v-model="form.incident.phase"><option value="">Wybierz</option><option v-for="item in regulationPhase" :key="item">{{ item }}</option></select></label>
           <div class="field full">
             <span class="field-label">Działania podjęte przed eskalacją</span>
             <div class="choice-grid">
@@ -232,9 +233,9 @@ watch(validationRequestId, () => {
         <div class="field-grid">
           <div class="field full"><span class="field-label">Co najbardziej pomogło w tej sytuacji? <span class="required-mark">*</span></span><div class="choice-grid"><label class="choice" v-for="item in env.endedBy" :key="item"><input type="checkbox" :checked="form.incident.endedBy.includes(item)" @change="toggle(form.incident.endedBy, item)" />{{ item }}</label></div></div>
           <label v-if="hasOther(form.incident.endedBy, form.incident.endedByOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.endedByOther" /></label>
-          <label class="field full"><span class="field-label">Co mogło nasilić napięcie?</span><textarea class="text-area" v-model="form.incident.worsened"></textarea></label>
-          <label class="field full"><span class="field-label">Co pomogło obniżyć napięcie?</span><textarea class="text-area" v-model="form.incident.regulators"></textarea></label>
-          <label class="field full"><span class="field-label">Co pomagało dokończyć aktywność mimo napięcia?</span><textarea class="text-area" v-model="form.incident.rewards"></textarea></label>
+          <label class="field full"><span class="field-label">Co mogło nasilić napięcie?</span><span class="field-hint">Np. nacisk, pośpiech, hałas, odmowa.</span><textarea class="text-area" v-model="form.incident.worsened"></textarea></label>
+          <label class="field full"><span class="field-label">Co pomogło obniżyć napięcie?</span><span class="field-hint">Np. wyjście, cisza, czas, obecność znanej osoby.</span><textarea class="text-area" v-model="form.incident.regulators"></textarea></label>
+          <label class="field full"><span class="field-label">Co podtrzymywało wykonywanie aktywności mimo napięcia?</span><span class="field-hint">Np. zachęta, jasny cel, wsparcie dorosłego, chęć uniknięcia konsekwencji.</span><textarea class="text-area" v-model="form.incident.rewards"></textarea></label>
         </div>
       </section>
     </div>
