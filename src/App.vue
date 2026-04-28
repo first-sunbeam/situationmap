@@ -14,6 +14,7 @@ const {
   environments,
   env,
   form,
+  buildPdf,
   sendEmail,
   resetCurrent,
   resetSimple
@@ -72,10 +73,6 @@ const {
             <template v-if="activeVariant === 'extended'">
               <p class="mode-label" style="margin-top: 14px">Zakres formularza rozszerzonego</p>
               <div class="mode-switch">
-                <button class="mode-button" :class="{ active: activeMode === 'both' }" @click="activeMode = 'both'">
-                  <span class="mode-indicator" aria-hidden="true">{{ activeMode === 'both' ? '✓' : '' }}</span>
-                  <span>Oba formularze</span>
-                </button>
                 <button class="mode-button" :class="{ active: activeMode === 'incident' }" @click="activeMode = 'incident'">
                   <span class="mode-indicator" aria-hidden="true">{{ activeMode === 'incident' ? '✓' : '' }}</span>
                   <span>Karta zdarzenia</span>

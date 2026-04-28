@@ -207,7 +207,7 @@ function loadState() {
   const fallback = {
     activeEnvKey: "home",
     activeVariant: "simple",
-    activeMode: "both",
+    activeMode: "incident",
     forms: createForms()
   };
 
@@ -218,7 +218,7 @@ function loadState() {
     return {
       activeEnvKey: environments[parsed.activeEnvKey] ? parsed.activeEnvKey : fallback.activeEnvKey,
       activeVariant: ["simple", "extended"].includes(parsed.activeVariant) ? parsed.activeVariant : fallback.activeVariant,
-      activeMode: ["both", "incident", "map"].includes(parsed.activeMode) ? parsed.activeMode : fallback.activeMode,
+      activeMode: ["incident", "map"].includes(parsed.activeMode) ? parsed.activeMode : fallback.activeMode,
       forms: parsed.forms || fallback.forms
     };
   } catch {
@@ -245,7 +245,7 @@ function createFormState() {
 
   const env = computed(() => environments[activeEnvKey.value]);
   const form = computed(() => forms[activeEnvKey.value]);
-  const modeLabel = computed(() => ({ both: "oba formularze", incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]));
+  const modeLabel = computed(() => ({ incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]));
 
   function clearValidation() {
     validationErrors.value = [];
