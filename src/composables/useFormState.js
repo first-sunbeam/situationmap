@@ -36,6 +36,13 @@ function hasMapContent(map) {
     || map.escalationContexts.length > 0;
 }
 
+function hasAnyValue(values) {
+  return values.some((value) => {
+    if (Array.isArray(value)) return value.length > 0;
+    return String(value || "").trim() !== "";
+  });
+}
+
 function validate({ variant, mode, form }) {
   const fieldErrors = {};
   const summary = [];
@@ -51,7 +58,7 @@ function validate({ variant, mode, form }) {
       if (!String(value || "").trim()) {
         const message = `Uzupełnij pole: ${label}.`;
         fieldErrors[key] = message;
-        summary.push(message);
+        summary.push(`Dane podstawowe: uzupełnij pole ${label.toLowerCase()}.`);
       }
     }
   }
@@ -61,9 +68,113 @@ function validate({ variant, mode, form }) {
     summary.push("Uzupełnij krótki opis sytuacji w formularzu prostym.");
   }
 
-  if (variant === "extended" && mode !== "map" && !String(form.incident.factDescription || "").trim()) {
-    fieldErrors["incident.factDescription"] = "Uzupełnij krótki opis sytuacji.";
-    summary.push("Uzupełnij krótki opis sytuacji w karcie zdarzenia.");
+  if (variant === "extended" && mode !== "map") {
+    const sectionRules = [
+      {
+        key: "incident.baselineSection",
+        summary: "Poziom bazowy i kontekst dnia: uzupełnij przynajmniej jedno pole.",
+        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        valid: hasAnyValue([
+          form.incident.tension,
+          form.incident.tired,
+          form.incident.slept,
+          form.incident.sleepDetails,
+          form.incident.stayStage,
+          form.incident.stayStageLoad,
+          form.incident.burdens,
+          form.incident.burdensOther
+        ])
+      },
+      {
+        key: "incident.beforeSection",
+        summary: "Bezpośrednio przed zdarzeniem: zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
+        message: "Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
+        valid: hasAnyValue([form.incident.antecedents, form.incident.factDescription])
+      },
+      {
+        key: "incident.expectationsSection",
+        summary: "Oczekiwania w tym momencie: uzupełnij przynajmniej jedno pole.",
+        message: "Zaznacz przynajmniej jedną opcję albo wpisz własną odpowiedź.",
+        valid: hasAnyValue([form.incident.expectations, form.incident.expectationOther])
+      },
+      {
+        key: "incident.signalsSection",
+        summary: "Sygnały zmiany stanu: uzupełnij przynajmniej jedno pole.",
+        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        valid: hasAnyValue([
+          form.incident.signalsAppeared,
+          form.incident.signals,
+          form.incident.signalsOther,
+          form.incident.timeToEscalation,
+          form.incident.firstSignal,
+          form.incident.predicts
+        ])
+      },
+      {
+        key: "incident.actionsSection",
+        summary: "Działania: uzupełnij przynajmniej jedno pole.",
+        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        valid: hasAnyValue([
+          form.incident.phase,
+          form.incident.interventions,
+          form.incident.interventionDetails,
+          form.incident.unconditional,
+          form.incident.usedRegulator,
+          form.incident.reducedTension,
+          form.incident.earlierPossible,
+          form.incident.earlierWhat
+        ])
+      },
+      {
+        key: "incident.behaviorSection",
+        summary: "Opis zachowania: uzupełnij przynajmniej jedno pole.",
+        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        valid: hasAnyValue([
+          form.incident.behavior,
+          form.incident.intensity,
+          form.incident.escalationDuration,
+          form.incident.harms
+        ])
+      },
+      {
+        key: "incident.afterSection",
+        summary: "Po zdarzeniu: uzupełnij przynajmniej jedno pole.",
+        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        valid: hasAnyValue([
+          form.incident.after,
+          form.incident.afterOther,
+          form.incident.calmTime,
+          form.incident.physicalThisWeek,
+          form.incident.physicalCount,
+          form.incident.lowerThreshold,
+          form.incident.physicalNote
+        ])
+      },
+      {
+        key: "incident.regulationSection",
+        summary: "Regulacja i wpływ: uzupełnij przynajmniej jedno pole.",
+        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+        valid: hasAnyValue([
+          form.incident.helped,
+          form.incident.endedBy,
+          form.incident.endedByOther,
+          form.incident.worsened,
+          form.incident.regulators,
+          form.incident.rewards
+        ])
+      }
+    ];
+
+    for (const rule of sectionRules) {
+      if (!rule.valid) {
+        fieldErrors[rule.key] = rule.message;
+        summary.push(rule.summary);
+      }
+    }
+
+    if (fieldErrors["incident.beforeSection"]) {
+      fieldErrors["incident.factDescription"] = fieldErrors["incident.beforeSection"];
+    }
   }
 
   if (variant === "extended" && mode !== "incident" && !hasMapContent(form.map)) {
@@ -125,6 +236,7 @@ function createFormState() {
   const status = ref("");
   const validationErrors = ref([]);
   const fieldErrors = ref({});
+  const validationRequestId = ref(0);
   const forms = reactive(createForms());
 
   for (const key of Object.keys(forms)) {
@@ -164,6 +276,7 @@ function createFormState() {
   async function buildPdf(action) {
     const result = applyValidation();
     if (result.summary.length) {
+      validationRequestId.value += 1;
       status.value = "Popraw formularz przed wygenerowaniem PDF.";
       scrollToValidationTarget();
       return;
@@ -186,6 +299,7 @@ function createFormState() {
   function sendEmail() {
     const result = applyValidation();
     if (result.summary.length) {
+      validationRequestId.value += 1;
       status.value = "Popraw formularz przed wysłaniem e-maila.";
       scrollToValidationTarget();
       return;
@@ -249,6 +363,7 @@ function createFormState() {
     status,
     validationErrors,
     fieldErrors,
+    validationRequestId,
     environments,
     env,
     form,

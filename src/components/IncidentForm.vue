@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useFormState } from "../composables/useFormState";
 
 function hasOther(selected = [], value = "") {
@@ -13,7 +13,9 @@ const steps = [
   { id: "expectations", label: "Oczekiwania" },
   { id: "signals", label: "Sygnały" },
   { id: "actions", label: "Działania" },
-  { id: "outcome", label: "Zachowanie i następstwa" }
+  { id: "behavior", label: "Opis zachowania" },
+  { id: "after", label: "Po zdarzeniu" },
+  { id: "regulation", label: "Regulacja i wpływ" }
 ];
 
 const activeStep = ref(steps[0].id);
@@ -47,8 +49,26 @@ const {
   toggle,
   buildPdf,
   resetIncident,
-  fieldErrors
+  fieldErrors,
+  validationRequestId
 } = useFormState();
+
+const stepErrorMap = {
+  meta: "meta.date",
+  baseline: "incident.baselineSection",
+  before: "incident.beforeSection",
+  expectations: "incident.expectationsSection",
+  signals: "incident.signalsSection",
+  actions: "incident.actionsSection",
+  behavior: "incident.behaviorSection",
+  after: "incident.afterSection",
+  regulation: "incident.regulationSection"
+};
+
+watch(validationRequestId, () => {
+  const nextStepId = steps.find((step) => fieldErrors.value[stepErrorMap[step.id]])?.id;
+  if (nextStepId) activeStep.value = nextStepId;
+});
 </script>
 
 <template>
@@ -96,8 +116,9 @@ const {
         </div>
       </section>
 
-      <section v-show="activeStep === 'baseline'" class="section">
+      <section v-show="activeStep === 'baseline'" class="section" :class="{ invalidSection: fieldErrors['incident.baselineSection'] }">
         <h3>0. Poziom bazowy i kontekst dnia</h3>
+        <p v-if="fieldErrors['incident.baselineSection']" class="field-error">{{ fieldErrors['incident.baselineSection'] }}</p>
         <div class="field-grid">
           <label class="field"><span class="field-label">Poziom napięcia</span><select class="text-input" v-model="form.incident.tension"><option value="">Wybierz</option><option v-for="item in tensionLevels" :key="item">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Zmęczenie / senność</span><select class="text-input" v-model="form.incident.tired"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="item">{{ item }}</option></select></label>
@@ -117,31 +138,33 @@ const {
         </div>
       </section>
 
-      <section v-show="activeStep === 'before'" class="section">
+      <section v-show="activeStep === 'before'" class="section" :class="{ invalidSection: fieldErrors['incident.beforeSection'] }">
         <h3>1. Bezpośrednio przed zdarzeniem</h3>
+        <p class="section-hint">Pole obowiązkowe: zaznacz opcję albo wpisz opis.</p>
         <div class="field-grid">
           <div class="field full">
             <span class="field-label">Co działo się do 5 minut przed?</span>
+            <span v-if="fieldErrors['incident.beforeSection']" class="field-error">{{ fieldErrors['incident.beforeSection'] }}</span>
             <div class="choice-grid">
               <label class="choice" v-for="item in env.antecedents" :key="item"><input type="checkbox" :checked="form.incident.antecedents.includes(item)" @change="toggle(form.incident.antecedents, item)" />{{ item }}</label>
             </div>
           </div>
-          <label v-if="hasOther(form.incident.antecedents, form.incident.antecedentsOther)" class="field full"><span class="field-label">Jeśli zaznaczono „Inne”, wpisz co konkretnie się działo</span><input class="text-input" v-model="form.incident.antecedentsOther" /></label>
-          <label class="field full"><span class="field-label">Dodatkowy opis sytuacji przed zdarzeniem</span><input class="text-input" v-model="form.incident.antecedentsDetails" /></label>
           <label class="field full"><span class="field-label">Krótki opis sytuacji (fakty, bez interpretacji)</span><textarea class="text-area" :class="{ invalid: fieldErrors['incident.factDescription'] }" v-model="form.incident.factDescription"></textarea><span v-if="fieldErrors['incident.factDescription']" class="field-error">{{ fieldErrors['incident.factDescription'] }}</span></label>
         </div>
       </section>
 
-      <section v-show="activeStep === 'expectations'" class="section">
+      <section v-show="activeStep === 'expectations'" class="section" :class="{ invalidSection: fieldErrors['incident.expectationsSection'] }">
         <h3>2. Oczekiwania w tym momencie</h3>
+        <p v-if="fieldErrors['incident.expectationsSection']" class="field-error">{{ fieldErrors['incident.expectationsSection'] }}</p>
         <div class="choice-grid">
           <label class="choice" v-for="item in env.expectations" :key="item"><input type="checkbox" :checked="form.incident.expectations.includes(item)" @change="toggle(form.incident.expectations, item)" />{{ item }}</label>
         </div>
         <label v-if="hasOther(form.incident.expectations, form.incident.expectationOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.expectationOther" /></label>
       </section>
 
-      <section v-show="activeStep === 'signals'" class="section">
+      <section v-show="activeStep === 'signals'" class="section" :class="{ invalidSection: fieldErrors['incident.signalsSection'] }">
         <h3>3. Sygnały zmiany stanu</h3>
+        <p v-if="fieldErrors['incident.signalsSection']" class="field-error">{{ fieldErrors['incident.signalsSection'] }}</p>
         <div class="field-grid">
           <label class="field"><span class="field-label">Czy pojawiły się sygnały?</span><select class="text-input" v-model="form.incident.signalsAppeared"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-signals`">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Czas do eskalacji</span><input class="text-input" v-model="form.incident.timeToEscalation" /></label>
@@ -157,8 +180,9 @@ const {
         </div>
       </section>
 
-      <section v-show="activeStep === 'actions'" class="section">
+      <section v-show="activeStep === 'actions'" class="section" :class="{ invalidSection: fieldErrors['incident.actionsSection'] }">
         <h3>3A. Faza regulacyjna i 4. Działania</h3>
+        <p v-if="fieldErrors['incident.actionsSection']" class="field-error">{{ fieldErrors['incident.actionsSection'] }}</p>
         <div class="field-grid">
           <label class="field full"><span class="field-label">Faza regulacyjna</span><select class="text-input" v-model="form.incident.phase"><option value="">Wybierz</option><option v-for="item in regulationPhase" :key="item">{{ item }}</option></select></label>
           <div class="field full">
@@ -176,13 +200,21 @@ const {
         </div>
       </section>
 
-      <section v-show="activeStep === 'outcome'" class="section">
-        <h3>5-9. Zachowanie, następstwa i regulacja</h3>
+      <section v-show="activeStep === 'behavior'" class="section" :class="{ invalidSection: fieldErrors['incident.behaviorSection'] }">
+        <h3>5. Opis zachowania</h3>
+        <p v-if="fieldErrors['incident.behaviorSection']" class="field-error">{{ fieldErrors['incident.behaviorSection'] }}</p>
         <div class="field-grid">
           <label class="field full"><span class="field-label">Opis zachowania</span><textarea class="text-area" v-model="form.incident.behavior"></textarea></label>
           <label class="field"><span class="field-label">Intensywność</span><select class="text-input" v-model="form.incident.intensity"><option value="">Wybierz</option><option v-for="item in intensity" :key="item">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Czas trwania eskalacji</span><input class="text-input" v-model="form.incident.escalationDuration" /></label>
           <div class="field full"><span class="field-label">Czy doszło do</span><div class="choice-grid"><label class="choice" v-for="item in env.harms" :key="item"><input type="checkbox" :checked="form.incident.harms.includes(item)" @change="toggle(form.incident.harms, item)" />{{ item }}</label></div></div>
+        </div>
+      </section>
+
+      <section v-show="activeStep === 'after'" class="section" :class="{ invalidSection: fieldErrors['incident.afterSection'] }">
+        <h3>6. Co wydarzyło się po zdarzeniu?</h3>
+        <p v-if="fieldErrors['incident.afterSection']" class="field-error">{{ fieldErrors['incident.afterSection'] }}</p>
+        <div class="field-grid">
           <div class="field full"><span class="field-label">Co wydarzyło się po zdarzeniu?</span><div class="choice-grid"><label class="choice" v-for="item in env.after" :key="item"><input type="checkbox" :checked="form.incident.after.includes(item)" @change="toggle(form.incident.after, item)" />{{ item }}</label></div></div>
           <label v-if="hasOther(form.incident.after, form.incident.afterOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.afterOther" /></label>
           <label class="field"><span class="field-label">Czas do pełnego uspokojenia</span><select class="text-input" v-model="form.incident.calmTime"><option value="">Wybierz</option><option v-for="item in calmTime" :key="item">{{ item }}</option></select></label>
@@ -190,6 +222,13 @@ const {
           <label class="field"><span class="field-label">Ile razy?</span><input class="text-input" v-model="form.incident.physicalCount" /></label>
           <label class="field"><span class="field-label">Niższy próg / szybsza reakcja?</span><select class="text-input" v-model="form.incident.lowerThreshold"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-threshold`">{{ item }}</option></select></label>
           <label class="field full"><span class="field-label">Notatka o interwencji fizycznej</span><input class="text-input" v-model="form.incident.physicalNote" /></label>
+        </div>
+      </section>
+
+      <section v-show="activeStep === 'regulation'" class="section" :class="{ invalidSection: fieldErrors['incident.regulationSection'] }">
+        <h3>7-9. Regulacja i wpływ na napięcie</h3>
+        <p v-if="fieldErrors['incident.regulationSection']" class="field-error">{{ fieldErrors['incident.regulationSection'] }}</p>
+        <div class="field-grid">
           <label class="field full"><span class="field-label">Co pomogło obniżyć napięcie?</span><textarea class="text-area" v-model="form.incident.helped"></textarea></label>
           <div class="field full"><span class="field-label">Co najprawdopodobniej zakończyło lub obniżyło zachowanie?</span><div class="choice-grid"><label class="choice" v-for="item in env.endedBy" :key="item"><input type="checkbox" :checked="form.incident.endedBy.includes(item)" @change="toggle(form.incident.endedBy, item)" />{{ item }}</label></div></div>
           <label v-if="hasOther(form.incident.endedBy, form.incident.endedByOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.endedByOther" /></label>
