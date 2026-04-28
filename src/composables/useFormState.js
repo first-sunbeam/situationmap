@@ -1,4 +1,4 @@
-import { computed, reactive, ref, watch } from "vue";
+import { computed, nextTick, reactive, ref, watch } from "vue";
 import {
   blankForm,
   calmTime,
@@ -145,6 +145,16 @@ export function useFormState() {
     return result;
   }
 
+  async function scrollToValidationTarget() {
+    await nextTick();
+    const target = document.querySelector(".invalid, .invalidSection, .validation-panel");
+    if (!target) return;
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (target.classList.contains("validation-panel")) {
+      target.focus();
+    }
+  }
+
   function toggle(list, option) {
     const index = list.indexOf(option);
     if (index >= 0) list.splice(index, 1);
@@ -155,6 +165,7 @@ export function useFormState() {
     const result = applyValidation();
     if (result.summary.length) {
       status.value = "Popraw formularz przed wygenerowaniem PDF.";
+      scrollToValidationTarget();
       return;
     }
 
@@ -176,6 +187,7 @@ export function useFormState() {
     const result = applyValidation();
     if (result.summary.length) {
       status.value = "Popraw formularz przed wysłaniem e-maila.";
+      scrollToValidationTarget();
       return;
     }
 

@@ -103,7 +103,9 @@ const {
         </aside>
 
         <div class="forms-stack">
-          <section v-if="validationErrors.length" class="panel validation-panel" aria-live="polite">
+          <p v-if="status" class="status" aria-live="polite">{{ status }}</p>
+
+          <section v-if="validationErrors.length" class="panel validation-panel" aria-live="polite" tabindex="-1">
             <strong>Popraw przed dalszą akcją:</strong>
             <ul>
               <li v-for="error in validationErrors" :key="error">{{ error }}</li>
@@ -147,8 +149,6 @@ const {
               :field-errors="fieldErrors"
             />
           </template>
-
-          <p class="status" aria-live="polite">{{ status }}</p>
         </div>
       </div>
     </main>
