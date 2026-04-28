@@ -36,9 +36,9 @@ export function buildEmail({ env, form, variant, mode }) {
         line("Krótki opis sytuacji", form.simple.factDescription),
         line("Co wydarzyło się tuż przed", form.simple.antecedents),
         line("Jakie były pierwsze sygnały", form.simple.signals),
-        line("Co zrobiono", form.simple.interventions),
+        line("Jak zareagowano na pierwsze sygnały", form.simple.interventions),
         line("Opis zachowania", form.simple.behavior),
-        line("Co pomogło", form.simple.helped),
+        line("Co pomogło obniżyć napięcie lub uspokoić sytuację", form.simple.helped),
         line("Dodatkowe uwagi", form.simple.notes)
       ])
     );
