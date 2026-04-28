@@ -115,7 +115,9 @@ function loadState() {
   }
 }
 
-export function useFormState() {
+let formState;
+
+function createFormState() {
   const initial = loadState();
   const activeEnvKey = ref(initial.activeEnvKey);
   const activeVariant = ref(initial.activeVariant);
@@ -150,9 +152,7 @@ export function useFormState() {
     const target = document.querySelector(".invalid, .invalidSection, .validation-panel");
     if (!target) return;
     target.scrollIntoView({ behavior: "smooth", block: "start" });
-    if (target.classList.contains("validation-panel")) {
-      target.focus();
-    }
+    if (target.classList.contains("validation-panel")) target.focus();
   }
 
   function toggle(list, option) {
@@ -267,4 +267,9 @@ export function useFormState() {
     resetIncident,
     resetMap
   };
+}
+
+export function useFormState() {
+  if (!formState) formState = createFormState();
+  return formState;
 }

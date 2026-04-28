@@ -1,23 +1,54 @@
 <script setup>
+import { computed, ref } from "vue";
+import { useFormState } from "../composables/useFormState";
+
 function hasOther(selected = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-defineProps({
-  env: { type: Object, required: true },
-  form: { type: Object, required: true },
-  tensionLevels: { type: Array, required: true },
-  yesNoUnknown: { type: Array, required: true },
-  yesNoPartial: { type: Array, required: true },
-  regulationPhase: { type: Array, required: true },
-  intensity: { type: Array, required: true },
-  calmTime: { type: Array, required: true },
-  commonSignals: { type: Array, required: true },
-  toggle: { type: Function, required: true },
-  buildPdf: { type: Function, required: true },
-  resetIncident: { type: Function, required: true },
-  fieldErrors: { type: Object, required: true }
-});
+const steps = [
+  { id: "meta", label: "Dane podstawowe" },
+  { id: "baseline", label: "Kontekst dnia" },
+  { id: "before", label: "Przed zdarzeniem" },
+  { id: "expectations", label: "Oczekiwania" },
+  { id: "signals", label: "Sygnały" },
+  { id: "actions", label: "Działania" },
+  { id: "outcome", label: "Zachowanie i następstwa" }
+];
+
+const activeStep = ref(steps[0].id);
+const currentStepIndex = computed(() => steps.findIndex((step) => step.id === activeStep.value));
+const currentStep = computed(() => steps[currentStepIndex.value]);
+const isFirstStep = computed(() => currentStepIndex.value === 0);
+const isLastStep = computed(() => currentStepIndex.value === steps.length - 1);
+
+function goToStep(stepId) {
+  activeStep.value = stepId;
+}
+
+function nextStep() {
+  if (!isLastStep.value) activeStep.value = steps[currentStepIndex.value + 1].id;
+}
+
+function previousStep() {
+  if (!isFirstStep.value) activeStep.value = steps[currentStepIndex.value - 1].id;
+}
+
+const {
+  env,
+  form,
+  tensionLevels,
+  yesNoUnknown,
+  yesNoPartial,
+  regulationPhase,
+  intensity,
+  calmTime,
+  commonSignals,
+  toggle,
+  buildPdf,
+  resetIncident,
+  fieldErrors
+} = useFormState();
 </script>
 
 <template>
@@ -33,8 +64,28 @@ defineProps({
       </div>
     </div>
 
+    <div class="stepper">
+      <div class="stepper-head">
+        <strong>Krok {{ currentStepIndex + 1 }} z {{ steps.length }}</strong>
+        <span>{{ currentStep.label }}</span>
+      </div>
+      <div class="stepper-list" aria-label="Postęp formularza rozszerzonego">
+        <button
+          v-for="(step, index) in steps"
+          :key="step.id"
+          type="button"
+          class="stepper-button"
+          :class="{ active: activeStep === step.id }"
+          @click="goToStep(step.id)"
+        >
+          <span>{{ index + 1 }}</span>
+          <small>{{ step.label }}</small>
+        </button>
+      </div>
+    </div>
+
     <div class="sections">
-      <section class="section">
+      <section v-show="activeStep === 'meta'" class="section">
         <h3>Dane podstawowe</h3>
         <div class="field-grid">
           <label class="field"><span class="field-label">Data</span><input class="text-input" :class="{ invalid: fieldErrors['meta.date'] }" type="date" v-model="form.meta.date" /><span v-if="fieldErrors['meta.date']" class="field-error">{{ fieldErrors['meta.date'] }}</span></label>
@@ -45,7 +96,7 @@ defineProps({
         </div>
       </section>
 
-      <section class="section">
+      <section v-show="activeStep === 'baseline'" class="section">
         <h3>0. Poziom bazowy i kontekst dnia</h3>
         <div class="field-grid">
           <label class="field"><span class="field-label">Poziom napięcia</span><select class="text-input" v-model="form.incident.tension"><option value="">Wybierz</option><option v-for="item in tensionLevels" :key="item">{{ item }}</option></select></label>
@@ -66,7 +117,7 @@ defineProps({
         </div>
       </section>
 
-      <section class="section">
+      <section v-show="activeStep === 'before'" class="section">
         <h3>1. Bezpośrednio przed zdarzeniem</h3>
         <div class="field-grid">
           <div class="field full">
@@ -80,7 +131,7 @@ defineProps({
         </div>
       </section>
 
-      <section class="section">
+      <section v-show="activeStep === 'expectations'" class="section">
         <h3>2. Oczekiwania w tym momencie</h3>
         <div class="choice-grid">
           <label class="choice" v-for="item in env.expectations" :key="item"><input type="checkbox" :checked="form.incident.expectations.includes(item)" @change="toggle(form.incident.expectations, item)" />{{ item }}</label>
@@ -88,7 +139,7 @@ defineProps({
         <label v-if="hasOther(form.incident.expectations, form.incident.expectationOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.expectationOther" /></label>
       </section>
 
-      <section class="section">
+      <section v-show="activeStep === 'signals'" class="section">
         <h3>3. Sygnały zmiany stanu</h3>
         <div class="field-grid">
           <label class="field"><span class="field-label">Czy pojawiły się sygnały?</span><select class="text-input" v-model="form.incident.signalsAppeared"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-signals`">{{ item }}</option></select></label>
@@ -105,7 +156,7 @@ defineProps({
         </div>
       </section>
 
-      <section class="section">
+      <section v-show="activeStep === 'actions'" class="section">
         <h3>3A. Faza regulacyjna i 4. Działania</h3>
         <div class="field-grid">
           <label class="field full"><span class="field-label">Faza regulacyjna</span><select class="text-input" v-model="form.incident.phase"><option value="">Wybierz</option><option v-for="item in regulationPhase" :key="item">{{ item }}</option></select></label>
@@ -124,7 +175,7 @@ defineProps({
         </div>
       </section>
 
-      <section class="section">
+      <section v-show="activeStep === 'outcome'" class="section">
         <h3>5-9. Zachowanie, następstwa i regulacja</h3>
         <div class="field-grid">
           <label class="field full"><span class="field-label">Opis zachowania</span><textarea class="text-area" v-model="form.incident.behavior"></textarea></label>
@@ -146,6 +197,11 @@ defineProps({
           <label class="field full"><span class="field-label">Co było zachętą / nagrodą?</span><textarea class="text-area" v-model="form.incident.rewards"></textarea></label>
         </div>
       </section>
+    </div>
+
+    <div class="section-nav">
+      <button v-if="!isFirstStep" class="secondary-button" type="button" @click="previousStep">← Poprzedni krok</button>
+      <button v-if="!isLastStep" class="secondary-button" type="button" @click="nextStep">Następny krok →</button>
     </div>
 
     <div class="footer-actions">

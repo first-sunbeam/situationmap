@@ -1,16 +1,18 @@
 <script setup>
+import { useFormState } from "../composables/useFormState";
+
 function hasOther(selected = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-defineProps({
-  env: { type: Object, required: true },
-  form: { type: Object, required: true },
-  toggle: { type: Function, required: true },
-  buildPdf: { type: Function, required: true },
-  resetMap: { type: Function, required: true },
-  fieldErrors: { type: Object, required: true }
-});
+const {
+  env,
+  form,
+  toggle,
+  buildPdf,
+  resetMap,
+  fieldErrors
+} = useFormState();
 </script>
 
 <template>

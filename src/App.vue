@@ -14,20 +14,9 @@ const {
   environments,
   env,
   form,
-  calmTime,
-  commonSignals,
-  intensity,
-  regulationPhase,
-  tensionLevels,
-  yesNoPartial,
-  yesNoUnknown,
-  toggle,
-  buildPdf,
   sendEmail,
   resetCurrent,
-  resetSimple,
-  resetIncident,
-  resetMap
+  resetSimple
 } = useFormState();
 </script>
 
@@ -122,32 +111,9 @@ const {
           />
 
           <template v-else>
-            <IncidentForm
-              v-if="activeMode !== 'map'"
-              :env="env"
-              :form="form"
-              :tension-levels="tensionLevels"
-              :yes-no-unknown="yesNoUnknown"
-              :yes-no-partial="yesNoPartial"
-              :regulation-phase="regulationPhase"
-              :intensity="intensity"
-              :calm-time="calmTime"
-              :common-signals="commonSignals"
-              :toggle="toggle"
-              :build-pdf="buildPdf"
-              :reset-incident="resetIncident"
-              :field-errors="fieldErrors"
-            />
+            <IncidentForm v-if="activeMode !== 'map'" />
 
-            <EnvironmentMapForm
-              v-if="activeMode !== 'incident'"
-              :env="env"
-              :form="form"
-              :toggle="toggle"
-              :build-pdf="buildPdf"
-              :reset-map="resetMap"
-              :field-errors="fieldErrors"
-            />
+            <EnvironmentMapForm v-if="activeMode !== 'incident'" />
           </template>
         </div>
       </div>
