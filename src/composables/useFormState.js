@@ -69,8 +69,8 @@ function validate({ variant, mode, form }) {
   }
 
   if (variant === "simple" && !String(form.simple.helped || "").trim()) {
-    fieldErrors["simple.helped"] = "Uzupełnij pole „Co pomogło?” albo wpisz, że nic nie pomogło.";
-    summary.push("Formularz prosty: uzupełnij pole „Co pomogło?”.");
+    fieldErrors["simple.helped"] = "Uzupełnij pole „Co pomogło obniżyć napięcie lub uspokoić sytuację?” albo wpisz, że nic nie pomogło.";
+    summary.push("Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub uspokoić sytuację?”.");
   }
 
   if (variant === "extended" && mode !== "map") {
@@ -113,10 +113,7 @@ function validate({ variant, mode, form }) {
         valid: form.incident.signalsAppeared === "Tak"
           ? hasAnyValue([
             form.incident.signals,
-            form.incident.signalsOther,
-            form.incident.firstSignal,
-            form.incident.timeToEscalation,
-            form.incident.predicts
+            form.incident.signalsOther
           ])
           : hasAnyValue([
             form.incident.signalsAppeared,

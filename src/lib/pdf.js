@@ -46,15 +46,15 @@ export function makeDoc(env, data, mode) {
     ...section(`2. Co było oczekiwane od ${env.person} w tym momencie?`, [
       { text: selectedList(incident.expectations, incident.expectationOther) }
     ]),
-    ...section("3. Czy wcześniej pojawiły się sygnały zmiany stanu?", [
+    ...section("3. Pierwsze oznaki narastającego napięcia", [
       fieldLine("Czy pojawiły się sygnały", incident.signalsAppeared),
       { text: [{ text: "Zaznaczone sygnały: ", bold: true }, selectedList(incident.signals, incident.signalsOther)] },
       fieldLine("Czas od pierwszych sygnałów do eskalacji", incident.timeToEscalation),
       fieldLine("Co zwykle pojawia się najpierw", incident.firstSignal),
       fieldLine("Czy ten sygnał zwykle zapowiada trudniejsze zachowanie", incident.predicts)
     ]),
-    ...section("3A. Faza regulacyjna w momencie interwencji", [fieldLine("Faza", incident.phase)]),
-    ...section("4. Jakie działania podjęto przed eskalacją?", [
+    ...section("3A. Faza napięcia i 4. Działania", [
+      fieldLine("Faza regulacyjna", incident.phase),
       { text: [{ text: "Zaznaczone działania: ", bold: true }, selectedList(incident.interventions)] },
       fieldLine("Doprecyzowanie", incident.interventionDetails),
       fieldLine("Czy to było dostępne bez warunku", incident.unconditional),
@@ -79,18 +79,15 @@ export function makeDoc(env, data, mode) {
       fieldLine("Czy po wcześniejszych interwencjach próg eskalacji wydawał się niższy", incident.lowerThreshold),
       fieldLine("Krótka notatka", incident.physicalNote)
     ]),
-    ...section("7. Co najbardziej pomogło w tej sytuacji?", [
-      { text: [{ text: "Zaznaczone odpowiedzi: ", bold: true }, selectedList(incident.endedBy, incident.endedByOther)] }
-    ]),
-    ...section("8. Co mogło nasilić napięcie?", [fieldLine("Opis", incident.worsened)]),
-    ...section("9. Regulacja i dokańczanie zadania", [
+    ...section("7-9. Regulacja i wpływ na napięcie", [
+      { text: [{ text: "Co najbardziej pomogło w tej sytuacji: ", bold: true }, selectedList(incident.endedBy, incident.endedByOther)] },
+      fieldLine("Co mogło nasilić napięcie", incident.worsened),
       fieldLine("Co pomogło obniżyć napięcie", incident.regulators),
       fieldLine("Co pomagało dokończyć aktywność mimo napięcia", incident.rewards)
     ])
   ];
 
   if (mode !== "incident") {
-    if (mode === "both") content.push({ text: "", pageBreak: "after" });
     content.push(
       { text: env.mapTitle, style: "title" },
       ...section(`1. W jakich miejscach ${env.personShort} spędza najwięcej czasu?`, [
