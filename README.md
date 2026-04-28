@@ -22,6 +22,8 @@ SituationMap to aplikacja zbudowana w Vue 3 + Vite do opisu sytuacji w różnych
   - podgląd PDF,
   - pobieranie PDF,
 - lokalne generowanie PDF przez `pdfmake`,
+- automatyczny zapis danych formularza w `localStorage`,
+- podstawowa walidacja przed wysyłką e-maila i generowaniem PDF,
 - brak wysyłki danych na serwer aplikacji.
 
 ## Jak działa wysyłka
@@ -99,7 +101,7 @@ src/
 - `Mapa środowiska` jest osobnym formularzem w wersji rozszerzonej,
 - w PDF wypisywane są zaznaczone odpowiedzi i dopiski użytkownika, zamiast pełnych list opcji,
 - formularz rozszerzony korzysta wyłącznie z generowania PDF,
-- dane pozostają w przeglądarce do czasu odświeżenia strony,
+- dane zapisują się lokalnie w przeglądarce i wracają po odświeżeniu strony,
 - lokalnie aplikacja działa z base `/`,
 - build produkcyjny jest przygotowany pod ścieżkę `/situationmap/`.
 

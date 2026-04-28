@@ -3,7 +3,8 @@ defineProps({
   env: { type: Object, required: true },
   form: { type: Object, required: true },
   sendEmail: { type: Function, required: true },
-  resetSimple: { type: Function, required: true }
+  resetSimple: { type: Function, required: true },
+  fieldErrors: { type: Object, required: true }
 });
 </script>
 
@@ -24,10 +25,10 @@ defineProps({
       <section class="section">
         <h3>Dane podstawowe</h3>
         <div class="field-grid">
-          <label class="field"><span class="field-label">Data</span><input class="text-input" type="date" v-model="form.meta.date" /></label>
-          <label class="field"><span class="field-label">Godzina</span><input class="text-input" type="time" v-model="form.meta.time" /></label>
-          <label class="field"><span class="field-label">Miejsce</span><input class="text-input" v-model="form.meta.place" /></label>
-          <label class="field"><span class="field-label">{{ env.lead }}</span><input class="text-input" v-model="form.meta.lead" /></label>
+          <label class="field"><span class="field-label">Data</span><input class="text-input" :class="{ invalid: fieldErrors['meta.date'] }" type="date" v-model="form.meta.date" /><span v-if="fieldErrors['meta.date']" class="field-error">{{ fieldErrors['meta.date'] }}</span></label>
+          <label class="field"><span class="field-label">Godzina</span><input class="text-input" :class="{ invalid: fieldErrors['meta.time'] }" type="time" v-model="form.meta.time" /><span v-if="fieldErrors['meta.time']" class="field-error">{{ fieldErrors['meta.time'] }}</span></label>
+          <label class="field"><span class="field-label">Miejsce</span><input class="text-input" :class="{ invalid: fieldErrors['meta.place'] }" v-model="form.meta.place" /><span v-if="fieldErrors['meta.place']" class="field-error">{{ fieldErrors['meta.place'] }}</span></label>
+          <label class="field"><span class="field-label">{{ env.lead }}</span><input class="text-input" :class="{ invalid: fieldErrors['meta.lead'] }" v-model="form.meta.lead" /><span v-if="fieldErrors['meta.lead']" class="field-error">{{ fieldErrors['meta.lead'] }}</span></label>
           <label class="field full"><span class="field-label">Inne osoby obecne</span><input class="text-input" v-model="form.meta.present" /></label>
         </div>
       </section>
@@ -35,7 +36,7 @@ defineProps({
       <section class="section">
         <h3>Opis sytuacji</h3>
         <div class="field-grid">
-          <label class="field full"><span class="field-label">Krótki opis sytuacji</span><textarea class="text-area" v-model="form.simple.factDescription"></textarea></label>
+          <label class="field full"><span class="field-label">Krótki opis sytuacji</span><textarea class="text-area" :class="{ invalid: fieldErrors['simple.factDescription'] }" v-model="form.simple.factDescription"></textarea><span v-if="fieldErrors['simple.factDescription']" class="field-error">{{ fieldErrors['simple.factDescription'] }}</span></label>
           <label class="field full"><span class="field-label">Co wydarzyło się tuż przed?</span><textarea class="text-area" v-model="form.simple.antecedents"></textarea></label>
           <label class="field full"><span class="field-label">Jakie były pierwsze sygnały?</span><textarea class="text-area" v-model="form.simple.signals"></textarea></label>
           <label class="field full"><span class="field-label">Co zrobiono?</span><textarea class="text-area" v-model="form.simple.interventions"></textarea></label>

@@ -1,4 +1,8 @@
 <script setup>
+function hasOther(selected = [], value = "") {
+  return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
+}
+
 defineProps({
   env: { type: Object, required: true },
   form: { type: Object, required: true },
@@ -11,7 +15,8 @@ defineProps({
   commonSignals: { type: Array, required: true },
   toggle: { type: Function, required: true },
   buildPdf: { type: Function, required: true },
-  resetIncident: { type: Function, required: true }
+  resetIncident: { type: Function, required: true },
+  fieldErrors: { type: Object, required: true }
 });
 </script>
 
@@ -32,10 +37,10 @@ defineProps({
       <section class="section">
         <h3>Dane podstawowe</h3>
         <div class="field-grid">
-          <label class="field"><span class="field-label">Data</span><input class="text-input" type="date" v-model="form.meta.date" /></label>
-          <label class="field"><span class="field-label">Godzina</span><input class="text-input" type="time" v-model="form.meta.time" /></label>
-          <label class="field"><span class="field-label">Miejsce</span><input class="text-input" v-model="form.meta.place" /></label>
-          <label class="field"><span class="field-label">{{ env.lead }}</span><input class="text-input" v-model="form.meta.lead" /></label>
+          <label class="field"><span class="field-label">Data</span><input class="text-input" :class="{ invalid: fieldErrors['meta.date'] }" type="date" v-model="form.meta.date" /><span v-if="fieldErrors['meta.date']" class="field-error">{{ fieldErrors['meta.date'] }}</span></label>
+          <label class="field"><span class="field-label">Godzina</span><input class="text-input" :class="{ invalid: fieldErrors['meta.time'] }" type="time" v-model="form.meta.time" /><span v-if="fieldErrors['meta.time']" class="field-error">{{ fieldErrors['meta.time'] }}</span></label>
+          <label class="field"><span class="field-label">Miejsce</span><input class="text-input" :class="{ invalid: fieldErrors['meta.place'] }" v-model="form.meta.place" /><span v-if="fieldErrors['meta.place']" class="field-error">{{ fieldErrors['meta.place'] }}</span></label>
+          <label class="field"><span class="field-label">{{ env.lead }}</span><input class="text-input" :class="{ invalid: fieldErrors['meta.lead'] }" v-model="form.meta.lead" /><span v-if="fieldErrors['meta.lead']" class="field-error">{{ fieldErrors['meta.lead'] }}</span></label>
           <label class="field full"><span class="field-label">Inne osoby obecne</span><input class="text-input" v-model="form.meta.present" /></label>
         </div>
       </section>
@@ -57,7 +62,7 @@ defineProps({
               <label class="choice" v-for="item in env.burdens" :key="item"><input type="checkbox" :checked="form.incident.burdens.includes(item)" @change="toggle(form.incident.burdens, item)" />{{ item }}</label>
             </div>
           </div>
-          <label class="field full"><span class="field-label">Inne / doprecyzowanie</span><input class="text-input" v-model="form.incident.burdensOther" /></label>
+          <label v-if="hasOther(form.incident.burdens, form.incident.burdensOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.burdensOther" /></label>
         </div>
       </section>
 
@@ -71,7 +76,7 @@ defineProps({
             </div>
           </div>
           <label class="field full"><span class="field-label">Doprecyzowanie</span><input class="text-input" v-model="form.incident.antecedentsDetails" /></label>
-          <label class="field full"><span class="field-label">Krótki opis sytuacji (fakty, bez interpretacji)</span><textarea class="text-area" v-model="form.incident.factDescription"></textarea></label>
+          <label class="field full"><span class="field-label">Krótki opis sytuacji (fakty, bez interpretacji)</span><textarea class="text-area" :class="{ invalid: fieldErrors['incident.factDescription'] }" v-model="form.incident.factDescription"></textarea><span v-if="fieldErrors['incident.factDescription']" class="field-error">{{ fieldErrors['incident.factDescription'] }}</span></label>
         </div>
       </section>
 
@@ -80,7 +85,7 @@ defineProps({
         <div class="choice-grid">
           <label class="choice" v-for="item in env.expectations" :key="item"><input type="checkbox" :checked="form.incident.expectations.includes(item)" @change="toggle(form.incident.expectations, item)" />{{ item }}</label>
         </div>
-        <label class="field full"><span class="field-label">Inne / doprecyzowanie</span><input class="text-input" v-model="form.incident.expectationOther" /></label>
+        <label v-if="hasOther(form.incident.expectations, form.incident.expectationOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.expectationOther" /></label>
       </section>
 
       <section class="section">
@@ -96,7 +101,7 @@ defineProps({
           </div>
           <label class="field"><span class="field-label">Co zwykle pojawia się najpierw?</span><input class="text-input" v-model="form.incident.firstSignal" /></label>
           <label class="field"><span class="field-label">Czy zapowiada trudniejsze zachowanie?</span><select class="text-input" v-model="form.incident.predicts"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-predicts`">{{ item }}</option></select></label>
-          <label class="field full"><span class="field-label">Inne sygnały</span><input class="text-input" v-model="form.incident.signalsOther" /></label>
+          <label v-if="hasOther(form.incident.signals, form.incident.signalsOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.signalsOther" /></label>
         </div>
       </section>
 
@@ -110,7 +115,7 @@ defineProps({
               <label class="choice" v-for="item in env.interventions" :key="item"><input type="checkbox" :checked="form.incident.interventions.includes(item)" @change="toggle(form.incident.interventions, item)" />{{ item }}</label>
             </div>
           </div>
-          <label class="field full"><span class="field-label">Doprecyzowanie działań</span><input class="text-input" v-model="form.incident.interventionDetails" /></label>
+          <label v-if="hasOther(form.incident.interventions, form.incident.interventionDetails)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.interventionDetails" /></label>
           <label class="field"><span class="field-label">Dostępne bez warunku?</span><select class="text-input" v-model="form.incident.unconditional"><option value="">Wybierz</option><option>Tak</option><option>Nie</option><option>Częściowo</option><option>Nie wiem</option></select></label>
           <label class="field"><span class="field-label">Czy skorzystał(a)?</span><select class="text-input" v-model="form.incident.usedRegulator"><option value="">Wybierz</option><option v-for="item in yesNoPartial" :key="item">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Czy obniżyło napięcie?</span><select class="text-input" v-model="form.incident.reducedTension"><option value="">Wybierz</option><option v-for="item in yesNoPartial" :key="`${item}-reduced`">{{ item }}</option></select></label>
@@ -127,7 +132,7 @@ defineProps({
           <label class="field"><span class="field-label">Czas trwania eskalacji</span><input class="text-input" v-model="form.incident.escalationDuration" /></label>
           <div class="field full"><span class="field-label">Czy doszło do</span><div class="choice-grid"><label class="choice" v-for="item in env.harms" :key="item"><input type="checkbox" :checked="form.incident.harms.includes(item)" @change="toggle(form.incident.harms, item)" />{{ item }}</label></div></div>
           <div class="field full"><span class="field-label">Co wydarzyło się po zdarzeniu?</span><div class="choice-grid"><label class="choice" v-for="item in env.after" :key="item"><input type="checkbox" :checked="form.incident.after.includes(item)" @change="toggle(form.incident.after, item)" />{{ item }}</label></div></div>
-          <label class="field full"><span class="field-label">Inne po zdarzeniu / doprecyzowanie</span><input class="text-input" v-model="form.incident.afterOther" /></label>
+          <label v-if="hasOther(form.incident.after, form.incident.afterOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.afterOther" /></label>
           <label class="field"><span class="field-label">Czas do pełnego uspokojenia</span><select class="text-input" v-model="form.incident.calmTime"><option value="">Wybierz</option><option v-for="item in calmTime" :key="item">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Interwencja fizyczna w tym tygodniu?</span><select class="text-input" v-model="form.incident.physicalThisWeek"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-physical`">{{ item }}</option></select></label>
           <label class="field"><span class="field-label">Ile razy?</span><input class="text-input" v-model="form.incident.physicalCount" /></label>
@@ -135,7 +140,7 @@ defineProps({
           <label class="field full"><span class="field-label">Notatka o interwencji fizycznej</span><input class="text-input" v-model="form.incident.physicalNote" /></label>
           <label class="field full"><span class="field-label">Co pomogło obniżyć napięcie?</span><textarea class="text-area" v-model="form.incident.helped"></textarea></label>
           <div class="field full"><span class="field-label">Co najprawdopodobniej zakończyło lub obniżyło zachowanie?</span><div class="choice-grid"><label class="choice" v-for="item in env.endedBy" :key="item"><input type="checkbox" :checked="form.incident.endedBy.includes(item)" @change="toggle(form.incident.endedBy, item)" />{{ item }}</label></div></div>
-          <label class="field full"><span class="field-label">Inne zakończenie / doprecyzowanie</span><input class="text-input" v-model="form.incident.endedByOther" /></label>
+          <label v-if="hasOther(form.incident.endedBy, form.incident.endedByOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.incident.endedByOther" /></label>
           <label class="field full"><span class="field-label">Co mogło nasilić napięcie?</span><textarea class="text-area" v-model="form.incident.worsened"></textarea></label>
           <label class="field full"><span class="field-label">Co obniżało napięcie / pomagało się uspokoić?</span><textarea class="text-area" v-model="form.incident.regulators"></textarea></label>
           <label class="field full"><span class="field-label">Co było zachętą / nagrodą?</span><textarea class="text-area" v-model="form.incident.rewards"></textarea></label>

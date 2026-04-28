@@ -1,83 +1,34 @@
 <script setup>
-import { computed, reactive, ref } from "vue";
 import SimpleForm from "./components/SimpleForm.vue";
 import IncidentForm from "./components/IncidentForm.vue";
 import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";
-import {
-  blankForm,
+import { useFormState } from "./composables/useFormState";
+
+const {
+  activeEnvKey,
+  activeVariant,
+  activeMode,
+  status,
+  validationErrors,
+  fieldErrors,
+  environments,
+  env,
+  form,
   calmTime,
   commonSignals,
-  environments,
   intensity,
   regulationPhase,
   tensionLevels,
   yesNoPartial,
-  yesNoUnknown
-} from "./data/environments";
-import { buildEmail, openEmail } from "./lib/email";
-
-const activeEnvKey = ref("home");
-const activeVariant = ref("simple");
-const activeMode = ref("both");
-const status = ref("");
-const forms = reactive(Object.fromEntries(Object.entries(environments).map(([key, env]) => [key, blankForm(env)])));
-
-const env = computed(() => environments[activeEnvKey.value]);
-const form = computed(() => forms[activeEnvKey.value]);
-const modeLabel = computed(() => ({ both: "oba formularze", incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]));
-
-function toggle(list, option) {
-  const index = list.indexOf(option);
-  if (index >= 0) list.splice(index, 1);
-  else list.push(option);
-}
-
-async function buildPdf(action) {
-  const { buildPdf: generatePdf } = await import("./lib/pdf");
-  generatePdf({
-    env: env.value,
-    form: form.value,
-    mode: activeMode.value,
-    modeLabel: modeLabel.value,
-    action,
-    setStatus: (message) => {
-      status.value = message;
-    }
-  });
-}
-
-function sendEmail() {
-  const email = buildEmail({
-    env: env.value,
-    form: form.value,
-    variant: activeVariant.value,
-    mode: activeMode.value
-  });
-  openEmail(email);
-  status.value = "Otworzono wiadomość e-mail do kontakt@autyzm.poznan.pl z uzupełnioną treścią formularza.";
-}
-
-function resetCurrent() {
-  forms[activeEnvKey.value] = blankForm(env.value);
-  status.value = "Wyczyszczono formularze dla bieżącego środowiska.";
-}
-
-function resetSimple() {
-  forms[activeEnvKey.value].meta = blankForm(env.value).meta;
-  forms[activeEnvKey.value].simple = blankForm(env.value).simple;
-  status.value = "Wyczyszczono formularz prosty.";
-}
-
-function resetIncident() {
-  forms[activeEnvKey.value].meta = blankForm(env.value).meta;
-  forms[activeEnvKey.value].incident = blankForm(env.value).incident;
-  status.value = "Wyczyszczono kartę zdarzenia.";
-}
-
-function resetMap() {
-  forms[activeEnvKey.value].map = blankForm(env.value).map;
-  status.value = "Wyczyszczono mapę środowiska.";
-}
+  yesNoUnknown,
+  toggle,
+  buildPdf,
+  sendEmail,
+  resetCurrent,
+  resetSimple,
+  resetIncident,
+  resetMap
+} = useFormState();
 </script>
 
 <template>
@@ -147,17 +98,25 @@ function resetMap() {
               </div>
             </template>
 
-            <div class="note">Dane pozostają w tej przeglądarce do czasu odświeżenia strony. E-mail otwiera się w domyślnym programie pocztowym z gotową treścią odpowiedzi.</div>
+            <div class="note">Dane zapisują się lokalnie w tej przeglądarce. E-mail otwiera się w domyślnym programie pocztowym z gotową treścią odpowiedzi.</div>
           </div>
         </aside>
 
         <div class="forms-stack">
+          <section v-if="validationErrors.length" class="panel validation-panel" aria-live="polite">
+            <strong>Popraw przed dalszą akcją:</strong>
+            <ul>
+              <li v-for="error in validationErrors" :key="error">{{ error }}</li>
+            </ul>
+          </section>
+
           <SimpleForm
             v-if="activeVariant === 'simple'"
             :env="env"
             :form="form"
             :send-email="sendEmail"
             :reset-simple="resetSimple"
+            :field-errors="fieldErrors"
           />
 
           <template v-else>
@@ -175,6 +134,7 @@ function resetMap() {
               :toggle="toggle"
               :build-pdf="buildPdf"
               :reset-incident="resetIncident"
+              :field-errors="fieldErrors"
             />
 
             <EnvironmentMapForm
@@ -184,6 +144,7 @@ function resetMap() {
               :toggle="toggle"
               :build-pdf="buildPdf"
               :reset-map="resetMap"
+              :field-errors="fieldErrors"
             />
           </template>
 

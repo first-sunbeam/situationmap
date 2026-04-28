@@ -246,6 +246,18 @@ button {
   gap: 24px;
 }
 
+.validation-panel {
+  padding: 16px 18px;
+  border-color: #e9c6c0;
+  background: #fff8f6;
+  color: #7f2f24;
+}
+
+.validation-panel ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
 .form-panel {
   padding: 24px;
 }
@@ -371,6 +383,22 @@ button {
 .text-area:focus {
   border-color: var(--focus);
   box-shadow: 0 0 0 3px rgba(47, 138, 131, 0.14);
+}
+
+.text-input.invalid,
+.text-area.invalid {
+  border-color: #d46d61;
+  box-shadow: 0 0 0 3px rgba(212, 109, 97, 0.14);
+}
+
+.field-error {
+  color: #a2392d;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.invalidSection {
+  border-color: #e9c6c0;
 }
 
 .choice-grid {

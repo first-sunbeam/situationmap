@@ -1,10 +1,15 @@
 <script setup>
+function hasOther(selected = [], value = "") {
+  return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
+}
+
 defineProps({
   env: { type: Object, required: true },
   form: { type: Object, required: true },
   toggle: { type: Function, required: true },
   buildPdf: { type: Function, required: true },
-  resetMap: { type: Function, required: true }
+  resetMap: { type: Function, required: true },
+  fieldErrors: { type: Object, required: true }
 });
 </script>
 
@@ -22,8 +27,9 @@ defineProps({
     </div>
 
     <div class="sections">
-      <section class="section">
+      <section class="section" :class="{ invalidSection: fieldErrors.map }">
         <h3>{{ env.mapTitle }}</h3>
+        <p v-if="fieldErrors.map" class="field-error">{{ fieldErrors.map }}</p>
         <div class="matrix">
           <div class="matrix-row matrix-head"><span>Miejsce</span><span>Czas</span><span>Rodzaj aktywności</span></div>
           <div class="matrix-row" v-for="row in form.map.rows" :key="row.place">
@@ -42,7 +48,7 @@ defineProps({
           <div class="field full"><span class="field-label">Zachowanie zmienia się w zależności od</span><div class="choice-grid"><label class="choice" v-for="item in env.dependencies" :key="item"><input type="checkbox" :checked="form.map.dependsOn.includes(item)" @change="toggle(form.map.dependsOn, item)" />{{ item }}</label></div></div>
           <label class="field full"><span class="field-label">Opis zależności</span><textarea class="text-area" v-model="form.map.dependsDescription"></textarea></label>
           <div class="field full"><span class="field-label">Najczęstsze sytuacje eskalacji</span><div class="choice-grid"><label class="choice" v-for="item in env.escalationContexts" :key="item"><input type="checkbox" :checked="form.map.escalationContexts.includes(item)" @change="toggle(form.map.escalationContexts, item)" />{{ item }}</label></div></div>
-          <label class="field full"><span class="field-label">Inne sytuacje eskalacji / doprecyzowanie</span><input class="text-input" v-model="form.map.escalationOther" /></label>
+          <label v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" class="field full"><span class="field-label">Jeśli inne, wpisz jakie</span><input class="text-input" v-model="form.map.escalationOther" /></label>
           <label class="field"><span class="field-label">Czy są sytuacje bez agresji?</span><select class="text-input" v-model="form.map.noAggression"><option value="">Wybierz</option><option>Tak</option><option>Nie</option></select></label>
           <label class="field"><span class="field-label">Jakie?</span><input class="text-input" v-model="form.map.noAggressionWhere" /></label>
         </div>
