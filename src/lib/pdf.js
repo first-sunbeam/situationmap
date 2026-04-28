@@ -1,6 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { commonSignals } from "../data/environments";
 
 pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
 
@@ -164,15 +163,9 @@ export function buildPdf({ env, form, mode, modeLabel, action, setStatus }) {
   if (action === "download") {
     pdf.download(fileName);
     setStatus(`Gotowe: wygenerowano PDF (${modeLabel}).`);
-  } else if (action === "open") {
-    pdf.open();
-    setStatus("PDF otwarty w nowej karcie.");
-  } else {
-    pdf.getBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
-      window.location.href = `mailto:?subject=${encodeURIComponent("Formularz monitorowania - " + env.label)}&body=${encodeURIComponent("PDF został wygenerowany w aplikacji. Dołącz pobrany plik do wiadomości.")}`;
-      setStatus("Otworzono PDF i przygotowano wiadomość e-mail. Załącz plik PDF w programie pocztowym.");
-    });
+    return;
   }
+
+  pdf.open();
+  setStatus("PDF otwarty w nowej karcie.");
 }

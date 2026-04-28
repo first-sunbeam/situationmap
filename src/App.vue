@@ -14,7 +14,6 @@ import {
   yesNoPartial,
   yesNoUnknown
 } from "./data/environments";
-import { buildPdf as generatePdf } from "./lib/pdf";
 import { buildEmail, openEmail } from "./lib/email";
 
 const activeEnvKey = ref("home");
@@ -33,7 +32,8 @@ function toggle(list, option) {
   else list.push(option);
 }
 
-function buildPdf(action) {
+async function buildPdf(action) {
+  const { buildPdf: generatePdf } = await import("./lib/pdf");
   generatePdf({
     env: env.value,
     form: form.value,
@@ -102,7 +102,7 @@ function resetMap() {
         </nav>
         <div class="actions">
           <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" @click="buildPdf('open')">↗</button>
-          <button class="icon-button" title="Wyślij e-mail" @click="sendEmail">✉</button>
+          <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" @click="sendEmail">✉</button>
           <button class="icon-button" title="Wyczyść formularze" @click="resetCurrent">↺</button>
         </div>
       </div>
@@ -111,7 +111,7 @@ function resetMap() {
     <main>
       <section class="hero">
         <h1>Wypełnij formularz dla środowiska: {{ env.label }}</h1>
-        <p>Masz do wyboru wersję prostą i rozszerzoną. Przycisk „Wyślij” otwiera wiadomość e-mail na adres kontakt@autyzm.poznan.pl z treścią zawierającą odpowiedzi z formularza.</p>
+        <p>Masz do wyboru wersję prostą i rozszerzoną. W wersji prostej możesz wysłać formularz e-mailem, a w wersji rozszerzonej wygenerować PDF.</p>
       </section>
 
       <div class="workspace">
@@ -174,7 +174,6 @@ function resetMap() {
               :common-signals="commonSignals"
               :toggle="toggle"
               :build-pdf="buildPdf"
-              :send-email="sendEmail"
               :reset-incident="resetIncident"
             />
 
@@ -184,7 +183,6 @@ function resetMap() {
               :form="form"
               :toggle="toggle"
               :build-pdf="buildPdf"
-              :send-email="sendEmail"
               :reset-map="resetMap"
             />
           </template>

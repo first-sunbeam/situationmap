@@ -55,6 +55,8 @@ export function buildEmail({ env, form, variant, mode }) {
           line("Zmęczenie / senność", form.incident.tired),
           line("Sen / odpoczynek", form.incident.slept),
           line("Szczegóły snu", form.incident.sleepDetails),
+          line("Etap tygodnia / pobytu", form.incident.stayStage),
+          line("Czy etap był obciążający", form.incident.stayStageLoad),
           line("Czynniki obciążające", form.incident.burdens),
           line("Inne czynniki obciążające", form.incident.burdensOther),
           line("Co działo się przed", form.incident.antecedents),
