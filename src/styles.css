@@ -22,6 +22,7 @@ body {
   min-width: 320px;
   background: var(--paper);
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 button,
@@ -161,6 +162,19 @@ button {
   padding: 14px 0 48px;
 }
 
+.workspace > *,
+.forms-stack,
+.sections,
+.section,
+.field,
+.choice,
+.matrix,
+.matrix-row,
+.stepper,
+.stepper-list {
+  min-width: 0;
+}
+
 .sidebar {
   position: sticky;
   top: 88px;
@@ -259,7 +273,10 @@ button {
 }
 
 .form-panel {
+  width: 100%;
+  max-width: 100%;
   padding: 24px;
+  overflow: hidden;
 }
 
 .form-heading {
@@ -333,6 +350,11 @@ button {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 8px;
+  margin-top: 12px;
+}
+
+.stepper-mobile {
+  display: none;
   margin-top: 12px;
 }
 
@@ -495,6 +517,8 @@ button {
   background: #fbfcfb;
   color: #243033;
   line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .choice input {
@@ -575,6 +599,20 @@ button {
   font-weight: 700;
 }
 
+.field-label,
+.field-hint,
+.field-error,
+.section-hint,
+.validation-panel li,
+.stepper-head span,
+.stepper-button small,
+.choice,
+.mode-button,
+.tab-button {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 @media (max-width: 900px) {
   .topbar-inner {
     flex-direction: column;
@@ -622,11 +660,29 @@ button {
 }
 
 @media (max-width: 680px) {
+  .topbar {
+    position: static;
+  }
+
   .topbar-inner,
   .hero,
   .workspace,
   .site-footer {
-    width: min(100% - 20px, 1220px);
+    width: calc(100% - 20px);
+    max-width: 1220px;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .brand-title,
+  .brand-subtitle,
+  .form-heading h2,
+  .section h3,
+  .primary-button,
+  .secondary-button {
+    overflow-wrap: anywhere;
   }
 
   .hero {
@@ -635,7 +691,10 @@ button {
 
   .form-panel,
   .mode-card,
-  .validation-panel {
+  .validation-panel,
+  .section {
+    width: 100%;
+    max-width: 100%;
     padding: 16px;
   }
 
@@ -650,18 +709,18 @@ button {
     padding: 10px 12px;
   }
 
-  .stepper-list {
-    display: flex;
-    overflow-x: auto;
-    gap: 8px;
-    padding-bottom: 4px;
-    scroll-snap-type: x proximity;
+  .stepper-head {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .stepper-button {
-    min-width: 150px;
-    flex: 0 0 auto;
-    scroll-snap-align: start;
+  .stepper-list {
+    display: none;
+  }
+
+  .stepper-mobile {
+    display: grid;
+    gap: 6px;
   }
 
   .form-heading h2 {
@@ -679,12 +738,29 @@ button {
     font-size: 15px;
   }
 
+  .primary-button,
+  .secondary-button {
+    white-space: normal;
+    text-align: center;
+    min-height: 46px;
+    padding: 10px 14px;
+  }
+
+  .mode-button,
+  .tab-button {
+    white-space: normal;
+    min-height: 46px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   .status {
     margin-top: 8px;
   }
 
   .section-nav,
-  .footer-actions {
+  .footer-actions,
+  .heading-actions {
     justify-content: stretch;
   }
 

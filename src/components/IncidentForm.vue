@@ -102,6 +102,12 @@ watch(validationRequestId, () => {
           <small>{{ step.label }}</small>
         </button>
       </div>
+      <label class="stepper-mobile">
+        <span class="field-label">Przejdź do kroku</span>
+        <select class="text-input" v-model="activeStep">
+          <option v-for="(step, index) in steps" :key="step.id" :value="step.id">{{ index + 1 }}. {{ step.label }}</option>
+        </select>
+      </label>
     </div>
 
     <div class="sections">
