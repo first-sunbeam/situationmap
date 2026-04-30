@@ -1,5 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { formLabels } from "../config/formLabels";
 
 pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
 
@@ -25,78 +26,78 @@ export function makeDoc(env, data, mode) {
     { text: "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
     {
       columns: [
-        [fieldLine("Data", data.meta.date), fieldLine("Godzina", data.meta.time), fieldLine("Miejsce", data.meta.place)],
-        [fieldLine(env.lead, data.meta.lead), fieldLine("Inne osoby obecne", data.meta.present)]
+        [fieldLine(formLabels.meta.date, data.meta.date), fieldLine(formLabels.meta.time, data.meta.time), fieldLine(formLabels.meta.place, data.meta.place)],
+        [fieldLine(env.lead, data.meta.lead), fieldLine(formLabels.meta.present, data.meta.present)]
       ],
       columnGap: 18,
       margin: [0, 10, 0, 5]
     },
-    ...section("0. Poziom bazowy i kontekst dnia (przed zdarzeniem)", [
-      fieldLine(`Poziom napięcia ${env.person}`, incident.tension),
-      fieldLine(`Czy ${env.personShort} był tego dnia zmęczony / senny`, incident.tired),
-      fieldLine(`Czy ${env.personShort} spał / odpoczywał w ciągu dnia`, incident.slept),
-      fieldLine("Jeśli tak: o której i jak długo", incident.sleepDetails),
-      ...(env.stayStages ? [fieldLine("Etap tygodnia / pobytu", incident.stayStage), fieldLine("Czy ten etap wydawał się obciążający", incident.stayStageLoad)] : []),
-      { text: [{ text: "Czynniki obciążające: ", bold: true }, selectedList(incident.burdens, incident.burdensOther)] }
+    ...section(formLabels.incident.baselineSection, [
+      fieldLine(formLabels.incident.tension, incident.tension),
+      fieldLine(formLabels.incident.tired, incident.tired),
+      fieldLine(formLabels.incident.slept, incident.slept),
+      fieldLine(formLabels.incident.sleepDetails, incident.sleepDetails),
+      ...(env.stayStages ? [fieldLine(formLabels.incident.stayStage, incident.stayStage), fieldLine(formLabels.incident.stayStageLoad, incident.stayStageLoad)] : []),
+      { text: [{ text: `${formLabels.incident.burdens}: `, bold: true }, selectedList(incident.burdens, incident.burdensOther)] }
     ]),
-    ...section("1. Co działo się bezpośrednio przed zdarzeniem (do 5 minut przed)?", [
-      { text: [{ text: "Zaznaczone: ", bold: true }, selectedList(incident.antecedents)] },
-      fieldLine("Krótki opis sytuacji (fakty, bez interpretacji)", incident.factDescription)
+    ...section(formLabels.incident.beforeSection, [
+      { text: [{ text: `${formLabels.incident.antecedents} `, bold: true }, selectedList(incident.antecedents)] },
+      fieldLine(formLabels.incident.factDescription, incident.factDescription)
     ]),
-    ...section(`2. Co było oczekiwane od ${env.person} w tym momencie?`, [
-      { text: selectedList(incident.expectations, incident.expectationOther) }
+    ...section(formLabels.incident.expectationsSection, [
+      { text: [{ text: `${formLabels.incident.expectations}: `, bold: true }, selectedList(incident.expectations, incident.expectationOther)] }
     ]),
-    ...section("3. Pierwsze oznaki narastającego napięcia", [
-      fieldLine("Czy pojawiły się sygnały", incident.signalsAppeared),
-      { text: [{ text: "Zaznaczone sygnały: ", bold: true }, selectedList(incident.signals, incident.signalsOther)] },
-      fieldLine("Czas od pierwszych sygnałów do eskalacji", incident.timeToEscalation),
-      fieldLine("Co zwykle pojawia się najpierw", incident.firstSignal),
-      fieldLine("Czy ten sygnał zwykle zapowiada trudniejsze zachowanie", incident.predicts)
+    ...section(formLabels.incident.signalsSection, [
+      fieldLine(formLabels.incident.signalsAppeared, incident.signalsAppeared),
+      { text: [{ text: `${formLabels.incident.signals} `, bold: true }, selectedList(incident.signals, incident.signalsOther)] },
+      fieldLine(formLabels.incident.timeToEscalation, incident.timeToEscalation),
+      fieldLine(formLabels.incident.firstSignal, incident.firstSignal),
+      fieldLine(formLabels.incident.predicts, incident.predicts)
     ]),
-    ...section("3A. Faza napięcia i 4. Działania", [
-      fieldLine("W jakiej fazie napięcia była osoba", incident.phase),
-      { text: [{ text: "Zaznaczone działania: ", bold: true }, selectedList(incident.interventions)] },
-      fieldLine("Doprecyzowanie", incident.interventionDetails),
-      fieldLine("Czy to było dostępne bez warunku", incident.unconditional),
-      fieldLine(`Czy ${env.personShort} z tego skorzystał`, incident.usedRegulator),
-      fieldLine("Czy obniżył napięcie", incident.reducedTension),
-      fieldLine("Czy była możliwość zareagowania wcześniej w fazie żółtej", incident.earlierPossible),
-      fieldLine("Jeśli tak - co było możliwe", incident.earlierWhat)
+    ...section(formLabels.incident.actionsSection, [
+      fieldLine(formLabels.incident.phase, incident.phase),
+      { text: [{ text: `${formLabels.incident.interventions}: `, bold: true }, selectedList(incident.interventions)] },
+      fieldLine(formLabels.incident.interventionDetails, incident.interventionDetails),
+      fieldLine(formLabels.incident.unconditional, incident.unconditional),
+      fieldLine(formLabels.incident.usedRegulator, incident.usedRegulator),
+      fieldLine(formLabels.incident.reducedTension, incident.reducedTension),
+      fieldLine(formLabels.incident.earlierPossible, incident.earlierPossible),
+      fieldLine(formLabels.incident.earlierWhat, incident.earlierWhat)
     ]),
-    ...section(`5. Opis zachowania (konkretnie - co zrobił ${env.personShort})`, [
-      fieldLine("Opis", incident.behavior),
-      fieldLine("Intensywność", incident.intensity),
-      { text: [{ text: "Czy doszło do: ", bold: true }, selectedList(incident.harms)] }
+    ...section(formLabels.incident.behaviorSection, [
+      fieldLine(formLabels.incident.behavior, incident.behavior),
+      fieldLine(formLabels.incident.intensity, incident.intensity),
+      { text: [{ text: `${formLabels.incident.harms}: `, bold: true }, selectedList(incident.harms)] }
     ]),
-    ...section("6. Co wydarzyło się po zdarzeniu?", [
-      { text: [{ text: "Zaznaczone po zdarzeniu: ", bold: true }, selectedList(incident.after, incident.afterOther)] },
-      fieldLine("Czas trwania eskalacji", incident.escalationDuration),
-      fieldLine("Czas do pełnego uspokojenia", incident.calmTime)
+    ...section(formLabels.incident.afterSection, [
+      { text: [{ text: `${formLabels.incident.after} `, bold: true }, selectedList(incident.after, incident.afterOther)] },
+      fieldLine(formLabels.incident.escalationDuration, incident.escalationDuration),
+      fieldLine(formLabels.incident.calmTime, incident.calmTime)
     ]),
-    ...section("6A. Interwencja fizyczna (jeśli dotyczy)", [
-      fieldLine("Czy była zastosowana w tym tygodniu wcześniej", incident.physicalThisWeek),
-      fieldLine("Jeśli tak - ile razy", incident.physicalCount),
-      fieldLine("Czy po wcześniejszych interwencjach próg eskalacji wydawał się niższy", incident.lowerThreshold),
-      fieldLine("Krótka notatka", incident.physicalNote)
+    ...section(formLabels.incident.physicalSection, [
+      fieldLine(formLabels.incident.physicalThisWeek, incident.physicalThisWeek),
+      fieldLine(formLabels.incident.physicalCount, incident.physicalCount),
+      fieldLine(formLabels.incident.lowerThreshold, incident.lowerThreshold),
+      fieldLine(formLabels.incident.physicalNote, incident.physicalNote)
     ]),
-    ...section("7-9. Regulacja i wpływ na napięcie", [
-      { text: [{ text: "Co najbardziej pomogło w tej sytuacji: ", bold: true }, selectedList(incident.endedBy, incident.endedByOther)] },
-      fieldLine("Co mogło nasilić napięcie", incident.worsened),
-      fieldLine("Co pomogło obniżyć napięcie", incident.regulators),
-      fieldLine("Co podtrzymywało wykonywanie aktywności mimo napięcia", incident.rewards)
+    ...section(formLabels.incident.regulationSection, [
+      { text: [{ text: `${formLabels.incident.endedBy} `, bold: true }, selectedList(incident.endedBy, incident.endedByOther)] },
+      fieldLine(formLabels.incident.worsened, incident.worsened),
+      fieldLine(formLabels.incident.regulators, incident.regulators),
+      fieldLine(formLabels.incident.rewards, incident.rewards)
     ])
   ];
 
   if (mode !== "incident") {
     content.push(
       { text: env.mapTitle, style: "title" },
-      ...section(`1. W jakich miejscach ${env.personShort} spędza najwięcej czasu?`, [
+      ...section(formLabels.map.places, [
         {
           table: {
             headerRows: 1,
             widths: ["30%", "20%", "50%"],
             body: [
-              [{ text: "Miejsce", bold: true }, { text: "Czas (h/dzień)", bold: true }, { text: "Rodzaj aktywności", bold: true }],
+              [{ text: formLabels.map.placeColumn, bold: true }, { text: `${formLabels.map.timeColumn} (h/dzień)`, bold: true }, { text: formLabels.map.activityColumn, bold: true }],
               ...map.rows.map((row) => [row.place, row.time || "........", row.activity || "........................................"])
             ]
           },
@@ -104,25 +105,25 @@ export function makeDoc(env, data, mode) {
         }
       ]),
       ...section("2. Miejsca regulacyjne", [
-        fieldLine(`${env.personShort[0].toUpperCase()}${env.personShort.slice(1)} chętnie przebywa w`, map.preferred),
-        fieldLine(`${env.personShort[0].toUpperCase()}${env.personShort.slice(1)} unika / wychodzi z trudem z`, map.avoided)
+        fieldLine(formLabels.map.preferred, map.preferred),
+        fieldLine(formLabels.map.avoided, map.avoided)
       ]),
-      ...section(`2A. Co ${env.personShort} lubi / warunki dobrego funkcjonowania`, [
-        fieldLine(`${env.personShort[0].toUpperCase()}${env.personShort.slice(1)} najchętniej angażuje się w`, map.likes),
-        fieldLine("Najłatwiej funkcjonuje, gdy", map.easiestWhen),
-        fieldLine("Najłatwiej współpracuje z", map.cooperatesWith),
-        fieldLine("Co najczęściej obniża napięcie lub pomaga wrócić do równowagi", map.reducers)
+      ...section("2A. Warunki dobrego funkcjonowania", [
+        fieldLine(formLabels.map.likes, map.likes),
+        fieldLine(formLabels.map.easiestWhen, map.easiestWhen),
+        fieldLine(formLabels.map.cooperatesWith, map.cooperatesWith),
+        fieldLine(formLabels.map.reducers, map.reducers)
       ]),
-      ...section("3. Czy zachowanie zmienia się w zależności od:", [
-        { text: [{ text: "Zaznaczone zależności: ", bold: true }, selectedList(map.dependsOn)] },
-        fieldLine("Opis", map.dependsDescription)
+      ...section("3. Zależności", [
+        { text: [{ text: `${formLabels.map.dependsOn}: `, bold: true }, selectedList(map.dependsOn)] },
+        fieldLine(formLabels.map.dependsDescription, map.dependsDescription)
       ]),
-      ...section("4. W których sytuacjach najczęściej dochodzi do eskalacji?", [
-        { text: selectedList(map.escalationContexts, map.escalationOther) }
+      ...section("4. Eskalacja", [
+        { text: [{ text: `${formLabels.map.escalationContexts}: `, bold: true }, selectedList(map.escalationContexts, map.escalationOther)] }
       ]),
-      ...section("5. Czy są miejsca lub sytuacje, w których zachowania agresywne nie występują?", [
-        fieldLine("Odpowiedź", map.noAggression),
-        fieldLine("Jakie", map.noAggressionWhere)
+      ...section("5. Sytuacje bez agresji", [
+        fieldLine(formLabels.map.noAggression, map.noAggression),
+        fieldLine(formLabels.map.noAggressionWhere, map.noAggressionWhere)
       ])
     );
   }

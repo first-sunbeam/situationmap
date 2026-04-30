@@ -1,3 +1,5 @@
+import { formLabels } from "../config/formLabels";
+
 function line(label, value) {
   const text = Array.isArray(value) ? value.filter(Boolean).join(", ") : value;
   return `${label}: ${text && String(text).trim() ? text : "-"}`;
@@ -25,94 +27,94 @@ export function buildEmail({ env, form, variant, mode }) {
 
   if (variant === "simple") {
     parts.push(
-      section("Dane podstawowe", [
-        line("Data", form.meta.date),
-        line("Godzina", form.meta.time),
-        line("Miejsce", form.meta.place),
+      section(formLabels.meta.section, [
+        line(formLabels.meta.date, form.meta.date),
+        line(formLabels.meta.time, form.meta.time),
+        line(formLabels.meta.place, form.meta.place),
         line(env.lead, form.meta.lead),
-        line("Inne osoby obecne", form.meta.present)
+        line(formLabels.meta.present, form.meta.present)
       ]),
-      section("Opis sytuacji", [
-        line("Krótki opis sytuacji", form.simple.factDescription),
-        line("Co wydarzyło się tuż przed", form.simple.antecedents),
-        line("Jakie były pierwsze sygnały", form.simple.signals),
-        line("Jak zareagowano na pierwsze sygnały", form.simple.interventions),
-        line("Opis zachowania", form.simple.behavior),
-        line("Co pomogło obniżyć napięcie lub uspokoić sytuację", form.simple.helped),
-        line("Dodatkowe uwagi", form.simple.notes)
+      section(formLabels.simple.section, [
+        line(formLabels.simple.factDescription, form.simple.factDescription),
+        line(formLabels.simple.antecedents, form.simple.antecedents),
+        line(formLabels.simple.signals, form.simple.signals),
+        line(formLabels.simple.interventions, form.simple.interventions),
+        line(formLabels.simple.behavior, form.simple.behavior),
+        line(formLabels.simple.helped, form.simple.helped),
+        line(formLabels.simple.notes, form.simple.notes)
       ])
     );
   } else {
     if (mode !== "map") {
       parts.push(
         section("Karta zdarzenia", [
-          line("Data", form.meta.date),
-          line("Godzina", form.meta.time),
-          line("Miejsce", form.meta.place),
+          line(formLabels.meta.date, form.meta.date),
+          line(formLabels.meta.time, form.meta.time),
+          line(formLabels.meta.place, form.meta.place),
           line(env.lead, form.meta.lead),
-          line("Inne osoby obecne", form.meta.present),
-          line("Poziom napięcia", form.incident.tension),
-          line("Zmęczenie / senność", form.incident.tired),
-          line("Sen / odpoczynek", form.incident.slept),
-          line("Szczegóły snu", form.incident.sleepDetails),
-          line("Etap tygodnia / pobytu", form.incident.stayStage),
-          line("Czy etap był obciążający", form.incident.stayStageLoad),
-          line("Czynniki obciążające", form.incident.burdens),
-          line("Inne czynniki obciążające", form.incident.burdensOther),
-          line("Co działo się przed", form.incident.antecedents),
-          line("Opis sytuacji", form.incident.factDescription),
-          line("Oczekiwania", form.incident.expectations),
-          line("Inne oczekiwania", form.incident.expectationOther),
-          line("Czy były sygnały", form.incident.signalsAppeared),
-          line("Sygnały", form.incident.signals),
-          line("Inne sygnały", form.incident.signalsOther),
-          line("Czas do eskalacji", form.incident.timeToEscalation),
-          line("Pierwszy sygnał", form.incident.firstSignal),
-          line("Czy zapowiada trudne zachowanie", form.incident.predicts),
-          line("W jakiej fazie napięcia była osoba", form.incident.phase),
-          line("Działania przed eskalacją", form.incident.interventions),
-          line("Doprecyzowanie działań", form.incident.interventionDetails),
-          line("Dostępne bez warunku", form.incident.unconditional),
-          line("Czy skorzystał(a)", form.incident.usedRegulator),
-          line("Czy obniżyło napięcie", form.incident.reducedTension),
-          line("Czy można było zareagować wcześniej", form.incident.earlierPossible),
-          line("Co było możliwe wcześniej", form.incident.earlierWhat),
-          line("Opis zachowania", form.incident.behavior),
-          line("Intensywność", form.incident.intensity),
-          line("Czas trwania eskalacji", form.incident.escalationDuration),
-          line("Czy doszło do", form.incident.harms),
-          line("Co wydarzyło się po zdarzeniu", form.incident.after),
-          line("Inne po zdarzeniu", form.incident.afterOther),
-          line("Czas do pełnego uspokojenia", form.incident.calmTime),
-          line("Interwencja fizyczna w tym tygodniu", form.incident.physicalThisWeek),
-          line("Ile razy", form.incident.physicalCount),
-          line("Niższy próg / szybsza reakcja", form.incident.lowerThreshold),
-          line("Notatka o interwencji fizycznej", form.incident.physicalNote),
-          line("Co najbardziej pomogło w tej sytuacji", form.incident.endedBy),
-          line("Inne odpowiedzi", form.incident.endedByOther),
-          line("Co mogło nasilić napięcie", form.incident.worsened),
-          line("Co pomogło obniżyć napięcie", form.incident.regulators),
-          line("Co podtrzymywało wykonywanie aktywności mimo napięcia", form.incident.rewards)
+          line(formLabels.meta.present, form.meta.present),
+          line(formLabels.incident.tension, form.incident.tension),
+          line(formLabels.incident.tired, form.incident.tired),
+          line(formLabels.incident.slept, form.incident.slept),
+          line(formLabels.incident.sleepDetails, form.incident.sleepDetails),
+          line(formLabels.incident.stayStage, form.incident.stayStage),
+          line(formLabels.incident.stayStageLoad, form.incident.stayStageLoad),
+          line(formLabels.incident.burdens, form.incident.burdens),
+          line(formLabels.incident.burdensOther, form.incident.burdensOther),
+          line(formLabels.incident.antecedents, form.incident.antecedents),
+          line(formLabels.incident.factDescription, form.incident.factDescription),
+          line(formLabels.incident.expectations, form.incident.expectations),
+          line(formLabels.incident.expectationOther, form.incident.expectationOther),
+          line(formLabels.incident.signalsAppeared, form.incident.signalsAppeared),
+          line(formLabels.incident.signals, form.incident.signals),
+          line(formLabels.incident.signalsOther, form.incident.signalsOther),
+          line(formLabels.incident.timeToEscalation, form.incident.timeToEscalation),
+          line(formLabels.incident.firstSignal, form.incident.firstSignal),
+          line(formLabels.incident.predicts, form.incident.predicts),
+          line(formLabels.incident.phase, form.incident.phase),
+          line(formLabels.incident.interventions, form.incident.interventions),
+          line(formLabels.incident.interventionDetails, form.incident.interventionDetails),
+          line(formLabels.incident.unconditional, form.incident.unconditional),
+          line(formLabels.incident.usedRegulator, form.incident.usedRegulator),
+          line(formLabels.incident.reducedTension, form.incident.reducedTension),
+          line(formLabels.incident.earlierPossible, form.incident.earlierPossible),
+          line(formLabels.incident.earlierWhat, form.incident.earlierWhat),
+          line(formLabels.incident.behavior, form.incident.behavior),
+          line(formLabels.incident.intensity, form.incident.intensity),
+          line(formLabels.incident.escalationDuration, form.incident.escalationDuration),
+          line(formLabels.incident.harms, form.incident.harms),
+          line(formLabels.incident.after, form.incident.after),
+          line(formLabels.incident.afterOther, form.incident.afterOther),
+          line(formLabels.incident.calmTime, form.incident.calmTime),
+          line(formLabels.incident.physicalThisWeek, form.incident.physicalThisWeek),
+          line(formLabels.incident.physicalCount, form.incident.physicalCount),
+          line(formLabels.incident.lowerThreshold, form.incident.lowerThreshold),
+          line(formLabels.incident.physicalNote, form.incident.physicalNote),
+          line(formLabels.incident.endedBy, form.incident.endedBy),
+          line(formLabels.incident.endedByOther, form.incident.endedByOther),
+          line(formLabels.incident.worsened, form.incident.worsened),
+          line(formLabels.incident.regulators, form.incident.regulators),
+          line(formLabels.incident.rewards, form.incident.rewards)
         ])
       );
     }
 
     if (mode !== "incident") {
       parts.push(
-        section("Mapa środowiska", [
-          `Miejsca i aktywności:\n${mapRows(form.map.rows)}`,
-          line("Chętnie przebywa w", form.map.preferred),
-          line("Unika / wychodzi z trudem z", form.map.avoided),
-          line("Najchętniej angażuje się w", form.map.likes),
-          line("Najłatwiej funkcjonuje, gdy", form.map.easiestWhen),
-          line("Najłatwiej współpracuje z", form.map.cooperatesWith),
-          line("Co obniża napięcie", form.map.reducers),
-          line("Zachowanie zależy od", form.map.dependsOn),
-          line("Opis zależności", form.map.dependsDescription),
-          line("Najczęstsze sytuacje eskalacji", form.map.escalationContexts),
-          line("Inne sytuacje eskalacji", form.map.escalationOther),
-          line("Czy są sytuacje bez agresji", form.map.noAggression),
-          line("Jakie", form.map.noAggressionWhere)
+        section(formLabels.map.section, [
+          `${formLabels.map.places}:\n${mapRows(form.map.rows)}`,
+          line(formLabels.map.preferred, form.map.preferred),
+          line(formLabels.map.avoided, form.map.avoided),
+          line(formLabels.map.likes, form.map.likes),
+          line(formLabels.map.easiestWhen, form.map.easiestWhen),
+          line(formLabels.map.cooperatesWith, form.map.cooperatesWith),
+          line(formLabels.map.reducers, form.map.reducers),
+          line(formLabels.map.dependsOn, form.map.dependsOn),
+          line(formLabels.map.dependsDescription, form.map.dependsDescription),
+          line(formLabels.map.escalationContexts, form.map.escalationContexts),
+          line(formLabels.map.escalationOther, form.map.escalationOther),
+          line(formLabels.map.noAggression, form.map.noAggression),
+          line(formLabels.map.noAggressionWhere, form.map.noAggressionWhere)
         ])
       );
     }
