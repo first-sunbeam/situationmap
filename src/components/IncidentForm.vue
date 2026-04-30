@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import { useFormState } from "../composables/useFormState";
+import { incidentStepDefinitions } from "../config/incidentSteps";
 import MetaStep from "./incident/MetaStep.vue";
 import BaselineStep from "./incident/BaselineStep.vue";
 import BeforeStep from "./incident/BeforeStep.vue";
@@ -11,26 +12,29 @@ import BehaviorStep from "./incident/BehaviorStep.vue";
 import AfterStep from "./incident/AfterStep.vue";
 import RegulationStep from "./incident/RegulationStep.vue";
 
-const steps = [
-  { id: "meta", label: "Dane podstawowe" },
-  { id: "baseline", label: "Kontekst dnia" },
-  { id: "before", label: "Przed zdarzeniem" },
-  { id: "expectations", label: "Czego oczekiwano" },
-  { id: "signals", label: "Sygnały" },
-  { id: "actions", label: "Działania" },
-  { id: "behavior", label: "Opis zachowania" },
-  { id: "after", label: "Po zdarzeniu" },
-  { id: "regulation", label: "Regulacja i wpływ" }
-];
+const steps = incidentStepDefinitions;
+const stepComponents = {
+  meta: MetaStep,
+  baseline: BaselineStep,
+  before: BeforeStep,
+  expectations: ExpectationsStep,
+  signals: SignalsStep,
+  actions: ActionsStep,
+  behavior: BehaviorStep,
+  after: AfterStep,
+  regulation: RegulationStep
+};
 
 const activeStep = ref(steps[0].id);
-const currentStepIndex = computed(() => steps.findIndex((step) => step.id === activeStep.value));
-const currentStep = computed(() => steps[currentStepIndex.value]);
+const currentStepIndex = computed(() => Math.max(steps.findIndex((step) => step.id === activeStep.value), 0));
+const currentStep = computed(() => steps[currentStepIndex.value] ?? steps[0]);
+const currentStepComponent = computed(() => stepComponents[currentStep.value.id] ?? MetaStep);
 const isFirstStep = computed(() => currentStepIndex.value === 0);
 const isLastStep = computed(() => currentStepIndex.value === steps.length - 1);
+const progressValue = computed(() => `${((currentStepIndex.value + 1) / steps.length) * 100}%`);
 
 function goToStep(stepId) {
-  activeStep.value = stepId;
+  if (steps.some((step) => step.id === stepId)) activeStep.value = stepId;
 }
 
 function nextStep() {
@@ -41,23 +45,27 @@ function previousStep() {
   if (!isFirstStep.value) activeStep.value = steps[currentStepIndex.value - 1].id;
 }
 
-const { env, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
+function isStepErrored(step) {
+  return Boolean(fieldErrors.value[step.errorKey]);
+}
 
-const stepErrorMap = {
-  meta: "meta.date",
-  baseline: "incident.baselineSection",
-  before: "incident.beforeSection",
-  expectations: "incident.expectationsSection",
-  signals: "incident.signalsSection",
-  actions: "incident.actionsSection",
-  behavior: "incident.behaviorSection",
-  after: "incident.afterSection",
-  regulation: "incident.regulationSection"
-};
+function isStepComplete(step) {
+  return Boolean(step.isComplete?.(form.value));
+}
+
+const { env, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
 
 watch(validationRequestId, () => {
-  const nextStepId = steps.find((step) => fieldErrors.value[stepErrorMap[step.id]])?.id;
+  const nextStepId = steps.find((step) => isStepErrored(step))?.id;
   if (nextStepId) activeStep.value = nextStepId;
+});
+
+watch(env, () => {
+  activeStep.value = steps[0].id;
+});
+
+watch(activeStep, (stepId) => {
+  if (!steps.some((step) => step.id === stepId)) activeStep.value = steps[0].id;
 });
 </script>
 
@@ -79,16 +87,24 @@ watch(validationRequestId, () => {
         <strong>Krok {{ currentStepIndex + 1 }} z {{ steps.length }}</strong>
         <span>{{ currentStep.label }}</span>
       </div>
+      <div class="stepper-progress" aria-hidden="true">
+        <span class="stepper-progress-bar" :style="{ width: progressValue }"></span>
+      </div>
       <div class="stepper-list" aria-label="Postęp formularza rozszerzonego">
         <button
           v-for="(step, index) in steps"
           :key="step.id"
           type="button"
           class="stepper-button"
-          :class="{ active: activeStep === step.id }"
+          :class="{
+            active: activeStep === step.id,
+            error: isStepErrored(step),
+            complete: isStepComplete(step) && !isStepErrored(step)
+          }"
+          :aria-current="activeStep === step.id ? 'step' : undefined"
           @click="goToStep(step.id)"
         >
-          <span>{{ index + 1 }}</span>
+          <span>{{ isStepComplete(step) && !isStepErrored(step) ? '✓' : index + 1 }}</span>
           <small>{{ step.label }}</small>
         </button>
       </div>
@@ -101,18 +117,10 @@ watch(validationRequestId, () => {
     </div>
 
     <div class="sections">
-      <MetaStep v-show="activeStep === 'meta'" />
-      <BaselineStep v-show="activeStep === 'baseline'" />
-      <BeforeStep v-show="activeStep === 'before'" />
-      <ExpectationsStep v-show="activeStep === 'expectations'" />
-      <SignalsStep v-show="activeStep === 'signals'" />
-      <ActionsStep v-show="activeStep === 'actions'" />
-      <BehaviorStep v-show="activeStep === 'behavior'" />
-      <AfterStep v-show="activeStep === 'after'" />
-      <RegulationStep v-show="activeStep === 'regulation'" />
+      <component :is="currentStepComponent" />
     </div>
 
-    <div class="section-nav">
+    <div class="section-nav" :class="{ single: isFirstStep || isLastStep }">
       <button v-if="!isFirstStep" class="secondary-button" type="button" @click="previousStep">← Poprzedni krok</button>
       <button v-if="!isLastStep" class="secondary-button" type="button" @click="nextStep">Następny krok →</button>
     </div>
