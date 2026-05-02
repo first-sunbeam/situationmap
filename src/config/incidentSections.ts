@@ -25,6 +25,14 @@ export function resolveIncidentSectionText(value: string | ((form: SituationForm
   return typeof value === "function" ? value(form) : value;
 }
 
+export function hasSelectedOther(values: string[]): boolean {
+  return values.some((value) => value.toLowerCase() === "inne");
+}
+
+export function hasRequiredOtherValue(selected: string[], value: string): boolean {
+  return !hasSelectedOther(selected) || String(value || "").trim() !== "";
+}
+
 export const incidentSections: IncidentSectionDefinition[] = [
   {
     id: "baseline",
@@ -43,7 +51,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.stayStageLoad,
       form.incident.burdens,
       form.incident.burdensOther
-    ])
+    ]) && hasRequiredOtherValue(form.incident.burdens, form.incident.burdensOther)
   },
   {
     id: "before",
@@ -68,7 +76,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     isComplete: (form) => hasAnyValue([
       form.incident.expectations,
       form.incident.expectationOther
-    ])
+    ]) && hasRequiredOtherValue(form.incident.expectations, form.incident.expectationOther)
   },
   {
     id: "signals",
@@ -82,7 +90,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     message: (form) => form.incident.signalsAppeared === "Tak"
       ? "Skoro sygnały się pojawiły, wskaż jakie."
       : "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-    isComplete: (form) => form.incident.signalsAppeared === "Tak"
+    isComplete: (form) => (form.incident.signalsAppeared === "Tak"
       ? hasAnyValue([form.incident.signals, form.incident.signalsOther])
       : hasAnyValue([
         form.incident.signalsAppeared,
@@ -91,7 +99,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
         form.incident.timeToEscalation,
         form.incident.firstSignal,
         form.incident.predicts
-      ])
+      ])) && hasRequiredOtherValue(form.incident.signals, form.incident.signalsOther)
   },
   {
     id: "actions",
@@ -110,7 +118,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.reducedTension,
       form.incident.earlierPossible,
       form.incident.earlierWhat
-    ])
+    ]) && hasRequiredOtherValue(form.incident.interventions, form.incident.interventionDetails)
   },
   {
     id: "behavior",
@@ -142,7 +150,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.physicalCount,
       form.incident.lowerThreshold,
       form.incident.physicalNote
-    ])
+    ]) && hasRequiredOtherValue(form.incident.after, form.incident.afterOther)
   },
   {
     id: "regulation",
@@ -155,6 +163,6 @@ export const incidentSections: IncidentSectionDefinition[] = [
     isComplete: (form) => hasAnyValue([
       form.incident.endedBy,
       form.incident.endedByOther
-    ])
+    ]) && hasRequiredOtherValue(form.incident.endedBy, form.incident.endedByOther)
   }
 ];

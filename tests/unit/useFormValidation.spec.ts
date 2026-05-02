@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { blankForm, environments } from "../../src/data/environments";
 import { validateForm } from "../../src/composables/useFormValidation";
+import { incidentSections } from "../../src/config/incidentSections";
 
 function homeForm() {
   return blankForm(environments.home);
@@ -104,6 +105,22 @@ describe("validateForm", () => {
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
     expect(result.fieldErrors[fieldKey]).toBe("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.");
+  });
+
+  it.each([
+    ["baseline", (form: ReturnType<typeof homeForm>) => { form.incident.burdens = ["inne"]; }],
+    ["expectations", (form: ReturnType<typeof homeForm>) => { form.incident.expectations = ["inne"]; }],
+    ["signals", (form: ReturnType<typeof homeForm>) => { form.incident.signals = ["inne"]; }],
+    ["actions", (form: ReturnType<typeof homeForm>) => { form.incident.interventions = ["Inne"]; }],
+    ["after", (form: ReturnType<typeof homeForm>) => { form.incident.after = ["Inne"]; }],
+    ["regulation", (form: ReturnType<typeof homeForm>) => { form.incident.endedBy = ["inne"]; }]
+  ])("does not mark an incident section complete when its other description is missing: %s", (sectionId, selectOther) => {
+    const form = homeForm();
+    selectOther(form);
+
+    const section = incidentSections.find((item) => item.id === sectionId);
+
+    expect(section?.isComplete(form)).toBe(false);
   });
 
   it("requires a map description when an other escalation context is selected", () => {

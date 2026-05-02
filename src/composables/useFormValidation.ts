@@ -1,10 +1,6 @@
-import { incidentSections, resolveIncidentSectionText } from "../config/incidentSections";
+import { hasSelectedOther, incidentSections, resolveIncidentSectionText } from "../config/incidentSections";
 import { formLabels } from "../config/formLabels";
 import type { EnvironmentMapFormData, ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
-
-function hasSelectedOther(values: string[]): boolean {
-  return values.some((value) => value.toLowerCase() === "inne");
-}
 
 function isBlank(value: string): boolean {
   return !String(value || "").trim();
