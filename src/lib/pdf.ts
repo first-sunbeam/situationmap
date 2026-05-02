@@ -1,5 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { getIncidentExportSections, getMetaExportSection, mapExportSections, type ExportRow, type ExportValue } from "../config/exportSections";
 import { formLabels } from "../config/formLabels";
 import type { EnvironmentConfig, ExtendedMode, PdfAction, SituationForm } from "../types/form";
 
@@ -10,127 +11,70 @@ const pdfFontsBundle = pdfFonts as unknown as { pdfMake?: { vfs: Record<string, 
 type PdfNode = Record<string, unknown>;
 type PdfContent = PdfNode[];
 
-function fieldLine(label: string, value?: string): PdfNode {
-  return { text: [{ text: `${label}: `, bold: true }, value || "........................................"], margin: [0, 2, 0, 2] };
+function selectedList(value: ExportValue): string {
+  const values = Array.isArray(value) ? value : value ? [value] : [];
+  return values.filter(Boolean).length ? values.filter(Boolean).join(", ") : "........................................";
 }
 
-function selectedList(items: string | string[], other = ""): string {
-  const values = Array.isArray(items) ? [...items] : items ? [items] : [];
-  if (other) values.push(other);
-  return values.length ? values.join(", ") : "........................................";
+function fieldLine(label: string, value: ExportValue): PdfNode {
+  return { text: [{ text: `${label}: `, bold: true }, selectedList(value)], margin: [0, 2, 0, 2] };
+}
+
+function exportRows(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): PdfContent {
+  return rows.map((row) => fieldLine(row.label, row.value(env, form)));
 }
 
 function section(title: string, body: PdfContent): PdfContent {
   return [{ text: title, style: "sectionHeader", margin: [0, 10, 0, 5] }, ...body];
 }
 
+function metaColumns(env: EnvironmentConfig, form: SituationForm): PdfNode {
+  const [date, time, place, lead, present] = getMetaExportSection(env).rows;
+  return {
+    columns: [
+      [date, time, place].map((row) => fieldLine(row.label, row.value(env, form))),
+      [lead, present].map((row) => fieldLine(row.label, row.value(env, form)))
+    ],
+    columnGap: 18,
+    margin: [0, 10, 0, 5]
+  };
+}
+
+function mapPlacesSection(form: SituationForm): PdfContent {
+  return section(formLabels.map.places, [
+    {
+      table: {
+        headerRows: 1,
+        widths: ["30%", "20%", "50%"],
+        body: [
+          [{ text: formLabels.map.placeColumn, bold: true }, { text: `${formLabels.map.timeColumn} (h/dzień)`, bold: true }, { text: formLabels.map.activityColumn, bold: true }],
+          ...form.map.rows.map((row) => [row.place, row.time || "........", row.activity || "........................................"])
+        ]
+      },
+      layout: "lightHorizontalLines"
+    }
+  ]);
+}
+
 export function makeDoc(env: EnvironmentConfig, data: SituationForm, mode: ExtendedMode): Record<string, unknown> {
-  const incident = data.incident;
-  const map = data.map;
   const content: PdfContent = [
     { text: env.incidentTitle, style: "title" },
     { text: "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
-    {
-      columns: [
-        [fieldLine(formLabels.meta.date, data.meta.date), fieldLine(formLabels.meta.time, data.meta.time), fieldLine(formLabels.meta.place, data.meta.place)],
-        [fieldLine(env.lead, data.meta.lead), fieldLine(formLabels.meta.present, data.meta.present)]
-      ],
-      columnGap: 18,
-      margin: [0, 10, 0, 5]
-    },
-    ...section(formLabels.incident.baselineSection, [
-      fieldLine(formLabels.incident.tension, incident.tension),
-      fieldLine(formLabels.incident.tired, incident.tired),
-      fieldLine(formLabels.incident.slept, incident.slept),
-      fieldLine(formLabels.incident.sleepDetails, incident.sleepDetails),
-      ...(env.stayStages ? [fieldLine(formLabels.incident.stayStage, incident.stayStage), fieldLine(formLabels.incident.stayStageLoad, incident.stayStageLoad)] : []),
-      { text: [{ text: `${formLabels.incident.burdens}: `, bold: true }, selectedList(incident.burdens, incident.burdensOther)] }
-    ]),
-    ...section(formLabels.incident.beforeSection, [
-      { text: [{ text: `${formLabels.incident.antecedents} `, bold: true }, selectedList(incident.antecedents)] },
-      fieldLine(formLabels.incident.factDescription, incident.factDescription)
-    ]),
-    ...section(formLabels.incident.expectationsSection, [
-      { text: [{ text: `${formLabels.incident.expectations}: `, bold: true }, selectedList(incident.expectations, incident.expectationOther)] }
-    ]),
-    ...section(formLabels.incident.signalsSection, [
-      fieldLine(formLabels.incident.signalsAppeared, incident.signalsAppeared),
-      { text: [{ text: `${formLabels.incident.signals} `, bold: true }, selectedList(incident.signals, incident.signalsOther)] },
-      fieldLine(formLabels.incident.timeToEscalation, incident.timeToEscalation),
-      fieldLine(formLabels.incident.firstSignal, incident.firstSignal),
-      fieldLine(formLabels.incident.predicts, incident.predicts)
-    ]),
-    ...section(formLabels.incident.actionsSection, [
-      fieldLine(formLabels.incident.phase, incident.phase),
-      { text: [{ text: `${formLabels.incident.interventions}: `, bold: true }, selectedList(incident.interventions)] },
-      fieldLine(formLabels.incident.interventionDetails, incident.interventionDetails),
-      fieldLine(formLabels.incident.unconditional, incident.unconditional),
-      fieldLine(formLabels.incident.usedRegulator, incident.usedRegulator),
-      fieldLine(formLabels.incident.reducedTension, incident.reducedTension),
-      fieldLine(formLabels.incident.earlierPossible, incident.earlierPossible),
-      fieldLine(formLabels.incident.earlierWhat, incident.earlierWhat)
-    ]),
-    ...section(formLabels.incident.behaviorSection, [
-      fieldLine(formLabels.incident.behavior, incident.behavior),
-      fieldLine(formLabels.incident.intensity, incident.intensity),
-      { text: [{ text: `${formLabels.incident.harms}: `, bold: true }, selectedList(incident.harms)] }
-    ]),
-    ...section(formLabels.incident.afterSection, [
-      { text: [{ text: `${formLabels.incident.after} `, bold: true }, selectedList(incident.after, incident.afterOther)] },
-      fieldLine(formLabels.incident.escalationDuration, incident.escalationDuration),
-      fieldLine(formLabels.incident.calmTime, incident.calmTime)
-    ]),
-    ...section(formLabels.incident.physicalSection, [
-      fieldLine(formLabels.incident.physicalThisWeek, incident.physicalThisWeek),
-      fieldLine(formLabels.incident.physicalCount, incident.physicalCount),
-      fieldLine(formLabels.incident.lowerThreshold, incident.lowerThreshold),
-      fieldLine(formLabels.incident.physicalNote, incident.physicalNote)
-    ]),
-    ...section(formLabels.incident.regulationSection, [
-      { text: [{ text: `${formLabels.incident.endedBy} `, bold: true }, selectedList(incident.endedBy, incident.endedByOther)] },
-      fieldLine(formLabels.incident.worsened, incident.worsened),
-      fieldLine(formLabels.incident.regulators, incident.regulators),
-      fieldLine(formLabels.incident.rewards, incident.rewards)
-    ])
+    metaColumns(env, data),
+    ...getIncidentExportSections(env).flatMap((exportSection) => section(
+      exportSection.title,
+      exportRows(env, data, exportSection.rows)
+    ))
   ];
 
   if (mode !== "incident") {
     content.push(
       { text: env.mapTitle, style: "title" },
-      ...section(formLabels.map.places, [
-        {
-          table: {
-            headerRows: 1,
-            widths: ["30%", "20%", "50%"],
-            body: [
-              [{ text: formLabels.map.placeColumn, bold: true }, { text: `${formLabels.map.timeColumn} (h/dzień)`, bold: true }, { text: formLabels.map.activityColumn, bold: true }],
-              ...map.rows.map((row) => [row.place, row.time || "........", row.activity || "........................................"])
-            ]
-          },
-          layout: "lightHorizontalLines"
-        }
-      ]),
-      ...section("2. Miejsca regulacyjne", [
-        fieldLine(formLabels.map.preferred, map.preferred),
-        fieldLine(formLabels.map.avoided, map.avoided)
-      ]),
-      ...section("2A. Warunki dobrego funkcjonowania", [
-        fieldLine(formLabels.map.likes, map.likes),
-        fieldLine(formLabels.map.easiestWhen, map.easiestWhen),
-        fieldLine(formLabels.map.cooperatesWith, map.cooperatesWith),
-        fieldLine(formLabels.map.reducers, map.reducers)
-      ]),
-      ...section("3. Zależności", [
-        { text: [{ text: `${formLabels.map.dependsOn}: `, bold: true }, selectedList(map.dependsOn)] },
-        fieldLine(formLabels.map.dependsDescription, map.dependsDescription)
-      ]),
-      ...section("4. Eskalacja", [
-        { text: [{ text: `${formLabels.map.escalationContexts}: `, bold: true }, selectedList(map.escalationContexts, map.escalationOther)] }
-      ]),
-      ...section("5. Sytuacje bez agresji", [
-        fieldLine(formLabels.map.noAggression, map.noAggression),
-        fieldLine(formLabels.map.noAggressionWhere, map.noAggressionWhere)
-      ])
+      ...mapPlacesSection(data),
+      ...mapExportSections.flatMap((exportSection) => section(
+        exportSection.title,
+        exportRows(env, data, exportSection.rows)
+      ))
     );
   }
 
