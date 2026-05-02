@@ -22,9 +22,9 @@ const { form, fieldErrors, commonSignals, yesNoUnknown, toggle } = useFormState(
           <label class="choice" v-for="item in commonSignals" :key="item"><input type="checkbox" :checked="form.incident.signals.includes(item)" @change="toggle(form.incident.signals, item)" />{{ item }}</label>
         </div>
       </div>
+      <label v-if="hasOther(form.incident.signals, form.incident.signalsOther)" class="field full"><span class="field-label">{{ formLabels.incident.signalsOther }} <span v-if="form.incident.signals.includes('inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['incident.signalsOther'] }" v-model="form.incident.signalsOther" /><span v-if="fieldErrors['incident.signalsOther']" class="field-error">{{ fieldErrors['incident.signalsOther'] }}</span></label>
       <label class="field"><span class="field-label">{{ formLabels.incident.firstSignal }}</span><input class="text-input" v-model="form.incident.firstSignal" /></label>
       <label class="field"><span class="field-label">{{ formLabels.incident.predicts }}</span><select class="text-input" v-model="form.incident.predicts"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-predicts`">{{ item }}</option></select></label>
-      <label v-if="hasOther(form.incident.signals, form.incident.signalsOther)" class="field full"><span class="field-label">{{ formLabels.incident.signalsOther }} <span v-if="form.incident.signals.includes('inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['incident.signalsOther'] }" v-model="form.incident.signalsOther" /><span v-if="fieldErrors['incident.signalsOther']" class="field-error">{{ fieldErrors['incident.signalsOther'] }}</span></label>
     </div>
   </section>
 </template>
