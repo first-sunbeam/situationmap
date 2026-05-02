@@ -13,13 +13,12 @@ export const incidentStepDefinitions = [
     label: formLabels.meta.section,
     badge: "M",
     errorKeys: ["meta.date", "meta.time", "meta.place", "meta.lead"],
-    isComplete: (form) => hasAnyValue([
+    isComplete: (form) => [
       form.meta.date,
       form.meta.time,
       form.meta.place,
-      form.meta.lead,
-      form.meta.present
-    ])
+      form.meta.lead
+    ].every((value) => String(value || "").trim())
   },
   {
     id: "baseline",

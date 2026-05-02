@@ -81,6 +81,25 @@ test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony",
   await expect(page.getByLabel("Krótki opis sytuacji")).toHaveValue("Krótki opis zdarzenia zapisany lokalnie.");
 });
 
+test("sekcja danych podstawowych jest ukończona dopiero po wypełnieniu wszystkich wymaganych pól", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Rozszerzona" }).click();
+
+  const metaStep = page.getByRole("button", { name: /Dane podstawowe/ });
+  await expect(metaStep).toBeVisible();
+
+  await page.getByLabel("Data").fill("2026-05-02");
+  await expect(metaStep).toHaveText(/M/);
+  await expect(metaStep).not.toHaveText(/✓/);
+
+  await page.getByLabel("Godzina").fill("12:30");
+  await page.getByLabel("Miejsce").fill("Dom");
+  await page.getByLabel("Rodzic / opiekun prowadzący").fill("Jan Kowalski");
+
+  await expect(metaStep).toHaveText(/✓/);
+});
+
 test("formularz rozszerzony po nieudanym PDF prowadzi do pierwszej błędnej sekcji danych podstawowych", async ({ page }) => {
   await page.goto("/");
 
