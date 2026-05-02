@@ -1,5 +1,14 @@
 import { incidentSections, resolveIncidentSectionText } from "../config/incidentSections";
+import { formLabels } from "../config/formLabels";
 import type { EnvironmentMapFormData, ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
+
+function hasSelectedOther(values: string[]): boolean {
+  return values.some((value) => value.toLowerCase() === "inne");
+}
+
+function isBlank(value: string): boolean {
+  return !String(value || "").trim();
+}
 
 function hasMapContent(map: EnvironmentMapFormData): boolean {
   return map.rows.some((row) => row.time || row.activity)
@@ -17,6 +26,28 @@ function hasMapContent(map: EnvironmentMapFormData): boolean {
     ].some((value) => String(value || "").trim())
     || map.dependsOn.length > 0
     || map.escalationContexts.length > 0;
+}
+
+function requireOtherField({
+  fieldErrors,
+  summary,
+  selected,
+  value,
+  fieldKey,
+  sectionLabel
+}: {
+  fieldErrors: FieldErrors;
+  summary: string[];
+  selected: string[];
+  value: string;
+  fieldKey: string;
+  sectionLabel: string;
+}) {
+  if (!hasSelectedOther(selected) || !isBlank(value)) return;
+
+  const message = "Jeśli zaznaczono „Inne”, opisz tę odpowiedź.";
+  fieldErrors[fieldKey] = message;
+  summary.push(`${sectionLabel}: ${message}`);
 }
 
 export function validateForm({ variant, mode, form }: { variant: FormVariant; mode: ExtendedMode; form: SituationForm }): ValidationResult {
@@ -57,9 +88,20 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
       }
     }
 
+    requireOtherField({ fieldErrors, summary, selected: form.incident.burdens, value: form.incident.burdensOther, fieldKey: "incident.burdensOther", sectionLabel: formLabels.incident.baselineSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: formLabels.incident.expectationsSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.signals, value: form.incident.signalsOther, fieldKey: "incident.signalsOther", sectionLabel: formLabels.incident.signalsSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: formLabels.incident.actionsSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.after, value: form.incident.afterOther, fieldKey: "incident.afterOther", sectionLabel: formLabels.incident.afterSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.endedBy, value: form.incident.endedByOther, fieldKey: "incident.endedByOther", sectionLabel: formLabels.incident.regulationSection });
+
     if (fieldErrors["incident.beforeSection"]) {
       fieldErrors["incident.factDescription"] = fieldErrors["incident.beforeSection"];
     }
+  }
+
+  if (variant === "extended" && mode !== "incident") {
+    requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: formLabels.map.escalationContexts });
   }
 
   if (variant === "extended" && mode !== "incident" && !hasMapContent(form.map)) {

@@ -16,6 +16,6 @@ const { env, form, fieldErrors, toggle } = useFormState();
     <div class="choice-grid">
       <label class="choice" v-for="item in env.expectations" :key="item"><input type="checkbox" :checked="form.incident.expectations.includes(item)" @change="toggle(form.incident.expectations, item)" />{{ item }}</label>
     </div>
-    <label v-if="hasOther(form.incident.expectations, form.incident.expectationOther)" class="field full"><span class="field-label">{{ formLabels.incident.expectationOther }}</span><input class="text-input" v-model="form.incident.expectationOther" /></label>
+    <label v-if="hasOther(form.incident.expectations, form.incident.expectationOther)" class="field full"><span class="field-label">{{ formLabels.incident.expectationOther }} <span v-if="form.incident.expectations.includes('inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['incident.expectationOther'] }" v-model="form.incident.expectationOther" /><span v-if="fieldErrors['incident.expectationOther']" class="field-error">{{ fieldErrors['incident.expectationOther'] }}</span></label>
   </section>
 </template>

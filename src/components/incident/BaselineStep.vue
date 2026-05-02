@@ -28,7 +28,7 @@ const { env, form, fieldErrors, tensionLevels, yesNoUnknown, toggle } = useFormS
           <label class="choice" v-for="item in env.burdens" :key="item"><input type="checkbox" :checked="form.incident.burdens.includes(item)" @change="toggle(form.incident.burdens, item)" />{{ item }}</label>
         </div>
       </div>
-      <label v-if="hasOther(form.incident.burdens, form.incident.burdensOther)" class="field full"><span class="field-label">{{ formLabels.incident.burdensOther }}</span><input class="text-input" v-model="form.incident.burdensOther" /></label>
+      <label v-if="hasOther(form.incident.burdens, form.incident.burdensOther)" class="field full"><span class="field-label">{{ formLabels.incident.burdensOther }} <span v-if="form.incident.burdens.includes('inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['incident.burdensOther'] }" v-model="form.incident.burdensOther" /><span v-if="fieldErrors['incident.burdensOther']" class="field-error">{{ fieldErrors['incident.burdensOther'] }}</span></label>
     </div>
   </section>
 </template>

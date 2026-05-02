@@ -61,7 +61,7 @@ const {
               <label class="choice" v-for="item in env.escalationContexts" :key="item"><input type="checkbox" :checked="form.map.escalationContexts.includes(item)" @change="toggle(form.map.escalationContexts, item)" />{{ item }}</label>
             </div>
           </div>
-          <label v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" class="field full"><span class="field-label">{{ formLabels.map.escalationOther }}</span><input class="text-input" v-model="form.map.escalationOther" /></label>
+          <label v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" class="field full"><span class="field-label">{{ formLabels.map.escalationOther }} <span v-if="form.map.escalationContexts.includes('Inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.escalationOther'] }" v-model="form.map.escalationOther" /><span v-if="fieldErrors['map.escalationOther']" class="field-error">{{ fieldErrors['map.escalationOther'] }}</span></label>
           <label class="field"><span class="field-label">{{ formLabels.map.noAggression }}</span><select class="text-input" v-model="form.map.noAggression"><option value="">Wybierz</option><option>Tak</option><option>Nie</option></select></label>
           <label class="field"><span class="field-label">{{ formLabels.map.noAggressionWhere }}</span><input class="text-input" v-model="form.map.noAggressionWhere" /></label>
         </div>

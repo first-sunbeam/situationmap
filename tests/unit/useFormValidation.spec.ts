@@ -89,6 +89,32 @@ describe("validateForm", () => {
     expect(result.summary).toContain("Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie.");
   });
 
+  it.each([
+    ["incident.burdensOther", (form: ReturnType<typeof homeForm>) => { form.incident.burdens = ["inne"]; }],
+    ["incident.expectationOther", (form: ReturnType<typeof homeForm>) => { form.incident.expectations = ["inne"]; }],
+    ["incident.signalsOther", (form: ReturnType<typeof homeForm>) => { form.incident.signals = ["inne"]; }],
+    ["incident.interventionDetails", (form: ReturnType<typeof homeForm>) => { form.incident.interventions = ["Inne"]; }],
+    ["incident.afterOther", (form: ReturnType<typeof homeForm>) => { form.incident.after = ["Inne"]; }],
+    ["incident.endedByOther", (form: ReturnType<typeof homeForm>) => { form.incident.endedBy = ["inne"]; }]
+  ])("requires a description when an incident other option is selected: %s", (fieldKey, selectOther) => {
+    const form = homeForm();
+    fillRequiredMeta(form);
+    selectOther(form);
+
+    const result = validateForm({ variant: "extended", mode: "incident", form });
+
+    expect(result.fieldErrors[fieldKey]).toBe("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.");
+  });
+
+  it("requires a map description when an other escalation context is selected", () => {
+    const form = homeForm();
+    form.map.escalationContexts = ["Inne"];
+
+    const result = validateForm({ variant: "extended", mode: "map", form });
+
+    expect(result.fieldErrors["map.escalationOther"]).toBe("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.");
+  });
+
   it("requires at least one map field in map mode", () => {
     const result = validateForm({ variant: "extended", mode: "map", form: homeForm() });
 
