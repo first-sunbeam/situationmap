@@ -1,8 +1,30 @@
 <script setup>
+import { ref, watch } from "vue";
 import SimpleForm from "./components/SimpleForm.vue";
 import IncidentForm from "./components/IncidentForm.vue";
 import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";
 import { useFormState } from "./composables/useFormState";
+
+const THEME_STORAGE_KEY = "situationmap-theme";
+
+function getInitialTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  if (["light", "dark"].includes(savedTheme)) return savedTheme;
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+const theme = ref(getInitialTheme());
+const isDarkTheme = ref(theme.value === "dark");
+
+watch(theme, (value) => {
+  isDarkTheme.value = value === "dark";
+  document.documentElement.dataset.theme = value;
+  localStorage.setItem(THEME_STORAGE_KEY, value);
+}, { immediate: true });
+
+function toggleTheme() {
+  theme.value = isDarkTheme.value ? "light" : "dark";
+}
 
 const {
   activeEnvKey,
@@ -42,6 +64,12 @@ const {
           </button>
         </nav>
         <div class="actions">
+          <button
+            class="icon-button"
+            :title="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
+            :aria-label="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
+            @click="toggleTheme"
+          >{{ isDarkTheme ? '☀' : '☾' }}</button>
           <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" aria-label="Otwórz podgląd PDF" @click="buildPdf('open')">↗</button>
           <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" aria-label="Wyślij e-mail" @click="sendEmail">✉</button>
           <button class="icon-button" title="Wyczyść formularze" aria-label="Wyczyść formularze" @click="resetCurrent">↺</button>

@@ -13,6 +13,20 @@ test.beforeEach(async ({ page }) => {
   await page.evaluate(() => window.localStorage.clear());
 });
 
+test("przełącza i zapamiętuje ciemny motyw", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Włącz ciemny motyw" }).click();
+
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.getByRole("button", { name: "Włącz jasny motyw" })).toBeVisible();
+
+  await page.reload();
+
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.getByRole("button", { name: "Włącz jasny motyw" })).toBeVisible();
+});
+
 test("formularz prosty blokuje wysyłkę bez wymaganych danych i usuwa błędy po poprawieniu", async ({ page }) => {
   await page.goto("/");
 

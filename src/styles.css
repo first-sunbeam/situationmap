@@ -13,6 +13,20 @@
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #eef6f4;
+  --muted: #a7bbb7;
+  --line: #24403d;
+  --paper: #071311;
+  --surface: #0e1f1c;
+  --teal: #40c7b8;
+  --teal-dark: #8ee4da;
+  --coral: #f08b7e;
+  --gold: #e2b861;
+  --focus: #69d7cc;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -23,6 +37,19 @@ body {
   background: var(--paper);
   color: var(--ink);
   overflow-x: hidden;
+}
+
+body,
+button,
+input,
+textarea,
+select,
+.panel,
+.section,
+.stepper,
+.choice,
+.topbar {
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
 }
 
 button,
@@ -669,6 +696,156 @@ button {
 .tab-button {
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+:root[data-theme="dark"] .topbar {
+  background: rgba(7, 19, 17, 0.92);
+}
+
+:root[data-theme="dark"] .panel {
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.34);
+}
+
+:root[data-theme="dark"] .tab-button,
+:root[data-theme="dark"] .mode-button,
+:root[data-theme="dark"] .icon-button,
+:root[data-theme="dark"] .secondary-button {
+  background: #142a26;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .tab-button:hover,
+:root[data-theme="dark"] .mode-button:hover,
+:root[data-theme="dark"] .icon-button:hover,
+:root[data-theme="dark"] .secondary-button:hover,
+:root[data-theme="dark"] .stepper-button:hover {
+  background: #193632;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+:root[data-theme="dark"] .tab-button.active,
+:root[data-theme="dark"] .mode-button.active,
+:root[data-theme="dark"] .stepper-button.active,
+:root[data-theme="dark"] .primary-button {
+  background: #1fa99c;
+  color: #04100f;
+  border-color: #51d5c8;
+}
+
+:root[data-theme="dark"] .primary-button:hover {
+  background: #51d5c8;
+}
+
+:root[data-theme="dark"] .mode-button.active {
+  outline-color: rgba(81, 213, 200, 0.22);
+}
+
+:root[data-theme="dark"] .mode-indicator,
+:root[data-theme="dark"] .stepper-button span {
+  background: #0a1715;
+  border-color: #35534f;
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .mode-button.active .mode-indicator,
+:root[data-theme="dark"] .stepper-button.active span {
+  background: #e6fffb;
+  border-color: #e6fffb;
+  color: #07564f;
+}
+
+:root[data-theme="dark"] .note {
+  background: rgba(226, 184, 97, 0.08);
+}
+
+:root[data-theme="dark"] .validation-panel {
+  border-color: #70392f;
+  background: #2a1411;
+  color: #ffd7d1;
+}
+
+:root[data-theme="dark"] .stepper {
+  border-color: var(--line);
+  background: linear-gradient(180deg, #10231f 0%, #0b1a17 100%);
+}
+
+:root[data-theme="dark"] .stepper-progress {
+  background: #203b37;
+}
+
+:root[data-theme="dark"] .stepper-progress-bar {
+  background: linear-gradient(90deg, #1fa99c 0%, #6be0d5 100%);
+}
+
+:root[data-theme="dark"] .stepper-button,
+:root[data-theme="dark"] .section,
+:root[data-theme="dark"] .choice {
+  background: #10231f;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .stepper-button.complete {
+  border-color: #2e7e73;
+  background: #102b27;
+}
+
+:root[data-theme="dark"] .stepper-button.complete span {
+  border-color: #50cabb;
+  color: #8ee4da;
+}
+
+:root[data-theme="dark"] .stepper-button.error {
+  border-color: #8f4b40;
+  background: #2a1714;
+}
+
+:root[data-theme="dark"] .stepper-button.error span,
+:root[data-theme="dark"] .field-error,
+:root[data-theme="dark"] .required-mark {
+  color: #ffb4aa;
+}
+
+:root[data-theme="dark"] .section h3,
+:root[data-theme="dark"] .field-label,
+:root[data-theme="dark"] .place-name {
+  color: #dff7f3;
+}
+
+:root[data-theme="dark"] .text-input,
+:root[data-theme="dark"] .text-area {
+  background: #081614;
+  color: var(--ink);
+  border-color: #31514d;
+}
+
+:root[data-theme="dark"] .text-input::placeholder,
+:root[data-theme="dark"] .text-area::placeholder {
+  color: #78918c;
+}
+
+:root[data-theme="dark"] .text-input:focus,
+:root[data-theme="dark"] .text-area:focus,
+:root[data-theme="dark"] .stepper-button:focus-visible {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(105, 215, 204, 0.18);
+}
+
+:root[data-theme="dark"] .text-input.invalid,
+:root[data-theme="dark"] .text-area.invalid,
+:root[data-theme="dark"] .invalidSection {
+  border-color: #c96f63;
+}
+
+:root[data-theme="dark"] .text-input.invalid,
+:root[data-theme="dark"] .text-area.invalid {
+  box-shadow: 0 0 0 3px rgba(255, 180, 170, 0.16);
+}
+
+:root[data-theme="dark"] .status,
+:root[data-theme="dark"] .site-footer a {
+  color: #8ee4da;
 }
 
 @media (max-width: 900px) {
