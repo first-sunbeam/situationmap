@@ -1,6 +1,7 @@
 <script setup>
 import { formLabels } from "../config/formLabels";
 import MetaFields from "./form/MetaFields.vue";
+import TextAreaField from "./form/TextAreaField.vue";
 
 defineProps({
   env: { type: Object, required: true },
@@ -33,13 +34,13 @@ defineProps({
       <section class="section">
         <h3>{{ formLabels.simple.section }}</h3>
         <div class="field-grid">
-          <label class="field full"><span class="field-label">{{ formLabels.simple.factDescription }} <span class="required-mark">*</span></span><span class="field-hint">Krótko, fakty bez interpretacji.</span><textarea class="text-area" :class="{ invalid: fieldErrors['simple.factDescription'] }" v-model="form.simple.factDescription"></textarea><span v-if="fieldErrors['simple.factDescription']" class="field-error">{{ fieldErrors['simple.factDescription'] }}</span></label>
-          <label class="field full"><span class="field-label">{{ formLabels.simple.antecedents }}</span><span class="field-hint">Np. zmiana planu, hałas, oczekiwanie.</span><textarea class="text-area" v-model="form.simple.antecedents"></textarea></label>
-          <label class="field full"><span class="field-label">{{ formLabels.simple.signals }}</span><span class="field-hint">Np. milczenie, napięcie ciała, protest.</span><textarea class="text-area" v-model="form.simple.signals"></textarea></label>
-          <label class="field full"><span class="field-label">{{ formLabels.simple.interventions }}</span><textarea class="text-area" v-model="form.simple.interventions"></textarea></label>
-          <label class="field full"><span class="field-label">{{ formLabels.simple.behavior }}</span><textarea class="text-area" v-model="form.simple.behavior"></textarea></label>
-          <label class="field full"><span class="field-label">{{ formLabels.simple.helped }} <span class="required-mark">*</span></span><span class="field-hint">Jeśli nic nie pomogło, wpisz to wprost.</span><textarea class="text-area" :class="{ invalid: fieldErrors['simple.helped'] }" v-model="form.simple.helped"></textarea><span v-if="fieldErrors['simple.helped']" class="field-error">{{ fieldErrors['simple.helped'] }}</span></label>
-          <label class="field full"><span class="field-label">{{ formLabels.simple.notes }}</span><textarea class="text-area" v-model="form.simple.notes"></textarea></label>
+          <TextAreaField v-model="form.simple.factDescription" :label="formLabels.simple.factDescription" hint="Krótko, fakty bez interpretacji." required :error="fieldErrors['simple.factDescription']" />
+          <TextAreaField v-model="form.simple.antecedents" :label="formLabels.simple.antecedents" hint="Np. zmiana planu, hałas, oczekiwanie." />
+          <TextAreaField v-model="form.simple.signals" :label="formLabels.simple.signals" hint="Np. milczenie, napięcie ciała, protest." />
+          <TextAreaField v-model="form.simple.interventions" :label="formLabels.simple.interventions" />
+          <TextAreaField v-model="form.simple.behavior" :label="formLabels.simple.behavior" />
+          <TextAreaField v-model="form.simple.helped" :label="formLabels.simple.helped" hint="Jeśli nic nie pomogło, wpisz to wprost." required :error="fieldErrors['simple.helped']" />
+          <TextAreaField v-model="form.simple.notes" :label="formLabels.simple.notes" />
         </div>
       </section>
     </div>
