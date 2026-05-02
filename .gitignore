@@ -3,6 +3,7 @@ dist/
 .DS_Store
 .vite/
 *.log
+.pi/
 
 # Playwright
 /test-results/
