@@ -30,24 +30,24 @@ const {
     </div>
 
     <div class="sections">
-      <section class="section" :class="{ invalidSection: fieldErrors.map }">
+      <section class="section" :class="{ invalidSection: fieldErrors['map.rows'] || fieldErrors['map.escalationContexts'] }">
         <h3>{{ env.mapTitle }}</h3>
-        <p v-if="fieldErrors.map" class="field-error">{{ fieldErrors.map }}</p>
+        <p v-if="fieldErrors['map.rows']" class="field-error">{{ fieldErrors['map.rows'] }}</p>
         <div class="matrix">
-          <div class="matrix-row matrix-head"><span>{{ formLabels.map.placeColumn }}</span><span>{{ formLabels.map.timeColumn }}</span><span>{{ formLabels.map.activityColumn }}</span></div>
+          <div class="matrix-row matrix-head"><span :class="{ 'field-error': fieldErrors['map.rows'] }">{{ formLabels.map.placeColumn }} <span class="required-mark">*</span></span><span>{{ formLabels.map.timeColumn }}</span><span>{{ formLabels.map.activityColumn }}</span></div>
           <div class="matrix-row" v-for="row in form.map.rows" :key="row.place">
             <span class="place-name">{{ row.place }}</span>
-            <input class="text-input" v-model="row.time" placeholder="h/dzień" />
-            <input class="text-input" v-model="row.activity" />
+            <input class="text-input" :class="{ invalid: fieldErrors['map.rows'] }" v-model="row.time" placeholder="h/dzień" />
+            <input class="text-input" :class="{ invalid: fieldErrors['map.rows'] }" v-model="row.activity" />
           </div>
         </div>
         <div class="field-grid" style="margin-top: 16px">
-          <label class="field"><span class="field-label">{{ formLabels.map.preferred }}</span><input class="text-input" v-model="form.map.preferred" /></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.avoided }}</span><input class="text-input" v-model="form.map.avoided" /></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.likes }}</span><input class="text-input" v-model="form.map.likes" /></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.easiestWhen }}</span><input class="text-input" v-model="form.map.easiestWhen" /></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.cooperatesWith }}</span><input class="text-input" v-model="form.map.cooperatesWith" /></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.reducers }}</span><input class="text-input" v-model="form.map.reducers" /></label>
+          <label class="field"><span class="field-label">{{ formLabels.map.preferred }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.preferred'] }" v-model="form.map.preferred" /><span v-if="fieldErrors['map.preferred']" class="field-error">{{ fieldErrors['map.preferred'] }}</span></label>
+          <label class="field"><span class="field-label">{{ formLabels.map.avoided }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.avoided'] }" v-model="form.map.avoided" /><span v-if="fieldErrors['map.avoided']" class="field-error">{{ fieldErrors['map.avoided'] }}</span></label>
+          <label class="field"><span class="field-label">{{ formLabels.map.likes }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.likes'] }" v-model="form.map.likes" /><span v-if="fieldErrors['map.likes']" class="field-error">{{ fieldErrors['map.likes'] }}</span></label>
+          <label class="field"><span class="field-label">{{ formLabels.map.easiestWhen }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.easiestWhen'] }" v-model="form.map.easiestWhen" /><span v-if="fieldErrors['map.easiestWhen']" class="field-error">{{ fieldErrors['map.easiestWhen'] }}</span></label>
+          <label class="field"><span class="field-label">{{ formLabels.map.cooperatesWith }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.cooperatesWith'] }" v-model="form.map.cooperatesWith" /><span v-if="fieldErrors['map.cooperatesWith']" class="field-error">{{ fieldErrors['map.cooperatesWith'] }}</span></label>
+          <label class="field"><span class="field-label">{{ formLabels.map.reducers }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.reducers'] }" v-model="form.map.reducers" /><span v-if="fieldErrors['map.reducers']" class="field-error">{{ fieldErrors['map.reducers'] }}</span></label>
           <div class="field full">
             <span class="field-label">{{ formLabels.map.dependsOn }}</span>
             <div class="choice-grid">
@@ -56,7 +56,8 @@ const {
           </div>
           <label class="field full"><span class="field-label">{{ formLabels.map.dependsDescription }}</span><textarea class="text-area" v-model="form.map.dependsDescription"></textarea></label>
           <div class="field full">
-            <span class="field-label">{{ formLabels.map.escalationContexts }}</span>
+            <span class="field-label">{{ formLabels.map.escalationContexts }} <span class="required-mark">*</span></span>
+            <span v-if="fieldErrors['map.escalationContexts']" class="field-error">{{ fieldErrors['map.escalationContexts'] }}</span>
             <div class="choice-grid">
               <label class="choice" v-for="item in env.escalationContexts" :key="item"><input type="checkbox" :checked="form.map.escalationContexts.includes(item)" @change="toggle(form.map.escalationContexts, item)" />{{ item }}</label>
             </div>

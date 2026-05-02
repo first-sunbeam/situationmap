@@ -1,27 +1,37 @@
 import { hasSelectedOther, incidentSections, resolveIncidentSectionText } from "../config/incidentSections";
 import { formLabels } from "../config/formLabels";
-import type { EnvironmentMapFormData, ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
+import type { ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
 
 function isBlank(value: string): boolean {
   return !String(value || "").trim();
 }
 
-function hasMapContent(map: EnvironmentMapFormData): boolean {
-  return map.rows.some((row) => row.time || row.activity)
-    || [
-      map.preferred,
-      map.avoided,
-      map.likes,
-      map.easiestWhen,
-      map.cooperatesWith,
-      map.reducers,
-      map.dependsDescription,
-      map.escalationOther,
-      map.noAggression,
-      map.noAggressionWhere
-    ].some((value) => String(value || "").trim())
-    || map.dependsOn.length > 0
-    || map.escalationContexts.length > 0;
+function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors, summary: string[]) {
+  const requiredTextFields: Array<[string, string, string]> = [
+    ["map.preferred", formLabels.map.preferred, form.map.preferred],
+    ["map.avoided", formLabels.map.avoided, form.map.avoided],
+    ["map.likes", formLabels.map.likes, form.map.likes],
+    ["map.easiestWhen", formLabels.map.easiestWhen, form.map.easiestWhen],
+    ["map.cooperatesWith", formLabels.map.cooperatesWith, form.map.cooperatesWith],
+    ["map.reducers", formLabels.map.reducers, form.map.reducers]
+  ];
+
+  if (!form.map.rows.some((row) => !isBlank(row.time) || !isBlank(row.activity))) {
+    fieldErrors["map.rows"] = "Uzupełnij przynajmniej jeden wiersz miejsc i aktywności.";
+    summary.push("Uzupełnij przynajmniej jeden wiersz miejsc i aktywności.");
+  }
+
+  for (const [key, label, value] of requiredTextFields) {
+    if (isBlank(value)) {
+      fieldErrors[key] = `Uzupełnij pole: ${label}.`;
+      summary.push(`Uzupełnij pole „${label}”.`);
+    }
+  }
+
+  if (!form.map.escalationContexts.length) {
+    fieldErrors["map.escalationContexts"] = "Zaznacz przynajmniej jedną sytuację eskalacji.";
+    summary.push("Zaznacz przynajmniej jedną sytuację eskalacji.");
+  }
 }
 
 function requireOtherField({
@@ -97,12 +107,8 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
   }
 
   if (variant === "extended" && mode !== "incident") {
+    validateMapRequiredFields(form, fieldErrors, summary);
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: formLabels.map.escalationContexts });
-  }
-
-  if (variant === "extended" && mode !== "incident" && !hasMapContent(form.map)) {
-    fieldErrors.map = "Uzupełnij przynajmniej jedno pole w mapie środowiska.";
-    summary.push("Uzupełnij przynajmniej jedno pole w mapie środowiska.");
   }
 
   return { fieldErrors, summary };

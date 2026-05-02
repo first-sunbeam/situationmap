@@ -132,18 +132,34 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["map.escalationOther"]).toBe("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.");
   });
 
-  it("wymaga przynajmniej jednego pola mapy w trybie mapy", () => {
+  it("wymaga obowiązkowych pól mapy w trybie mapy", () => {
     const result = validateForm({ variant: "extended", mode: "map", form: homeForm() });
 
-    expect(result.fieldErrors.map).toBe("Uzupełnij przynajmniej jedno pole w mapie środowiska.");
+    expect(result.fieldErrors["map.rows"]).toBe("Uzupełnij przynajmniej jeden wiersz miejsc i aktywności.");
+    expect(result.fieldErrors["map.preferred"]).toBe("Uzupełnij pole: Chętnie przebywa w.");
+    expect(result.fieldErrors["map.avoided"]).toBe("Uzupełnij pole: Unika / wychodzi z trudem z.");
+    expect(result.fieldErrors["map.likes"]).toBe("Uzupełnij pole: Najchętniej angażuje się w.");
+    expect(result.fieldErrors["map.easiestWhen"]).toBe("Uzupełnij pole: Najłatwiej funkcjonuje, gdy.");
+    expect(result.fieldErrors["map.cooperatesWith"]).toBe("Uzupełnij pole: Najłatwiej współpracuje z.");
+    expect(result.fieldErrors["map.reducers"]).toBe("Uzupełnij pole: Co obniża napięcie?.");
+    expect(result.fieldErrors["map.escalationContexts"]).toBe("Zaznacz przynajmniej jedną sytuację eskalacji.");
   });
 
-  it("akceptuje tryb mapy, gdy jeden wiersz mapy jest wypełniony", () => {
+  it("akceptuje tryb mapy, gdy obowiązkowe pola mapy są wypełnione", () => {
     const form = homeForm();
     form.map.rows[0].time = "2h";
+    form.map.preferred = "Pokój";
+    form.map.avoided = "Korytarz";
+    form.map.likes = "Klocki";
+    form.map.easiestWhen = "Jest cicho";
+    form.map.cooperatesWith = "Rodzic";
+    form.map.reducers = "Przerwa";
+    form.map.escalationContexts = ["Oczekiwanie"];
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 
-    expect(result.fieldErrors.map).toBeUndefined();
+    expect(result.fieldErrors["map.rows"]).toBeUndefined();
+    expect(result.fieldErrors["map.preferred"]).toBeUndefined();
+    expect(result.fieldErrors["map.escalationContexts"]).toBeUndefined();
   });
 });
