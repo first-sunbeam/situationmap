@@ -58,6 +58,19 @@ test("formularz prosty blokuje wysyłkę bez wymaganych danych i usuwa błędy p
   await expect(page.getByText("Popraw przed dalszą akcją:")).not.toBeVisible();
 });
 
+test("formularz prosty blokuje pobranie PDF bez wymaganych danych", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Pobierz PDF" }).first().click();
+
+  await expect(page.getByText("Popraw formularz przed wygenerowaniem PDF.")).toBeVisible();
+  await expect(page.getByText(simpleValidationMessages.date)).toBeVisible();
+  await expect(page.getByText(simpleValidationMessages.time)).toBeVisible();
+  await expect(page.getByText(simpleValidationMessages.place)).toBeVisible();
+  await expect(page.getByText(simpleValidationMessages.description)).toBeVisible();
+  await expect(page.getByText(simpleValidationMessages.helped)).toBeVisible();
+});
+
 test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony", async ({ page }) => {
   await page.goto("/");
 
@@ -114,6 +127,36 @@ test("formularz rozszerzony po nieudanym PDF prowadzi do pierwszej błędnej sek
   await expect(page.getByText("Dane podstawowe: uzupełnij pole data.")).toBeVisible();
   await expect(page.getByText("Dane podstawowe: uzupełnij pole godzina.")).toBeVisible();
   await expect(page.getByText("Dane podstawowe: uzupełnij pole miejsce.")).toBeVisible();
+});
+
+test("opcja inne wymaga opisu i oznacza krok jako błędny", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Rozszerzona" }).click();
+  await page.getByLabel("Data").fill("2026-05-02");
+  await page.getByLabel("Godzina").fill("12:30");
+  await page.getByLabel("Miejsce").fill("Dom");
+  await page.getByLabel("Rodzic / opiekun prowadzący").fill("Jan Kowalski");
+  await page.getByRole("button", { name: "0. Poziom bazowy i kontekst dnia" }).click();
+
+  const baselineStep = page
+    .locator("section.section")
+    .filter({ has: page.getByRole("heading", { name: /0\. Poziom bazowy i kontekst dnia/ }) });
+  await baselineStep.getByRole("checkbox", { name: "inne" }).check();
+
+  const baselineStepperButton = page.getByRole("button", { name: /0\. Poziom bazowy i kontekst dnia/ });
+  await expect(baselineStepperButton).not.toHaveText(/✓/);
+
+  await page.getByRole("button", { name: /Pobierz PDF/ }).first().click();
+
+  await expect(baselineStep.getByText("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.", { exact: true })).toBeVisible();
+  await expect(baselineStepperButton).toHaveClass(/error/);
+
+  await baselineStep.getByLabel("Jeśli inne, wpisz jakie *").fill("Inny czynnik obciążający.");
+
+  await expect(page.getByText("0. Poziom bazowy i kontekst dnia: Jeśli zaznaczono „Inne”, opisz tę odpowiedź.")).not.toBeVisible();
+  await expect(baselineStep.getByText("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.")).not.toBeVisible();
+  await expect(baselineStepperButton).not.toHaveClass(/error/);
 });
 
 test("sekcja przed zdarzeniem usuwa błąd po uzupełnieniu alternatywnych danych i zachowuje stan między krokami", async ({ page }) => {

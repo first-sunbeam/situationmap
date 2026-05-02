@@ -14,8 +14,8 @@ function fillRequiredMeta(form: ReturnType<typeof homeForm>) {
   form.meta.lead = "Jan Kowalski";
 }
 
-describe("validateForm", () => {
-  it("returns required errors for an empty simple form", () => {
+describe("walidacja formularza", () => {
+  it("zwraca błędy wymaganych pól dla pustego formularza prostego", () => {
     const result = validateForm({
       variant: "simple",
       mode: "incident",
@@ -31,7 +31,7 @@ describe("validateForm", () => {
     expect(result.summary).toContain("Formularz prosty: uzupełnij krótki opis sytuacji.");
   });
 
-  it("accepts a simple form with required fields filled", () => {
+  it("akceptuje formularz prosty po uzupełnieniu wymaganych pól", () => {
     const form = homeForm();
     fillRequiredMeta(form);
     form.simple.factDescription = "Krótki opis sytuacji.";
@@ -43,7 +43,7 @@ describe("validateForm", () => {
     expect(result.fieldErrors).toEqual({});
   });
 
-  it("requires incident sections for extended incident PDF", () => {
+  it("wymaga sekcji incydentu dla PDF formularza rozszerzonego", () => {
     const form = homeForm();
     fillRequiredMeta(form);
 
@@ -54,7 +54,7 @@ describe("validateForm", () => {
     expect(result.fieldErrors["incident.regulationSection"]).toBe("Zaznacz, co najbardziej pomogło w tej sytuacji.");
   });
 
-  it("accepts an alternative value in the before section", () => {
+  it("akceptuje alternatywną wartość w sekcji przed zdarzeniem", () => {
     const form = homeForm();
     fillRequiredMeta(form);
     form.incident.tension = "1 podwyższony";
@@ -72,7 +72,7 @@ describe("validateForm", () => {
     expect(result.fieldErrors["incident.factDescription"]).toBeUndefined();
   });
 
-  it("requires signal details when signals appeared", () => {
+  it("wymaga szczegółów sygnałów, gdy sygnały się pojawiły", () => {
     const form = homeForm();
     fillRequiredMeta(form);
     form.incident.tension = "1 podwyższony";
@@ -97,7 +97,7 @@ describe("validateForm", () => {
     ["incident.interventionDetails", (form: ReturnType<typeof homeForm>) => { form.incident.interventions = ["Inne"]; }],
     ["incident.afterOther", (form: ReturnType<typeof homeForm>) => { form.incident.after = ["Inne"]; }],
     ["incident.endedByOther", (form: ReturnType<typeof homeForm>) => { form.incident.endedBy = ["inne"]; }]
-  ])("requires a description when an incident other option is selected: %s", (fieldKey, selectOther) => {
+  ])("wymaga opisu po zaznaczeniu opcji inne w incydencie: %s", (fieldKey, selectOther) => {
     const form = homeForm();
     fillRequiredMeta(form);
     selectOther(form);
@@ -114,7 +114,7 @@ describe("validateForm", () => {
     ["actions", (form: ReturnType<typeof homeForm>) => { form.incident.interventions = ["Inne"]; }],
     ["after", (form: ReturnType<typeof homeForm>) => { form.incident.after = ["Inne"]; }],
     ["regulation", (form: ReturnType<typeof homeForm>) => { form.incident.endedBy = ["inne"]; }]
-  ])("does not mark an incident section complete when its other description is missing: %s", (sectionId, selectOther) => {
+  ])("nie oznacza sekcji incydentu jako ukończonej, gdy brakuje opisu opcji inne: %s", (sectionId, selectOther) => {
     const form = homeForm();
     selectOther(form);
 
@@ -123,7 +123,7 @@ describe("validateForm", () => {
     expect(section?.isComplete(form)).toBe(false);
   });
 
-  it("requires a map description when an other escalation context is selected", () => {
+  it("wymaga opisu mapy po zaznaczeniu innego kontekstu eskalacji", () => {
     const form = homeForm();
     form.map.escalationContexts = ["Inne"];
 
@@ -132,13 +132,13 @@ describe("validateForm", () => {
     expect(result.fieldErrors["map.escalationOther"]).toBe("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.");
   });
 
-  it("requires at least one map field in map mode", () => {
+  it("wymaga przynajmniej jednego pola mapy w trybie mapy", () => {
     const result = validateForm({ variant: "extended", mode: "map", form: homeForm() });
 
     expect(result.fieldErrors.map).toBe("Uzupełnij przynajmniej jedno pole w mapie środowiska.");
   });
 
-  it("accepts map mode when one map row is filled", () => {
+  it("akceptuje tryb mapy, gdy jeden wiersz mapy jest wypełniony", () => {
     const form = homeForm();
     form.map.rows[0].time = "2h";
 

@@ -46,12 +46,12 @@ function stringifyDoc(doc: Record<string, unknown>): string {
   return JSON.stringify(doc.content);
 }
 
-describe("pdf", () => {
+describe("generowanie PDF", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("builds a simple PDF document with simple form data", () => {
+  it("buduje dokument PDF formularza prostego z danymi formularza", () => {
     const doc = makeDoc(environments.home, homeForm(), "simple", "incident");
     const content = stringifyDoc(doc);
 
@@ -61,7 +61,7 @@ describe("pdf", () => {
     expect(content).not.toContain(environments.home.incidentTitle);
   });
 
-  it("builds an incident PDF document with incident sections", () => {
+  it("buduje dokument PDF karty zdarzenia z sekcjami incydentu", () => {
     const doc = makeDoc(environments.home, homeForm(), "extended", "incident");
     const content = stringifyDoc(doc);
 
@@ -71,7 +71,7 @@ describe("pdf", () => {
     expect(content).not.toContain(environments.home.mapTitle);
   });
 
-  it("builds a map-only PDF document without incident title", () => {
+  it("buduje dokument PDF samej mapy bez tytułu incydentu", () => {
     const doc = makeDoc(environments.home, homeForm(), "extended", "map");
     const content = stringifyDoc(doc);
 
@@ -81,7 +81,7 @@ describe("pdf", () => {
     expect(content).not.toContain(environments.home.incidentTitle);
   });
 
-  it("downloads a generated PDF", () => {
+  it("pobiera wygenerowany PDF", () => {
     const setStatus = vi.fn();
 
     buildPdf({
@@ -100,7 +100,7 @@ describe("pdf", () => {
     expect(setStatus).toHaveBeenCalledWith("PDF gotowy — został pobrany (formularz prosty).");
   });
 
-  it("opens a generated PDF", () => {
+  it("otwiera wygenerowany PDF", () => {
     const setStatus = vi.fn();
 
     buildPdf({
