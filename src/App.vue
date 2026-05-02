@@ -53,6 +53,7 @@ const {
           >{{ isDarkTheme ? '☀' : '☾' }}</button>
           <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" aria-label="Otwórz podgląd PDF" @click="buildPdf('open')">↗</button>
           <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" aria-label="Wyślij e-mail" @click="sendEmail">✉</button>
+          <button v-if="activeVariant === 'simple'" class="icon-button" title="Pobierz PDF" aria-label="Pobierz PDF" @click="buildPdf('download')">↓</button>
           <button class="icon-button" title="Wyczyść formularze" aria-label="Wyczyść formularze" @click="resetCurrent">↺</button>
         </div>
       </div>
@@ -112,6 +113,7 @@ const {
             :env="env"
             :form="form"
             :send-email="sendEmail"
+            :build-pdf="buildPdf"
             :reset-simple="resetSimple"
             :field-errors="fieldErrors"
           />

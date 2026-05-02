@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formLabels } from "../config/formLabels";
-import type { EnvironmentConfig, FieldErrors, SituationForm } from "../types/form";
+import type { EnvironmentConfig, FieldErrors, PdfAction, SituationForm } from "../types/form";
 import MetaFields from "./form/MetaFields.vue";
 import TextAreaField from "./form/TextAreaField.vue";
 
@@ -8,6 +8,7 @@ defineProps<{
   env: EnvironmentConfig;
   form: SituationForm;
   sendEmail: () => void;
+  buildPdf: (action: PdfAction) => void;
   resetSimple: () => void;
   fieldErrors: FieldErrors;
 }>();
@@ -18,10 +19,11 @@ defineProps<{
     <div class="form-heading">
       <div>
         <h2>Formularz prosty - {{ env.label }}</h2>
-        <p>Krótka wersja do szybkiego zgłoszenia sytuacji. Po kliknięciu „Wyślij” otworzy się wiadomość e-mail z wpisanymi odpowiedziami.</p>
+        <p>Krótka wersja do szybkiego zgłoszenia sytuacji. Możesz otworzyć wiadomość e-mail albo pobrać PDF i załączyć go ręcznie.</p>
       </div>
       <div class="heading-actions">
         <button class="secondary-button" @click="resetSimple">↺ Wyczyść formularz</button>
+        <button class="secondary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
         <button class="primary-button" @click="sendEmail">✉ Wyślij</button>
       </div>
     </div>
@@ -48,6 +50,7 @@ defineProps<{
 
     <div class="footer-actions">
       <button class="secondary-button" @click="resetSimple">↺ Wyczyść</button>
+      <button class="secondary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
       <button class="primary-button" @click="sendEmail">✉ Wyślij na kontakt@autyzm.poznan.pl</button>
     </div>
   </section>

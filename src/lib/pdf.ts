@@ -1,8 +1,8 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, type ExportRow, type ExportValue } from "../config/exportSections";
+import { getIncidentExportSections, getMetaExportSection, mapExportSections, simpleExportSection, type ExportRow, type ExportValue } from "../config/exportSections";
 import { formLabels } from "../config/formLabels";
-import type { EnvironmentConfig, ExtendedMode, PdfAction, SituationForm } from "../types/form";
+import type { EnvironmentConfig, ExtendedMode, FormVariant, PdfAction, SituationForm } from "../types/form";
 
 // Typy pdfmake nie obejmują poprawnie wariantu build/vfs_fonts używanego w bundlerze.
 const pdfFontsBundle = pdfFonts as unknown as { pdfMake?: { vfs: Record<string, string> }; vfs: Record<string, string> };
@@ -56,7 +56,40 @@ function mapPlacesSection(form: SituationForm): PdfContent {
   ]);
 }
 
-export function makeDoc(env: EnvironmentConfig, data: SituationForm, mode: ExtendedMode): Record<string, unknown> {
+function createDocument(content: PdfContent, env: EnvironmentConfig): Record<string, unknown> {
+  return {
+    pageSize: "A4",
+    pageMargins: [74, 62, 74, 62],
+    header: () => ({ text: env.header, alignment: "right", fontSize: 8, margin: [0, 24, 74, 0], color: "#555555" }),
+    footer: (currentPage: number, pageCount: number) => ({
+      text: `${env.footer} | ${currentPage}/${pageCount}`,
+      alignment: "center",
+      fontSize: 7,
+      margin: [74, 0, 74, 18],
+      color: "#555555"
+    }),
+    defaultStyle: { font: "Roboto", fontSize: 10.5, lineHeight: 1.18 },
+    styles: {
+      title: { fontSize: 14, bold: true, alignment: "center", margin: [0, 0, 0, 9] },
+      hint: { italics: true, alignment: "center", fontSize: 9, color: "#555555", margin: [0, 0, 0, 8] },
+      sectionHeader: { fontSize: 11.5, bold: true, color: "#173b37" }
+    },
+    content
+  };
+}
+
+function makeSimpleDoc(env: EnvironmentConfig, data: SituationForm): Record<string, unknown> {
+  return createDocument([
+    { text: `FORMULARZ PROSTY - ${env.label.toUpperCase()}`, style: "title" },
+    { text: "Krótka wersja zgłoszenia sytuacji przygotowana do zapisania lub ręcznego załączenia w wiadomości e-mail.", style: "hint" },
+    metaColumns(env, data),
+    ...section(simpleExportSection.title, exportRows(env, data, simpleExportSection.rows))
+  ], env);
+}
+
+export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: FormVariant, mode: ExtendedMode): Record<string, unknown> {
+  if (variant === "simple") return makeSimpleDoc(env, data);
+
   const content: PdfContent = [
     { text: env.incidentTitle, style: "title" },
     { text: "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
@@ -82,29 +115,11 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, mode: Exten
     ? content.slice(content.findIndex((item) => item.text === env.mapTitle))
     : content;
 
-  return {
-    pageSize: "A4",
-    pageMargins: [74, 62, 74, 62],
-    header: () => ({ text: env.header, alignment: "right", fontSize: 8, margin: [0, 24, 74, 0], color: "#555555" }),
-    footer: (currentPage: number, pageCount: number) => ({
-      text: `${env.footer} | ${currentPage}/${pageCount}`,
-      alignment: "center",
-      fontSize: 7,
-      margin: [74, 0, 74, 18],
-      color: "#555555"
-    }),
-    defaultStyle: { font: "Roboto", fontSize: 10.5, lineHeight: 1.18 },
-    styles: {
-      title: { fontSize: 14, bold: true, alignment: "center", margin: [0, 0, 0, 9] },
-      hint: { italics: true, alignment: "center", fontSize: 9, color: "#555555", margin: [0, 0, 0, 8] },
-      sectionHeader: { fontSize: 11.5, bold: true, color: "#173b37" }
-    },
-    content: filteredContent
-  };
+  return createDocument(filteredContent, env);
 }
 
-export function buildPdf({ env, form, mode, modeLabel, action, setStatus }: { env: EnvironmentConfig; form: SituationForm; mode: ExtendedMode; modeLabel: string; action: PdfAction; setStatus: (message: string) => void }): void {
-  const doc = makeDoc(env, form, mode);
+export function buildPdf({ env, form, variant, mode, modeLabel, action, setStatus }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode; modeLabel: string; action: PdfAction; setStatus: (message: string) => void }): void {
+  const doc = makeDoc(env, form, variant, mode);
   const fileName = `monitorowanie-${env.label.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.pdf`;
   const pdf = pdfMake.createPdf(doc as never);
 

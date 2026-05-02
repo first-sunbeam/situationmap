@@ -31,7 +31,10 @@ function createFormState() {
 
   const env = computed<EnvironmentConfig>(() => environments[activeEnvKey.value]);
   const form = computed(() => forms[activeEnvKey.value]);
-  const modeLabel = computed(() => ({ incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]));
+  const modeLabel = computed(() => activeVariant.value === "simple"
+    ? "formularz prosty"
+    : { incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]
+  );
   const {
     validationErrors,
     fieldErrors,
@@ -65,6 +68,7 @@ function createFormState() {
     generatePdf({
       env: env.value,
       form: form.value,
+      variant: activeVariant.value,
       mode: activeMode.value,
       modeLabel: modeLabel.value,
       action,
