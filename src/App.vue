@@ -1,30 +1,11 @@
 <script setup>
-import { ref, watch } from "vue";
 import SimpleForm from "./components/SimpleForm.vue";
 import IncidentForm from "./components/IncidentForm.vue";
 import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";
 import { useFormState } from "./composables/useFormState";
+import { useTheme } from "./composables/useTheme";
 
-const THEME_STORAGE_KEY = "situationmap-theme";
-
-function getInitialTheme() {
-  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  if (["light", "dark"].includes(savedTheme)) return savedTheme;
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
-
-const theme = ref(getInitialTheme());
-const isDarkTheme = ref(theme.value === "dark");
-
-watch(theme, (value) => {
-  isDarkTheme.value = value === "dark";
-  document.documentElement.dataset.theme = value;
-  localStorage.setItem(THEME_STORAGE_KEY, value);
-}, { immediate: true });
-
-function toggleTheme() {
-  theme.value = isDarkTheme.value ? "light" : "dark";
-}
+const { isDarkTheme, toggleTheme } = useTheme();
 
 const {
   activeEnvKey,
