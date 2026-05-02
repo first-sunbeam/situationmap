@@ -84,7 +84,7 @@ watch(activeStep, (stepId) => {
 
     <div class="stepper">
       <div class="stepper-head">
-        <strong>Krok {{ currentStepIndex + 1 }} z {{ steps.length }}</strong>
+        <strong>Aktualna sekcja: {{ currentStep.badge }}</strong>
         <span>{{ currentStep.label }}</span>
       </div>
       <div class="stepper-progress" aria-hidden="true">
@@ -92,7 +92,7 @@ watch(activeStep, (stepId) => {
       </div>
       <div class="stepper-list" aria-label="Postęp formularza rozszerzonego">
         <button
-          v-for="(step, index) in steps"
+          v-for="step in steps"
           :key="step.id"
           type="button"
           class="stepper-button"
@@ -104,14 +104,14 @@ watch(activeStep, (stepId) => {
           :aria-current="activeStep === step.id ? 'step' : undefined"
           @click="goToStep(step.id)"
         >
-          <span>{{ isStepComplete(step) && !isStepErrored(step) ? '✓' : index + 1 }}</span>
+          <span>{{ isStepComplete(step) && !isStepErrored(step) ? '✓' : step.badge }}</span>
           <small>{{ step.label }}</small>
         </button>
       </div>
       <label class="stepper-mobile">
         <span class="field-label">Przejdź do kroku</span>
         <select class="text-input" v-model="activeStep">
-          <option v-for="(step, index) in steps" :key="step.id" :value="step.id">{{ index + 1 }}. {{ step.label }}</option>
+          <option v-for="step in steps" :key="step.id" :value="step.id">{{ step.badge }}. {{ step.label }}</option>
         </select>
       </label>
     </div>
