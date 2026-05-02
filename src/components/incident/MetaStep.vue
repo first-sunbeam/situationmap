@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import MetaFields from "../form/MetaFields.vue";

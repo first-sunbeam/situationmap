@@ -11,7 +11,7 @@ import {
   yesNoUnknown
 } from "../data/environments";
 import { buildEmail, openEmail } from "../lib/email";
-import type { PdfAction } from "../types/form";
+import type { EnvironmentConfig, PdfAction } from "../types/form";
 import { createForms, hydrateForm, loadState, useFormPersistence, type EnvironmentKey } from "./useFormPersistence";
 import { useValidationFlow } from "./useValidationFlow";
 
@@ -29,7 +29,7 @@ function createFormState() {
     forms[key] = hydrateForm(key, initial.forms[key]);
   }
 
-  const env = computed(() => environments[activeEnvKey.value]);
+  const env = computed<EnvironmentConfig>(() => environments[activeEnvKey.value]);
   const form = computed(() => forms[activeEnvKey.value]);
   const modeLabel = computed(() => ({ incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]));
   const {

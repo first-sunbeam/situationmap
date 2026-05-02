@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import SimpleForm from "./components/SimpleForm.vue";
 import IncidentForm from "./components/IncidentForm.vue";
 import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";

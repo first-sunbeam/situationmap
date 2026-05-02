@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { useFormState } from "../composables/useFormState";
 import { formLabels } from "../config/formLabels";
 
-function hasOther(selected = [], value = "") {
+function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 

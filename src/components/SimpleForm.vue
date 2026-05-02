@@ -1,15 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { formLabels } from "../config/formLabels";
+import type { EnvironmentConfig, FieldErrors, SituationForm } from "../types/form";
 import MetaFields from "./form/MetaFields.vue";
 import TextAreaField from "./form/TextAreaField.vue";
 
-defineProps({
-  env: { type: Object, required: true },
-  form: { type: Object, required: true },
-  sendEmail: { type: Function, required: true },
-  resetSimple: { type: Function, required: true },
-  fieldErrors: { type: Object, required: true }
-});
+defineProps<{
+  env: EnvironmentConfig;
+  form: SituationForm;
+  sendEmail: () => void;
+  resetSimple: () => void;
+  fieldErrors: FieldErrors;
+}>();
 </script>
 
 <template>

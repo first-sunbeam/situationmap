@@ -1,7 +1,7 @@
-<script setup>
-import { computed, ref, watch } from "vue";
+<script setup lang="ts">
+import { computed, ref, watch, type Component } from "vue";
 import { useFormState } from "../composables/useFormState";
-import { incidentStepDefinitions } from "../config/incidentSteps";
+import { incidentStepDefinitions, type IncidentStepDefinition } from "../config/incidentSteps";
 import MetaStep from "./incident/MetaStep.vue";
 import BaselineStep from "./incident/BaselineStep.vue";
 import BeforeStep from "./incident/BeforeStep.vue";
@@ -14,7 +14,7 @@ import RegulationStep from "./incident/RegulationStep.vue";
 import IncidentStepper from "./incident/IncidentStepper.vue";
 
 const steps = incidentStepDefinitions;
-const stepComponents = {
+const stepComponents: Record<string, Component> = {
   meta: MetaStep,
   baseline: BaselineStep,
   before: BeforeStep,
@@ -42,11 +42,11 @@ function previousStep() {
   if (!isFirstStep.value) activeStep.value = steps[currentStepIndex.value - 1].id;
 }
 
-function isStepErrored(step) {
+function isStepErrored(step: IncidentStepDefinition) {
   return step.errorKeys?.some((key) => Boolean(fieldErrors.value[key]));
 }
 
-function isStepComplete(step) {
+function isStepComplete(step: IncidentStepDefinition) {
   return Boolean(step.isComplete?.(form.value));
 }
 
