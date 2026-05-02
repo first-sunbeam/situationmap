@@ -1,4 +1,8 @@
-function hasMapContent(map) {
+import type { EnvironmentMapFormData, ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
+
+type FormValue = string | string[];
+
+function hasMapContent(map: EnvironmentMapFormData): boolean {
   return map.rows.some((row) => row.time || row.activity)
     || [
       map.preferred,
@@ -16,17 +20,17 @@ function hasMapContent(map) {
     || map.escalationContexts.length > 0;
 }
 
-function hasAnyValue(values) {
+function hasAnyValue(values: FormValue[]): boolean {
   return values.some((value) => {
     if (Array.isArray(value)) return value.length > 0;
     return String(value || "").trim() !== "";
   });
 }
 
-export function validateForm({ variant, mode, form }) {
-  const fieldErrors = {};
-  const summary = [];
-  const meta = [
+export function validateForm({ variant, mode, form }: { variant: FormVariant; mode: ExtendedMode; form: SituationForm }): ValidationResult {
+  const fieldErrors: FieldErrors = {};
+  const summary: string[] = [];
+  const meta: Array<[string, string, string]> = [
     ["meta.date", "Data", form.meta.date],
     ["meta.time", "Godzina", form.meta.time],
     ["meta.place", "Miejsce", form.meta.place],

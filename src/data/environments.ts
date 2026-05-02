@@ -33,6 +33,8 @@ export const regulationPhase = [
 export const intensity = ["0 brak agresji", "1 lekkie", "2 umiarkowane", "3 wysokie ryzyko"];
 export const calmTime = ["< 5 min", "5-15 min", "> 15 min", "nie osiągnięto"];
 
+import type { EnvironmentConfig, SituationForm } from "../types/form";
+
 export const environments = {
   home: {
     icon: "⌂",
@@ -165,9 +167,9 @@ export const environments = {
     dependencies: ["miejsca", "osoby dorosłej", "pory dnia", "rodzaju zajęć", "liczby osób", "hałasu", "światła", "przejść między aktywnościami", "zmian planu / zastępstw", "nieobecności nauczyciela, z którym uczeń zwykle pracuje"],
     escalationContexts: ["Koniec zajęć", "Oczekiwanie", "Zmiana planu", "Polecenie", "Ograniczenie dostępu", "Przejście do innego pomieszczenia", "Przejście między zajęciami (zmiana nauczyciela)", "Inne"]
   }
-};
+} satisfies Record<string, EnvironmentConfig>;
 
-export function blankForm(env) {
+export function blankForm(env: EnvironmentConfig): SituationForm {
   return {
     meta: { date: "", time: "", place: "", lead: "", present: "" },
     simple: {

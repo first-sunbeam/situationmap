@@ -1,13 +1,24 @@
+import type { SituationForm } from "../types/form";
 import { formLabels } from "./formLabels";
 
-function hasAnyValue(values) {
+type FormValue = string | string[];
+
+export interface IncidentStepDefinition {
+  id: string;
+  label: string;
+  badge: string;
+  errorKeys: string[];
+  isComplete: (form: SituationForm) => boolean;
+}
+
+function hasAnyValue(values: FormValue[]): boolean {
   return values.some((value) => {
     if (Array.isArray(value)) return value.length > 0;
     return String(value || "").trim() !== "";
   });
 }
 
-export const incidentStepDefinitions = [
+export const incidentStepDefinitions: IncidentStepDefinition[] = [
   {
     id: "meta",
     label: formLabels.meta.section,

@@ -1,15 +1,23 @@
 import { formLabels } from "../config/formLabels";
+import type { EnvironmentConfig, ExtendedMode, FormVariant, MapRow, SituationForm } from "../types/form";
 
-function line(label, value) {
+type EmailValue = string | string[];
+
+export interface EmailContent {
+  subject: string;
+  body: string;
+}
+
+function line(label: string, value: EmailValue): string {
   const text = Array.isArray(value) ? value.filter(Boolean).join(", ") : value;
   return `${label}: ${text && String(text).trim() ? text : "-"}`;
 }
 
-function section(title, rows) {
+function section(title: string, rows: string[]): string {
   return [title, ...rows, ""].join("\n");
 }
 
-function mapRows(rows) {
+function mapRows(rows: MapRow[]): string {
   const filled = rows.filter((row) => row.time || row.activity);
   if (!filled.length) return "-";
   return filled
@@ -17,7 +25,7 @@ function mapRows(rows) {
     .join("\n");
 }
 
-export function buildEmail({ env, form, variant, mode }) {
+export function buildEmail({ env, form, variant, mode }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode }): EmailContent {
   const subject = `Formularz monitorowania - ${env.label} - ${variant === "simple" ? "prosty" : "rozszerzony"}`;
   const parts = [
     `Środowisko: ${env.label}`,
@@ -126,6 +134,6 @@ export function buildEmail({ env, form, variant, mode }) {
   };
 }
 
-export function openEmail(email) {
+export function openEmail(email: EmailContent): void {
   window.location.href = `mailto:kontakt@autyzm.poznan.pl?subject=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(email.body)}`;
 }

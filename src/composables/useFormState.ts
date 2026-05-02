@@ -11,15 +11,39 @@ import {
   yesNoUnknown
 } from "../data/environments";
 import { buildEmail, openEmail } from "../lib/email";
+import type { ExtendedMode, FieldErrors, FormVariant, PdfAction, SituationForm } from "../types/form";
 import { validateForm } from "./useFormValidation";
+
+type EnvironmentKey = keyof typeof environments;
+type FormsByEnvironment = Record<EnvironmentKey, SituationForm>;
+type PersistedForm = Partial<SituationForm> & { map?: Partial<SituationForm["map"]> };
+
+interface PersistedState {
+  activeEnvKey: EnvironmentKey;
+  activeVariant: FormVariant;
+  activeMode: ExtendedMode;
+  forms: FormsByEnvironment;
+}
 
 const STORAGE_KEY = "situationmap-state";
 
-function createForms() {
-  return Object.fromEntries(Object.entries(environments).map(([key, env]) => [key, blankForm(env)]));
+function createForms(): FormsByEnvironment {
+  return Object.fromEntries(Object.entries(environments).map(([key, env]) => [key, blankForm(env)])) as FormsByEnvironment;
 }
 
-function hydrateForm(envKey, value) {
+function isEnvironmentKey(value: unknown): value is EnvironmentKey {
+  return typeof value === "string" && value in environments;
+}
+
+function isFormVariant(value: unknown): value is FormVariant {
+  return value === "simple" || value === "extended";
+}
+
+function isExtendedMode(value: unknown): value is ExtendedMode {
+  return value === "incident" || value === "map";
+}
+
+function hydrateForm(envKey: EnvironmentKey, value: PersistedForm | undefined): SituationForm {
   const fallback = blankForm(environments[envKey]);
   if (!value || typeof value !== "object") return fallback;
 
@@ -37,8 +61,8 @@ function hydrateForm(envKey, value) {
   };
 }
 
-function loadState() {
-  const fallback = {
+function loadState(): PersistedState {
+  const fallback: PersistedState = {
     activeEnvKey: "home",
     activeVariant: "simple",
     activeMode: "incident",
@@ -48,11 +72,11 @@ function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return fallback;
-    const parsed = JSON.parse(raw);
+    const parsed = JSON.parse(raw) as Partial<PersistedState>;
     return {
-      activeEnvKey: environments[parsed.activeEnvKey] ? parsed.activeEnvKey : fallback.activeEnvKey,
-      activeVariant: ["simple", "extended"].includes(parsed.activeVariant) ? parsed.activeVariant : fallback.activeVariant,
-      activeMode: ["incident", "map"].includes(parsed.activeMode) ? parsed.activeMode : fallback.activeMode,
+      activeEnvKey: isEnvironmentKey(parsed.activeEnvKey) ? parsed.activeEnvKey : fallback.activeEnvKey,
+      activeVariant: isFormVariant(parsed.activeVariant) ? parsed.activeVariant : fallback.activeVariant,
+      activeMode: isExtendedMode(parsed.activeMode) ? parsed.activeMode : fallback.activeMode,
       forms: parsed.forms || fallback.forms
     };
   } catch {
@@ -60,7 +84,7 @@ function loadState() {
   }
 }
 
-let formState;
+let formState: ReturnType<typeof createFormState> | undefined;
 
 function createFormState() {
   const initial = loadState();
@@ -68,13 +92,13 @@ function createFormState() {
   const activeVariant = ref(initial.activeVariant);
   const activeMode = ref(initial.activeMode);
   const status = ref("");
-  const validationErrors = ref([]);
-  const fieldErrors = ref({});
+  const validationErrors = ref<string[]>([]);
+  const fieldErrors = ref<FieldErrors>({});
   const validationRequestId = ref(0);
   const forms = reactive(createForms());
-  let saveStatusTimeout;
+  let saveStatusTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  for (const key of Object.keys(forms)) {
+  for (const key of Object.keys(forms) as EnvironmentKey[]) {
     forms[key] = hydrateForm(key, initial.forms[key]);
   }
 
@@ -96,20 +120,20 @@ function createFormState() {
 
   async function scrollToValidationTarget() {
     await nextTick();
-    const target = document.querySelector(".invalid, .invalidSection, .validation-panel");
+    const target = document.querySelector<HTMLElement>(".invalid, .invalidSection, .validation-panel");
     if (!target) return;
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     if (target.classList.contains("validation-panel")) target.focus();
   }
 
-  function toggle(list, option) {
+  function toggle(list: string[], option: string) {
     const index = list.indexOf(option);
     if (index >= 0) list.splice(index, 1);
     else list.push(option);
     if (validationErrors.value.length) applyValidation();
   }
 
-  async function buildPdf(action) {
+  async function buildPdf(action: PdfAction) {
     const result = applyValidation();
     if (result.summary.length) {
       validationRequestId.value += 1;
@@ -126,7 +150,7 @@ function createFormState() {
       mode: activeMode.value,
       modeLabel: modeLabel.value,
       action,
-      setStatus: (message) => {
+      setStatus: (message: string) => {
         status.value = message;
       }
     });

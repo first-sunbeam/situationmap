@@ -1,27 +1,33 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { formLabels } from "../config/formLabels";
+import type { EnvironmentConfig, ExtendedMode, PdfAction, SituationForm } from "../types/form";
 
-pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
+// Typy pdfmake nie obejmują poprawnie wariantu build/vfs_fonts używanego w bundlerze.
+const pdfFontsBundle = pdfFonts as unknown as { pdfMake?: { vfs: Record<string, string> }; vfs: Record<string, string> };
+(pdfMake as unknown as { vfs: Record<string, string> }).vfs = pdfFontsBundle.pdfMake ? pdfFontsBundle.pdfMake.vfs : pdfFontsBundle.vfs;
 
-function fieldLine(label, value) {
+type PdfNode = Record<string, unknown>;
+type PdfContent = PdfNode[];
+
+function fieldLine(label: string, value?: string): PdfNode {
   return { text: [{ text: `${label}: `, bold: true }, value || "........................................"], margin: [0, 2, 0, 2] };
 }
 
-function selectedList(items, other) {
+function selectedList(items: string | string[], other = ""): string {
   const values = Array.isArray(items) ? [...items] : items ? [items] : [];
   if (other) values.push(other);
   return values.length ? values.join(", ") : "........................................";
 }
 
-function section(title, body) {
+function section(title: string, body: PdfContent): PdfContent {
   return [{ text: title, style: "sectionHeader", margin: [0, 10, 0, 5] }, ...body];
 }
 
-export function makeDoc(env, data, mode) {
+export function makeDoc(env: EnvironmentConfig, data: SituationForm, mode: ExtendedMode): Record<string, unknown> {
   const incident = data.incident;
   const map = data.map;
-  const content = [
+  const content: PdfContent = [
     { text: env.incidentTitle, style: "title" },
     { text: "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
     {
@@ -128,13 +134,15 @@ export function makeDoc(env, data, mode) {
     );
   }
 
-  const filteredContent = mode === "map" ? content.slice(content.findIndex((item) => item.text === env.mapTitle)) : content;
+  const filteredContent = mode === "map"
+    ? content.slice(content.findIndex((item) => item.text === env.mapTitle))
+    : content;
 
   return {
     pageSize: "A4",
     pageMargins: [74, 62, 74, 62],
     header: () => ({ text: env.header, alignment: "right", fontSize: 8, margin: [0, 24, 74, 0], color: "#555555" }),
-    footer: (currentPage, pageCount) => ({
+    footer: (currentPage: number, pageCount: number) => ({
       text: `${env.footer} | ${currentPage}/${pageCount}`,
       alignment: "center",
       fontSize: 7,
@@ -151,10 +159,10 @@ export function makeDoc(env, data, mode) {
   };
 }
 
-export function buildPdf({ env, form, mode, modeLabel, action, setStatus }) {
+export function buildPdf({ env, form, mode, modeLabel, action, setStatus }: { env: EnvironmentConfig; form: SituationForm; mode: ExtendedMode; modeLabel: string; action: PdfAction; setStatus: (message: string) => void }): void {
   const doc = makeDoc(env, form, mode);
   const fileName = `monitorowanie-${env.label.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.pdf`;
-  const pdf = pdfMake.createPdf(doc);
+  const pdf = pdfMake.createPdf(doc as never);
 
   if (action === "download") {
     pdf.download(fileName);
