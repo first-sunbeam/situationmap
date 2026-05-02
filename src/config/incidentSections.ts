@@ -8,6 +8,7 @@ export interface IncidentSectionDefinition {
   label: string;
   badge: string;
   errorKey: string;
+  extraErrorKeys?: string[];
   summary: string | ((form: SituationForm) => string);
   message: string | ((form: SituationForm) => string);
   isComplete: (form: SituationForm) => boolean;
@@ -30,6 +31,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.baselineSection,
     badge: "0",
     errorKey: "incident.baselineSection",
+    extraErrorKeys: ["incident.burdensOther"],
     summary: "Poziom bazowy i kontekst dnia: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
@@ -60,6 +62,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.expectationsSection,
     badge: "2",
     errorKey: "incident.expectationsSection",
+    extraErrorKeys: ["incident.expectationOther"],
     summary: "Czego oczekiwano w tym momencie: uzupełnij przynajmniej jedno pole.",
     message: "Zaznacz przynajmniej jedną opcję albo wpisz własną odpowiedź.",
     isComplete: (form) => hasAnyValue([
@@ -72,6 +75,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.signalsSection,
     badge: "3",
     errorKey: "incident.signalsSection",
+    extraErrorKeys: ["incident.signalsOther"],
     summary: (form) => form.incident.signalsAppeared === "Tak"
       ? "Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie."
       : "Pierwsze oznaki narastającego napięcia: uzupełnij przynajmniej jedno pole.",
@@ -94,6 +98,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.actionsSection,
     badge: "3A",
     errorKey: "incident.actionsSection",
+    extraErrorKeys: ["incident.interventionDetails"],
     summary: "Działania: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
@@ -126,6 +131,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.afterSection,
     badge: "6",
     errorKey: "incident.afterSection",
+    extraErrorKeys: ["incident.afterOther"],
     summary: "Po zdarzeniu: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
@@ -143,6 +149,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.regulationSection,
     badge: "7-9",
     errorKey: "incident.regulationSection",
+    extraErrorKeys: ["incident.endedByOther"],
     summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło w tej sytuacji.",
     message: "Zaznacz, co najbardziej pomogło w tej sytuacji.",
     isComplete: (form) => hasAnyValue([

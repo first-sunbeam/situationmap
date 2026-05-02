@@ -27,7 +27,7 @@ export const incidentStepDefinitions: IncidentStepDefinition[] = [
     id: section.id,
     label: section.label,
     badge: section.badge,
-    errorKeys: [section.errorKey],
+    errorKeys: [section.errorKey, ...(section.extraErrorKeys || [])],
     isComplete: section.isComplete
   }))
 ];
