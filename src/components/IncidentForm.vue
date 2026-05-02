@@ -11,6 +11,7 @@ import ActionsStep from "./incident/ActionsStep.vue";
 import BehaviorStep from "./incident/BehaviorStep.vue";
 import AfterStep from "./incident/AfterStep.vue";
 import RegulationStep from "./incident/RegulationStep.vue";
+import IncidentStepper from "./incident/IncidentStepper.vue";
 
 const steps = incidentStepDefinitions;
 const stepComponents = {
@@ -32,10 +33,6 @@ const currentStepComponent = computed(() => stepComponents[currentStep.value.id]
 const isFirstStep = computed(() => currentStepIndex.value === 0);
 const isLastStep = computed(() => currentStepIndex.value === steps.length - 1);
 const progressValue = computed(() => `${((currentStepIndex.value + 1) / steps.length) * 100}%`);
-
-function goToStep(stepId) {
-  if (steps.some((step) => step.id === stepId)) activeStep.value = stepId;
-}
 
 function nextStep() {
   if (!isLastStep.value) activeStep.value = steps[currentStepIndex.value + 1].id;
@@ -82,39 +79,14 @@ watch(activeStep, (stepId) => {
       </div>
     </div>
 
-    <div class="stepper">
-      <div class="stepper-head">
-        <strong>Aktualna sekcja: {{ currentStep.badge }}</strong>
-        <span>{{ currentStep.label }}</span>
-      </div>
-      <div class="stepper-progress" aria-hidden="true">
-        <span class="stepper-progress-bar" :style="{ width: progressValue }"></span>
-      </div>
-      <div class="stepper-list" aria-label="Postęp formularza rozszerzonego">
-        <button
-          v-for="step in steps"
-          :key="step.id"
-          type="button"
-          class="stepper-button"
-          :class="{
-            active: activeStep === step.id,
-            error: isStepErrored(step),
-            complete: isStepComplete(step) && !isStepErrored(step)
-          }"
-          :aria-current="activeStep === step.id ? 'step' : undefined"
-          @click="goToStep(step.id)"
-        >
-          <span>{{ isStepComplete(step) && !isStepErrored(step) ? '✓' : step.badge }}</span>
-          <small>{{ step.label }}</small>
-        </button>
-      </div>
-      <label class="stepper-mobile">
-        <span class="field-label">Przejdź do kroku</span>
-        <select class="text-input" v-model="activeStep">
-          <option v-for="step in steps" :key="step.id" :value="step.id">{{ step.badge }}. {{ step.label }}</option>
-        </select>
-      </label>
-    </div>
+    <IncidentStepper
+      v-model="activeStep"
+      :steps="steps"
+      :current-step="currentStep"
+      :progress-value="progressValue"
+      :is-step-errored="isStepErrored"
+      :is-step-complete="isStepComplete"
+    />
 
     <div class="sections">
       <component :is="currentStepComponent" />
