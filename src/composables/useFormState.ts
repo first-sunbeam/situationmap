@@ -1,4 +1,4 @@
-import { computed, nextTick, reactive, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import {
   blankForm,
   calmTime,
@@ -11,78 +11,9 @@ import {
   yesNoUnknown
 } from "../data/environments";
 import { buildEmail, openEmail } from "../lib/email";
-import type { ExtendedMode, FieldErrors, FormVariant, PdfAction, SituationForm } from "../types/form";
-import { validateForm } from "./useFormValidation";
-
-type EnvironmentKey = keyof typeof environments;
-type FormsByEnvironment = Record<EnvironmentKey, SituationForm>;
-type PersistedForm = Partial<SituationForm> & { map?: Partial<SituationForm["map"]> };
-
-interface PersistedState {
-  activeEnvKey: EnvironmentKey;
-  activeVariant: FormVariant;
-  activeMode: ExtendedMode;
-  forms: FormsByEnvironment;
-}
-
-const STORAGE_KEY = "situationmap-state";
-
-function createForms(): FormsByEnvironment {
-  return Object.fromEntries(Object.entries(environments).map(([key, env]) => [key, blankForm(env)])) as FormsByEnvironment;
-}
-
-function isEnvironmentKey(value: unknown): value is EnvironmentKey {
-  return typeof value === "string" && value in environments;
-}
-
-function isFormVariant(value: unknown): value is FormVariant {
-  return value === "simple" || value === "extended";
-}
-
-function isExtendedMode(value: unknown): value is ExtendedMode {
-  return value === "incident" || value === "map";
-}
-
-function hydrateForm(envKey: EnvironmentKey, value: PersistedForm | undefined): SituationForm {
-  const fallback = blankForm(environments[envKey]);
-  if (!value || typeof value !== "object") return fallback;
-
-  return {
-    meta: { ...fallback.meta, ...(value.meta || {}) },
-    simple: { ...fallback.simple, ...(value.simple || {}) },
-    incident: { ...fallback.incident, ...(value.incident || {}) },
-    map: {
-      ...fallback.map,
-      ...(value.map || {}),
-      rows: Array.isArray(value.map?.rows) ? value.map.rows : fallback.map.rows,
-      dependsOn: Array.isArray(value.map?.dependsOn) ? value.map.dependsOn : fallback.map.dependsOn,
-      escalationContexts: Array.isArray(value.map?.escalationContexts) ? value.map.escalationContexts : fallback.map.escalationContexts
-    }
-  };
-}
-
-function loadState(): PersistedState {
-  const fallback: PersistedState = {
-    activeEnvKey: "home",
-    activeVariant: "simple",
-    activeMode: "incident",
-    forms: createForms()
-  };
-
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return fallback;
-    const parsed = JSON.parse(raw) as Partial<PersistedState>;
-    return {
-      activeEnvKey: isEnvironmentKey(parsed.activeEnvKey) ? parsed.activeEnvKey : fallback.activeEnvKey,
-      activeVariant: isFormVariant(parsed.activeVariant) ? parsed.activeVariant : fallback.activeVariant,
-      activeMode: isExtendedMode(parsed.activeMode) ? parsed.activeMode : fallback.activeMode,
-      forms: parsed.forms || fallback.forms
-    };
-  } catch {
-    return fallback;
-  }
-}
+import type { PdfAction } from "../types/form";
+import { createForms, hydrateForm, loadState, useFormPersistence, type EnvironmentKey } from "./useFormPersistence";
+import { useValidationFlow } from "./useValidationFlow";
 
 let formState: ReturnType<typeof createFormState> | undefined;
 
@@ -92,11 +23,7 @@ function createFormState() {
   const activeVariant = ref(initial.activeVariant);
   const activeMode = ref(initial.activeMode);
   const status = ref("");
-  const validationErrors = ref<string[]>([]);
-  const fieldErrors = ref<FieldErrors>({});
-  const validationRequestId = ref(0);
   const forms = reactive(createForms());
-  let saveStatusTimeout: ReturnType<typeof setTimeout> | undefined;
 
   for (const key of Object.keys(forms) as EnvironmentKey[]) {
     forms[key] = hydrateForm(key, initial.forms[key]);
@@ -105,26 +32,17 @@ function createFormState() {
   const env = computed(() => environments[activeEnvKey.value]);
   const form = computed(() => forms[activeEnvKey.value]);
   const modeLabel = computed(() => ({ incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]));
+  const {
+    validationErrors,
+    fieldErrors,
+    validationRequestId,
+    clearValidation,
+    applyValidation,
+    requestValidationNavigation,
+    scrollToValidationTarget
+  } = useValidationFlow({ activeVariant, activeMode, form });
 
-  function clearValidation() {
-    validationErrors.value = [];
-    fieldErrors.value = {};
-  }
-
-  function applyValidation() {
-    const result = validateForm({ variant: activeVariant.value, mode: activeMode.value, form: form.value });
-    validationErrors.value = result.summary;
-    fieldErrors.value = result.fieldErrors;
-    return result;
-  }
-
-  async function scrollToValidationTarget() {
-    await nextTick();
-    const target = document.querySelector<HTMLElement>(".invalid, .invalidSection, .validation-panel");
-    if (!target) return;
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    if (target.classList.contains("validation-panel")) target.focus();
-  }
+  useFormPersistence({ activeEnvKey, activeVariant, activeMode, forms, status });
 
   function toggle(list: string[], option: string) {
     const index = list.indexOf(option);
@@ -136,7 +54,7 @@ function createFormState() {
   async function buildPdf(action: PdfAction) {
     const result = applyValidation();
     if (result.summary.length) {
-      validationRequestId.value += 1;
+      requestValidationNavigation();
       status.value = "Popraw formularz przed wygenerowaniem PDF.";
       scrollToValidationTarget();
       return;
@@ -159,7 +77,7 @@ function createFormState() {
   function sendEmail() {
     const result = applyValidation();
     if (result.summary.length) {
-      validationRequestId.value += 1;
+      requestValidationNavigation();
       status.value = "Popraw formularz przed wysłaniem e-maila.";
       scrollToValidationTarget();
       return;
@@ -201,21 +119,6 @@ function createFormState() {
     clearValidation();
     status.value = "Wyczyszczono tylko mapę środowiska.";
   }
-
-  watch([activeEnvKey, activeVariant, activeMode, forms], () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      activeEnvKey: activeEnvKey.value,
-      activeVariant: activeVariant.value,
-      activeMode: activeMode.value,
-      forms
-    }));
-
-    clearTimeout(saveStatusTimeout);
-    status.value = "Formularz zapisano lokalnie.";
-    saveStatusTimeout = setTimeout(() => {
-      if (status.value === "Formularz zapisano lokalnie.") status.value = "";
-    }, 1800);
-  }, { deep: true });
 
   watch([activeEnvKey, activeVariant, activeMode], clearValidation);
   watch(forms, () => {
