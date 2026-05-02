@@ -1,6 +1,5 @@
+import { incidentSections, resolveIncidentSectionText } from "../config/incidentSections";
 import type { EnvironmentMapFormData, ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
-
-type FormValue = string | string[];
 
 function hasMapContent(map: EnvironmentMapFormData): boolean {
   return map.rows.some((row) => row.time || row.activity)
@@ -18,13 +17,6 @@ function hasMapContent(map: EnvironmentMapFormData): boolean {
     ].some((value) => String(value || "").trim())
     || map.dependsOn.length > 0
     || map.escalationContexts.length > 0;
-}
-
-function hasAnyValue(values: FormValue[]): boolean {
-  return values.some((value) => {
-    if (Array.isArray(value)) return value.length > 0;
-    return String(value || "").trim() !== "";
-  });
 }
 
 export function validateForm({ variant, mode, form }: { variant: FormVariant; mode: ExtendedMode; form: SituationForm }): ValidationResult {
@@ -58,105 +50,10 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
   }
 
   if (variant === "extended" && mode !== "map") {
-    const sectionRules = [
-      {
-        key: "incident.baselineSection",
-        summary: "Poziom bazowy i kontekst dnia: uzupełnij przynajmniej jedno pole.",
-        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-        valid: hasAnyValue([
-          form.incident.tension,
-          form.incident.tired,
-          form.incident.slept,
-          form.incident.sleepDetails,
-          form.incident.stayStage,
-          form.incident.stayStageLoad,
-          form.incident.burdens,
-          form.incident.burdensOther
-        ])
-      },
-      {
-        key: "incident.beforeSection",
-        summary: "Bezpośrednio przed zdarzeniem: zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
-        message: "Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
-        valid: hasAnyValue([form.incident.antecedents, form.incident.factDescription])
-      },
-      {
-        key: "incident.expectationsSection",
-        summary: "Czego oczekiwano w tym momencie: uzupełnij przynajmniej jedno pole.",
-        message: "Zaznacz przynajmniej jedną opcję albo wpisz własną odpowiedź.",
-        valid: hasAnyValue([form.incident.expectations, form.incident.expectationOther])
-      },
-      {
-        key: "incident.signalsSection",
-        summary: form.incident.signalsAppeared === "Tak"
-          ? "Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie."
-          : "Pierwsze oznaki narastającego napięcia: uzupełnij przynajmniej jedno pole.",
-        message: form.incident.signalsAppeared === "Tak"
-          ? "Skoro sygnały się pojawiły, wskaż jakie."
-          : "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-        valid: form.incident.signalsAppeared === "Tak"
-          ? hasAnyValue([form.incident.signals, form.incident.signalsOther])
-          : hasAnyValue([
-            form.incident.signalsAppeared,
-            form.incident.signals,
-            form.incident.signalsOther,
-            form.incident.timeToEscalation,
-            form.incident.firstSignal,
-            form.incident.predicts
-          ])
-      },
-      {
-        key: "incident.actionsSection",
-        summary: "Działania: uzupełnij przynajmniej jedno pole.",
-        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-        valid: hasAnyValue([
-          form.incident.phase,
-          form.incident.interventions,
-          form.incident.interventionDetails,
-          form.incident.unconditional,
-          form.incident.usedRegulator,
-          form.incident.reducedTension,
-          form.incident.earlierPossible,
-          form.incident.earlierWhat
-        ])
-      },
-      {
-        key: "incident.behaviorSection",
-        summary: "Opis zachowania: uzupełnij przynajmniej jedno pole.",
-        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-        valid: hasAnyValue([
-          form.incident.behavior,
-          form.incident.intensity,
-          form.incident.escalationDuration,
-          form.incident.harms
-        ])
-      },
-      {
-        key: "incident.afterSection",
-        summary: "Po zdarzeniu: uzupełnij przynajmniej jedno pole.",
-        message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-        valid: hasAnyValue([
-          form.incident.after,
-          form.incident.afterOther,
-          form.incident.calmTime,
-          form.incident.physicalThisWeek,
-          form.incident.physicalCount,
-          form.incident.lowerThreshold,
-          form.incident.physicalNote
-        ])
-      },
-      {
-        key: "incident.regulationSection",
-        summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło w tej sytuacji.",
-        message: "Zaznacz, co najbardziej pomogło w tej sytuacji.",
-        valid: hasAnyValue([form.incident.endedBy, form.incident.endedByOther])
-      }
-    ];
-
-    for (const rule of sectionRules) {
-      if (!rule.valid) {
-        fieldErrors[rule.key] = rule.message;
-        summary.push(rule.summary);
+    for (const section of incidentSections) {
+      if (!section.isComplete(form)) {
+        fieldErrors[section.errorKey] = resolveIncidentSectionText(section.message, form);
+        summary.push(resolveIncidentSectionText(section.summary, form));
       }
     }
 
