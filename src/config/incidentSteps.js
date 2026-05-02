@@ -12,7 +12,7 @@ export const incidentStepDefinitions = [
     id: "meta",
     label: formLabels.meta.section,
     badge: "M",
-    errorKey: "meta.date",
+    errorKeys: ["meta.date", "meta.time", "meta.place", "meta.lead"],
     isComplete: (form) => hasAnyValue([
       form.meta.date,
       form.meta.time,
@@ -25,7 +25,7 @@ export const incidentStepDefinitions = [
     id: "baseline",
     label: formLabels.incident.baselineSection,
     badge: "0",
-    errorKey: "incident.baselineSection",
+    errorKeys: ["incident.baselineSection"],
     isComplete: (form) => hasAnyValue([
       form.incident.tension,
       form.incident.tired,
@@ -41,7 +41,7 @@ export const incidentStepDefinitions = [
     id: "before",
     label: formLabels.incident.beforeSection,
     badge: "1",
-    errorKey: "incident.beforeSection",
+    errorKeys: ["incident.beforeSection"],
     isComplete: (form) => hasAnyValue([
       form.incident.antecedents,
       form.incident.factDescription
@@ -51,7 +51,7 @@ export const incidentStepDefinitions = [
     id: "expectations",
     label: formLabels.incident.expectationsSection,
     badge: "2",
-    errorKey: "incident.expectationsSection",
+    errorKeys: ["incident.expectationsSection"],
     isComplete: (form) => hasAnyValue([
       form.incident.expectations,
       form.incident.expectationOther
@@ -61,7 +61,7 @@ export const incidentStepDefinitions = [
     id: "signals",
     label: formLabels.incident.signalsSection,
     badge: "3",
-    errorKey: "incident.signalsSection",
+    errorKeys: ["incident.signalsSection"],
     isComplete: (form) => form.incident.signalsAppeared === "Tak"
       ? hasAnyValue([form.incident.signals, form.incident.signalsOther])
       : hasAnyValue([
@@ -77,7 +77,7 @@ export const incidentStepDefinitions = [
     id: "actions",
     label: formLabels.incident.actionsSection,
     badge: "3A",
-    errorKey: "incident.actionsSection",
+    errorKeys: ["incident.actionsSection"],
     isComplete: (form) => hasAnyValue([
       form.incident.phase,
       form.incident.interventions,
@@ -93,7 +93,7 @@ export const incidentStepDefinitions = [
     id: "behavior",
     label: formLabels.incident.behaviorSection,
     badge: "5",
-    errorKey: "incident.behaviorSection",
+    errorKeys: ["incident.behaviorSection"],
     isComplete: (form) => hasAnyValue([
       form.incident.behavior,
       form.incident.intensity,
@@ -105,7 +105,7 @@ export const incidentStepDefinitions = [
     id: "after",
     label: formLabels.incident.afterSection,
     badge: "6",
-    errorKey: "incident.afterSection",
+    errorKeys: ["incident.afterSection"],
     isComplete: (form) => hasAnyValue([
       form.incident.after,
       form.incident.afterOther,
@@ -120,13 +120,10 @@ export const incidentStepDefinitions = [
     id: "regulation",
     label: formLabels.incident.regulationSection,
     badge: "7-9",
-    errorKey: "incident.regulationSection",
+    errorKeys: ["incident.regulationSection"],
     isComplete: (form) => hasAnyValue([
       form.incident.endedBy,
-      form.incident.endedByOther,
-      form.incident.worsened,
-      form.incident.regulators,
-      form.incident.rewards
+      form.incident.endedByOther
     ])
   }
 ];

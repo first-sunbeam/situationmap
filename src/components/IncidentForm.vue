@@ -46,7 +46,7 @@ function previousStep() {
 }
 
 function isStepErrored(step) {
-  return Boolean(fieldErrors.value[step.errorKey]);
+  return step.errorKeys?.some((key) => Boolean(fieldErrors.value[key]));
 }
 
 function isStepComplete(step) {

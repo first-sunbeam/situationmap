@@ -42,9 +42,9 @@ const {
           </button>
         </nav>
         <div class="actions">
-          <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" @click="buildPdf('open')">↗</button>
-          <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" @click="sendEmail">✉</button>
-          <button class="icon-button" title="Wyczyść formularze" @click="resetCurrent">↺</button>
+          <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" aria-label="Otwórz podgląd PDF" @click="buildPdf('open')">↗</button>
+          <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" aria-label="Wyślij e-mail" @click="sendEmail">✉</button>
+          <button class="icon-button" title="Wyczyść formularze" aria-label="Wyczyść formularze" @click="resetCurrent">↺</button>
         </div>
       </div>
     </header>
