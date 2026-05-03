@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useId } from "vue";
+import { useFieldIds } from "./useFieldIds";
 
 const { label, options, required = false, full = true, hint, error } = defineProps<{
   label: string;
@@ -12,10 +12,7 @@ const { label, options, required = false, full = true, hint, error } = definePro
 
 const model = defineModel<string[]>({ required: true });
 
-const hintId  = hint  ? useId() : undefined;
-const errorId = error ? useId() : undefined;
-
-const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
+const { hintId, errorId, describedBy } = useFieldIds(hint, error);
 
 function isSelected(option: string): boolean {
   return model.value.includes(option);

@@ -1,20 +1,18 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+import { useFieldIds } from "./useFieldIds";
+
+const { label, type = "text", required = false, full = false, hint, error } = defineProps<{
   label: string;
   type?: string;
   required?: boolean;
   full?: boolean;
   hint?: string;
   error?: string;
-}>(), {
-  type: "text",
-  required: false,
-  full: false,
-  hint: "",
-  error: ""
-});
+}>();
 
 const model = defineModel<string>({ required: true });
+
+const { hintId, errorId, describedBy } = useFieldIds(hint, error);
 </script>
 
 <template>
@@ -22,15 +20,19 @@ const model = defineModel<string>({ required: true });
     <span class="field-label">
       {{ label }} <span v-if="required" class="required-mark">*</span>
     </span>
-    <span v-if="hint" class="field-hint">{{ hint }}</span>
+
+    <span v-if="hint" :id="hintId" class="field-hint">{{ hint }}</span>
+
     <input
       v-model="model"
       class="text-input"
       :class="{ invalid: error }"
       :type="type"
       :required="required"
+      :aria-describedby="describedBy"
       :aria-invalid="error ? 'true' : undefined"
     />
-    <span v-if="error" class="field-error">{{ error }}</span>
+
+    <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
   </label>
 </template>

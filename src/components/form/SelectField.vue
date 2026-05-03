@@ -1,5 +1,15 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+import { useFieldIds } from "./useFieldIds";
+
+const {
+  label,
+  options,
+  placeholder = "Wybierz",
+  required = false,
+  full = false,
+  hint,
+  error,
+} = defineProps<{
   label: string;
   options: readonly string[];
   placeholder?: string;
@@ -7,15 +17,11 @@ withDefaults(defineProps<{
   full?: boolean;
   hint?: string;
   error?: string;
-}>(), {
-  placeholder: "Wybierz",
-  required: false,
-  full: false,
-  hint: "",
-  error: ""
-});
+}>();
 
 const model = defineModel<string>({ required: true });
+
+const { hintId, errorId, describedBy } = useFieldIds(hint, error);
 </script>
 
 <template>
@@ -23,17 +29,21 @@ const model = defineModel<string>({ required: true });
     <span class="field-label">
       {{ label }} <span v-if="required" class="required-mark">*</span>
     </span>
-    <span v-if="hint" class="field-hint">{{ hint }}</span>
+
+    <span v-if="hint" :id="hintId" class="field-hint">{{ hint }}</span>
+
     <select
       v-model="model"
       class="text-input"
       :class="{ invalid: error }"
       :required="required"
+      :aria-describedby="describedBy"
       :aria-invalid="error ? 'true' : undefined"
     >
       <option value="">{{ placeholder }}</option>
       <option v-for="item in options" :key="item" :value="item">{{ item }}</option>
     </select>
-    <span v-if="error" class="field-error">{{ error }}</span>
+
+    <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
   </label>
 </template>
