@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test:unit": "vitest run tests/unit",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "test:unit:coverage": "vitest run tests/unit --coverage"
   },
   "dependencies": {
     "pdfmake": "^0.2.20",
@@ -20,6 +21,7 @@
     "@playwright/test": "^1.59.1",
     "@types/pdfmake": "^0.3.2",
     "@vitejs/plugin-vue": "^5.2.4",
+    "@vitest/coverage-v8": "^4.1.5",
     "typescript": "^6.0.3",
     "vite": "^6.3.6",
     "vite-plugin-pwa": "^1.2.0",

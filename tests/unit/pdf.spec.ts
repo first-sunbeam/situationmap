@@ -1,48 +1,32 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { environments } from "../../src/data/environments";
 import { buildPdf, makeDoc } from "../../src/lib/pdf";
-import type { SituationForm } from "../../src/types/form";
-import { createHomeForm, fillRequiredMeta } from "./helpers/formFixtures";
+import { createFilledHomeForm } from "./helpers/formFixtures";
+
+// ── Mock pdfmake ──────────────────────────────────────────────────────────────
 
 const pdfMakeMock = vi.hoisted(() => {
   const downloadMock = vi.fn();
   const openMock = vi.fn();
-  const createPdfMock = vi.fn(() => ({
-    download: downloadMock,
-    open: openMock
-  }));
-
+  const createPdfMock = vi.fn(() => ({ download: downloadMock, open: openMock }));
   return { createPdfMock, downloadMock, openMock };
 });
 
 vi.mock("pdfmake/build/pdfmake", () => ({
-  default: {
-    createPdf: pdfMakeMock.createPdfMock
-  }
+  default: { createPdf: pdfMakeMock.createPdfMock },
 }));
 
 vi.mock("pdfmake/build/vfs_fonts", () => ({
-  default: {
-    vfs: {}
-  }
+  default: { vfs: {} },
 }));
 
-function filledHomeForm(): SituationForm {
-  const form = createHomeForm();
-  fillRequiredMeta(form);
-  form.simple.factDescription = "Krótki opis sytuacji.";
-  form.simple.helped = "Przerwa i spokojne miejsce.";
-  form.incident.tension = "1 podwyższony";
-  form.incident.antecedents = ["Zmiana aktywności"];
-  form.incident.endedBy = ["czas / przeczekanie"];
-  form.map.rows[0].time = "2h";
-  form.map.rows[0].activity = "Zabawa";
-  return form;
-}
+// ── Helper ────────────────────────────────────────────────────────────────────
 
 function stringifyDoc(doc: Record<string, unknown>): string {
   return JSON.stringify(doc.content);
 }
+
+// ── Testy ─────────────────────────────────────────────────────────────────────
 
 describe("generowanie PDF", () => {
   beforeEach(() => {
@@ -50,8 +34,7 @@ describe("generowanie PDF", () => {
   });
 
   it("buduje dokument PDF formularza prostego z danymi formularza", () => {
-    const doc = makeDoc(environments.home, filledHomeForm(), "simple", "incident");
-    const content = stringifyDoc(doc);
+    const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "simple", "incident"));
 
     expect(content).toContain("FORMULARZ PROSTY - DOM");
     expect(content).toContain("Krótki opis sytuacji.");
@@ -60,8 +43,7 @@ describe("generowanie PDF", () => {
   });
 
   it("buduje dokument PDF karty zdarzenia z sekcjami incydentu", () => {
-    const doc = makeDoc(environments.home, filledHomeForm(), "extended", "incident");
-    const content = stringifyDoc(doc);
+    const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "incident"));
 
     expect(content).toContain(environments.home.incidentTitle);
     expect(content).toContain("0. Poziom bazowy i kontekst dnia");
@@ -70,8 +52,7 @@ describe("generowanie PDF", () => {
   });
 
   it("buduje dokument PDF samej mapy bez tytułu incydentu", () => {
-    const doc = makeDoc(environments.home, filledHomeForm(), "extended", "map");
-    const content = stringifyDoc(doc);
+    const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "map"));
 
     expect(content).toContain(environments.home.mapTitle);
     expect(content).toContain("Miejsca i aktywności");
@@ -84,16 +65,18 @@ describe("generowanie PDF", () => {
 
     buildPdf({
       env: environments.home,
-      form: filledHomeForm(),
+      form: createFilledHomeForm(),
       variant: "simple",
       mode: "incident",
       modeLabel: "formularz prosty",
       action: "download",
-      setStatus
+      setStatus,
     });
 
     expect(pdfMakeMock.createPdfMock).toHaveBeenCalledOnce();
-    expect(pdfMakeMock.downloadMock).toHaveBeenCalledWith(expect.stringMatching(/^monitorowanie-dom-\d{4}-\d{2}-\d{2}\.pdf$/));
+    expect(pdfMakeMock.downloadMock).toHaveBeenCalledWith(
+      expect.stringMatching(/^monitorowanie-dom-\d{4}-\d{2}-\d{2}\.pdf$/)
+    );
     expect(pdfMakeMock.openMock).not.toHaveBeenCalled();
     expect(setStatus).toHaveBeenCalledWith("PDF gotowy — został pobrany (formularz prosty).");
   });
@@ -103,12 +86,12 @@ describe("generowanie PDF", () => {
 
     buildPdf({
       env: environments.home,
-      form: filledHomeForm(),
+      form: createFilledHomeForm(),
       variant: "extended",
       mode: "incident",
       modeLabel: "karta zdarzenia",
       action: "open",
-      setStatus
+      setStatus,
     });
 
     expect(pdfMakeMock.createPdfMock).toHaveBeenCalledOnce();

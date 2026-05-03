@@ -1,15 +1,26 @@
 import { describe, expect, it } from "vitest";
 import { validateForm } from "../../src/composables/useFormValidation";
 import { incidentSections } from "../../src/config/incidentSections";
-import { createHomeForm, fillRequiredMeta } from "./helpers/formFixtures";
+import {
+  type HomeForm,
+  createHomeForm,
+  fillRequiredMeta,
+  fillMinimalIncident,
+  fillMapForm,
+} from "./helpers/formFixtures";
+
+// ── Stałe komunikatów walidacji ───────────────────────────────────────────────
+// Wyciągnięte tu, żeby zmiany copy trafiały w jedno miejsce.
+
+const MSG_OTHER = "Jeśli zaznaczono „Inne”, opisz tę odpowiedź.";
+
+// ── Testy ─────────────────────────────────────────────────────────────────────
 
 describe("walidacja formularza", () => {
+  // ── Formularz prosty ────────────────────────────────────────────────────────
+
   it("zwraca błędy wymaganych pól dla pustego formularza prostego", () => {
-    const result = validateForm({
-      variant: "simple",
-      mode: "incident",
-      form: createHomeForm()
-    });
+    const result = validateForm({ variant: "simple", mode: "incident", form: createHomeForm() });
 
     expect(result.fieldErrors["meta.date"]).toBe("Uzupełnij pole: Data.");
     expect(result.fieldErrors["meta.time"]).toBe("Uzupełnij pole: Godzina.");
@@ -32,6 +43,8 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors).toEqual({});
   });
 
+  // ── Formularz rozszerzony – incydent ────────────────────────────────────────
+
   it("wymaga sekcji incydentu dla PDF formularza rozszerzonego", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
@@ -46,14 +59,7 @@ describe("walidacja formularza", () => {
   it("akceptuje alternatywną wartość w sekcji przed zdarzeniem", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.incident.tension = "1 podwyższony";
-    form.incident.antecedents = ["Zmiana aktywności"];
-    form.incident.expectations = ["Brak wymagań"];
-    form.incident.signalsAppeared = "Nie";
-    form.incident.phase = "Żółta - narastające napięcie";
-    form.incident.behavior = "Protest słowny.";
-    form.incident.after = ["Przejście do spokojniejszego miejsca"];
-    form.incident.endedBy = ["czas / przeczekanie"];
+    fillMinimalIncident(form);
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
@@ -64,14 +70,8 @@ describe("walidacja formularza", () => {
   it("wymaga szczegółów sygnałów i czasu przed eskalacją, gdy sygnały się pojawiły", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.incident.tension = "1 podwyższony";
-    form.incident.antecedents = ["Zmiana aktywności"];
-    form.incident.expectations = ["Brak wymagań"];
-    form.incident.signalsAppeared = "Tak";
-    form.incident.phase = "Żółta - narastające napięcie";
-    form.incident.behavior = "Protest słowny.";
-    form.incident.after = ["Przejście do spokojniejszego miejsca"];
-    form.incident.endedBy = ["czas / przeczekanie"];
+    fillMinimalIncident(form);
+    form.incident.signalsAppeared = "Tak"; // nadpisuje "Nie" z fillMinimalIncident
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
@@ -88,17 +88,23 @@ describe("walidacja formularza", () => {
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
-    expect(result.fieldErrors["incident.sleepDetails"]).toBe("Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo.");
-    expect(result.summary).toContain("0. Poziom bazowy i kontekst dnia: Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo.");
+    expect(result.fieldErrors["incident.sleepDetails"]).toBe(
+      "Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo."
+    );
+    expect(result.summary).toContain(
+      "0. Poziom bazowy i kontekst dnia: Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo."
+    );
   });
 
-  it.each([
-    ["incident.burdensOther", (form: ReturnType<typeof createHomeForm>) => { form.incident.burdens = ["inne"]; }],
-    ["incident.expectationOther", (form: ReturnType<typeof createHomeForm>) => { form.incident.expectations = ["inne"]; }],
-    ["incident.signalsOther", (form: ReturnType<typeof createHomeForm>) => { form.incident.signals = ["inne"]; }],
-    ["incident.interventionDetails", (form: ReturnType<typeof createHomeForm>) => { form.incident.interventions = ["Inne"]; }],
-    ["incident.afterOther", (form: ReturnType<typeof createHomeForm>) => { form.incident.after = ["Inne"]; }],
-    ["incident.endedByOther", (form: ReturnType<typeof createHomeForm>) => { form.incident.endedBy = ["inne"]; }]
+  // ── Opcja "inne" – pola warunkowe ───────────────────────────────────────────
+
+  it.each<[string, (form: HomeForm) => void]>([
+    ["incident.burdensOther",       (f) => { f.incident.burdens       = ["inne"]; }],
+    ["incident.expectationOther",   (f) => { f.incident.expectations  = ["inne"]; }],
+    ["incident.signalsOther",       (f) => { f.incident.signals       = ["inne"]; }],
+    ["incident.interventionDetails",(f) => { f.incident.interventions = ["Inne"]; }],
+    ["incident.afterOther",         (f) => { f.incident.after         = ["Inne"]; }],
+    ["incident.endedByOther",       (f) => { f.incident.endedBy       = ["inne"]; }],
   ])("wymaga opisu po zaznaczeniu opcji inne w incydencie: %s", (fieldKey, selectOther) => {
     const form = createHomeForm();
     fillRequiredMeta(form);
@@ -106,18 +112,18 @@ describe("walidacja formularza", () => {
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
-    expect(result.fieldErrors[fieldKey]).toBe("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.");
+    expect(result.fieldErrors[fieldKey]).toBe(MSG_OTHER);
   });
 
-  it.each([
-    ["baseline", (form: ReturnType<typeof createHomeForm>) => { form.incident.burdens = ["inne"]; }],
-    ["baseline", (form: ReturnType<typeof createHomeForm>) => { form.incident.slept = "Tak"; }],
-    ["signals", (form: ReturnType<typeof createHomeForm>) => { form.incident.signalsAppeared = "Tak"; form.incident.signals = ["zmiana tonu głosu"]; }],
-    ["expectations", (form: ReturnType<typeof createHomeForm>) => { form.incident.expectations = ["inne"]; }],
-    ["signals", (form: ReturnType<typeof createHomeForm>) => { form.incident.signals = ["inne"]; }],
-    ["actions", (form: ReturnType<typeof createHomeForm>) => { form.incident.interventions = ["Inne"]; }],
-    ["after", (form: ReturnType<typeof createHomeForm>) => { form.incident.after = ["Inne"]; }],
-    ["regulation", (form: ReturnType<typeof createHomeForm>) => { form.incident.endedBy = ["inne"]; }]
+  it.each<[string, (form: HomeForm) => void]>([
+    ["baseline",     (f) => { f.incident.burdens       = ["inne"]; }],
+    ["baseline",     (f) => { f.incident.slept          = "Tak"; }],
+    ["signals",      (f) => { f.incident.signalsAppeared = "Tak"; f.incident.signals = ["zmiana tonu głosu"]; }],
+    ["expectations", (f) => { f.incident.expectations  = ["inne"]; }],
+    ["signals",      (f) => { f.incident.signals       = ["inne"]; }],
+    ["actions",      (f) => { f.incident.interventions = ["Inne"]; }],
+    ["after",        (f) => { f.incident.after         = ["Inne"]; }],
+    ["regulation",   (f) => { f.incident.endedBy       = ["inne"]; }],
   ])("nie oznacza sekcji incydentu jako ukończonej, gdy brakuje wymaganego pola warunkowego: %s", (sectionId, selectOther) => {
     const form = createHomeForm();
     selectOther(form);
@@ -127,13 +133,15 @@ describe("walidacja formularza", () => {
     expect(section?.isComplete(form)).toBe(false);
   });
 
+  // ── Mapa środowiska ─────────────────────────────────────────────────────────
+
   it("wymaga opisu mapy po zaznaczeniu innego kontekstu eskalacji", () => {
     const form = createHomeForm();
     form.map.escalationContexts = ["Inne"];
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 
-    expect(result.fieldErrors["map.escalationOther"]).toBe("Jeśli zaznaczono „Inne”, opisz tę odpowiedź.");
+    expect(result.fieldErrors["map.escalationOther"]).toBe(MSG_OTHER);
   });
 
   it("wymaga obowiązkowych pól mapy w trybie mapy", () => {
@@ -151,14 +159,7 @@ describe("walidacja formularza", () => {
 
   it("akceptuje tryb mapy, gdy obowiązkowe pola mapy są wypełnione", () => {
     const form = createHomeForm();
-    form.map.rows[0].time = "2h";
-    form.map.preferred = "Pokój";
-    form.map.avoided = "Korytarz";
-    form.map.likes = "Klocki";
-    form.map.easiestWhen = "Jest cicho";
-    form.map.cooperatesWith = "Rodzic";
-    form.map.reducers = "Przerwa";
-    form.map.escalationContexts = ["Oczekiwanie"];
+    fillMapForm(form);
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 

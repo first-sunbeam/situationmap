@@ -1,30 +1,44 @@
 import { describe, expect, it } from "vitest";
 import { environments } from "../../src/data/environments";
 import { buildEmail } from "../../src/lib/email";
-import { createHomeForm } from "./helpers/formFixtures";
+import {
+  createHomeForm,
+  fillRequiredMeta,
+  fillSimpleForm,
+} from "./helpers/formFixtures";
 
 describe("budowanie wiadomości e-mail", () => {
   it("buduje temat i treść dla formularza prostego", () => {
     const form = createHomeForm();
-    form.meta.date = "2026-05-02";
-    form.meta.time = "12:30";
-    form.meta.place = "Dom";
-    form.meta.lead = "Jan Kowalski";
+    // Własna wartość `helped` — celowo różna od domyślnej w fillSimpleForm.
+    fillRequiredMeta(form);
     form.simple.factDescription = "Krótki opis sytuacji.";
     form.simple.helped = "Przerwa i cisza.";
 
-    const email = buildEmail({ env: environments.home, form, variant: "simple", mode: "incident" });
+    const email = buildEmail({
+      env: environments.home,
+      form,
+      variant: "simple",
+      mode: "incident",
+    });
 
     expect(email.subject).toBe("Formularz monitorowania - Dom - prosty");
     expect(email.body).toContain("Środowisko: Dom");
     expect(email.body).toContain("Wersja formularza: prosta");
     expect(email.body).toContain("Data: 2026-05-02");
     expect(email.body).toContain("Krótki opis sytuacji: Krótki opis sytuacji.");
-    expect(email.body).toContain("Co pomogło obniżyć napięcie lub uspokoić sytuację?: Przerwa i cisza.");
+    expect(email.body).toContain(
+      "Co pomogło obniżyć napięcie lub uspokoić sytuację?: Przerwa i cisza.",
+    );
   });
 
   it("renderuje puste pola jako myślniki", () => {
-    const email = buildEmail({ env: environments.home, form: createHomeForm(), variant: "simple", mode: "incident" });
+    const email = buildEmail({
+      env: environments.home,
+      form: createHomeForm(),
+      variant: "simple",
+      mode: "incident",
+    });
 
     expect(email.body).toContain("Data: -");
     expect(email.body).toContain("Krótki opis sytuacji: -");
@@ -34,9 +48,16 @@ describe("budowanie wiadomości e-mail", () => {
     const form = createHomeForm();
     form.incident.antecedents = ["Zmiana aktywności", "Czekanie"];
 
-    const email = buildEmail({ env: environments.home, form, variant: "extended", mode: "incident" });
+    const email = buildEmail({
+      env: environments.home,
+      form,
+      variant: "extended",
+      mode: "incident",
+    });
 
-    expect(email.body).toContain("Co działo się do 5 minut przed?: Zmiana aktywności, Czekanie");
+    expect(email.body).toContain(
+      "Co działo się do 5 minut przed?: Zmiana aktywności, Czekanie",
+    );
   });
 
   it("zawiera pola incydentu w trybie rozszerzonej karty zdarzenia", () => {
@@ -44,7 +65,12 @@ describe("budowanie wiadomości e-mail", () => {
     form.incident.tension = "1 podwyższony";
     form.incident.behavior = "Protest słowny.";
 
-    const email = buildEmail({ env: environments.home, form, variant: "extended", mode: "incident" });
+    const email = buildEmail({
+      env: environments.home,
+      form,
+      variant: "extended",
+      mode: "incident",
+    });
 
     expect(email.body).toContain("Karta zdarzenia");
     expect(email.body).toContain("Poziom napięcia: 1 podwyższony");
@@ -57,7 +83,12 @@ describe("budowanie wiadomości e-mail", () => {
     form.map.rows[0].time = "2h";
     form.map.rows[0].activity = "Zabawa";
 
-    const email = buildEmail({ env: environments.home, form, variant: "extended", mode: "map" });
+    const email = buildEmail({
+      env: environments.home,
+      form,
+      variant: "extended",
+      mode: "map",
+    });
 
     expect(email.body).toContain("Mapa środowiska");
     expect(email.body).toContain("- Pokój: czas 2h, aktywność Zabawa");
