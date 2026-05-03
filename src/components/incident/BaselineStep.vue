@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
+import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import InputField from "../form/InputField.vue";
+import SelectField from "../form/SelectField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-const { env, form, fieldErrors, tensionLevels, yesNoUnknown, toggle } = useFormState();
+const { env, form, fieldErrors, tensionLevels, yesNoUnknown } = useFormState();
 </script>
 
 <template>
@@ -14,21 +17,28 @@ const { env, form, fieldErrors, tensionLevels, yesNoUnknown, toggle } = useFormS
     <h3>{{ formLabels.incident.baselineSection }} <span class="required-mark">*</span></h3>
     <p v-if="fieldErrors['incident.baselineSection']" class="field-error">{{ fieldErrors['incident.baselineSection'] }}</p>
     <div class="field-grid">
-      <label class="field"><span class="field-label">{{ formLabels.incident.tension }}</span><span class="field-hint">Jak wyglądał stan osoby przed zdarzeniem?</span><select class="text-input" v-model="form.incident.tension"><option value="">Wybierz</option><option v-for="item in tensionLevels" :key="item">{{ item }}</option></select></label>
-      <label class="field"><span class="field-label">{{ formLabels.incident.tired }}</span><select class="text-input" v-model="form.incident.tired"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="item">{{ item }}</option></select></label>
-      <label class="field"><span class="field-label">{{ formLabels.incident.slept }}</span><select class="text-input" v-model="form.incident.slept"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-slept`">{{ item }}</option></select></label>
-      <label class="field"><span class="field-label">{{ formLabels.incident.sleepDetails }}</span><input class="text-input" v-model="form.incident.sleepDetails" /></label>
+      <SelectField
+        v-model="form.incident.tension"
+        :label="formLabels.incident.tension"
+        :options="tensionLevels"
+        hint="Jak wyglądał stan osoby przed zdarzeniem?"
+      />
+      <SelectField v-model="form.incident.tired" :label="formLabels.incident.tired" :options="yesNoUnknown" />
+      <SelectField v-model="form.incident.slept" :label="formLabels.incident.slept" :options="yesNoUnknown" />
+      <InputField v-model="form.incident.sleepDetails" :label="formLabels.incident.sleepDetails" />
       <template v-if="env.stayStages">
-        <label class="field"><span class="field-label">{{ formLabels.incident.stayStage }}</span><select class="text-input" v-model="form.incident.stayStage"><option value="">Wybierz</option><option v-for="item in env.stayStages" :key="item">{{ item }}</option></select></label>
-        <label class="field"><span class="field-label">{{ formLabels.incident.stayStageLoad }}</span><select class="text-input" v-model="form.incident.stayStageLoad"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-load`">{{ item }}</option></select></label>
+        <SelectField v-model="form.incident.stayStage" :label="formLabels.incident.stayStage" :options="env.stayStages" />
+        <SelectField v-model="form.incident.stayStageLoad" :label="formLabels.incident.stayStageLoad" :options="yesNoUnknown" />
       </template>
-      <div class="field full">
-        <span class="field-label">{{ formLabels.incident.burdens }}</span>
-        <div class="choice-grid">
-          <label class="choice" v-for="item in env.burdens" :key="item"><input type="checkbox" :checked="form.incident.burdens.includes(item)" @change="toggle(form.incident.burdens, item)" />{{ item }}</label>
-        </div>
-      </div>
-      <label v-if="hasOther(form.incident.burdens, form.incident.burdensOther)" class="field full"><span class="field-label">{{ formLabels.incident.burdensOther }} <span v-if="form.incident.burdens.includes('inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['incident.burdensOther'] }" v-model="form.incident.burdensOther" /><span v-if="fieldErrors['incident.burdensOther']" class="field-error">{{ fieldErrors['incident.burdensOther'] }}</span></label>
+      <ChoiceGroupField v-model="form.incident.burdens" :label="formLabels.incident.burdens" :options="env.burdens" />
+      <InputField
+        v-if="hasOther(form.incident.burdens, form.incident.burdensOther)"
+        v-model="form.incident.burdensOther"
+        :label="formLabels.incident.burdensOther"
+        :required="form.incident.burdens.includes('inne')"
+        :error="fieldErrors['incident.burdensOther']"
+        full
+      />
     </div>
   </section>
 </template>

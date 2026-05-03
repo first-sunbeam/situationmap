@@ -152,6 +152,12 @@ button {
   border: 1px solid var(--line);
 }
 
+.button-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
 .icon-button:hover,
 .secondary-button:hover,
 .tab-button:hover {
@@ -519,6 +525,13 @@ button {
 
 .field.full {
   grid-column: 1 / -1;
+}
+
+.choice-field {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 .field-label {

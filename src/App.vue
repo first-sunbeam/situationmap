@@ -50,7 +50,15 @@ const {
             :title="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
             :aria-label="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
             @click="toggleTheme"
-          >{{ isDarkTheme ? '☀' : '☾' }}</button>
+          >
+            <svg v-if="isDarkTheme" class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="4" fill="currentColor" />
+              <path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <svg v-else class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 7 7 0 1 0 20.5 15.5Z" fill="currentColor" />
+            </svg>
+          </button>
           <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" aria-label="Otwórz podgląd PDF" @click="buildPdf('open')">↗</button>
           <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" aria-label="Wyślij e-mail" @click="sendEmail">✉</button>
           <button v-if="activeVariant === 'simple'" class="icon-button" title="Pobierz PDF" aria-label="Pobierz PDF" @click="buildPdf('download')">↓</button>

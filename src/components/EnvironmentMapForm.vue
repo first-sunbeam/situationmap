@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { useFormState } from "../composables/useFormState";
 import { formLabels } from "../config/formLabels";
+import ChoiceGroupField from "./form/ChoiceGroupField.vue";
+import InputField from "./form/InputField.vue";
+import SelectField from "./form/SelectField.vue";
+import TextAreaField from "./form/TextAreaField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
@@ -9,11 +13,12 @@ function hasOther(selected: string[] = [], value = "") {
 const {
   env,
   form,
-  toggle,
   buildPdf,
   resetMap,
   fieldErrors
 } = useFormState();
+
+const yesNoOptions = ["Tak", "Nie"];
 </script>
 
 <template>
@@ -42,29 +47,31 @@ const {
           </div>
         </div>
         <div class="field-grid" style="margin-top: 16px">
-          <label class="field"><span class="field-label">{{ formLabels.map.preferred }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.preferred'] }" v-model="form.map.preferred" /><span v-if="fieldErrors['map.preferred']" class="field-error">{{ fieldErrors['map.preferred'] }}</span></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.avoided }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.avoided'] }" v-model="form.map.avoided" /><span v-if="fieldErrors['map.avoided']" class="field-error">{{ fieldErrors['map.avoided'] }}</span></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.likes }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.likes'] }" v-model="form.map.likes" /><span v-if="fieldErrors['map.likes']" class="field-error">{{ fieldErrors['map.likes'] }}</span></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.easiestWhen }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.easiestWhen'] }" v-model="form.map.easiestWhen" /><span v-if="fieldErrors['map.easiestWhen']" class="field-error">{{ fieldErrors['map.easiestWhen'] }}</span></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.cooperatesWith }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.cooperatesWith'] }" v-model="form.map.cooperatesWith" /><span v-if="fieldErrors['map.cooperatesWith']" class="field-error">{{ fieldErrors['map.cooperatesWith'] }}</span></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.reducers }} <span class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.reducers'] }" v-model="form.map.reducers" /><span v-if="fieldErrors['map.reducers']" class="field-error">{{ fieldErrors['map.reducers'] }}</span></label>
-          <div class="field full">
-            <span class="field-label">{{ formLabels.map.dependsOn }}</span>
-            <div class="choice-grid">
-              <label class="choice" v-for="item in env.dependencies" :key="item"><input type="checkbox" :checked="form.map.dependsOn.includes(item)" @change="toggle(form.map.dependsOn, item)" />{{ item }}</label>
-            </div>
-          </div>
-          <label class="field full"><span class="field-label">{{ formLabels.map.dependsDescription }}</span><textarea class="text-area" v-model="form.map.dependsDescription"></textarea></label>
-          <div class="field full">
-            <span class="field-label">{{ formLabels.map.escalationContexts }} <span class="required-mark">*</span></span>
-            <span v-if="fieldErrors['map.escalationContexts']" class="field-error">{{ fieldErrors['map.escalationContexts'] }}</span>
-            <div class="choice-grid">
-              <label class="choice" v-for="item in env.escalationContexts" :key="item"><input type="checkbox" :checked="form.map.escalationContexts.includes(item)" @change="toggle(form.map.escalationContexts, item)" />{{ item }}</label>
-            </div>
-          </div>
-          <label v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" class="field full"><span class="field-label">{{ formLabels.map.escalationOther }} <span v-if="form.map.escalationContexts.includes('Inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['map.escalationOther'] }" v-model="form.map.escalationOther" /><span v-if="fieldErrors['map.escalationOther']" class="field-error">{{ fieldErrors['map.escalationOther'] }}</span></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.noAggression }}</span><select class="text-input" v-model="form.map.noAggression"><option value="">Wybierz</option><option>Tak</option><option>Nie</option></select></label>
-          <label class="field"><span class="field-label">{{ formLabels.map.noAggressionWhere }}</span><input class="text-input" v-model="form.map.noAggressionWhere" /></label>
+          <InputField v-model="form.map.preferred" :label="formLabels.map.preferred" required :error="fieldErrors['map.preferred']" />
+          <InputField v-model="form.map.avoided" :label="formLabels.map.avoided" required :error="fieldErrors['map.avoided']" />
+          <InputField v-model="form.map.likes" :label="formLabels.map.likes" required :error="fieldErrors['map.likes']" />
+          <InputField v-model="form.map.easiestWhen" :label="formLabels.map.easiestWhen" required :error="fieldErrors['map.easiestWhen']" />
+          <InputField v-model="form.map.cooperatesWith" :label="formLabels.map.cooperatesWith" required :error="fieldErrors['map.cooperatesWith']" />
+          <InputField v-model="form.map.reducers" :label="formLabels.map.reducers" required :error="fieldErrors['map.reducers']" />
+          <ChoiceGroupField v-model="form.map.dependsOn" :label="formLabels.map.dependsOn" :options="env.dependencies" />
+          <TextAreaField v-model="form.map.dependsDescription" :label="formLabels.map.dependsDescription" />
+          <ChoiceGroupField
+            v-model="form.map.escalationContexts"
+            :label="formLabels.map.escalationContexts"
+            :options="env.escalationContexts"
+            required
+            :error="fieldErrors['map.escalationContexts']"
+          />
+          <InputField
+            v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)"
+            v-model="form.map.escalationOther"
+            :label="formLabels.map.escalationOther"
+            :required="form.map.escalationContexts.includes('Inne')"
+            :error="fieldErrors['map.escalationOther']"
+            full
+          />
+          <SelectField v-model="form.map.noAggression" :label="formLabels.map.noAggression" :options="yesNoOptions" />
+          <InputField v-model="form.map.noAggressionWhere" :label="formLabels.map.noAggressionWhere" />
         </div>
       </section>
     </div>

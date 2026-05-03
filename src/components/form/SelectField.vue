@@ -1,13 +1,14 @@
 <script setup lang="ts">
 withDefaults(defineProps<{
   label: string;
-  type?: string;
+  options: readonly string[];
+  placeholder?: string;
   required?: boolean;
   full?: boolean;
   hint?: string;
   error?: string;
 }>(), {
-  type: "text",
+  placeholder: "Wybierz",
   required: false,
   full: false,
   hint: "",
@@ -23,14 +24,16 @@ const model = defineModel<string>({ required: true });
       {{ label }} <span v-if="required" class="required-mark">*</span>
     </span>
     <span v-if="hint" class="field-hint">{{ hint }}</span>
-    <input
+    <select
       v-model="model"
       class="text-input"
       :class="{ invalid: error }"
-      :type="type"
       :required="required"
       :aria-invalid="error ? 'true' : undefined"
-    />
+    >
+      <option value="">{{ placeholder }}</option>
+      <option v-for="item in options" :key="item" :value="item">{{ item }}</option>
+    </select>
     <span v-if="error" class="field-error">{{ error }}</span>
   </label>
 </template>

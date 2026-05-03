@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
+import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import InputField from "../form/InputField.vue";
+import TextAreaField from "../form/TextAreaField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-const { env, form, fieldErrors, toggle } = useFormState();
+const { env, form, fieldErrors } = useFormState();
 </script>
 
 <template>
@@ -15,11 +18,18 @@ const { env, form, fieldErrors, toggle } = useFormState();
     <p class="section-hint">Pole obowiązkowe: zaznacz, co najbardziej pomogło w tej sytuacji.</p>
     <p v-if="fieldErrors['incident.regulationSection']" class="field-error">{{ fieldErrors['incident.regulationSection'] }}</p>
     <div class="field-grid">
-      <div class="field full"><span class="field-label">{{ formLabels.incident.endedBy }} <span class="required-mark">*</span></span><div class="choice-grid"><label class="choice" v-for="item in env.endedBy" :key="item"><input type="checkbox" :checked="form.incident.endedBy.includes(item)" @change="toggle(form.incident.endedBy, item)" />{{ item }}</label></div></div>
-      <label v-if="hasOther(form.incident.endedBy, form.incident.endedByOther)" class="field full"><span class="field-label">{{ formLabels.incident.endedByOther }} <span v-if="form.incident.endedBy.includes('inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['incident.endedByOther'] }" v-model="form.incident.endedByOther" /><span v-if="fieldErrors['incident.endedByOther']" class="field-error">{{ fieldErrors['incident.endedByOther'] }}</span></label>
-      <label class="field full"><span class="field-label">{{ formLabels.incident.worsened }}</span><span class="field-hint">Np. nacisk, pośpiech, hałas, odmowa.</span><textarea class="text-area" v-model="form.incident.worsened"></textarea></label>
-      <label class="field full"><span class="field-label">{{ formLabels.incident.regulators }}</span><span class="field-hint">Np. wyjście, cisza, czas, obecność znanej osoby.</span><textarea class="text-area" v-model="form.incident.regulators"></textarea></label>
-      <label class="field full"><span class="field-label">{{ formLabels.incident.rewards }}</span><span class="field-hint">Np. zachęta, jasny cel, wsparcie dorosłego, chęć uniknięcia konsekwencji.</span><textarea class="text-area" v-model="form.incident.rewards"></textarea></label>
+      <ChoiceGroupField v-model="form.incident.endedBy" :label="formLabels.incident.endedBy" :options="env.endedBy" required />
+      <InputField
+        v-if="hasOther(form.incident.endedBy, form.incident.endedByOther)"
+        v-model="form.incident.endedByOther"
+        :label="formLabels.incident.endedByOther"
+        :required="form.incident.endedBy.includes('inne')"
+        :error="fieldErrors['incident.endedByOther']"
+        full
+      />
+      <TextAreaField v-model="form.incident.worsened" :label="formLabels.incident.worsened" hint="Np. nacisk, pośpiech, hałas, odmowa." />
+      <TextAreaField v-model="form.incident.regulators" :label="formLabels.incident.regulators" hint="Np. wyjście, cisza, czas, obecność znanej osoby." />
+      <TextAreaField v-model="form.incident.rewards" :label="formLabels.incident.rewards" hint="Np. zachęta, jasny cel, wsparcie dorosłego, chęć uniknięcia konsekwencji." />
     </div>
   </section>
 </template>

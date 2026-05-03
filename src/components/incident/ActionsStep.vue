@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
+import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import InputField from "../form/InputField.vue";
+import SelectField from "../form/SelectField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-const { env, form, fieldErrors, regulationPhase, yesNoPartial, yesNoUnknown, toggle } = useFormState();
+const { env, form, fieldErrors, regulationPhase, yesNoPartial, yesNoUnknown } = useFormState();
+const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
 </script>
 
 <template>
@@ -14,19 +18,27 @@ const { env, form, fieldErrors, regulationPhase, yesNoPartial, yesNoUnknown, tog
     <h3>{{ formLabels.incident.actionsSection }} <span class="required-mark">*</span></h3>
     <p v-if="fieldErrors['incident.actionsSection']" class="field-error">{{ fieldErrors['incident.actionsSection'] }}</p>
     <div class="field-grid">
-      <label class="field full"><span class="field-label">{{ formLabels.incident.phase }}</span><span class="field-hint">Np. możliwa współpraca, narastające napięcie, pełna eskalacja.</span><select class="text-input" v-model="form.incident.phase"><option value="">Wybierz</option><option v-for="item in regulationPhase" :key="item">{{ item }}</option></select></label>
-      <div class="field full">
-        <span class="field-label">{{ formLabels.incident.interventions }}</span>
-        <div class="choice-grid">
-          <label class="choice" v-for="item in env.interventions" :key="item"><input type="checkbox" :checked="form.incident.interventions.includes(item)" @change="toggle(form.incident.interventions, item)" />{{ item }}</label>
-        </div>
-      </div>
-      <label v-if="hasOther(form.incident.interventions, form.incident.interventionDetails)" class="field full"><span class="field-label">{{ formLabels.incident.interventionDetails }} <span v-if="form.incident.interventions.includes('Inne')" class="required-mark">*</span></span><input class="text-input" :class="{ invalid: fieldErrors['incident.interventionDetails'] }" v-model="form.incident.interventionDetails" /><span v-if="fieldErrors['incident.interventionDetails']" class="field-error">{{ fieldErrors['incident.interventionDetails'] }}</span></label>
-      <label class="field"><span class="field-label">{{ formLabels.incident.unconditional }}</span><select class="text-input" v-model="form.incident.unconditional"><option value="">Wybierz</option><option>Tak</option><option>Nie</option><option>Częściowo</option><option>Nie wiem</option></select></label>
-      <label class="field"><span class="field-label">{{ formLabels.incident.usedRegulator }}</span><select class="text-input" v-model="form.incident.usedRegulator"><option value="">Wybierz</option><option v-for="item in yesNoPartial" :key="item">{{ item }}</option></select></label>
-      <label class="field"><span class="field-label">{{ formLabels.incident.reducedTension }}</span><select class="text-input" v-model="form.incident.reducedTension"><option value="">Wybierz</option><option v-for="item in yesNoPartial" :key="`${item}-reduced`">{{ item }}</option></select></label>
-      <label class="field"><span class="field-label">{{ formLabels.incident.earlierPossible }}</span><select class="text-input" v-model="form.incident.earlierPossible"><option value="">Wybierz</option><option v-for="item in yesNoUnknown" :key="`${item}-earlier`">{{ item }}</option></select></label>
-      <label class="field full"><span class="field-label">{{ formLabels.incident.earlierWhat }}</span><input class="text-input" v-model="form.incident.earlierWhat" /></label>
+      <SelectField
+        v-model="form.incident.phase"
+        :label="formLabels.incident.phase"
+        :options="regulationPhase"
+        hint="Np. możliwa współpraca, narastające napięcie, pełna eskalacja."
+        full
+      />
+      <ChoiceGroupField v-model="form.incident.interventions" :label="formLabels.incident.interventions" :options="env.interventions" />
+      <InputField
+        v-if="hasOther(form.incident.interventions, form.incident.interventionDetails)"
+        v-model="form.incident.interventionDetails"
+        :label="formLabels.incident.interventionDetails"
+        :required="form.incident.interventions.includes('Inne')"
+        :error="fieldErrors['incident.interventionDetails']"
+        full
+      />
+      <SelectField v-model="form.incident.unconditional" :label="formLabels.incident.unconditional" :options="unconditionalOptions" />
+      <SelectField v-model="form.incident.usedRegulator" :label="formLabels.incident.usedRegulator" :options="yesNoPartial" />
+      <SelectField v-model="form.incident.reducedTension" :label="formLabels.incident.reducedTension" :options="yesNoPartial" />
+      <SelectField v-model="form.incident.earlierPossible" :label="formLabels.incident.earlierPossible" :options="yesNoUnknown" />
+      <InputField v-model="form.incident.earlierWhat" :label="formLabels.incident.earlierWhat" full />
     </div>
   </section>
 </template>
