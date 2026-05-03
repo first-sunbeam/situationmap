@@ -1,22 +1,28 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
+import { useId } from "vue";
+
+const { label, options, required = false, full = true, hint, error } = defineProps<{
   label: string;
   options: readonly string[];
   required?: boolean;
   full?: boolean;
   hint?: string;
   error?: string;
-}>(), {
-  required: false,
-  full: true,
-  hint: "",
-  error: ""
-});
+}>();
 
 const model = defineModel<string[]>({ required: true });
 
-function toggleOption(option: string) {
-  model.value = model.value.includes(option)
+const hintId  = hint  ? useId() : undefined;
+const errorId = error ? useId() : undefined;
+
+const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
+
+function isSelected(option: string): boolean {
+  return model.value.includes(option);
+}
+
+function toggleOption(option: string): void {
+  model.value = isSelected(option)
     ? model.value.filter((item) => item !== option)
     : [...model.value, option];
 }
@@ -27,13 +33,16 @@ function toggleOption(option: string) {
     <legend class="field-label">
       {{ label }} <span v-if="required" class="required-mark">*</span>
     </legend>
-    <span v-if="hint" class="field-hint">{{ hint }}</span>
-    <span v-if="error" class="field-error">{{ error }}</span>
+
+    <span v-if="hint" :id="hintId" class="field-hint">{{ hint }}</span>
+    <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
+
     <div class="choice-grid">
-      <label class="choice" v-for="item in props.options" :key="item">
+      <label v-for="item in options" :key="item" class="choice">
         <input
           type="checkbox"
-          :checked="model.includes(item)"
+          :checked="isSelected(item)"
+          :aria-describedby="describedBy"
           :aria-invalid="error ? 'true' : undefined"
           @change="toggleOption(item)"
         />
