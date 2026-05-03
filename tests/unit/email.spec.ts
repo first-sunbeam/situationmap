@@ -1,15 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { blankForm, environments } from "../../src/data/environments";
+import { environments } from "../../src/data/environments";
 import { buildEmail } from "../../src/lib/email";
-import type { SituationForm } from "../../src/types/form";
-
-function homeForm(): SituationForm {
-  return blankForm(environments.home);
-}
+import { createHomeForm } from "./helpers/formFixtures";
 
 describe("budowanie wiadomości e-mail", () => {
   it("buduje temat i treść dla formularza prostego", () => {
-    const form = homeForm();
+    const form = createHomeForm();
     form.meta.date = "2026-05-02";
     form.meta.time = "12:30";
     form.meta.place = "Dom";
@@ -28,14 +24,14 @@ describe("budowanie wiadomości e-mail", () => {
   });
 
   it("renderuje puste pola jako myślniki", () => {
-    const email = buildEmail({ env: environments.home, form: homeForm(), variant: "simple", mode: "incident" });
+    const email = buildEmail({ env: environments.home, form: createHomeForm(), variant: "simple", mode: "incident" });
 
     expect(email.body).toContain("Data: -");
     expect(email.body).toContain("Krótki opis sytuacji: -");
   });
 
   it("łączy tablice checkboxów przecinkami", () => {
-    const form = homeForm();
+    const form = createHomeForm();
     form.incident.antecedents = ["Zmiana aktywności", "Czekanie"];
 
     const email = buildEmail({ env: environments.home, form, variant: "extended", mode: "incident" });
@@ -44,7 +40,7 @@ describe("budowanie wiadomości e-mail", () => {
   });
 
   it("zawiera pola incydentu w trybie rozszerzonej karty zdarzenia", () => {
-    const form = homeForm();
+    const form = createHomeForm();
     form.incident.tension = "1 podwyższony";
     form.incident.behavior = "Protest słowny.";
 
@@ -57,7 +53,7 @@ describe("budowanie wiadomości e-mail", () => {
   });
 
   it("zawiera wiersze mapy w trybie mapy i pomija sekcję incydentu", () => {
-    const form = homeForm();
+    const form = createHomeForm();
     form.map.rows[0].time = "2h";
     form.map.rows[0].activity = "Zabawa";
 

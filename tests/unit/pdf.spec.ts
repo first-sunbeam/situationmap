@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { blankForm, environments } from "../../src/data/environments";
+import { environments } from "../../src/data/environments";
 import { buildPdf, makeDoc } from "../../src/lib/pdf";
 import type { SituationForm } from "../../src/types/form";
+import { createHomeForm, fillRequiredMeta } from "./helpers/formFixtures";
 
 const pdfMakeMock = vi.hoisted(() => {
   const downloadMock = vi.fn();
@@ -26,12 +27,9 @@ vi.mock("pdfmake/build/vfs_fonts", () => ({
   }
 }));
 
-function homeForm(): SituationForm {
-  const form = blankForm(environments.home);
-  form.meta.date = "2026-05-02";
-  form.meta.time = "12:30";
-  form.meta.place = "Dom";
-  form.meta.lead = "Jan Kowalski";
+function filledHomeForm(): SituationForm {
+  const form = createHomeForm();
+  fillRequiredMeta(form);
   form.simple.factDescription = "Krótki opis sytuacji.";
   form.simple.helped = "Przerwa i spokojne miejsce.";
   form.incident.tension = "1 podwyższony";
@@ -52,7 +50,7 @@ describe("generowanie PDF", () => {
   });
 
   it("buduje dokument PDF formularza prostego z danymi formularza", () => {
-    const doc = makeDoc(environments.home, homeForm(), "simple", "incident");
+    const doc = makeDoc(environments.home, filledHomeForm(), "simple", "incident");
     const content = stringifyDoc(doc);
 
     expect(content).toContain("FORMULARZ PROSTY - DOM");
@@ -62,7 +60,7 @@ describe("generowanie PDF", () => {
   });
 
   it("buduje dokument PDF karty zdarzenia z sekcjami incydentu", () => {
-    const doc = makeDoc(environments.home, homeForm(), "extended", "incident");
+    const doc = makeDoc(environments.home, filledHomeForm(), "extended", "incident");
     const content = stringifyDoc(doc);
 
     expect(content).toContain(environments.home.incidentTitle);
@@ -72,7 +70,7 @@ describe("generowanie PDF", () => {
   });
 
   it("buduje dokument PDF samej mapy bez tytułu incydentu", () => {
-    const doc = makeDoc(environments.home, homeForm(), "extended", "map");
+    const doc = makeDoc(environments.home, filledHomeForm(), "extended", "map");
     const content = stringifyDoc(doc);
 
     expect(content).toContain(environments.home.mapTitle);
@@ -86,7 +84,7 @@ describe("generowanie PDF", () => {
 
     buildPdf({
       env: environments.home,
-      form: homeForm(),
+      form: filledHomeForm(),
       variant: "simple",
       mode: "incident",
       modeLabel: "formularz prosty",
@@ -105,7 +103,7 @@ describe("generowanie PDF", () => {
 
     buildPdf({
       env: environments.home,
-      form: homeForm(),
+      form: filledHomeForm(),
       variant: "extended",
       mode: "incident",
       modeLabel: "karta zdarzenia",
