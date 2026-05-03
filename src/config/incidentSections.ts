@@ -41,6 +41,10 @@ export function hasRequiredTimeToEscalation(signalsAppeared: string, timeToEscal
   return signalsAppeared !== "Tak" || String(timeToEscalation || "").trim() !== "";
 }
 
+export function hasRequiredPhysicalCount(physicalThisWeek: string, physicalCount: string): boolean {
+  return physicalThisWeek !== "Tak" || String(physicalCount || "").trim() !== "";
+}
+
 export const incidentSections: IncidentSectionDefinition[] = [
   {
     id: "baseline",
@@ -147,7 +151,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.afterSection,
     badge: "6",
     errorKey: "incident.afterSection",
-    extraErrorKeys: ["incident.afterOther"],
+    extraErrorKeys: ["incident.afterOther", "incident.physicalCount"],
     summary: "Po zdarzeniu: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
@@ -158,7 +162,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.physicalCount,
       form.incident.lowerThreshold,
       form.incident.physicalNote
-    ]) && hasRequiredOtherValue(form.incident.after, form.incident.afterOther)
+    ]) && hasRequiredPhysicalCount(form.incident.physicalThisWeek, form.incident.physicalCount) && hasRequiredOtherValue(form.incident.after, form.incident.afterOther)
   },
   {
     id: "regulation",

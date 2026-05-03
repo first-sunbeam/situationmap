@@ -110,6 +110,13 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
 
     requireOtherField({ fieldErrors, summary, selected: form.incident.signals, value: form.incident.signalsOther, fieldKey: "incident.signalsOther", sectionLabel: formLabels.incident.signalsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: formLabels.incident.actionsSection });
+
+    if (form.incident.physicalThisWeek === "Tak" && isBlank(form.incident.physicalCount)) {
+      const message = "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy.";
+      fieldErrors["incident.physicalCount"] = message;
+      summary.push(`${formLabels.incident.afterSection}: ${message}`);
+    }
+
     requireOtherField({ fieldErrors, summary, selected: form.incident.after, value: form.incident.afterOther, fieldKey: "incident.afterOther", sectionLabel: formLabels.incident.afterSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.endedBy, value: form.incident.endedByOther, fieldKey: "incident.endedByOther", sectionLabel: formLabels.incident.regulationSection });
 

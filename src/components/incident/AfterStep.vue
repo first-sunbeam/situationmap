@@ -28,7 +28,12 @@ const { env, form, fieldErrors, calmTime, yesNoUnknown } = useFormState();
       />
       <SelectField v-model="form.incident.calmTime" :label="formLabels.incident.calmTime" :options="calmTime" />
       <SelectField v-model="form.incident.physicalThisWeek" :label="formLabels.incident.physicalThisWeek" :options="yesNoUnknown" />
-      <InputField v-model="form.incident.physicalCount" :label="formLabels.incident.physicalCount" />
+      <InputField
+        v-model="form.incident.physicalCount"
+        :label="formLabels.incident.physicalCount"
+        :required="form.incident.physicalThisWeek === 'Tak'"
+        :error="fieldErrors['incident.physicalCount']"
+      />
       <SelectField v-model="form.incident.lowerThreshold" :label="formLabels.incident.lowerThreshold" :options="yesNoUnknown" />
       <InputField v-model="form.incident.physicalNote" :label="formLabels.incident.physicalNote" full />
     </div>

@@ -96,6 +96,21 @@ describe("walidacja formularza", () => {
     );
   });
 
+  it("wymaga liczby interwencji, gdy zaznaczono interwencję fizyczną w tym tygodniu", () => {
+    const form = createHomeForm();
+    fillRequiredMeta(form);
+    form.incident.physicalThisWeek = "Tak";
+
+    const result = validateForm({ variant: "extended", mode: "incident", form });
+
+    expect(result.fieldErrors["incident.physicalCount"]).toBe(
+      "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy."
+    );
+    expect(result.summary).toContain(
+      "6. Co wydarzyło się po zdarzeniu?: Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy."
+    );
+  });
+
   // ── Opcja "inne" – pola warunkowe ───────────────────────────────────────────
 
   it.each<[string, (form: HomeForm) => void]>([
@@ -123,6 +138,7 @@ describe("walidacja formularza", () => {
     ["signals",      (f) => { f.incident.signals       = ["inne"]; }],
     ["actions",      (f) => { f.incident.interventions = ["Inne"]; }],
     ["after",        (f) => { f.incident.after         = ["Inne"]; }],
+    ["after",        (f) => { f.incident.physicalThisWeek = "Tak"; }],
     ["regulation",   (f) => { f.incident.endedBy       = ["inne"]; }],
   ])("nie oznacza sekcji incydentu jako ukończonej, gdy brakuje wymaganego pola warunkowego: %s", (sectionId, selectOther) => {
     const form = createHomeForm();
