@@ -38,7 +38,13 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
       <SelectField v-model="form.incident.usedRegulator" :label="formLabels.incident.usedRegulator" :options="yesNoPartial" />
       <SelectField v-model="form.incident.reducedTension" :label="formLabels.incident.reducedTension" :options="yesNoPartial" />
       <SelectField v-model="form.incident.earlierPossible" :label="formLabels.incident.earlierPossible" :options="yesNoUnknown" />
-      <InputField v-model="form.incident.earlierWhat" :label="formLabels.incident.earlierWhat" full />
+      <InputField
+        v-model="form.incident.earlierWhat"
+        :label="formLabels.incident.earlierWhat"
+        :required="form.incident.earlierPossible === 'Tak'"
+        :error="fieldErrors['incident.earlierWhat']"
+        full
+      />
     </div>
   </section>
 </template>

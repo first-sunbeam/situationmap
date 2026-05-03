@@ -35,7 +35,7 @@ const yesNoOptions = ["Tak", "Nie"];
     </div>
 
     <div class="sections">
-      <section class="section" :class="{ invalidSection: fieldErrors['map.rows'] || fieldErrors['map.escalationContexts'] }">
+      <section class="section" :class="{ invalidSection: fieldErrors['map.rows'] || fieldErrors['map.escalationContexts'] || fieldErrors['map.dependsDescription'] || fieldErrors['map.noAggressionWhere'] }">
         <h3>{{ env.mapTitle }}</h3>
         <p v-if="fieldErrors['map.rows']" class="field-error">{{ fieldErrors['map.rows'] }}</p>
         <div class="matrix">
@@ -54,7 +54,12 @@ const yesNoOptions = ["Tak", "Nie"];
           <InputField v-model="form.map.cooperatesWith" :label="formLabels.map.cooperatesWith" required :error="fieldErrors['map.cooperatesWith']" />
           <InputField v-model="form.map.reducers" :label="formLabels.map.reducers" required :error="fieldErrors['map.reducers']" />
           <ChoiceGroupField v-model="form.map.dependsOn" :label="formLabels.map.dependsOn" :options="env.dependencies" />
-          <TextAreaField v-model="form.map.dependsDescription" :label="formLabels.map.dependsDescription" />
+          <TextAreaField
+            v-model="form.map.dependsDescription"
+            :label="formLabels.map.dependsDescription"
+            :required="Boolean(form.map.dependsOn.length)"
+            :error="fieldErrors['map.dependsDescription']"
+          />
           <ChoiceGroupField
             v-model="form.map.escalationContexts"
             :label="formLabels.map.escalationContexts"
@@ -71,7 +76,12 @@ const yesNoOptions = ["Tak", "Nie"];
             full
           />
           <SelectField v-model="form.map.noAggression" :label="formLabels.map.noAggression" :options="yesNoOptions" />
-          <InputField v-model="form.map.noAggressionWhere" :label="formLabels.map.noAggressionWhere" />
+          <InputField
+            v-model="form.map.noAggressionWhere"
+            :label="formLabels.map.noAggressionWhere"
+            :required="form.map.noAggression === 'Tak'"
+            :error="fieldErrors['map.noAggressionWhere']"
+          />
         </div>
       </section>
     </div>

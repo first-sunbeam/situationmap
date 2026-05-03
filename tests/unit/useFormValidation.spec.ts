@@ -111,6 +111,21 @@ describe("walidacja formularza", () => {
     );
   });
 
+  it("wymaga opisu wcześniejszej reakcji, gdy zaznaczono że była możliwa", () => {
+    const form = createHomeForm();
+    fillRequiredMeta(form);
+    form.incident.earlierPossible = "Tak";
+
+    const result = validateForm({ variant: "extended", mode: "incident", form });
+
+    expect(result.fieldErrors["incident.earlierWhat"]).toBe(
+      "Skoro można było zareagować wcześniej, opisz co było możliwe."
+    );
+    expect(result.summary).toContain(
+      "3A. Faza napięcia i 4. Działania: Skoro można było zareagować wcześniej, opisz co było możliwe."
+    );
+  });
+
   // ── Opcja "inne" – pola warunkowe ───────────────────────────────────────────
 
   it.each<[string, (form: HomeForm) => void]>([
@@ -137,6 +152,7 @@ describe("walidacja formularza", () => {
     ["expectations", (f) => { f.incident.expectations  = ["inne"]; }],
     ["signals",      (f) => { f.incident.signals       = ["inne"]; }],
     ["actions",      (f) => { f.incident.interventions = ["Inne"]; }],
+    ["actions",      (f) => { f.incident.earlierPossible = "Tak"; }],
     ["after",        (f) => { f.incident.after         = ["Inne"]; }],
     ["after",        (f) => { f.incident.physicalThisWeek = "Tak"; }],
     ["regulation",   (f) => { f.incident.endedBy       = ["inne"]; }],
@@ -158,6 +174,34 @@ describe("walidacja formularza", () => {
     const result = validateForm({ variant: "extended", mode: "map", form });
 
     expect(result.fieldErrors["map.escalationOther"]).toBe(MSG_OTHER);
+  });
+
+  it("wymaga opisu zależności, gdy zaznaczono od czego zmienia się zachowanie", () => {
+    const form = createHomeForm();
+    form.map.dependsOn = ["hałasu"];
+
+    const result = validateForm({ variant: "extended", mode: "map", form });
+
+    expect(result.fieldErrors["map.dependsDescription"]).toBe(
+      "Skoro zaznaczono zależności, opisz na czym polega zmiana zachowania."
+    );
+    expect(result.summary).toContain(
+      "Zachowanie zmienia się w zależności od: Skoro zaznaczono zależności, opisz na czym polega zmiana zachowania."
+    );
+  });
+
+  it("wymaga opisu sytuacji bez agresji, gdy zaznaczono że takie sytuacje są", () => {
+    const form = createHomeForm();
+    form.map.noAggression = "Tak";
+
+    const result = validateForm({ variant: "extended", mode: "map", form });
+
+    expect(result.fieldErrors["map.noAggressionWhere"]).toBe(
+      "Skoro są sytuacje bez agresji, opisz jakie."
+    );
+    expect(result.summary).toContain(
+      "Czy są sytuacje bez agresji?: Skoro są sytuacje bez agresji, opisz jakie."
+    );
   });
 
   it("wymaga obowiązkowych pól mapy w trybie mapy", () => {

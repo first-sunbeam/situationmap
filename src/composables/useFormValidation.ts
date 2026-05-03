@@ -111,6 +111,12 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     requireOtherField({ fieldErrors, summary, selected: form.incident.signals, value: form.incident.signalsOther, fieldKey: "incident.signalsOther", sectionLabel: formLabels.incident.signalsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: formLabels.incident.actionsSection });
 
+    if (form.incident.earlierPossible === "Tak" && isBlank(form.incident.earlierWhat)) {
+      const message = "Skoro można było zareagować wcześniej, opisz co było możliwe.";
+      fieldErrors["incident.earlierWhat"] = message;
+      summary.push(`${formLabels.incident.actionsSection}: ${message}`);
+    }
+
     if (form.incident.physicalThisWeek === "Tak" && isBlank(form.incident.physicalCount)) {
       const message = "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy.";
       fieldErrors["incident.physicalCount"] = message;
@@ -127,7 +133,20 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
 
   if (variant === "extended" && mode !== "incident") {
     validateMapRequiredFields(form, fieldErrors, summary);
+
+    if (form.map.dependsOn.length && isBlank(form.map.dependsDescription)) {
+      const message = "Skoro zaznaczono zależności, opisz na czym polega zmiana zachowania.";
+      fieldErrors["map.dependsDescription"] = message;
+      summary.push(`${formLabels.map.dependsOn}: ${message}`);
+    }
+
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: formLabels.map.escalationContexts });
+
+    if (form.map.noAggression === "Tak" && isBlank(form.map.noAggressionWhere)) {
+      const message = "Skoro są sytuacje bez agresji, opisz jakie.";
+      fieldErrors["map.noAggressionWhere"] = message;
+      summary.push(`${formLabels.map.noAggression}: ${message}`);
+    }
   }
 
   return { fieldErrors, summary };
