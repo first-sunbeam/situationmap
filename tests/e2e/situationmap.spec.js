@@ -94,6 +94,35 @@ test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony",
   await expect(page.getByLabel("Krótki opis sytuacji")).toHaveValue("Krótki opis zdarzenia zapisany lokalnie.");
 });
 
+test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeładowaniu strony", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Rozszerzona" }).click();
+  await page.getByRole("button", { name: "Mapa środowiska" }).click();
+  await page.getByLabel("Chętnie przebywa w *").fill("Pokój wyciszenia");
+  await page.getByRole("checkbox", { name: "hałasu" }).check();
+  await page.getByLabel("Opis zależności").fill("Przy większym hałasie szybciej narasta napięcie.");
+  await page.getByLabel("Czy są sytuacje bez agresji?").selectOption("Tak");
+
+  await expect(page.getByText("Formularz zapisano lokalnie.")).toBeVisible();
+
+  const storedState = await page.evaluate(() => JSON.parse(window.localStorage.getItem("situationmap-state")));
+  expect(storedState.activeVariant).toBe("extended");
+  expect(storedState.activeMode).toBe("map");
+  expect(storedState.forms.home.map.preferred).toBe("Pokój wyciszenia");
+  expect(storedState.forms.home.map.dependsOn).toContain("hałasu");
+  expect(storedState.forms.home.map.dependsDescription).toBe("Przy większym hałasie szybciej narasta napięcie.");
+  expect(storedState.forms.home.map.noAggression).toBe("Tak");
+
+  await page.reload();
+
+  await expect(page.getByRole("heading", { level: 2, name: "MAPA ŚRODOWISKA DOMOWEGO" })).toBeVisible();
+  await expect(page.getByLabel("Chętnie przebywa w *")).toHaveValue("Pokój wyciszenia");
+  await expect(page.getByRole("checkbox", { name: "hałasu" })).toBeChecked();
+  await expect(page.getByLabel("Opis zależności")).toHaveValue("Przy większym hałasie szybciej narasta napięcie.");
+  await expect(page.getByLabel("Czy są sytuacje bez agresji?")).toHaveValue("Tak");
+});
+
 test("sekcja danych podstawowych jest ukończona dopiero po wypełnieniu wszystkich wymaganych pól", async ({ page }) => {
   await page.goto("/");
 
@@ -111,6 +140,33 @@ test("sekcja danych podstawowych jest ukończona dopiero po wypełnieniu wszystk
   await page.getByLabel("Rodzic / opiekun prowadzący").fill("Jan Kowalski");
 
   await expect(metaStep).toHaveText(/✓/);
+});
+
+test("pozwala przełączać kroki formularza rozszerzonego przyciskami nawigacji i stepperem", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Rozszerzona" }).click();
+
+  await expect(page.getByText("Aktualna sekcja: M")).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Dane podstawowe/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Następny krok →" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "← Poprzedni krok" })).not.toBeVisible();
+
+  await page.getByRole("button", { name: "Następny krok →" }).click();
+
+  await expect(page.getByText("Aktualna sekcja: 0")).toBeVisible();
+  await expect(page.getByRole("heading", { name: /0\. Poziom bazowy i kontekst dnia/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: "← Poprzedni krok" })).toBeVisible();
+
+  await page.getByRole("button", { name: "← Poprzedni krok" }).click();
+
+  await expect(page.getByText("Aktualna sekcja: M")).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Dane podstawowe/ })).toBeVisible();
+
+  await page.getByRole("button", { name: "2. Czego oczekiwano w tym momencie?" }).click();
+
+  await expect(page.getByText("Aktualna sekcja: 2")).toBeVisible();
+  await expect(page.getByRole("heading", { name: /2\. Czego oczekiwano w tym momencie\?/ })).toBeVisible();
 });
 
 test("formularz rozszerzony po nieudanym PDF prowadzi do pierwszej błędnej sekcji danych podstawowych", async ({ page }) => {
