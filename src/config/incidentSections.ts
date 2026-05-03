@@ -33,13 +33,21 @@ export function hasRequiredOtherValue(selected: string[], value: string): boolea
   return !hasSelectedOther(selected) || String(value || "").trim() !== "";
 }
 
+export function hasRequiredSleepDetails(slept: string, sleepDetails: string): boolean {
+  return slept !== "Tak" || String(sleepDetails || "").trim() !== "";
+}
+
+export function hasRequiredTimeToEscalation(signalsAppeared: string, timeToEscalation: string): boolean {
+  return signalsAppeared !== "Tak" || String(timeToEscalation || "").trim() !== "";
+}
+
 export const incidentSections: IncidentSectionDefinition[] = [
   {
     id: "baseline",
     label: formLabels.incident.baselineSection,
     badge: "0",
     errorKey: "incident.baselineSection",
-    extraErrorKeys: ["incident.burdensOther"],
+    extraErrorKeys: ["incident.sleepDetails", "incident.burdensOther"],
     summary: "Poziom bazowy i kontekst dnia: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
@@ -51,7 +59,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.stayStageLoad,
       form.incident.burdens,
       form.incident.burdensOther
-    ]) && hasRequiredOtherValue(form.incident.burdens, form.incident.burdensOther)
+    ]) && hasRequiredSleepDetails(form.incident.slept, form.incident.sleepDetails) && hasRequiredOtherValue(form.incident.burdens, form.incident.burdensOther)
   },
   {
     id: "before",
@@ -83,7 +91,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.signalsSection,
     badge: "3",
     errorKey: "incident.signalsSection",
-    extraErrorKeys: ["incident.signalsOther"],
+    extraErrorKeys: ["incident.signalsOther", "incident.timeToEscalation"],
     summary: (form) => form.incident.signalsAppeared === "Tak"
       ? "Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie."
       : "Pierwsze oznaki narastającego napięcia: uzupełnij przynajmniej jedno pole.",
@@ -91,7 +99,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       ? "Skoro sygnały się pojawiły, wskaż jakie."
       : "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => (form.incident.signalsAppeared === "Tak"
-      ? hasAnyValue([form.incident.signals, form.incident.signalsOther])
+      ? hasAnyValue([form.incident.signals, form.incident.signalsOther]) && hasRequiredTimeToEscalation(form.incident.signalsAppeared, form.incident.timeToEscalation)
       : hasAnyValue([
         form.incident.signalsAppeared,
         form.incident.signals,

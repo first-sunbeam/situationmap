@@ -25,7 +25,12 @@ const { env, form, fieldErrors, tensionLevels, yesNoUnknown } = useFormState();
       />
       <SelectField v-model="form.incident.tired" :label="formLabels.incident.tired" :options="yesNoUnknown" />
       <SelectField v-model="form.incident.slept" :label="formLabels.incident.slept" :options="yesNoUnknown" />
-      <InputField v-model="form.incident.sleepDetails" :label="formLabels.incident.sleepDetails" />
+      <InputField
+        v-model="form.incident.sleepDetails"
+        :label="formLabels.incident.sleepDetails"
+        :required="form.incident.slept === 'Tak'"
+        :error="fieldErrors['incident.sleepDetails']"
+      />
       <template v-if="env.stayStages">
         <SelectField v-model="form.incident.stayStage" :label="formLabels.incident.stayStage" :options="env.stayStages" />
         <SelectField v-model="form.incident.stayStageLoad" :label="formLabels.incident.stayStageLoad" :options="yesNoUnknown" />

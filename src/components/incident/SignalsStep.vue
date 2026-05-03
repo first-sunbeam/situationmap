@@ -18,7 +18,12 @@ const { form, fieldErrors, commonSignals, yesNoUnknown } = useFormState();
     <p v-if="fieldErrors['incident.signalsSection']" class="field-error">{{ fieldErrors['incident.signalsSection'] }}</p>
     <div class="field-grid">
       <SelectField v-model="form.incident.signalsAppeared" :label="formLabels.incident.signalsAppeared" :options="yesNoUnknown" />
-      <InputField v-model="form.incident.timeToEscalation" :label="formLabels.incident.timeToEscalation" />
+      <InputField
+        v-model="form.incident.timeToEscalation"
+        :label="formLabels.incident.timeToEscalation"
+        :required="form.incident.signalsAppeared === 'Tak'"
+        :error="fieldErrors['incident.timeToEscalation']"
+      />
       <ChoiceGroupField
         v-model="form.incident.signals"
         :label="formLabels.incident.signals"

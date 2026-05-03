@@ -41,7 +41,7 @@ export const formLabels = {
     signalsAppeared: "Czy pojawiły się sygnały?",
     signals: "Jakie sygnały?",
     signalsOther: "Jeśli inne, wpisz jakie",
-    timeToEscalation: "Czas do eskalacji",
+    timeToEscalation: "Ile czasu przed eskalacją?",
     firstSignal: "Co zwykle pojawia się najpierw?",
     predicts: "Czy zapowiada trudniejsze zachowanie?",
     phase: "W jakiej fazie napięcia była osoba?",

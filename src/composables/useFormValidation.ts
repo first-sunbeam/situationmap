@@ -94,8 +94,20 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
       }
     }
 
+    if (form.incident.slept === "Tak" && isBlank(form.incident.sleepDetails)) {
+      const message = "Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo.";
+      fieldErrors["incident.sleepDetails"] = message;
+      summary.push(`${formLabels.incident.baselineSection}: ${message}`);
+    }
+
     requireOtherField({ fieldErrors, summary, selected: form.incident.burdens, value: form.incident.burdensOther, fieldKey: "incident.burdensOther", sectionLabel: formLabels.incident.baselineSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: formLabels.incident.expectationsSection });
+    if (form.incident.signalsAppeared === "Tak" && isBlank(form.incident.timeToEscalation)) {
+      const message = "Skoro pojawiły się sygnały, podaj ile czasu przed eskalacją.";
+      fieldErrors["incident.timeToEscalation"] = message;
+      summary.push(`${formLabels.incident.signalsSection}: ${message}`);
+    }
+
     requireOtherField({ fieldErrors, summary, selected: form.incident.signals, value: form.incident.signalsOther, fieldKey: "incident.signalsOther", sectionLabel: formLabels.incident.signalsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: formLabels.incident.actionsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.after, value: form.incident.afterOther, fieldKey: "incident.afterOther", sectionLabel: formLabels.incident.afterSection });
