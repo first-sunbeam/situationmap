@@ -1,10 +1,18 @@
-import { useId } from "vue";
+import { computed, toValue, useId, type MaybeRefOrGetter } from "vue";
 
-export function useFieldIds(hint: string | undefined, error: string | undefined) {
-  const hintId = hint ? useId() : undefined;
-  const errorId = error ? useId() : undefined;
+export function useFieldIds(
+  hint?: MaybeRefOrGetter<string | undefined>,
+  error?: MaybeRefOrGetter<string | undefined>
+) {
+  const hintId = useId();
+  const errorId = useId();
 
-  const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
+  const describedBy = computed(() => {
+    return [
+      toValue(hint) ? hintId : undefined,
+      toValue(error) ? errorId : undefined
+    ].filter(Boolean).join(" ") || undefined;
+  });
 
   return { hintId, errorId, describedBy };
 }

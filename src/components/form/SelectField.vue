@@ -21,7 +21,7 @@ const {
 
 const model = defineModel<string>({ required: true });
 
-const { hintId, errorId, describedBy } = useFieldIds(hint, error);
+const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
 </script>
 
 <template>

@@ -12,7 +12,7 @@ const { label, options, required = false, full = true, hint, error } = definePro
 
 const model = defineModel<string[]>({ required: true });
 
-const { hintId, errorId, describedBy } = useFieldIds(hint, error);
+const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
 
 function isSelected(option: string): boolean {
   return model.value.includes(option);

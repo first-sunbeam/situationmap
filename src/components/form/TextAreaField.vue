@@ -10,7 +10,7 @@ const { label, hint, required = false, error } = defineProps<{
 
 const model = defineModel<string>({ required: true });
 
-const { hintId, errorId, describedBy } = useFieldIds(hint, error);
+const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
 </script>
 
 <template>
