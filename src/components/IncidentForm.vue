@@ -13,23 +13,23 @@ import AfterStep from "./incident/AfterStep.vue";
 import RegulationStep from "./incident/RegulationStep.vue";
 import IncidentStepper from "./incident/IncidentStepper.vue";
 
-const steps = incidentStepDefinitions;
-const stepComponents: Record<string, Component> = {
-  meta: MetaStep,
-  baseline: BaselineStep,
-  before: BeforeStep,
-  expectations: ExpectationsStep,
-  signals: SignalsStep,
-  actions: ActionsStep,
-  behavior: BehaviorStep,
-  after: AfterStep,
-  regulation: RegulationStep
-};
+const steps = [
+  { ...incidentStepDefinitions[0], component: MetaStep },
+  { ...incidentStepDefinitions[1], component: BaselineStep },
+  { ...incidentStepDefinitions[2], component: BeforeStep },
+  { ...incidentStepDefinitions[3], component: ExpectationsStep },
+  { ...incidentStepDefinitions[4], component: SignalsStep },
+  { ...incidentStepDefinitions[5], component: ActionsStep },
+  { ...incidentStepDefinitions[6], component: BehaviorStep },
+  { ...incidentStepDefinitions[7], component: AfterStep },
+  { ...incidentStepDefinitions[8], component: RegulationStep }
+] satisfies Array<IncidentStepDefinition & { component: Component }>;
+
+const { env, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
 
 const activeStep = ref(steps[0].id);
-const currentStepIndex = computed(() => Math.max(steps.findIndex((step) => step.id === activeStep.value), 0));
-const currentStep = computed(() => steps[currentStepIndex.value] ?? steps[0]);
-const currentStepComponent = computed(() => stepComponents[currentStep.value.id] ?? MetaStep);
+const currentStepIndex = computed(() => steps.findIndex((step) => step.id === activeStep.value));
+const currentStep = computed(() => steps[currentStepIndex.value]);
 const isFirstStep = computed(() => currentStepIndex.value === 0);
 const isLastStep = computed(() => currentStepIndex.value === steps.length - 1);
 const progressValue = computed(() => `${((currentStepIndex.value + 1) / steps.length) * 100}%`);
@@ -43,14 +43,12 @@ function previousStep() {
 }
 
 function isStepErrored(step: IncidentStepDefinition) {
-  return step.errorKeys?.some((key) => Boolean(fieldErrors.value[key]));
+  return step.errorKeys.some((key) => Boolean(fieldErrors.value[key]));
 }
 
 function isStepComplete(step: IncidentStepDefinition) {
-  return Boolean(step.isComplete?.(form.value));
+  return step.isComplete(form.value);
 }
-
-const { env, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
 
 watch(validationRequestId, () => {
   const nextStepId = steps.find((step) => isStepErrored(step))?.id;
@@ -89,7 +87,7 @@ watch(activeStep, (stepId) => {
     />
 
     <div class="sections">
-      <component :is="currentStepComponent" />
+      <component :is="currentStep.component" />
     </div>
 
     <div class="section-nav" :class="{ single: isFirstStep || isLastStep }">

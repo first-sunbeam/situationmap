@@ -4,7 +4,7 @@ import type { EnvironmentConfig, FieldErrors, PdfAction, SituationForm } from ".
 import MetaFields from "./form/MetaFields.vue";
 import TextAreaField from "./form/TextAreaField.vue";
 
-defineProps<{
+const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps<{
   env: EnvironmentConfig;
   form: SituationForm;
   sendEmail: () => void;
@@ -24,7 +24,7 @@ defineProps<{
       <div class="heading-actions">
         <button class="secondary-button" @click="resetSimple">↺ Wyczyść formularz</button>
         <button class="secondary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
-        <button class="primary-button" @click="sendEmail">✉ Wyślij</button>
+        <button class="primary-button" @click="sendEmail"><span aria-hidden="true">✉</span> Wyślij</button>
       </div>
     </div>
 
@@ -37,21 +37,50 @@ defineProps<{
       <section class="section">
         <h3>{{ formLabels.simple.section }}</h3>
         <div class="field-grid">
-          <TextAreaField v-model="form.simple.factDescription" :label="formLabels.simple.factDescription" hint="Krótko, fakty bez interpretacji." required :error="fieldErrors['simple.factDescription']" />
-          <TextAreaField v-model="form.simple.antecedents" :label="formLabels.simple.antecedents" hint="Np. zmiana planu, hałas, oczekiwanie." />
-          <TextAreaField v-model="form.simple.signals" :label="formLabels.simple.signals" hint="Np. milczenie, napięcie ciała, protest." />
-          <TextAreaField v-model="form.simple.interventions" :label="formLabels.simple.interventions" />
-          <TextAreaField v-model="form.simple.behavior" :label="formLabels.simple.behavior" />
-          <TextAreaField v-model="form.simple.helped" :label="formLabels.simple.helped" hint="Jeśli nic nie pomogło, wpisz to wprost." required :error="fieldErrors['simple.helped']" />
-          <TextAreaField v-model="form.simple.notes" :label="formLabels.simple.notes" />
+          <TextAreaField
+            v-model="form.simple.factDescription"
+            :label="formLabels.simple.factDescription"
+            hint="Krótko, fakty bez interpretacji."
+            required
+            :error="fieldErrors['simple.factDescription']"
+          />
+          <TextAreaField
+            v-model="form.simple.antecedents"
+            :label="formLabels.simple.antecedents"
+            hint="Np. zmiana planu, hałas, oczekiwanie."
+          />
+          <TextAreaField
+            v-model="form.simple.signals"
+            :label="formLabels.simple.signals"
+            hint="Np. milczenie, napięcie ciała, protest."
+          />
+          <TextAreaField
+            v-model="form.simple.interventions"
+            :label="formLabels.simple.interventions"
+          />
+          <TextAreaField
+            v-model="form.simple.behavior"
+            :label="formLabels.simple.behavior"
+          />
+          <TextAreaField
+            v-model="form.simple.helped"
+            :label="formLabels.simple.helped"
+            hint="Jeśli nic nie pomogło, wpisz to wprost."
+            required
+            :error="fieldErrors['simple.helped']"
+          />
+          <TextAreaField
+            v-model="form.simple.notes"
+            :label="formLabels.simple.notes"
+          />
         </div>
       </section>
     </div>
 
     <div class="footer-actions">
-      <button class="secondary-button" @click="resetSimple">↺ Wyczyść</button>
+      <button class="secondary-button" @click="resetSimple">↺ Wyczyść formularz</button>
       <button class="secondary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
-      <button class="primary-button" @click="sendEmail">✉ Wyślij na kontakt@autyzm.poznan.pl</button>
+      <button class="primary-button" @click="sendEmail"><span aria-hidden="true">✉</span> Wyślij</button>
     </div>
   </section>
 </template>

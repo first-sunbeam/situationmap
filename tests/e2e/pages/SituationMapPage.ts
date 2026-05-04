@@ -82,9 +82,7 @@ export class SituationMapPage {
   }
 
   get sendEmailButton(): Locator {
-    return this.page.getByRole("button", {
-      name: /Wyślij na kontakt@autyzm\.poznan\.pl/,
-    });
+    return this.page.getByRole("button", { name: "Wyślij" }).first();
   }
 
   // ── Toast / status messages ───────────────────────────────────────────────

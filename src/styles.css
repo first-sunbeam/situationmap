@@ -518,6 +518,10 @@ button {
   gap: 14px;
 }
 
+.map-field-grid {
+  margin-top: 16px;
+}
+
 .field {
   display: grid;
   gap: 7px;
