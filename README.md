@@ -8,7 +8,7 @@ Aplikacja jest dostępna publicznie pod adresem:
 
 ## Dla kogo jest aplikacja?
 
-Narzędzie może wspierać osoby opiekuńcze, specjalistów, nauczycieli i zespoły pracujące z osobami w spektrum autyzmu przy zbieraniu informacji o sytuacji, zachowaniu, kontekście środowiskowym oraz możliwych czynnikach wpływających na zdarzenie.
+Narzędzie może wspierać rodziców, opiekunów, specjalistów, nauczycieli i zespoły pracujące z osobami w spektrum autyzmu przy zbieraniu informacji o sytuacji, zachowaniu, kontekście środowiskowym oraz możliwych czynnikach wpływających na zdarzenie.
 
 ## Dostępne środowiska
 
