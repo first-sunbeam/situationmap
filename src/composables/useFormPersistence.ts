@@ -1,4 +1,4 @@
-import type { Ref } from "vue";
+import type { Reactive, Ref } from "vue";
 import { watch } from "vue";
 import { blankForm, environments } from "../data/environments";
 import type { ExtendedMode, FormVariant, SituationForm } from "../types/form";
@@ -52,6 +52,15 @@ export function hydrateForm(envKey: EnvironmentKey, value: PersistedForm | undef
   };
 }
 
+function hydrateForms(forms: Partial<Record<EnvironmentKey, PersistedForm>> | undefined): FormsByEnvironment {
+  return Object.fromEntries(
+    Object.keys(environments).map((key) => {
+      const envKey = key as EnvironmentKey;
+      return [envKey, hydrateForm(envKey, forms?.[envKey])];
+    })
+  ) as FormsByEnvironment;
+}
+
 export function loadState(): PersistedState {
   const fallback: PersistedState = {
     activeEnvKey: "home",
@@ -68,7 +77,7 @@ export function loadState(): PersistedState {
       activeEnvKey: isEnvironmentKey(parsed.activeEnvKey) ? parsed.activeEnvKey : fallback.activeEnvKey,
       activeVariant: isFormVariant(parsed.activeVariant) ? parsed.activeVariant : fallback.activeVariant,
       activeMode: isExtendedMode(parsed.activeMode) ? parsed.activeMode : fallback.activeMode,
-      forms: parsed.forms || fallback.forms
+      forms: hydrateForms(parsed.forms)
     };
   } catch {
     return fallback;
@@ -85,10 +94,10 @@ export function useFormPersistence({
   activeEnvKey: Ref<EnvironmentKey>;
   activeVariant: Ref<FormVariant>;
   activeMode: Ref<ExtendedMode>;
-  forms: FormsByEnvironment;
+  forms: Reactive<FormsByEnvironment>;
   status: Ref<string>;
 }) {
-  let saveStatusTimeout: ReturnType<typeof setTimeout> | undefined;
+  let saveStatusTimeout: number | undefined;
 
   watch([activeEnvKey, activeVariant, activeMode, forms], () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -100,7 +109,7 @@ export function useFormPersistence({
 
     clearTimeout(saveStatusTimeout);
     status.value = SAVE_STATUS_MESSAGE;
-    saveStatusTimeout = setTimeout(() => {
+    saveStatusTimeout = window.setTimeout(() => {
       if (status.value === SAVE_STATUS_MESSAGE) status.value = "";
     }, 1800);
   }, { deep: true });
