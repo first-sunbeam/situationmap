@@ -41,13 +41,7 @@ Rozbudowana karta zdarzenia i mapa środowiska z możliwością wygenerowania lu
 
 Aplikacja nie zapisuje danych na zewnętrznym serwerze. Dane wpisane w formularzu są przechowywane lokalnie w przeglądarce użytkownika (`localStorage`), aby można było wrócić do pracy po odświeżeniu strony.
 
-W formularzu prostym przycisk **Wyślij** otwiera domyślny program pocztowy z przygotowaną wiadomością na adres:
-
-```text
-kontakt@autyzm.poznan.pl
-```
-
-Sama wysyłka odbywa się poza aplikacją, przez program pocztowy użytkownika.
+W formularzu prostym przycisk **Wyślij** otwiera domyślny program pocztowy z przygotowaną wiadomością. Sama wysyłka odbywa się poza aplikacją, przez program pocztowy użytkownika.
 
 ## Stack technologiczny
 
