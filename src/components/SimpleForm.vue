@@ -40,27 +40,34 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.factDescription"
             :label="formLabels.simple.factDescription"
-            hint="Krótko, fakty bez interpretacji."
+            hint="Krótko opisz, co się wydarzyło. Fakty, bez interpretacji."
             required
             :error="fieldErrors['simple.factDescription']"
           />
           <TextAreaField
             v-model="form.simple.antecedents"
             :label="formLabels.simple.antecedents"
-            hint="Np. zmiana planu, hałas, oczekiwanie."
+            hint="Np. zmiana planu, hałas, oczekiwanie, polecenie, odmowa, koniec aktywności, przejście do innej aktywności."
           />
           <TextAreaField
             v-model="form.simple.signals"
             :label="formLabels.simple.signals"
-            hint="Np. milczenie, napięcie ciała, protest."
+            hint="Np. milczenie, napięcie ciała, protest, szybsze mówienie, wycofanie, jęczenie, podniesiony głos, powtarzanie słów."
           />
           <TextAreaField
             v-model="form.simple.interventions"
             :label="formLabels.simple.interventions"
+            hint="Co zrobiła lub powiedziała osoba dorosła / otoczenie?"
           />
           <TextAreaField
             v-model="form.simple.behavior"
             :label="formLabels.simple.behavior"
+            hint="Opisz konkretnie to, co można było zobaczyć lub usłyszeć: słowa, ruchy, działania, odmowę, płacz, krzyk, ucieczkę, rzucanie przedmiotami, agresję, autoagresję itd."
+          />
+          <TextAreaField
+            v-model="form.simple.risk"
+            :label="formLabels.simple.risk"
+            hint="Np. gryzienie, kopanie, uderzanie, rozbite szkło, rzucanie przedmiotami, ucieczka, zagrożenie dla rodzeństwa, konieczność zabezpieczenia osoby lub otoczenia."
           />
           <TextAreaField
             v-model="form.simple.helped"
@@ -72,6 +79,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.notes"
             :label="formLabels.simple.notes"
+            hint="Np. sen, jedzenie, choroba, ból, wcześniejsze przeciążenie, zmiany w planie, trudny dzień, ważny kontekst."
           />
         </div>
       </section>

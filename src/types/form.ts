@@ -40,6 +40,7 @@ export interface SimpleFormData {
   signals: string;
   interventions: string;
   behavior: string;
+  risk: string;
   helped: string;
   notes: string;
 }

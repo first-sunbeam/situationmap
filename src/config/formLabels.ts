@@ -10,9 +10,10 @@ export const formLabels = {
     section: "Opis sytuacji",
     factDescription: "Krótki opis sytuacji",
     antecedents: "Co wydarzyło się tuż przed?",
-    signals: "Jakie były pierwsze sygnały?",
+    signals: "Jakie były pierwsze sygnały napięcia?",
     interventions: "Jak zareagowano na pierwsze sygnały?",
-    behavior: "Opis zachowania",
+    behavior: "Co było widoczne w zachowaniu?",
+    risk: "Co było najbardziej ryzykowne albo najtrudniejsze?",
     helped: "Co pomogło obniżyć napięcie lub uspokoić sytuację?",
     notes: "Dodatkowe uwagi"
   },

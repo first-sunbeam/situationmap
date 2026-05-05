@@ -178,6 +178,7 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       signals: "",
       interventions: "",
       behavior: "",
+      risk: "",
       helped: "",
       notes: ""
     },
