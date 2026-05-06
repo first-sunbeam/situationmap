@@ -195,6 +195,7 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       factDescription: "",
       expectations: [],
       expectationOther: "",
+      influence: "",
       signalsAppeared: "",
       signals: [],
       signalsOther: "",

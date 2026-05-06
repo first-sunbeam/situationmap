@@ -39,6 +39,7 @@ export const formLabels = {
     factDescription: "Krótki opis sytuacji (fakty, bez interpretacji)",
     expectations: "Oczekiwania",
     expectationOther: "Jeśli inne, wpisz jakie",
+    influence: "Na co osoba miała wpływ, a na co nie?",
     signalsAppeared: "Czy pojawiły się sygnały?",
     signals: "Jakie sygnały?",
     signalsOther: "Jeśli inne, wpisz jakie",

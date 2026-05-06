@@ -3,6 +3,7 @@ import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
 import InputField from "../form/InputField.vue";
+import TextAreaField from "../form/TextAreaField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
@@ -23,6 +24,11 @@ const { env, form, fieldErrors } = useFormState();
       :required="form.incident.expectations.includes('inne')"
       :error="fieldErrors['incident.expectationOther']"
       full
+    />
+    <TextAreaField
+      v-model="form.incident.influence"
+      :label="formLabels.incident.influence"
+      hint="Czy mogła o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jej kontrolą?"
     />
   </section>
 </template>

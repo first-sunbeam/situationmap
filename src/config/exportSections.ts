@@ -70,7 +70,8 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
     {
       title: formLabels.incident.expectationsSection,
       rows: [
-        { label: formLabels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) }
+        { label: formLabels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) },
+        { label: formLabels.incident.influence, value: (_env, form) => form.incident.influence }
       ]
     },
     {

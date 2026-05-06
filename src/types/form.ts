@@ -58,6 +58,7 @@ export interface IncidentFormData {
   factDescription: string;
   expectations: string[];
   expectationOther: string;
+  influence: string;
   signalsAppeared: string;
   signals: string[];
   signalsOther: string;
