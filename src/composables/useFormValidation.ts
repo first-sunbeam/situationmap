@@ -86,6 +86,11 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     summary.push("Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub uspokoić sytuację?”.");
   }
 
+  if (variant === "simple" && isBlank(form.simple.notes)) {
+    fieldErrors["simple.notes"] = "Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.";
+    summary.push("Formularz prosty: uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.");
+  }
+
   if (variant === "extended" && mode !== "map") {
     for (const section of incidentSections) {
       if (!section.isComplete(form)) {
@@ -102,6 +107,12 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
 
     requireOtherField({ fieldErrors, summary, selected: form.incident.burdens, value: form.incident.burdensOther, fieldKey: "incident.burdensOther", sectionLabel: formLabels.incident.baselineSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: formLabels.incident.expectationsSection });
+
+    if (isBlank(form.incident.influence)) {
+      const message = "Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.";
+      fieldErrors["incident.influence"] = message;
+      summary.push(`${formLabels.incident.expectationsSection}: ${message}`);
+    }
     if (form.incident.signalsAppeared === "Tak" && isBlank(form.incident.timeToEscalation)) {
       const message = "Skoro pojawiły się sygnały, podaj ile czasu przed eskalacją.";
       fieldErrors["incident.timeToEscalation"] = message;

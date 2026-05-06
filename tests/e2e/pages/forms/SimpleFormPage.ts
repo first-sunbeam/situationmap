@@ -7,6 +7,8 @@ export const SIMPLE_VALIDATION_MESSAGES = {
   description: "Formularz prosty: uzupełnij krótki opis sytuacji.",
   helped:
     "Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub uspokoić sytuację?”.",
+  notes:
+    "Formularz prosty: uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.",
 } as const;
 
 export class SimpleFormPage {
@@ -44,6 +46,10 @@ export class SimpleFormPage {
     return this.page.getByLabel("Inne osoby obecne");
   }
 
+  get influenceField(): Locator {
+    return this.page.getByLabel("Na co osoba miała wpływ, a na co nie?");
+  }
+
   // ── Validation messages ───────────────────────────────────────────────────
 
   validationMessage(key: keyof typeof SIMPLE_VALIDATION_MESSAGES): Locator {
@@ -67,6 +73,7 @@ export class SimpleFormPage {
     guardian: string;
     description: string;
     helped: string;
+    influence: string;
   }) {
     await this.page.getByLabel("Data").fill(data.date);
     await this.page.getByLabel("Godzina").fill(data.time);
@@ -74,5 +81,6 @@ export class SimpleFormPage {
     await this.page.getByLabel("Rodzic / opiekun prowadzący").fill(data.guardian);
     await this.descriptionField.fill(data.description);
     await this.helpedField.fill(data.helped);
+    await this.influenceField.fill(data.influence);
   }
 }

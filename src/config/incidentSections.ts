@@ -49,6 +49,10 @@ export function hasRequiredEarlierWhat(earlierPossible: string, earlierWhat: str
   return earlierPossible !== "Tak" || String(earlierWhat || "").trim() !== "";
 }
 
+function hasRequiredText(value: string): boolean {
+  return String(value || "").trim() !== "";
+}
+
 export const incidentSections: IncidentSectionDefinition[] = [
   {
     id: "baseline",
@@ -86,13 +90,13 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.expectationsSection,
     badge: "2",
     errorKey: "incident.expectationsSection",
-    extraErrorKeys: ["incident.expectationOther"],
-    summary: "Czego oczekiwano w tym momencie: uzupełnij przynajmniej jedno pole.",
-    message: "Zaznacz przynajmniej jedną opcję albo wpisz własną odpowiedź.",
+    extraErrorKeys: ["incident.expectationOther", "incident.influence"],
+    summary: "Czego oczekiwano w tym momencie: uzupełnij oczekiwania oraz pole wpływu osoby.",
+    message: "Zaznacz przynajmniej jedną opcję albo wpisz własną odpowiedź oraz uzupełnij pole wpływu osoby.",
     isComplete: (form) => hasAnyValue([
       form.incident.expectations,
       form.incident.expectationOther
-    ]) && hasRequiredOtherValue(form.incident.expectations, form.incident.expectationOther)
+    ]) && hasRequiredText(form.incident.influence) && hasRequiredOtherValue(form.incident.expectations, form.incident.expectationOther)
   },
   {
     id: "signals",

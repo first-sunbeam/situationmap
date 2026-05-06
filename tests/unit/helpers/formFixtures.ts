@@ -28,6 +28,7 @@ export function fillSimpleForm(form: HomeForm): void {
   fillRequiredMeta(form);
   form.simple.factDescription = "Krótki opis sytuacji.";
   form.simple.helped = "Przerwa i spokojne miejsce.";
+  form.simple.notes = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
 }
 
 /**
@@ -38,6 +39,7 @@ export function fillMinimalIncident(form: HomeForm): void {
   form.incident.tension = "1 podwyższony";
   form.incident.antecedents = ["Zmiana aktywności"];
   form.incident.expectations = ["Brak wymagań"];
+  form.incident.influence = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
   form.incident.signalsAppeared = "Nie";
   form.incident.phase = "Żółta - narastające napięcie";
   form.incident.behavior = "Protest słowny.";
@@ -68,6 +70,7 @@ export function createFilledHomeForm(): HomeForm {
   form.incident.antecedents = ["Zmiana aktywności"];
   form.incident.endedBy = ["czas / przeczekanie"];
   form.incident.tension = "1 podwyższony";
+  form.incident.influence = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
   form.map.rows[0].time = "2h";
   form.map.rows[0].activity = "Zabawa";
   return form;

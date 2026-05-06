@@ -80,6 +80,8 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
             v-model="form.simple.notes"
             :label="formLabels.simple.notes"
             hint="Czy mogła o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jej kontrolą?"
+            required
+            :error="fieldErrors['simple.notes']"
           />
         </div>
       </section>

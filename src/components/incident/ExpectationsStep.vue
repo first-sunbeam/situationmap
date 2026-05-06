@@ -29,6 +29,8 @@ const { env, form, fieldErrors } = useFormState();
       v-model="form.incident.influence"
       :label="formLabels.incident.influence"
       hint="Czy mogła o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jej kontrolą?"
+      required
+      :error="fieldErrors['incident.influence']"
     />
   </section>
 </template>

@@ -20,6 +20,7 @@ const DEFAULT_SIMPLE_FIELDS = {
   ...DEFAULT_META,
   description: "Dziecko zaprotestowało po zakończeniu ulubionej aktywności.",
   helped: "Cisza, krótszy komunikat i kilka minut przerwy.",
+  influence: "Mogło wybrać kolejność, ale zakończenie aktywności było narzucone.",
 };
 
 // ── Hooks ─────────────────────────────────────────────────────────────────────
@@ -100,6 +101,7 @@ test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony",
   await form.otherPeopleField.fill("Mama, tata");
   await form.descriptionField.fill("Krótki opis zdarzenia zapisany lokalnie.");
   await form.helpedField.fill("Przerwa i spokojne miejsce.");
+  await form.influenceField.fill("Mogło wybrać kolejność, ale zakończenie aktywności było narzucone.");
 
   await expect(app.savedLocallyToast).toBeVisible();
   await page.reload();

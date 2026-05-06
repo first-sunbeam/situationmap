@@ -28,6 +28,7 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["meta.lead"]).toBe("Uzupełnij pole: Osoba prowadząca.");
     expect(result.fieldErrors["simple.factDescription"]).toBe("Uzupełnij krótki opis sytuacji.");
     expect(result.fieldErrors["simple.helped"]).toContain("Uzupełnij pole");
+    expect(result.fieldErrors["simple.notes"]).toBe("Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.");
     expect(result.summary).toContain("Formularz prosty: uzupełnij krótki opis sytuacji.");
   });
 
@@ -36,6 +37,7 @@ describe("walidacja formularza", () => {
     fillRequiredMeta(form);
     form.simple.factDescription = "Krótki opis sytuacji.";
     form.simple.helped = "Przerwa i spokojne miejsce.";
+    form.simple.notes = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
 
     const result = validateForm({ variant: "simple", mode: "incident", form });
 
@@ -54,6 +56,7 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["incident.baselineSection"]).toBe("Uzupełnij przynajmniej jedno pole w tej sekcji.");
     expect(result.fieldErrors["incident.beforeSection"]).toBe("Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.");
     expect(result.fieldErrors["incident.regulationSection"]).toBe("Zaznacz, co najbardziej pomogło w tej sytuacji.");
+    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.");
   });
 
   it("akceptuje alternatywną wartość w sekcji przed zdarzeniem", () => {
@@ -65,6 +68,17 @@ describe("walidacja formularza", () => {
 
     expect(result.fieldErrors["incident.beforeSection"]).toBeUndefined();
     expect(result.fieldErrors["incident.factDescription"]).toBeUndefined();
+  });
+
+  it("wymaga opisu wpływu osoby w sekcji oczekiwań", () => {
+    const form = createHomeForm();
+    fillRequiredMeta(form);
+    form.incident.expectations = ["Brak wymagań"];
+
+    const result = validateForm({ variant: "extended", mode: "incident", form });
+
+    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.");
+    expect(result.summary).toContain("2. Czego oczekiwano w tym momencie?: Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.");
   });
 
   it("wymaga szczegółów sygnałów i czasu przed eskalacją, gdy sygnały się pojawiły", () => {
@@ -150,6 +164,7 @@ describe("walidacja formularza", () => {
     ["baseline",     (f) => { f.incident.slept          = "Tak"; }],
     ["signals",      (f) => { f.incident.signalsAppeared = "Tak"; f.incident.signals = ["zmiana tonu głosu"]; }],
     ["expectations", (f) => { f.incident.expectations  = ["inne"]; }],
+    ["expectations", (f) => { f.incident.expectations  = ["Brak wymagań"]; }],
     ["signals",      (f) => { f.incident.signals       = ["inne"]; }],
     ["actions",      (f) => { f.incident.interventions = ["Inne"]; }],
     ["actions",      (f) => { f.incident.earlierPossible = "Tak"; }],
