@@ -8,14 +8,12 @@ export const formLabels = {
   },
   simple: {
     section: "Opis sytuacji",
-    factDescription: "Krótki opis sytuacji",
     antecedents: "Co wydarzyło się tuż przed?",
     signals: "Jakie były pierwsze sygnały napięcia?",
     interventions: "Jak zareagowano na pierwsze sygnały?",
-    behavior: "Co było widoczne w zachowaniu?",
-    risk: "Co było najbardziej ryzykowne albo najtrudniejsze?",
-    helped: "Co pomogło obniżyć napięcie lub uspokoić sytuację?",
-    notes: "Na co osoba miała wpływ, a na co nie?"
+    behavior: "Jaki był przebieg sytuacji i co można było zaobserwować?",
+    helped: "Co pomogło obniżyć napięcie lub wyregulować sytuację?",
+    notes: "Na co dziecko/uczeń miało wpływ, a na co nie?"
   },
   incident: {
     baselineSection: "0. Poziom bazowy i kontekst dnia",
@@ -39,7 +37,7 @@ export const formLabels = {
     factDescription: "Krótki opis sytuacji (fakty, bez interpretacji)",
     expectations: "Oczekiwania",
     expectationOther: "Jeśli inne, wpisz jakie",
-    influence: "Na co osoba miała wpływ, a na co nie?",
+    influence: "Na co dziecko/uczeń miało wpływ, a na co nie?",
     signalsAppeared: "Czy pojawiły się sygnały?",
     signals: "Jakie sygnały?",
     signalsOther: "Jeśli inne, wpisz jakie",

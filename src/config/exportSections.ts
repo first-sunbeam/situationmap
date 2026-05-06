@@ -33,12 +33,10 @@ export function getMetaExportSection(env: EnvironmentConfig): ExportSection {
 export const simpleExportSection: ExportSection = {
   title: formLabels.simple.section,
   rows: [
-    { label: formLabels.simple.factDescription, value: (_env, form) => form.simple.factDescription },
     { label: formLabels.simple.antecedents, value: (_env, form) => form.simple.antecedents },
     { label: formLabels.simple.signals, value: (_env, form) => form.simple.signals },
     { label: formLabels.simple.interventions, value: (_env, form) => form.simple.interventions },
     { label: formLabels.simple.behavior, value: (_env, form) => form.simple.behavior },
-    { label: formLabels.simple.risk, value: (_env, form) => form.simple.risk },
     { label: formLabels.simple.helped, value: (_env, form) => form.simple.helped },
     { label: formLabels.simple.notes, value: (_env, form) => form.simple.notes }
   ]

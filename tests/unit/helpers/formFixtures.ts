@@ -26,7 +26,7 @@ export function fillRequiredMeta(form: HomeForm): void {
 /** Wypełnia wszystkie pola wymagane przez formularz prosty. */
 export function fillSimpleForm(form: HomeForm): void {
   fillRequiredMeta(form);
-  form.simple.factDescription = "Krótki opis sytuacji.";
+  form.simple.behavior = "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
   form.simple.helped = "Przerwa i spokojne miejsce.";
   form.simple.notes = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
 }

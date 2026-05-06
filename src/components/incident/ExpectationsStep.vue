@@ -28,7 +28,7 @@ const { env, form, fieldErrors } = useFormState();
     <TextAreaField
       v-model="form.incident.influence"
       :label="formLabels.incident.influence"
-      hint="Czy mogła o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jej kontrolą?"
+      hint="Czy mogło o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jego kontrolą?"
       required
       :error="fieldErrors['incident.influence']"
     />

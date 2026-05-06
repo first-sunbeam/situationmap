@@ -35,12 +35,10 @@ export interface MetaForm {
 }
 
 export interface SimpleFormData {
-  factDescription: string;
   antecedents: string;
   signals: string;
   interventions: string;
   behavior: string;
-  risk: string;
   helped: string;
   notes: string;
 }

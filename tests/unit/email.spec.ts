@@ -12,7 +12,7 @@ describe("budowanie wiadomości e-mail", () => {
     const form = createHomeForm();
     // Własna wartość `helped` — celowo różna od domyślnej w fillSimpleForm.
     fillRequiredMeta(form);
-    form.simple.factDescription = "Krótki opis sytuacji.";
+    form.simple.behavior = "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
     form.simple.helped = "Przerwa i cisza.";
 
     const email = buildEmail({
@@ -26,9 +26,9 @@ describe("budowanie wiadomości e-mail", () => {
     expect(email.body).toContain("Środowisko: Dom");
     expect(email.body).toContain("Wersja formularza: prosta");
     expect(email.body).toContain("Data: 2026-05-02");
-    expect(email.body).toContain("Krótki opis sytuacji: Krótki opis sytuacji.");
+    expect(email.body).toContain("Jaki był przebieg sytuacji i co można było zaobserwować?: Protest, płacz i odmowa przejścia do kolejnej aktywności.");
     expect(email.body).toContain(
-      "Co pomogło obniżyć napięcie lub uspokoić sytuację?: Przerwa i cisza.",
+      "Co pomogło obniżyć napięcie lub wyregulować sytuację?: Przerwa i cisza.",
     );
   });
 
@@ -41,7 +41,8 @@ describe("budowanie wiadomości e-mail", () => {
     });
 
     expect(email.body).toContain("Data: -");
-    expect(email.body).toContain("Krótki opis sytuacji: -");
+    expect(email.body).not.toContain("Krótki opis sytuacji: -");
+    expect(email.body).toContain("Jaki był przebieg sytuacji i co można było zaobserwować?: -");
   });
 
   it("łączy tablice checkboxów przecinkami", () => {

@@ -18,7 +18,7 @@ const DEFAULT_META = {
 
 const DEFAULT_SIMPLE_FIELDS = {
   ...DEFAULT_META,
-  description: "Dziecko zaprotestowało po zakończeniu ulubionej aktywności.",
+  behavior: "Dziecko zaprotestowało po zakończeniu ulubionej aktywności.",
   helped: "Cisza, krótszy komunikat i kilka minut przerwy.",
   influence: "Mogło wybrać kolejność, ale zakończenie aktywności było narzucone.",
 };
@@ -99,7 +99,7 @@ test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony",
 
   await app.fillMetaFields(DEFAULT_META);
   await form.otherPeopleField.fill("Mama, tata");
-  await form.descriptionField.fill("Krótki opis zdarzenia zapisany lokalnie.");
+  await form.behaviorField.fill("Protest i odmowa przejścia do kolejnej aktywności.");
   await form.helpedField.fill("Przerwa i spokojne miejsce.");
   await form.influenceField.fill("Mogło wybrać kolejność, ale zakończenie aktywności było narzucone.");
 
@@ -112,8 +112,8 @@ test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony",
   await expect(app.placeField).toHaveValue(DEFAULT_META.place);
   await expect(app.guardianField).toHaveValue(DEFAULT_META.guardian);
   await expect(form.otherPeopleField).toHaveValue("Mama, tata");
-  await expect(form.descriptionField).toHaveValue(
-    "Krótki opis zdarzenia zapisany lokalnie.",
+  await expect(form.behaviorField).toHaveValue(
+    "Protest i odmowa przejścia do kolejnej aktywności.",
   );
 });
 

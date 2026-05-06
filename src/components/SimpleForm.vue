@@ -38,13 +38,6 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
         <h3>{{ formLabels.simple.section }}</h3>
         <div class="field-grid">
           <TextAreaField
-            v-model="form.simple.factDescription"
-            :label="formLabels.simple.factDescription"
-            hint="Krótko opisz, co się wydarzyło. Fakty, bez interpretacji."
-            required
-            :error="fieldErrors['simple.factDescription']"
-          />
-          <TextAreaField
             v-model="form.simple.antecedents"
             :label="formLabels.simple.antecedents"
             hint="Np. zmiana planu, hałas, oczekiwanie, polecenie, odmowa, koniec aktywności, przejście do innej aktywności."
@@ -62,12 +55,9 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.behavior"
             :label="formLabels.simple.behavior"
-            hint="Opisz konkretnie to, co można było zobaczyć lub usłyszeć: słowa, ruchy, działania, odmowę, płacz, krzyk, ucieczkę, rzucanie przedmiotami, agresję, autoagresję itd."
-          />
-          <TextAreaField
-            v-model="form.simple.risk"
-            :label="formLabels.simple.risk"
-            hint="Np. gryzienie, kopanie, uderzanie, rozbite szkło, rzucanie przedmiotami, ucieczka, zagrożenie dla rodzeństwa, konieczność zabezpieczenia osoby lub otoczenia."
+            hint="Opisz fakty i obserwacje: słowa, ruchy, działania, odmowę, płacz, krzyk, wycofanie, ucieczkę, rzucanie przedmiotami itd."
+            required
+            :error="fieldErrors['simple.behavior']"
           />
           <TextAreaField
             v-model="form.simple.helped"
@@ -79,7 +69,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.notes"
             :label="formLabels.simple.notes"
-            hint="Czy mogła o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jej kontrolą?"
+            hint="Czy mogło o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jego kontrolą?"
             required
             :error="fieldErrors['simple.notes']"
           />

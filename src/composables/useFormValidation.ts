@@ -76,19 +76,19 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     }
   }
 
-  if (variant === "simple" && !String(form.simple.factDescription || "").trim()) {
-    fieldErrors["simple.factDescription"] = "Uzupełnij krótki opis sytuacji.";
-    summary.push("Formularz prosty: uzupełnij krótki opis sytuacji.");
+  if (variant === "simple" && isBlank(form.simple.behavior)) {
+    fieldErrors["simple.behavior"] = "Uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.";
+    summary.push("Formularz prosty: uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.");
   }
 
   if (variant === "simple" && !String(form.simple.helped || "").trim()) {
-    fieldErrors["simple.helped"] = "Uzupełnij pole „Co pomogło obniżyć napięcie lub uspokoić sytuację?” albo wpisz, że nic nie pomogło.";
-    summary.push("Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub uspokoić sytuację?”.");
+    fieldErrors["simple.helped"] = "Uzupełnij pole „Co pomogło obniżyć napięcie lub wyregulować sytuację?” albo wpisz, że nic nie pomogło.";
+    summary.push("Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub wyregulować sytuację?”.");
   }
 
   if (variant === "simple" && isBlank(form.simple.notes)) {
-    fieldErrors["simple.notes"] = "Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.";
-    summary.push("Formularz prosty: uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.");
+    fieldErrors["simple.notes"] = "Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.";
+    summary.push("Formularz prosty: uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.");
   }
 
   if (variant === "extended" && mode !== "map") {
@@ -109,7 +109,7 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: formLabels.incident.expectationsSection });
 
     if (isBlank(form.incident.influence)) {
-      const message = "Uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.";
+      const message = "Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.";
       fieldErrors["incident.influence"] = message;
       summary.push(`${formLabels.incident.expectationsSection}: ${message}`);
     }

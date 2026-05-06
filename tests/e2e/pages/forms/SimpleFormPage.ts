@@ -4,11 +4,12 @@ export const SIMPLE_VALIDATION_MESSAGES = {
   date: "Dane podstawowe: uzupełnij pole data.",
   time: "Dane podstawowe: uzupełnij pole godzina.",
   place: "Dane podstawowe: uzupełnij pole miejsce.",
-  description: "Formularz prosty: uzupełnij krótki opis sytuacji.",
+  behavior:
+    "Formularz prosty: uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.",
   helped:
-    "Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub uspokoić sytuację?”.",
+    "Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub wyregulować sytuację?”.",
   notes:
-    "Formularz prosty: uzupełnij pole „Na co osoba miała wpływ, a na co nie?”.",
+    "Formularz prosty: uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.",
 } as const;
 
 export class SimpleFormPage {
@@ -32,13 +33,15 @@ export class SimpleFormPage {
 
   // ── Fields ────────────────────────────────────────────────────────────────
 
-  get descriptionField(): Locator {
-    return this.page.getByLabel("Krótki opis sytuacji");
+  get behaviorField(): Locator {
+    return this.page.getByLabel(
+      "Jaki był przebieg sytuacji i co można było zaobserwować?"
+    );
   }
 
   get helpedField(): Locator {
     return this.page.getByLabel(
-      "Co pomogło obniżyć napięcie lub uspokoić sytuację?"
+      "Co pomogło obniżyć napięcie lub wyregulować sytuację?"
     );
   }
 
@@ -47,7 +50,7 @@ export class SimpleFormPage {
   }
 
   get influenceField(): Locator {
-    return this.page.getByLabel("Na co osoba miała wpływ, a na co nie?");
+    return this.page.getByLabel("Na co dziecko/uczeń miało wpływ, a na co nie?");
   }
 
   // ── Validation messages ───────────────────────────────────────────────────
@@ -71,7 +74,7 @@ export class SimpleFormPage {
     time: string;
     place: string;
     guardian: string;
-    description: string;
+    behavior: string;
     helped: string;
     influence: string;
   }) {
@@ -79,7 +82,7 @@ export class SimpleFormPage {
     await this.page.getByLabel("Godzina").fill(data.time);
     await this.page.getByLabel("Miejsce").fill(data.place);
     await this.page.getByLabel("Rodzic / opiekun prowadzący").fill(data.guardian);
-    await this.descriptionField.fill(data.description);
+    await this.behaviorField.fill(data.behavior);
     await this.helpedField.fill(data.helped);
     await this.influenceField.fill(data.influence);
   }

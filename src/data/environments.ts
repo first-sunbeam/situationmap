@@ -173,12 +173,10 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
   return {
     meta: { date: "", time: "", place: "", lead: "", present: "" },
     simple: {
-      factDescription: "",
       antecedents: "",
       signals: "",
       interventions: "",
       behavior: "",
-      risk: "",
       helped: "",
       notes: ""
     },

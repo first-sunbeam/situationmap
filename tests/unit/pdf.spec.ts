@@ -37,7 +37,7 @@ describe("generowanie PDF", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "simple", "incident"));
 
     expect(content).toContain("FORMULARZ PROSTY - DOM");
-    expect(content).toContain("Krótki opis sytuacji.");
+    expect(content).toContain("Protest, płacz i odmowa przejścia do kolejnej aktywności.");
     expect(content).toContain("Przerwa i spokojne miejsce.");
     expect(content).not.toContain(environments.home.incidentTitle);
   });
