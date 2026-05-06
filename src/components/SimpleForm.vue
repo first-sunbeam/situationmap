@@ -79,7 +79,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.notes"
             :label="formLabels.simple.notes"
-            hint="Np. sen, jedzenie, choroba, ból, wcześniejsze przeciążenie, zmiany w planie, trudny dzień, ważny kontekst."
+            hint="Czy mogła o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jej kontrolą?"
           />
         </div>
       </section>

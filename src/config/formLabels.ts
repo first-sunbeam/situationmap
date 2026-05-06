@@ -15,7 +15,7 @@ export const formLabels = {
     behavior: "Co było widoczne w zachowaniu?",
     risk: "Co było najbardziej ryzykowne albo najtrudniejsze?",
     helped: "Co pomogło obniżyć napięcie lub uspokoić sytuację?",
-    notes: "Dodatkowe uwagi"
+    notes: "Na co osoba miała wpływ, a na co nie?"
   },
   incident: {
     baselineSection: "0. Poziom bazowy i kontekst dnia",
