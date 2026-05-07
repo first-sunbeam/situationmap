@@ -33,11 +33,14 @@ export interface MetaForm {
 }
 
 export interface SimpleFormData {
+  stateBefore: string;
   antecedents: string;
   signals: string;
+  interventions: string;
   behavior: string;
   helped: string;
   notes: string;
+  predictability: string;
   recoveryTime: string;
 }
 

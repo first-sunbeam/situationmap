@@ -1,5 +1,5 @@
-export const bodyStateOptions = ["głód", "pragnienie", "ból/dyskomfort", "zmęczenie fizyczne", "temperatura ciała (zimno/gorąco)", "napięcie mięśniowe", "inne"];
-export const sensoryIntensityOptions = ["hałas/dźwięki", "światło", "tłok/liczba osób", "zapachy", "tekstury/dotyk", "inne"];
+export const bodyStateOptions = ["głód", "pragnienie", "potrzeba toalety", "ból/dyskomfort", "zmęczenie fizyczne", "temperatura ciała (zimno/gorąco)", "napięcie mięśniowe", "inne"];
+export const sensoryIntensityOptions = ["hałas/dźwięki", "światło", "tłok/liczba osób", "zapachy", "tekstury/dotyk", "temperatura pomieszczenia", "inne"];
 export const activationSignalOptions = ["przyspieszone oddychanie", "napięcie mięśniowe", "pot", "drżenie", "rozszerzone źrenice", "ucieczka/walka", "inne"];
 export const shutdownSignalOptions = ["patrzenie w jeden punkt/podłogę", "brak reakcji na głos", "spowolnienie ruchów", "opadnięcie ciała", "wycofanie", "inne"];
 export const sensorySignalOptions = ["zatykanie uszu", "zasłanianie oczu", "stereotypie", "unikanie dotyku", "ucieczka z pomieszczenia", "inne"];
@@ -168,11 +168,14 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
   return {
     meta: { date: "", time: "", place: "", initials: "", lead: "", present: "" },
     simple: {
+      stateBefore: "",
       antecedents: "",
       signals: "",
+      interventions: "",
       behavior: "",
       helped: "",
       notes: "",
+      predictability: "",
       recoveryTime: ""
     },
     incident: {

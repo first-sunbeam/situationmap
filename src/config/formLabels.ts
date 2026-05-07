@@ -9,11 +9,16 @@ export const formLabels = {
   },
   simple: {
     section: "Opis sytuacji",
-    antecedents: "1. Co wydarzyło się tuż przed i w jakim stanie było dziecko/uczeń?",
+    antecedents: "1. Co wydarzyło się tuż przed i jaki był stan dziecka/ucznia?",
+    stateBefore: "Stan przed zdarzeniem",
+    beforeLastMinutes: "Co działo się tuż przed (ostatnie 5 minut)?",
     signals: "2. Jakie były pierwsze sygnały napięcia i jak na nie zareagowano?",
+    signalsObserved: "Sygnały",
+    adultReaction: "Reakcja dorosłego",
     behavior: "3. Przebieg sytuacji – co można było zaobserwować?",
     helped: "4. Co pomogło (lub nie pomogło) wyregulować sytuację?",
-    notes: "5. Wpływ i autonomia – na co dziecko/uczeń miało kontrolę?",
+    notes: "5. Wpływ i autonomia – zakres kontroli",
+    predictability: "Czy było wiadomo, co się wydarzy i jak długo to potrwa?",
     recoveryTime: "6. Czas do powrotu do gotowości"
   },
   incident: {

@@ -41,11 +41,14 @@ export function getMetaExportSection(env: EnvironmentConfig): ExportSection {
 export const simpleExportSection: ExportSection = {
   title: formLabels.simple.section,
   rows: [
-    { label: (_env, form) => `1. Co wydarzyło się tuż przed i jaki był stan ${getSubjectInline(form)}?`, value: (_env, form) => form.simple.antecedents },
-    { label: formLabels.simple.signals, value: (_env, form) => form.simple.signals },
+    { label: (_env, form) => `1. Co wydarzyło się tuż przed i jaki był stan ${getSubjectInline(form)}?`, value: (_env, form) => form.simple.stateBefore },
+    { label: formLabels.simple.beforeLastMinutes, value: (_env, form) => form.simple.antecedents },
+    { label: formLabels.simple.signalsObserved, value: (_env, form) => form.simple.signals },
+    { label: formLabels.simple.adultReaction, value: (_env, form) => form.simple.interventions },
     { label: formLabels.simple.behavior, value: (_env, form) => form.simple.behavior },
     { label: formLabels.simple.helped, value: (_env, form) => form.simple.helped },
-    { label: (_env, form) => `5. Wpływ i autonomia – zakres kontroli dla ${getSubjectInline(form)}`, value: (_env, form) => form.simple.notes },
+    { label: (_env, form) => `Możliwość decyzji dla ${getSubjectInline(form)}`, value: (_env, form) => form.simple.notes },
+    { label: formLabels.simple.predictability, value: (_env, form) => form.simple.predictability },
     { label: formLabels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
   ]
 };

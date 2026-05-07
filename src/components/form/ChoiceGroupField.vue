@@ -43,7 +43,7 @@ function toggleOption(option: string): void {
       <span v-if="required" class="required-mark">*</span>
     </legend>
 
-    <span v-if="hint" :id="hintId" class="field-hint">{{ hint }}</span>
+    <span v-if="hint" :id="hintId" class="field-hint"><LabelText :text="hint" /></span>
     <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
 
     <div class="choice-grid">

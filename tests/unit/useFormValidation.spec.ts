@@ -28,7 +28,7 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["meta.lead"]).toBe("Uzupełnij pole: Osoba prowadząca.");
     expect(result.fieldErrors["simple.behavior"]).toBe("Uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.");
     expect(result.fieldErrors["simple.helped"]).toContain("Uzupełnij pole");
-    expect(result.fieldErrors["simple.notes"]).toBe("Uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla dziecka/ucznia”.");
+    expect(result.fieldErrors["simple.notes"]).toBe("Uzupełnij pole „Możliwość decyzji dla dziecka/ucznia”.");
     expect(result.summary).toContain("Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.");
   });
 

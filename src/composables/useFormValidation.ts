@@ -89,8 +89,8 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
   }
 
   if (variant === "simple" && isBlank(form.simple.notes)) {
-    fieldErrors["simple.notes"] = `Uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla ${subject}”.`;
-    summary.push(`Formularz prosty: uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla ${subject}”.`);
+    fieldErrors["simple.notes"] = `Uzupełnij pole „Możliwość decyzji dla ${subject}”.`;
+    summary.push(`Formularz prosty: uzupełnij pole „Możliwość decyzji dla ${subject}”.`);
   }
 
   if (variant === "extended" && mode !== "map") {

@@ -9,7 +9,7 @@ export const SIMPLE_VALIDATION_MESSAGES = {
   helped:
     "Formularz prosty: uzupełnij pole „4. Co pomogło (lub nie pomogło) wyregulować sytuację?”.",
   notes:
-    "Formularz prosty: uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla dziecka/ucznia”.",
+    "Formularz prosty: uzupełnij pole „Możliwość decyzji dla dziecka/ucznia”.",
 } as const;
 
 export class SimpleFormPage {
@@ -50,7 +50,7 @@ export class SimpleFormPage {
   }
 
   get influenceField(): Locator {
-    return this.page.getByLabel("5. Wpływ i autonomia – zakres kontroli dla dziecka/ucznia");
+    return this.page.getByLabel("Możliwość decyzji dla dziecka/ucznia");
   }
 
   // ── Validation messages ───────────────────────────────────────────────────

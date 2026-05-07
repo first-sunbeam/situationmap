@@ -22,7 +22,7 @@ const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
       <LabelText :text="label" /> <span v-if="required" class="required-mark">*</span>
     </span>
 
-    <span v-if="hint" :id="hintId" class="field-hint">{{ hint }}</span>
+    <span v-if="hint" :id="hintId" class="field-hint"><LabelText :text="hint" /></span>
 
     <input
       v-model="model"

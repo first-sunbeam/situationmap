@@ -30,7 +30,12 @@ const subject = computed(() => getSubjectInline(form.value));
         :error="fieldErrors['incident.afterOther']"
         full
       />
-      <SelectField v-model="form.incident.physicalThisWeek" :label="formLabels.incident.physicalThisWeek" :options="yesNoUnknown" />
+      <SelectField
+        v-model="form.incident.physicalThisWeek"
+        :label="formLabels.incident.physicalThisWeek"
+        :options="yesNoUnknown"
+        hint="Np. przytrzymanie dla bezpieczeństwa, fizyczne przeniesienie, blokowanie ruchów."
+      />
       <InputField
         v-model="form.incident.physicalCount"
         :label="formLabels.incident.physicalCount"
