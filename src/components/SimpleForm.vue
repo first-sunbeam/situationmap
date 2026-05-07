@@ -68,7 +68,7 @@ const subject = computed(() => getSubjectInline(form));
           <TextAreaField
             v-model="form.simple.notes"
             :label="`5. Wpływ i autonomia – zakres kontroli dla ${subject}`"
-            hint="Czy była możliwość decyzji: kiedy, jak, z kim albo w jakiej kolejności? Czy sytuacja była narzucona, nagła albo bez wyboru?"
+            :hint="`Czy była możliwość decyzji dla ${subject}: kiedy, jak, z kim albo w jakiej kolejności? Czy sytuacja była narzucona, nagła albo bez wyboru?`"
             required
             :error="fieldErrors['simple.notes']"
           />
