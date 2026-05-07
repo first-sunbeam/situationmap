@@ -45,10 +45,6 @@ export function hasRequiredPhysicalCount(physicalThisWeek: string, physicalCount
   return physicalThisWeek !== "Tak" || String(physicalCount || "").trim() !== "";
 }
 
-export function hasRequiredEarlierWhat(earlierPossible: string, earlierWhat: string): boolean {
-  return earlierPossible !== "Tak" || String(earlierWhat || "").trim() !== "";
-}
-
 function hasRequiredText(value: string): boolean {
   return String(value || "").trim() !== "";
 }
@@ -126,7 +122,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.actionsSection,
     badge: "3A",
     errorKey: "incident.actionsSection",
-    extraErrorKeys: ["incident.interventionDetails", "incident.earlierWhat"],
+    extraErrorKeys: ["incident.interventionDetails"],
     summary: "Działania: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
@@ -136,9 +132,8 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.unconditional,
       form.incident.usedRegulator,
       form.incident.reducedTension,
-      form.incident.earlierPossible,
       form.incident.earlierWhat
-    ]) && hasRequiredEarlierWhat(form.incident.earlierPossible, form.incident.earlierWhat) && hasRequiredOtherValue(form.incident.interventions, form.incident.interventionDetails)
+    ]) && hasRequiredOtherValue(form.incident.interventions, form.incident.interventionDetails)
   },
   {
     id: "behavior",

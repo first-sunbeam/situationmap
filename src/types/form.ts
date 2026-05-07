@@ -69,7 +69,6 @@ export interface IncidentFormData {
   unconditional: string;
   usedRegulator: string;
   reducedTension: string;
-  earlierPossible: string;
   earlierWhat: string;
   behavior: string;
   intensity: string;

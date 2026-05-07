@@ -122,12 +122,6 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     requireOtherField({ fieldErrors, summary, selected: form.incident.signals, value: form.incident.signalsOther, fieldKey: "incident.signalsOther", sectionLabel: formLabels.incident.signalsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: formLabels.incident.actionsSection });
 
-    if (form.incident.earlierPossible === "Tak" && isBlank(form.incident.earlierWhat)) {
-      const message = "Skoro można było zareagować wcześniej, opisz co było możliwe.";
-      fieldErrors["incident.earlierWhat"] = message;
-      summary.push(`${formLabels.incident.actionsSection}: ${message}`);
-    }
-
     if (form.incident.physicalThisWeek === "Tak" && isBlank(form.incident.physicalCount)) {
       const message = "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy.";
       fieldErrors["incident.physicalCount"] = message;

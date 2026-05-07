@@ -206,7 +206,6 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       unconditional: "",
       usedRegulator: "",
       reducedTension: "",
-      earlierPossible: "",
       earlierWhat: "",
       behavior: "",
       intensity: "",

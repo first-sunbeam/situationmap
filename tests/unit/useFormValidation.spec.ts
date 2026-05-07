@@ -125,21 +125,6 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("wymaga opisu wcześniejszej reakcji, gdy zaznaczono że była możliwa", () => {
-    const form = createHomeForm();
-    fillRequiredMeta(form);
-    form.incident.earlierPossible = "Tak";
-
-    const result = validateForm({ variant: "extended", mode: "incident", form });
-
-    expect(result.fieldErrors["incident.earlierWhat"]).toBe(
-      "Skoro można było zareagować wcześniej, opisz co było możliwe."
-    );
-    expect(result.summary).toContain(
-      "3A. Faza napięcia i 4. Działania: Skoro można było zareagować wcześniej, opisz co było możliwe."
-    );
-  });
-
   // ── Opcja "inne" – pola warunkowe ───────────────────────────────────────────
 
   it.each<[string, (form: HomeForm) => void]>([
@@ -167,7 +152,6 @@ describe("walidacja formularza", () => {
     ["expectations", (f) => { f.incident.expectations  = ["Brak wymagań"]; }],
     ["signals",      (f) => { f.incident.signals       = ["inne"]; }],
     ["actions",      (f) => { f.incident.interventions = ["Inne"]; }],
-    ["actions",      (f) => { f.incident.earlierPossible = "Tak"; }],
     ["after",        (f) => { f.incident.after         = ["Inne"]; }],
     ["after",        (f) => { f.incident.physicalThisWeek = "Tak"; }],
     ["regulation",   (f) => { f.incident.endedBy       = ["inne"]; }],

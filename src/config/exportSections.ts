@@ -91,7 +91,6 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
         { label: formLabels.incident.unconditional, value: (_env, form) => form.incident.unconditional },
         { label: formLabels.incident.usedRegulator, value: (_env, form) => form.incident.usedRegulator },
         { label: formLabels.incident.reducedTension, value: (_env, form) => form.incident.reducedTension },
-        { label: formLabels.incident.earlierPossible, value: (_env, form) => form.incident.earlierPossible },
         { label: formLabels.incident.earlierWhat, value: (_env, form) => form.incident.earlierWhat }
       ]
     },

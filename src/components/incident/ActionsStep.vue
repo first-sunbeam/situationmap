@@ -4,12 +4,13 @@ import { formLabels } from "../../config/formLabels";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
+import TextAreaField from "../form/TextAreaField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-const { env, form, fieldErrors, regulationPhase, yesNoPartial, yesNoUnknown } = useFormState();
+const { env, form, fieldErrors, regulationPhase, yesNoPartial } = useFormState();
 const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
 </script>
 
@@ -37,13 +38,10 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
       <SelectField v-model="form.incident.unconditional" :label="formLabels.incident.unconditional" :options="unconditionalOptions" />
       <SelectField v-model="form.incident.usedRegulator" :label="formLabels.incident.usedRegulator" :options="yesNoPartial" />
       <SelectField v-model="form.incident.reducedTension" :label="formLabels.incident.reducedTension" :options="yesNoPartial" />
-      <SelectField v-model="form.incident.earlierPossible" :label="formLabels.incident.earlierPossible" :options="yesNoUnknown" />
-      <InputField
+      <TextAreaField
         v-model="form.incident.earlierWhat"
         :label="formLabels.incident.earlierWhat"
-        :required="form.incident.earlierPossible === 'Tak'"
-        :error="fieldErrors['incident.earlierWhat']"
-        full
+        hint="Np. co warto zauważyć wcześniej następnym razem albo jakie wsparcie mogłoby pomóc wcześniej."
       />
     </div>
   </section>
