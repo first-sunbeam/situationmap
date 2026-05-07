@@ -178,7 +178,8 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       interventions: "",
       behavior: "",
       helped: "",
-      notes: ""
+      notes: "",
+      recoveryTime: ""
     },
     incident: {
       tension: "",

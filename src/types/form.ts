@@ -41,6 +41,7 @@ export interface SimpleFormData {
   behavior: string;
   helped: string;
   notes: string;
+  recoveryTime: string;
 }
 
 export interface IncidentFormData {

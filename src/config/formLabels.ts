@@ -13,7 +13,8 @@ export const formLabels = {
     interventions: "Jak zareagowano na pierwsze sygnały?",
     behavior: "Jaki był przebieg sytuacji i co można było zaobserwować?",
     helped: "Co pomogło obniżyć napięcie lub wyregulować sytuację?",
-    notes: "Na co dziecko/uczeń miało wpływ, a na co nie?"
+    notes: "Na co dziecko/uczeń miało wpływ, a na co nie?",
+    recoveryTime: "Ile czasu minęło od uspokojenia emocjonalnego do gotowości na interakcję, rozmowę lub powrót do aktywności?"
   },
   incident: {
     baselineSection: "0. Poziom bazowy i kontekst dnia",

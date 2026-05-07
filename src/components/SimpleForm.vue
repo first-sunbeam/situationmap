@@ -40,7 +40,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.antecedents"
             :label="formLabels.simple.antecedents"
-            hint="Np. zmiana planu, hałas, oczekiwanie, polecenie, odmowa, koniec aktywności, przejście do innej aktywności."
+            hint="Np. zmiana planu, hałas, oczekiwanie, polecenie, odmowa, koniec aktywności, przejście do innej aktywności. PLUS uwzględnij: czy dziecko było głodne/zmęczone/przegrzane/bolało je coś; czy było dużo bodźców (tłok, hałas, światło, zapachy); czy sytuacja była nieprzewidywalna lub nagła."
           />
           <TextAreaField
             v-model="form.simple.signals"
@@ -50,7 +50,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.interventions"
             :label="formLabels.simple.interventions"
-            hint="Co zrobiła lub powiedziała osoba dorosła / otoczenie?"
+            hint="Co zrobiła lub powiedziała osoba dorosła / otoczenie? Czy reakcja obniżyła wymagania, czy je podtrzymała? Czy dziecko miało możliwość wyboru/autonomii w tym momencie?"
           />
           <TextAreaField
             v-model="form.simple.behavior"
@@ -62,7 +62,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
           <TextAreaField
             v-model="form.simple.helped"
             :label="formLabels.simple.helped"
-            hint="Jeśli nic nie pomogło, wpisz to wprost."
+            hint="Np. wycofanie wymagania, zmiana miejsca, obniżenie bodźców (cisza/przyciemnienie), czas bez oczekiwań, dostęp do osoby/przedmiotu, możliwość wyboru. Jeśli nic nie pomogło, wpisz to wprost."
             required
             :error="fieldErrors['simple.helped']"
           />
@@ -72,6 +72,11 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
             hint="Czy mogło o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jego kontrolą?"
             required
             :error="fieldErrors['simple.notes']"
+          />
+          <TextAreaField
+            v-model="form.simple.recoveryTime"
+            :label="formLabels.simple.recoveryTime"
+            hint="Np. 5 minut, pół godziny, kilka godzin. To pokazuje, ile czasu układ nerwowy potrzebował na powrót do stanu gotowości poznawczej – uspokojenie emocjonalne ≠ gotowość do działania."
           />
         </div>
       </section>
