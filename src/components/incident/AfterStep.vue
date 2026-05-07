@@ -15,6 +15,7 @@ const { env, form, fieldErrors, calmTime, yesNoUnknown } = useFormState();
 <template>
   <section class="section" :class="{ invalidSection: fieldErrors['incident.afterSection'] }">
     <h3>{{ formLabels.incident.afterSection }} <span class="required-mark">*</span></h3>
+    <p class="section-hint">Uspokojenie emocjonalne ≠ gotowość poznawcza – układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego”.</p>
     <p v-if="fieldErrors['incident.afterSection']" class="field-error">{{ fieldErrors['incident.afterSection'] }}</p>
     <div class="field-grid">
       <ChoiceGroupField v-model="form.incident.after" :label="formLabels.incident.after" :options="env.after" />
@@ -27,6 +28,11 @@ const { env, form, fieldErrors, calmTime, yesNoUnknown } = useFormState();
         full
       />
       <SelectField v-model="form.incident.calmTime" :label="formLabels.incident.calmTime" :options="calmTime" />
+      <InputField
+        v-model="form.incident.cognitiveRecoveryTime"
+        :label="formLabels.incident.cognitiveRecoveryTime"
+        hint="Kiedy dziecko zaczęło reagować na pytania, rozumieć polecenia i przetwarzać informacje?"
+      />
       <SelectField v-model="form.incident.physicalThisWeek" :label="formLabels.incident.physicalThisWeek" :options="yesNoUnknown" />
       <InputField
         v-model="form.incident.physicalCount"

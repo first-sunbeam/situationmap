@@ -12,6 +12,7 @@ const { env, form, fieldErrors, intensity } = useFormState();
 <template>
   <section class="section" :class="{ invalidSection: fieldErrors['incident.behaviorSection'] }">
     <h3>{{ formLabels.incident.behaviorSection }} <span class="required-mark">*</span></h3>
+    <p class="section-hint">Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od intencji lub „nieposłuszeństwa”.</p>
     <p v-if="fieldErrors['incident.behaviorSection']" class="field-error">{{ fieldErrors['incident.behaviorSection'] }}</p>
     <div class="field-grid">
       <TextAreaField v-model="form.incident.behavior" :label="formLabels.incident.behavior" />

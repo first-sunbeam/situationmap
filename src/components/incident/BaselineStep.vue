@@ -9,12 +9,13 @@ function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-const { env, form, fieldErrors, tensionLevels, yesNoUnknown } = useFormState();
+const { env, form, fieldErrors, bodyStateOptions, sensoryIntensityOptions, tensionLevels, yesNoUnknown } = useFormState();
 </script>
 
 <template>
   <section class="section" :class="{ invalidSection: fieldErrors['incident.baselineSection'] }">
     <h3>{{ formLabels.incident.baselineSection }} <span class="required-mark">*</span></h3>
+    <p class="section-hint">Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – obie grupy czynników wpływają na próg dysregulacji.</p>
     <p v-if="fieldErrors['incident.baselineSection']" class="field-error">{{ fieldErrors['incident.baselineSection'] }}</p>
     <div class="field-grid">
       <SelectField
@@ -42,6 +43,24 @@ const { env, form, fieldErrors, tensionLevels, yesNoUnknown } = useFormState();
         :label="formLabels.incident.burdensOther"
         :required="form.incident.burdens.includes('inne')"
         :error="fieldErrors['incident.burdensOther']"
+        full
+      />
+      <ChoiceGroupField v-model="form.incident.bodyState" :label="formLabels.incident.bodyState" :options="bodyStateOptions" />
+      <InputField
+        v-if="hasOther(form.incident.bodyState, form.incident.bodyStateOther)"
+        v-model="form.incident.bodyStateOther"
+        :label="formLabels.incident.bodyStateOther"
+        :required="form.incident.bodyState.includes('inne')"
+        :error="fieldErrors['incident.bodyStateOther']"
+        full
+      />
+      <ChoiceGroupField v-model="form.incident.sensoryIntensity" :label="formLabels.incident.sensoryIntensity" :options="sensoryIntensityOptions" />
+      <InputField
+        v-if="hasOther(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther)"
+        v-model="form.incident.sensoryIntensityOther"
+        :label="formLabels.incident.sensoryIntensityOther"
+        :required="form.incident.sensoryIntensity.includes('inne')"
+        :error="fieldErrors['incident.sensoryIntensityOther']"
         full
       />
     </div>

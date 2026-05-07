@@ -55,28 +55,34 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
           { label: formLabels.incident.stayStage, value: (_env: EnvironmentConfig, form: SituationForm) => form.incident.stayStage },
           { label: formLabels.incident.stayStageLoad, value: (_env: EnvironmentConfig, form: SituationForm) => form.incident.stayStageLoad }
         ] : []),
-        { label: formLabels.incident.burdens, value: (_env, form) => withOther(form.incident.burdens, form.incident.burdensOther) }
+        { label: formLabels.incident.burdens, value: (_env, form) => withOther(form.incident.burdens, form.incident.burdensOther) },
+        { label: formLabels.incident.bodyState, value: (_env, form) => withOther(form.incident.bodyState, form.incident.bodyStateOther) },
+        { label: formLabels.incident.sensoryIntensity, value: (_env, form) => withOther(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther) }
       ]
     },
     {
       title: formLabels.incident.beforeSection,
       rows: [
         { label: formLabels.incident.antecedents, value: (_env, form) => form.incident.antecedents },
-        { label: formLabels.incident.factDescription, value: (_env, form) => form.incident.factDescription }
+        { label: formLabels.incident.factDescription, value: (_env, form) => form.incident.factDescription },
+        { label: formLabels.incident.predictability, value: (_env, form) => form.incident.predictability }
       ]
     },
     {
       title: formLabels.incident.expectationsSection,
       rows: [
-        { label: formLabels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) },
-        { label: formLabels.incident.influence, value: (_env, form) => form.incident.influence }
+        { label: formLabels.incident.influence, value: (_env, form) => form.incident.influence },
+        { label: formLabels.incident.noInfluence, value: (_env, form) => form.incident.noInfluence },
+        { label: formLabels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) }
       ]
     },
     {
       title: formLabels.incident.signalsSection,
       rows: [
         { label: formLabels.incident.signalsAppeared, value: (_env, form) => form.incident.signalsAppeared },
-        { label: formLabels.incident.signals, value: (_env, form) => withOther(form.incident.signals, form.incident.signalsOther) },
+        { label: formLabels.incident.activationSignals, value: (_env, form) => withOther(form.incident.activationSignals, form.incident.activationSignalsOther) },
+        { label: formLabels.incident.shutdownSignals, value: (_env, form) => withOther(form.incident.shutdownSignals, form.incident.shutdownSignalsOther) },
+        { label: formLabels.incident.sensorySignals, value: (_env, form) => withOther(form.incident.sensorySignals, form.incident.sensorySignalsOther) },
         { label: formLabels.incident.timeToEscalation, value: (_env, form) => form.incident.timeToEscalation },
         { label: formLabels.incident.firstSignal, value: (_env, form) => form.incident.firstSignal },
         { label: formLabels.incident.predicts, value: (_env, form) => form.incident.predicts }
@@ -107,7 +113,8 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
       rows: [
         { label: formLabels.incident.after, value: (_env, form) => withOther(form.incident.after, form.incident.afterOther) },
         { label: formLabels.incident.escalationDuration, value: (_env, form) => form.incident.escalationDuration },
-        { label: formLabels.incident.calmTime, value: (_env, form) => form.incident.calmTime }
+        { label: formLabels.incident.calmTime, value: (_env, form) => form.incident.calmTime },
+        { label: formLabels.incident.cognitiveRecoveryTime, value: (_env, form) => form.incident.cognitiveRecoveryTime }
       ]
     },
     {
@@ -124,8 +131,7 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
       rows: [
         { label: formLabels.incident.endedBy, value: (_env, form) => withOther(form.incident.endedBy, form.incident.endedByOther) },
         { label: formLabels.incident.worsened, value: (_env, form) => form.incident.worsened },
-        { label: formLabels.incident.regulators, value: (_env, form) => form.incident.regulators },
-        { label: formLabels.incident.rewards, value: (_env, form) => form.incident.rewards }
+        { label: formLabels.incident.rewards, value: (_env, form) => withOther(form.incident.rewards, form.incident.rewardsOther) }
       ]
     }
   ];

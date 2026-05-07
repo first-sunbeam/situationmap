@@ -52,14 +52,24 @@ export interface IncidentFormData {
   stayStageLoad: string;
   burdens: string[];
   burdensOther: string;
+  bodyState: string[];
+  bodyStateOther: string;
+  sensoryIntensity: string[];
+  sensoryIntensityOther: string;
   antecedents: string[];
   factDescription: string;
+  predictability: string;
   expectations: string[];
   expectationOther: string;
   influence: string;
+  noInfluence: string;
   signalsAppeared: string;
-  signals: string[];
-  signalsOther: string;
+  activationSignals: string[];
+  activationSignalsOther: string;
+  shutdownSignals: string[];
+  shutdownSignalsOther: string;
+  sensorySignals: string[];
+  sensorySignalsOther: string;
   timeToEscalation: string;
   firstSignal: string;
   predicts: string;
@@ -77,6 +87,7 @@ export interface IncidentFormData {
   afterOther: string;
   escalationDuration: string;
   calmTime: string;
+  cognitiveRecoveryTime: string;
   physicalThisWeek: string;
   physicalCount: string;
   lowerThreshold: string;
@@ -85,8 +96,8 @@ export interface IncidentFormData {
   endedBy: string[];
   endedByOther: string;
   worsened: string;
-  regulators: string;
-  rewards: string;
+  rewards: string[];
+  rewardsOther: string;
 }
 
 export interface MapRow {

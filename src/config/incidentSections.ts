@@ -55,7 +55,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.baselineSection,
     badge: "0",
     errorKey: "incident.baselineSection",
-    extraErrorKeys: ["incident.sleepDetails", "incident.burdensOther"],
+    extraErrorKeys: ["incident.sleepDetails", "incident.burdensOther", "incident.bodyStateOther", "incident.sensoryIntensityOther"],
     summary: "Poziom bazowy i kontekst dnia: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
@@ -66,8 +66,12 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.stayStage,
       form.incident.stayStageLoad,
       form.incident.burdens,
-      form.incident.burdensOther
-    ]) && hasRequiredSleepDetails(form.incident.slept, form.incident.sleepDetails) && hasRequiredOtherValue(form.incident.burdens, form.incident.burdensOther)
+      form.incident.burdensOther,
+      form.incident.bodyState,
+      form.incident.bodyStateOther,
+      form.incident.sensoryIntensity,
+      form.incident.sensoryIntensityOther
+    ]) && hasRequiredSleepDetails(form.incident.slept, form.incident.sleepDetails) && hasRequiredOtherValue(form.incident.burdens, form.incident.burdensOther) && hasRequiredOtherValue(form.incident.bodyState, form.incident.bodyStateOther) && hasRequiredOtherValue(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther)
   },
   {
     id: "before",
@@ -78,7 +82,8 @@ export const incidentSections: IncidentSectionDefinition[] = [
     message: "Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
     isComplete: (form) => hasAnyValue([
       form.incident.antecedents,
-      form.incident.factDescription
+      form.incident.factDescription,
+      form.incident.predictability
     ])
   },
   {
@@ -99,7 +104,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.signalsSection,
     badge: "3",
     errorKey: "incident.signalsSection",
-    extraErrorKeys: ["incident.signalsOther", "incident.timeToEscalation"],
+    extraErrorKeys: ["incident.activationSignalsOther", "incident.shutdownSignalsOther", "incident.sensorySignalsOther", "incident.timeToEscalation"],
     summary: (form) => form.incident.signalsAppeared === "Tak"
       ? "Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie."
       : "Pierwsze oznaki narastającego napięcia: uzupełnij przynajmniej jedno pole.",
@@ -107,15 +112,19 @@ export const incidentSections: IncidentSectionDefinition[] = [
       ? "Skoro sygnały się pojawiły, wskaż jakie."
       : "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => (form.incident.signalsAppeared === "Tak"
-      ? hasAnyValue([form.incident.signals, form.incident.signalsOther]) && hasRequiredTimeToEscalation(form.incident.signalsAppeared, form.incident.timeToEscalation)
+      ? hasAnyValue([form.incident.activationSignals, form.incident.activationSignalsOther, form.incident.shutdownSignals, form.incident.shutdownSignalsOther, form.incident.sensorySignals, form.incident.sensorySignalsOther]) && hasRequiredTimeToEscalation(form.incident.signalsAppeared, form.incident.timeToEscalation)
       : hasAnyValue([
         form.incident.signalsAppeared,
-        form.incident.signals,
-        form.incident.signalsOther,
+        form.incident.activationSignals,
+        form.incident.activationSignalsOther,
+        form.incident.shutdownSignals,
+        form.incident.shutdownSignalsOther,
+        form.incident.sensorySignals,
+        form.incident.sensorySignalsOther,
         form.incident.timeToEscalation,
         form.incident.firstSignal,
         form.incident.predicts
-      ])) && hasRequiredOtherValue(form.incident.signals, form.incident.signalsOther)
+      ])) && hasRequiredOtherValue(form.incident.activationSignals, form.incident.activationSignalsOther) && hasRequiredOtherValue(form.incident.shutdownSignals, form.incident.shutdownSignalsOther) && hasRequiredOtherValue(form.incident.sensorySignals, form.incident.sensorySignalsOther)
   },
   {
     id: "actions",
@@ -161,6 +170,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.after,
       form.incident.afterOther,
       form.incident.calmTime,
+      form.incident.cognitiveRecoveryTime,
       form.incident.physicalThisWeek,
       form.incident.physicalCount,
       form.incident.lowerThreshold,
@@ -172,12 +182,12 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.regulationSection,
     badge: "7-9",
     errorKey: "incident.regulationSection",
-    extraErrorKeys: ["incident.endedByOther"],
+    extraErrorKeys: ["incident.endedByOther", "incident.rewardsOther"],
     summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło zakończyć eskalację.",
     message: "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
     isComplete: (form) => hasAnyValue([
       form.incident.endedBy,
       form.incident.endedByOther
-    ]) && hasRequiredOtherValue(form.incident.endedBy, form.incident.endedByOther)
+    ]) && hasRequiredOtherValue(form.incident.endedBy, form.incident.endedByOther) && hasRequiredOtherValue(form.incident.rewards, form.incident.rewardsOther)
   }
 ];

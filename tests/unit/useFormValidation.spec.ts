@@ -56,7 +56,7 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["incident.baselineSection"]).toBe("Uzupełnij przynajmniej jedno pole w tej sekcji.");
     expect(result.fieldErrors["incident.beforeSection"]).toBe("Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.");
     expect(result.fieldErrors["incident.regulationSection"]).toBe("Zaznacz, co najbardziej pomogło zakończyć eskalację.");
-    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.");
+    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.");
   });
 
   it("akceptuje alternatywną wartość w sekcji przed zdarzeniem", () => {
@@ -77,8 +77,8 @@ describe("walidacja formularza", () => {
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
-    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.");
-    expect(result.summary).toContain("2. Czego oczekiwano w tym momencie?: Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.");
+    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.");
+    expect(result.summary).toContain("2. Czego oczekiwano w tym momencie?: Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.");
   });
 
   it("wymaga szczegółów sygnałów i czasu przed eskalacją, gdy sygnały się pojawiły", () => {
@@ -130,7 +130,7 @@ describe("walidacja formularza", () => {
   it.each<[string, (form: HomeForm) => void]>([
     ["incident.burdensOther",       (f) => { f.incident.burdens       = ["inne"]; }],
     ["incident.expectationOther",   (f) => { f.incident.expectations  = ["inne"]; }],
-    ["incident.signalsOther",       (f) => { f.incident.signals       = ["inne"]; }],
+    ["incident.activationSignalsOther", (f) => { f.incident.activationSignals = ["inne"]; }],
     ["incident.interventionDetails",(f) => { f.incident.interventions = ["Inne"]; }],
     ["incident.afterOther",         (f) => { f.incident.after         = ["Inne"]; }],
     ["incident.endedByOther",       (f) => { f.incident.endedBy       = ["inne"]; }],
@@ -147,10 +147,10 @@ describe("walidacja formularza", () => {
   it.each<[string, (form: HomeForm) => void]>([
     ["baseline",     (f) => { f.incident.burdens       = ["inne"]; }],
     ["baseline",     (f) => { f.incident.slept          = "Tak"; }],
-    ["signals",      (f) => { f.incident.signalsAppeared = "Tak"; f.incident.signals = ["zmiana tonu głosu"]; }],
+    ["signals",      (f) => { f.incident.signalsAppeared = "Tak"; f.incident.activationSignals = ["napięcie mięśniowe"]; }],
     ["expectations", (f) => { f.incident.expectations  = ["inne"]; }],
     ["expectations", (f) => { f.incident.expectations  = ["Brak wymagań"]; }],
-    ["signals",      (f) => { f.incident.signals       = ["inne"]; }],
+    ["signals",      (f) => { f.incident.activationSignals = ["inne"]; }],
     ["actions",      (f) => { f.incident.interventions = ["Inne"]; }],
     ["after",        (f) => { f.incident.after         = ["Inne"]; }],
     ["after",        (f) => { f.incident.physicalThisWeek = "Tak"; }],

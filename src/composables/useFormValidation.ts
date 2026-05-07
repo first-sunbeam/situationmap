@@ -106,10 +106,12 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     }
 
     requireOtherField({ fieldErrors, summary, selected: form.incident.burdens, value: form.incident.burdensOther, fieldKey: "incident.burdensOther", sectionLabel: formLabels.incident.baselineSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.bodyState, value: form.incident.bodyStateOther, fieldKey: "incident.bodyStateOther", sectionLabel: formLabels.incident.baselineSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.sensoryIntensity, value: form.incident.sensoryIntensityOther, fieldKey: "incident.sensoryIntensityOther", sectionLabel: formLabels.incident.baselineSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: formLabels.incident.expectationsSection });
 
     if (isBlank(form.incident.influence)) {
-      const message = "Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.";
+      const message = "Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.";
       fieldErrors["incident.influence"] = message;
       summary.push(`${formLabels.incident.expectationsSection}: ${message}`);
     }
@@ -119,7 +121,9 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
       summary.push(`${formLabels.incident.signalsSection}: ${message}`);
     }
 
-    requireOtherField({ fieldErrors, summary, selected: form.incident.signals, value: form.incident.signalsOther, fieldKey: "incident.signalsOther", sectionLabel: formLabels.incident.signalsSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.activationSignals, value: form.incident.activationSignalsOther, fieldKey: "incident.activationSignalsOther", sectionLabel: formLabels.incident.signalsSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.shutdownSignals, value: form.incident.shutdownSignalsOther, fieldKey: "incident.shutdownSignalsOther", sectionLabel: formLabels.incident.signalsSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.sensorySignals, value: form.incident.sensorySignalsOther, fieldKey: "incident.sensorySignalsOther", sectionLabel: formLabels.incident.signalsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: formLabels.incident.actionsSection });
 
     if (form.incident.physicalThisWeek === "Tak" && isBlank(form.incident.physicalCount)) {
@@ -130,6 +134,7 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
 
     requireOtherField({ fieldErrors, summary, selected: form.incident.after, value: form.incident.afterOther, fieldKey: "incident.afterOther", sectionLabel: formLabels.incident.afterSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.endedBy, value: form.incident.endedByOther, fieldKey: "incident.endedByOther", sectionLabel: formLabels.incident.regulationSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.rewards, value: form.incident.rewardsOther, fieldKey: "incident.rewardsOther", sectionLabel: formLabels.incident.regulationSection });
 
     if (fieldErrors["incident.beforeSection"]) {
       fieldErrors["incident.factDescription"] = fieldErrors["incident.beforeSection"];

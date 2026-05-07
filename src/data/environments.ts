@@ -1,24 +1,24 @@
-export const commonSignals = [
-  "milczenie",
-  "sztywność ciała",
-  "zmiana tonu głosu",
-  "brak kontaktu wzrokowego",
-  "powtarzanie fraz",
-  "zastygnięcie w bezruchu",
-  "brak reakcji na polecenia",
-  "patrzenie w jeden punkt / w podłogę",
-  "spowolnione ruchy",
-  "wzrost pobudzenia / nakręcenie",
-  "wyrywanie się / gotowość do ucieczki",
-  "trudność w nawiązaniu kontaktu",
-  "protest słowny / odmawianie",
-  "podniesiony głos / głośniejsze mówienie",
-  "powtarzanie pytań / domaganie się odpowiedzi",
-  "chodzenie / kręcenie się / niepokój ruchowy",
-  "płacz / marudzenie / drażliwość",
-  "kłócenie się / negocjowanie",
-  "napięcie przy zmianie / odmowie",
+export const bodyStateOptions = ["głód", "pragnienie", "ból/dyskomfort", "zmęczenie fizyczne", "temperatura ciała (zimno/gorąco)", "napięcie mięśniowe", "inne"];
+export const sensoryIntensityOptions = ["hałas/dźwięki", "światło", "tłok/liczba osób", "zapachy", "tekstury/dotyk", "inne"];
+export const activationSignalOptions = ["przyspieszone oddychanie", "napięcie mięśniowe", "pot", "drżenie", "rozszerzone źrenice", "ucieczka/walka", "inne"];
+export const shutdownSignalOptions = ["patrzenie w jeden punkt/podłogę", "brak reakcji na głos", "spowolnienie ruchów", "opadnięcie ciała", "wycofanie", "inne"];
+export const sensorySignalOptions = ["zatykanie uszu", "zasłanianie oczu", "stereotypie", "unikanie dotyku", "ucieczka z pomieszczenia", "inne"];
+export const interventionTypeOptions = [
+  "Obniżenie bodźców sensorycznych (wyciszenie, przyciemnienie, zmniejszenie liczby osób)",
+  "Zwiększenie autonomii (zaproponowanie wyboru, możliwość decyzji)",
+  "Zapewnienie przewidywalności (poinformowanie, ile to potrwa; pokazanie planu)",
+  "Wsparcie interoceptywne (pomoc w nazwaniu stanu ciała: „jesteś głodny?”, „zimno ci?”)",
+  "Czas bez wymagań (pauza od oczekiwań, możliwość wycofania się)",
+  "Regulacja sensoryczna (bodźce uspokajające: ciężar, ruch, ucisk)",
   "inne"
+];
+export const activityContinuationOptions = [
+  "Maskowanie (próba ukrycia dyskomfortu, udawanie że wszystko OK)",
+  "Strategia kompensacyjna (wycofanie w fantazję, kontrolowanie rozmowy, humor)",
+  "Wsparcie dorosłego (obecność, zachęta)",
+  "Jasny koniec aktywności (wiedza, że to się skończy)",
+  "Lęk przed konsekwencjami",
+  "Inne"
 ];
 
 export const yesNoUnknown = ["Tak", "Nie", "Nie wiem"];
@@ -189,14 +189,24 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       stayStageLoad: "",
       burdens: [],
       burdensOther: "",
+      bodyState: [],
+      bodyStateOther: "",
+      sensoryIntensity: [],
+      sensoryIntensityOther: "",
       antecedents: [],
       factDescription: "",
+      predictability: "",
       expectations: [],
       expectationOther: "",
       influence: "",
+      noInfluence: "",
       signalsAppeared: "",
-      signals: [],
-      signalsOther: "",
+      activationSignals: [],
+      activationSignalsOther: "",
+      shutdownSignals: [],
+      shutdownSignalsOther: "",
+      sensorySignals: [],
+      sensorySignalsOther: "",
       timeToEscalation: "",
       firstSignal: "",
       predicts: "",
@@ -214,6 +224,7 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       afterOther: "",
       escalationDuration: "",
       calmTime: "",
+      cognitiveRecoveryTime: "",
       physicalThisWeek: "",
       physicalCount: "",
       lowerThreshold: "",
@@ -222,8 +233,8 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       endedBy: [],
       endedByOther: "",
       worsened: "",
-      regulators: "",
-      rewards: ""
+      rewards: [],
+      rewardsOther: ""
     },
     map: {
       rows: env.places.map((place) => ({ place, time: "", activity: "" })),

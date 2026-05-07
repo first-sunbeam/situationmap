@@ -15,7 +15,20 @@ const { env, form, fieldErrors } = useFormState();
 <template>
   <section class="section" :class="{ invalidSection: fieldErrors['incident.expectationsSection'] }">
     <h3>{{ formLabels.incident.expectationsSection }} <span class="required-mark">*</span></h3>
+    <p class="section-hint">W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym.</p>
     <p v-if="fieldErrors['incident.expectationsSection']" class="field-error">{{ fieldErrors['incident.expectationsSection'] }}</p>
+    <TextAreaField
+      v-model="form.incident.influence"
+      :label="formLabels.incident.influence"
+      hint="Co mogło wybrać, zmienić albo zakończyć?"
+      required
+      :error="fieldErrors['incident.influence']"
+    />
+    <TextAreaField
+      v-model="form.incident.noInfluence"
+      :label="formLabels.incident.noInfluence"
+      hint="Co było narzucone, nieuniknione albo nieznane?"
+    />
     <ChoiceGroupField v-model="form.incident.expectations" :label="formLabels.incident.expectations" :options="env.expectations" />
     <InputField
       v-if="hasOther(form.incident.expectations, form.incident.expectationOther)"
@@ -25,12 +38,6 @@ const { env, form, fieldErrors } = useFormState();
       :error="fieldErrors['incident.expectationOther']"
       full
     />
-    <TextAreaField
-      v-model="form.incident.influence"
-      :label="formLabels.incident.influence"
-      hint="Czy mogło o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jego kontrolą?"
-      required
-      :error="fieldErrors['incident.influence']"
-    />
+
   </section>
 </template>
