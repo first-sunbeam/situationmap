@@ -1,15 +1,19 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useFormState } from "../../composables/useFormState";
+import { getSubjectInline } from "../../lib/subject";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
 import InputField from "../form/InputField.vue";
+import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
   return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
 }
 
-const { env, form, fieldErrors, activityContinuationOptions } = useFormState();
+const { env, form, fieldErrors, calmTime, cognitiveRecoveryOptions, recoverySupportOptions } = useFormState();
+const subject = computed(() => getSubjectInline(form.value));
 </script>
 
 <template>
@@ -27,19 +31,26 @@ const { env, form, fieldErrors, activityContinuationOptions } = useFormState();
         :error="fieldErrors['incident.endedByOther']"
         full
       />
-      <TextAreaField v-model="form.incident.worsened" :label="formLabels.incident.worsened" hint="Np. nacisk, pośpiech, hałas, odmowa." />
+      <TextAreaField v-model="form.incident.worsened" :label="formLabels.incident.worsened" hint="Np. nacisk, pośpiech, hałas, dotyk, obecność dodatkowych osób, próba rozmowy, odmowa, kontynuowanie wymagań." />
+      <SelectField v-model="form.incident.calmTime" :label="formLabels.incident.calmTime" :options="calmTime" />
+      <SelectField
+        v-model="form.incident.cognitiveRecoveryTime"
+        :label="formLabels.incident.cognitiveRecoveryTime"
+        :options="cognitiveRecoveryOptions"
+        :hint="`Gotowość na rozmowę, rozumienie poleceń, kontakt wzrokowy lub powrót do aktywności u ${subject}.`"
+      />
       <ChoiceGroupField
-        v-model="form.incident.rewards"
-        :label="formLabels.incident.rewards"
-        :options="activityContinuationOptions"
-        hint="U osób z PDA maskowanie to często nieświadoma strategia „przetrwania” – dziecko kontynuuje mimo przeciążenia, a potem następuje opóźniona eskalacja. To pokazuje koszt „trzymania się razem”."
+        v-model="form.incident.recoverySupports"
+        :label="formLabels.incident.recoverySupports"
+        :options="recoverySupportOptions"
+        :hint="`Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin. Szybki „powrót do normy” na zewnątrz przy późniejszej eskalacji wieczorem/w domu może oznaczać kontynuowanie maskowania u ${subject}.`"
       />
       <InputField
-        v-if="hasOther(form.incident.rewards, form.incident.rewardsOther)"
-        v-model="form.incident.rewardsOther"
-        :label="formLabels.incident.rewardsOther"
-        :required="form.incident.rewards.includes('Inne')"
-        :error="fieldErrors['incident.rewardsOther']"
+        v-if="hasOther(form.incident.recoverySupports, form.incident.recoverySupportsOther)"
+        v-model="form.incident.recoverySupportsOther"
+        :label="formLabels.incident.recoverySupportsOther"
+        :required="form.incident.recoverySupports.includes('Inne')"
+        :error="fieldErrors['incident.recoverySupportsOther']"
         full
       />
     </div>

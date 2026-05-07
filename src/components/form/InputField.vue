@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LabelText from "./LabelText.vue";
 import { useFieldIds } from "./useFieldIds";
 
 const { label, type = "text", required = false, full = false, hint, error } = defineProps<{
@@ -18,7 +19,7 @@ const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
 <template>
   <label class="field" :class="{ full }">
     <span class="field-label">
-      {{ label }} <span v-if="required" class="required-mark">*</span>
+      <LabelText :text="label" /> <span v-if="required" class="required-mark">*</span>
     </span>
 
     <span v-if="hint" :id="hintId" class="field-hint">{{ hint }}</span>

@@ -1,10 +1,13 @@
+import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, SituationForm } from "../types/form";
 import { formLabels } from "./formLabels";
 
 export type ExportValue = string | string[];
 
+export type ExportLabel = string | ((env: EnvironmentConfig, form: SituationForm) => string);
+
 export interface ExportRow {
-  label: string;
+  label: ExportLabel;
   value: (env: EnvironmentConfig, form: SituationForm) => ExportValue;
 }
 
@@ -17,6 +20,10 @@ function withOther(values: string[], other: string): string[] {
   return other ? [...values, other] : values;
 }
 
+export function resolveExportLabel(label: ExportLabel, env: EnvironmentConfig, form: SituationForm): string {
+  return typeof label === "function" ? label(env, form) : label;
+}
+
 export function getMetaExportSection(env: EnvironmentConfig): ExportSection {
   return {
     title: formLabels.meta.section,
@@ -24,6 +31,7 @@ export function getMetaExportSection(env: EnvironmentConfig): ExportSection {
       { label: formLabels.meta.date, value: (_env, form) => form.meta.date },
       { label: formLabels.meta.time, value: (_env, form) => form.meta.time },
       { label: formLabels.meta.place, value: (_env, form) => form.meta.place },
+      { label: formLabels.meta.initials, value: (_env, form) => form.meta.initials },
       { label: env.lead, value: (_env, form) => form.meta.lead },
       { label: formLabels.meta.present, value: (_env, form) => form.meta.present }
     ]
@@ -33,12 +41,11 @@ export function getMetaExportSection(env: EnvironmentConfig): ExportSection {
 export const simpleExportSection: ExportSection = {
   title: formLabels.simple.section,
   rows: [
-    { label: formLabels.simple.antecedents, value: (_env, form) => form.simple.antecedents },
+    { label: (_env, form) => `1. Co wydarzyło się tuż przed i jaki był stan ${getSubjectInline(form)}?`, value: (_env, form) => form.simple.antecedents },
     { label: formLabels.simple.signals, value: (_env, form) => form.simple.signals },
-    { label: formLabels.simple.interventions, value: (_env, form) => form.simple.interventions },
     { label: formLabels.simple.behavior, value: (_env, form) => form.simple.behavior },
     { label: formLabels.simple.helped, value: (_env, form) => form.simple.helped },
-    { label: formLabels.simple.notes, value: (_env, form) => form.simple.notes },
+    { label: (_env, form) => `5. Wpływ i autonomia – zakres kontroli dla ${getSubjectInline(form)}`, value: (_env, form) => form.simple.notes },
     { label: formLabels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
   ]
 };
@@ -65,15 +72,14 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
       title: formLabels.incident.beforeSection,
       rows: [
         { label: formLabels.incident.antecedents, value: (_env, form) => form.incident.antecedents },
-        { label: formLabels.incident.factDescription, value: (_env, form) => form.incident.factDescription },
-        { label: formLabels.incident.predictability, value: (_env, form) => form.incident.predictability }
+        { label: formLabels.incident.factDescription, value: (_env, form) => form.incident.factDescription }
       ]
     },
     {
       title: formLabels.incident.expectationsSection,
       rows: [
-        { label: formLabels.incident.influence, value: (_env, form) => form.incident.influence },
-        { label: formLabels.incident.noInfluence, value: (_env, form) => form.incident.noInfluence },
+        { label: (_env, form) => `Co było jasne dla ${getSubjectInline(form)} i na co był wpływ w tym momencie?`, value: (_env, form) => form.incident.influence },
+        { label: (_env, form) => `Co było nieznane dla ${getSubjectInline(form)}, narzucone albo poza wpływem?`, value: (_env, form) => form.incident.noInfluence },
         { label: formLabels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) }
       ]
     },
@@ -87,6 +93,14 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
         { label: formLabels.incident.timeToEscalation, value: (_env, form) => form.incident.timeToEscalation },
         { label: formLabels.incident.firstSignal, value: (_env, form) => form.incident.firstSignal },
         { label: formLabels.incident.predicts, value: (_env, form) => form.incident.predicts }
+      ]
+    },
+    {
+      title: formLabels.incident.maskingSection,
+      rows: [
+        { label: (_env, form) => `Kontynuowanie aktywności mimo narastającego napięcia przez ${getSubjectInline(form)}`, value: (_env, form) => form.incident.maskingContinued },
+        { label: formLabels.incident.maskingStrategies, value: (_env, form) => withOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther) },
+        { label: (_env, form) => `Czas „trzymania się” przed eskalacją przez ${getSubjectInline(form)}`, value: (_env, form) => form.incident.maskingDuration }
       ]
     },
     {
@@ -110,12 +124,20 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
       ]
     },
     {
+      title: formLabels.incident.regulationSection,
+      rows: [
+        { label: formLabels.incident.endedBy, value: (_env, form) => withOther(form.incident.endedBy, form.incident.endedByOther) },
+        { label: formLabels.incident.worsened, value: (_env, form) => form.incident.worsened },
+        { label: formLabels.incident.calmTime, value: (_env, form) => form.incident.calmTime },
+        { label: formLabels.incident.cognitiveRecoveryTime, value: (_env, form) => form.incident.cognitiveRecoveryTime },
+        { label: formLabels.incident.recoverySupports, value: (_env, form) => withOther(form.incident.recoverySupports, form.incident.recoverySupportsOther) }
+      ]
+    },
+    {
       title: formLabels.incident.afterSection,
       rows: [
         { label: formLabels.incident.after, value: (_env, form) => withOther(form.incident.after, form.incident.afterOther) },
-        { label: formLabels.incident.escalationDuration, value: (_env, form) => form.incident.escalationDuration },
-        { label: formLabels.incident.calmTime, value: (_env, form) => form.incident.calmTime },
-        { label: formLabels.incident.cognitiveRecoveryTime, value: (_env, form) => form.incident.cognitiveRecoveryTime }
+        { label: formLabels.incident.escalationDuration, value: (_env, form) => form.incident.escalationDuration }
       ]
     },
     {
@@ -123,16 +145,8 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
       rows: [
         { label: formLabels.incident.physicalThisWeek, value: (_env, form) => form.incident.physicalThisWeek },
         { label: formLabels.incident.physicalCount, value: (_env, form) => form.incident.physicalCount },
-        { label: formLabels.incident.lowerThreshold, value: (_env, form) => form.incident.lowerThreshold },
+        { label: (_env, form) => `Szybsza lub silniejsza reakcja niż zwykle u ${getSubjectInline(form)}`, value: (_env, form) => form.incident.lowerThreshold },
         { label: formLabels.incident.physicalNote, value: (_env, form) => form.incident.physicalNote }
-      ]
-    },
-    {
-      title: formLabels.incident.regulationSection,
-      rows: [
-        { label: formLabels.incident.endedBy, value: (_env, form) => withOther(form.incident.endedBy, form.incident.endedByOther) },
-        { label: formLabels.incident.worsened, value: (_env, form) => form.incident.worsened },
-        { label: formLabels.incident.rewards, value: (_env, form) => withOther(form.incident.rewards, form.incident.rewardsOther) }
       ]
     }
   ];

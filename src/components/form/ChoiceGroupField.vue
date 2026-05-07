@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LabelText from "./LabelText.vue";
 import { useFieldIds } from "./useFieldIds";
 
 const { label, options, required = false, full = true, hint, error } = defineProps<{
@@ -28,7 +29,7 @@ function toggleOption(option: string): void {
 <template>
   <fieldset class="field choice-field" :class="{ full }">
     <legend class="field-label">
-      {{ label }} <span v-if="required" class="required-mark">*</span>
+      <LabelText :text="label" /> <span v-if="required" class="required-mark">*</span>
     </legend>
 
     <span v-if="hint" :id="hintId" class="field-hint">{{ hint }}</span>

@@ -26,10 +26,10 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["meta.time"]).toBe("Uzupełnij pole: Godzina.");
     expect(result.fieldErrors["meta.place"]).toBe("Uzupełnij pole: Miejsce.");
     expect(result.fieldErrors["meta.lead"]).toBe("Uzupełnij pole: Osoba prowadząca.");
-    expect(result.fieldErrors["simple.behavior"]).toBe("Uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.");
+    expect(result.fieldErrors["simple.behavior"]).toBe("Uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.");
     expect(result.fieldErrors["simple.helped"]).toContain("Uzupełnij pole");
-    expect(result.fieldErrors["simple.notes"]).toBe("Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.");
-    expect(result.summary).toContain("Formularz prosty: uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.");
+    expect(result.fieldErrors["simple.notes"]).toBe("Uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla dziecka/ucznia”.");
+    expect(result.summary).toContain("Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.");
   });
 
   it("akceptuje formularz prosty po uzupełnieniu wymaganych pól", () => {
@@ -56,7 +56,7 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["incident.baselineSection"]).toBe("Uzupełnij przynajmniej jedno pole w tej sekcji.");
     expect(result.fieldErrors["incident.beforeSection"]).toBe("Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.");
     expect(result.fieldErrors["incident.regulationSection"]).toBe("Zaznacz, co najbardziej pomogło zakończyć eskalację.");
-    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.");
+    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Co było jasne dla dziecka/ucznia i na co był wpływ w tym momencie?”.");
   });
 
   it("akceptuje alternatywną wartość w sekcji przed zdarzeniem", () => {
@@ -77,8 +77,8 @@ describe("walidacja formularza", () => {
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
-    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.");
-    expect(result.summary).toContain("2. Czego oczekiwano w tym momencie?: Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.");
+    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Co było jasne dla dziecka/ucznia i na co był wpływ w tym momencie?”.");
+    expect(result.summary).toContain("2. Czego oczekiwano w tym momencie?: Uzupełnij pole „Co było jasne dla dziecka/ucznia i na co był wpływ w tym momencie?”.");
   });
 
   it("wymaga szczegółów sygnałów i czasu przed eskalacją, gdy sygnały się pojawiły", () => {
@@ -121,7 +121,7 @@ describe("walidacja formularza", () => {
       "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy."
     );
     expect(result.summary).toContain(
-      "6. Co wydarzyło się po zdarzeniu?: Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy."
+      "7. Co wydarzyło się po zdarzeniu?: Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy."
     );
   });
 

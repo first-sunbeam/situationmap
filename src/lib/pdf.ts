@@ -1,6 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, simpleExportSection, type ExportRow, type ExportValue } from "../config/exportSections";
+import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow, type ExportValue } from "../config/exportSections";
 import { formLabels } from "../config/formLabels";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, PdfAction, SituationForm } from "../types/form";
 
@@ -21,7 +21,7 @@ function fieldLine(label: string, value: ExportValue): PdfNode {
 }
 
 function exportRows(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): PdfContent {
-  return rows.map((row) => fieldLine(row.label, row.value(env, form)));
+  return rows.map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form)));
 }
 
 function section(title: string, body: PdfContent): PdfContent {
@@ -29,11 +29,11 @@ function section(title: string, body: PdfContent): PdfContent {
 }
 
 function metaColumns(env: EnvironmentConfig, form: SituationForm): PdfNode {
-  const [date, time, place, lead, present] = getMetaExportSection(env).rows;
+  const [date, time, place, initials, lead, present] = getMetaExportSection(env).rows;
   return {
     columns: [
-      [date, time, place].map((row) => fieldLine(row.label, row.value(env, form))),
-      [lead, present].map((row) => fieldLine(row.label, row.value(env, form)))
+      [date, time, place, initials].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form))),
+      [lead, present].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form)))
     ],
     columnGap: 18,
     margin: [0, 10, 0, 5]

@@ -1,4 +1,4 @@
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, simpleExportSection } from "../config/exportSections";
+import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow } from "../config/exportSections";
 import { formLabels } from "../config/formLabels";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, MapRow, SituationForm } from "../types/form";
 
@@ -18,8 +18,8 @@ function section(title: string, rows: string[]): string {
   return [title, ...rows, ""].join("\n");
 }
 
-function rowsToLines(env: EnvironmentConfig, form: SituationForm, rows: { label: string; value: (env: EnvironmentConfig, form: SituationForm) => EmailValue }[]): string[] {
-  return rows.map((row) => line(row.label, row.value(env, form)));
+function rowsToLines(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): string[] {
+  return rows.map((row) => line(resolveExportLabel(row.label, env, form), row.value(env, form)));
 }
 
 function mapRows(rows: MapRow[]): string {

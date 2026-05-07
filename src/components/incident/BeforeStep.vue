@@ -10,7 +10,7 @@ const { env, form, fieldErrors } = useFormState();
 <template>
   <section class="section" :class="{ invalidSection: fieldErrors['incident.beforeSection'] }">
     <h3>{{ formLabels.incident.beforeSection }} <span class="required-mark">*</span></h3>
-    <p class="section-hint">Przewidywalność zmniejsza obciążenie układu nerwowego, a nagła zmiana lub brak informacji może podnieść napięcie.</p>
+    <p class="section-hint">To, co wydarzyło się bezpośrednio przed, pomaga odróżnić wyzwalacz sytuacyjny od późniejszej reakcji układu nerwowego.</p>
     <div class="field-grid">
       <ChoiceGroupField
         v-model="form.incident.antecedents"
@@ -25,11 +25,7 @@ const { env, form, fieldErrors } = useFormState();
         hint="Dopisz fakty, których nie da się jasno zaznaczyć na liście."
         :error="fieldErrors['incident.factDescription']"
       />
-      <TextAreaField
-        v-model="form.incident.predictability"
-        :label="formLabels.incident.predictability"
-        hint="Czy było wiadomo, co się wydarzy? Czy było wiadomo, jak długo to potrwa? Czy była możliwość negocjacji lub wyboru?"
-      />
+
     </div>
   </section>
 </template>

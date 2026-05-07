@@ -1,5 +1,6 @@
 import { hasSelectedOther, incidentSections, resolveIncidentSectionText } from "../config/incidentSections";
 import { formLabels } from "../config/formLabels";
+import { getSubjectInline } from "../lib/subject";
 import type { ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
 
 function isBlank(value: string): boolean {
@@ -59,6 +60,7 @@ function requireOtherField({
 export function validateForm({ variant, mode, form }: { variant: FormVariant; mode: ExtendedMode; form: SituationForm }): ValidationResult {
   const fieldErrors: FieldErrors = {};
   const summary: string[] = [];
+  const subject = getSubjectInline(form);
   const meta: Array<[string, string, string]> = [
     ["meta.date", "Data", form.meta.date],
     ["meta.time", "Godzina", form.meta.time],
@@ -77,18 +79,18 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
   }
 
   if (variant === "simple" && isBlank(form.simple.behavior)) {
-    fieldErrors["simple.behavior"] = "Uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.";
-    summary.push("Formularz prosty: uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.");
+    fieldErrors["simple.behavior"] = "Uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.";
+    summary.push("Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.");
   }
 
   if (variant === "simple" && !String(form.simple.helped || "").trim()) {
-    fieldErrors["simple.helped"] = "Uzupełnij pole „Co pomogło obniżyć napięcie lub wyregulować sytuację?” albo wpisz, że nic nie pomogło.";
-    summary.push("Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub wyregulować sytuację?”.");
+    fieldErrors["simple.helped"] = "Uzupełnij pole „4. Co pomogło (lub nie pomogło) wyregulować sytuację?” albo wpisz, że nic nie pomogło.";
+    summary.push("Formularz prosty: uzupełnij pole „4. Co pomogło (lub nie pomogło) wyregulować sytuację?”.");
   }
 
   if (variant === "simple" && isBlank(form.simple.notes)) {
-    fieldErrors["simple.notes"] = "Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.";
-    summary.push("Formularz prosty: uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.");
+    fieldErrors["simple.notes"] = `Uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla ${subject}”.`;
+    summary.push(`Formularz prosty: uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla ${subject}”.`);
   }
 
   if (variant === "extended" && mode !== "map") {
@@ -111,7 +113,7 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: formLabels.incident.expectationsSection });
 
     if (isBlank(form.incident.influence)) {
-      const message = "Uzupełnij pole „Na co dziecko miało wpływ w tym momencie?”.";
+      const message = `Uzupełnij pole „Co było jasne dla ${subject} i na co był wpływ w tym momencie?”.`;
       fieldErrors["incident.influence"] = message;
       summary.push(`${formLabels.incident.expectationsSection}: ${message}`);
     }
@@ -124,6 +126,7 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     requireOtherField({ fieldErrors, summary, selected: form.incident.activationSignals, value: form.incident.activationSignalsOther, fieldKey: "incident.activationSignalsOther", sectionLabel: formLabels.incident.signalsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.shutdownSignals, value: form.incident.shutdownSignalsOther, fieldKey: "incident.shutdownSignalsOther", sectionLabel: formLabels.incident.signalsSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.sensorySignals, value: form.incident.sensorySignalsOther, fieldKey: "incident.sensorySignalsOther", sectionLabel: formLabels.incident.signalsSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.maskingStrategies, value: form.incident.maskingStrategiesOther, fieldKey: "incident.maskingStrategiesOther", sectionLabel: formLabels.incident.maskingSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: formLabels.incident.actionsSection });
 
     if (form.incident.physicalThisWeek === "Tak" && isBlank(form.incident.physicalCount)) {
@@ -134,7 +137,7 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
 
     requireOtherField({ fieldErrors, summary, selected: form.incident.after, value: form.incident.afterOther, fieldKey: "incident.afterOther", sectionLabel: formLabels.incident.afterSection });
     requireOtherField({ fieldErrors, summary, selected: form.incident.endedBy, value: form.incident.endedByOther, fieldKey: "incident.endedByOther", sectionLabel: formLabels.incident.regulationSection });
-    requireOtherField({ fieldErrors, summary, selected: form.incident.rewards, value: form.incident.rewardsOther, fieldKey: "incident.rewardsOther", sectionLabel: formLabels.incident.regulationSection });
+    requireOtherField({ fieldErrors, summary, selected: form.incident.recoverySupports, value: form.incident.recoverySupportsOther, fieldKey: "incident.recoverySupportsOther", sectionLabel: formLabels.incident.regulationSection });
 
     if (fieldErrors["incident.beforeSection"]) {
       fieldErrors["incident.factDescription"] = fieldErrors["incident.beforeSection"];

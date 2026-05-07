@@ -14,6 +14,7 @@ const fields = computed(() => [
   { key: "date"    as const, label: formLabels.meta.date,    type: "date", required: true  },
   { key: "time"    as const, label: formLabels.meta.time,    type: "time", required: true  },
   { key: "place"   as const, label: formLabels.meta.place,                 required: true  },
+  { key: "initials" as const, label: formLabels.meta.initials,             required: false },
   { key: "lead"    as const, label: env.lead,                              required: true  },
   { key: "present" as const, label: formLabels.meta.present,               required: false },
 ]);

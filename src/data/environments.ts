@@ -10,16 +10,30 @@ export const interventionTypeOptions = [
   "Wsparcie interoceptywne (pomoc w nazwaniu stanu ciała: „jesteś głodny?”, „zimno ci?”)",
   "Czas bez wymagań (pauza od oczekiwań, możliwość wycofania się)",
   "Regulacja sensoryczna (bodźce uspokajające: ciężar, ruch, ucisk)",
-  "inne"
-];
-export const activityContinuationOptions = [
-  "Maskowanie (próba ukrycia dyskomfortu, udawanie że wszystko OK)",
-  "Strategia kompensacyjna (wycofanie w fantazję, kontrolowanie rozmowy, humor)",
-  "Wsparcie dorosłego (obecność, zachęta)",
-  "Jasny koniec aktywności (wiedza, że to się skończy)",
-  "Lęk przed konsekwencjami",
   "Inne"
 ];
+export const maskingStrategyOptions = [
+  "Maskowanie (ukrywanie dyskomfortu, udawanie że wszystko OK)",
+  "Strategia kompensacyjna (wycofanie w fantazję, kontrolowanie rozmowy, humor)",
+  "Wsparcie dorosłego (obecność, zachęta)",
+  "Jasny koniec aktywności (wiedza, że to się skończy, np. „jeszcze 5 minut”)",
+  "Lęk przed konsekwencjami (strach przed oceną, karą, rozczarowaniem)",
+  "Silna motywacja wewnętrzna (bardzo chciało dokończyć)",
+  "Inne"
+];
+export const recoverySupportOptions = [
+  "Cisza i brak bodźców",
+  "Sen / drzemka",
+  "Jedzenie / picie",
+  "Aktywność sensoryczna (huśtawka, spacer, zimny prysznic)",
+  "Obecność bliskiej osoby bez wymagań",
+  "Samotność",
+  "Ulubiona aktywność bez presji",
+  "Czas (po prostu przeczekanie)",
+  "Inne"
+];
+export const maskingDurationOptions = ["Kilka minut", "10-30 minut", "Ponad 30 minut", "Cały dzień (eskalacja wieczorem/w domu)"];
+export const cognitiveRecoveryOptions = ["Od razu po uspokojeniu", "10-30 minut po", "1-2 godziny po", "Kilka godzin lub następnego dnia"];
 
 export const yesNoUnknown = ["Tak", "Nie", "Nie wiem"];
 export const yesNoPartial = ["Tak", "Nie", "Częściowo"];
@@ -31,7 +45,7 @@ export const regulationPhase = [
   "Trudno określić"
 ];
 export const intensity = ["0 brak agresji", "1 lekkie", "2 umiarkowane", "3 wysokie ryzyko"];
-export const calmTime = ["< 5 min", "5-15 min", "> 15 min", "nie osiągnięto"];
+export const calmTime = ["Do 5 minut", "5-15 minut", "15-30 minut", "30-60 minut", "Ponad godzinę"];
 
 import type { EnvironmentConfig, SituationForm } from "../types/form";
 
@@ -111,14 +125,16 @@ export const environments = {
       "Inne"
     ],
     endedBy: [
-      "wycofanie wymagania",
-      "dostęp do przedmiotu / aktywności",
-      "dostęp do osoby",
-      "zmiana miejsca",
-      "obniżenie bodźców",
-      "czas / przeczekanie",
-      "wyjście z sytuacji",
-      "inne"
+      "Wycofanie wymagania",
+      "Dostęp do przedmiotu / aktywności",
+      "Dostęp do osoby",
+      "Zmiana miejsca",
+      "Obniżenie bodźców (cisza, przyciemnienie, mniej osób)",
+      "Czas / przeczekanie bez interwencji",
+      "Wyjście z sytuacji",
+      "Wsparcie sensoryczne (ciężar, ucisk, ruch, chłód/ciepło)",
+      "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)",
+      "Inne"
     ],
     places: ["Pokój", "Salon / wspólna przestrzeń", "Kuchnia / jadalnia", "Łazienka", "Przedpokój / przejścia", "Na zewnątrz", "Samochód", "Inne"],
     dependencies: ["miejsca", "osoby dorosłej", "pory dnia", "rodzaju aktywności", "liczby osób", "hałasu", "światła", "przejść między aktywnościami", "zmian planu", "obecności rodzeństwa / gości"],
@@ -141,7 +157,7 @@ export const environments = {
     interventions: ["Rozmowa", "Przypomnienie zasad", "Przesunięcie w czasie", "Zmiana aktywności", "Obniżenie wymagań / wycofanie wymagania", "Zaangażowanie innego wychowawcy / pedagoga", "Zaproponowanie czegoś pomagającego się uspokoić", "Wychowanek sam poprosił o coś pomagającego się uspokoić", "Wyjście do spokojniejszego miejsca", "Brak interwencji", "Inne"],
     harms: ["uraz osoby", "autoagresja", "zniszczenie przedmiotów", "opuszczenie wyznaczonego miejsca / oddalenie się", "zakłócenie funkcjonowania grupy", "brak szkód"],
     after: ["Przejście do spokojniejszego miejsca", "Interwencja fizyczna", "Powrót do aktywności / planu dnia", "Kontakt z rodzicem / opiekunem", "Kontakt z pedagogiem / psychologiem / kierownikiem", "Inne"],
-    endedBy: ["wycofanie wymagania", "dostęp do przedmiotu / aktywności", "dostęp do osoby", "zmiana miejsca", "obniżenie bodźców", "czas / przeczekanie", "wyjście z sytuacji grupowej", "kontakt z domem", "inne"],
+    endedBy: ["Wycofanie wymagania", "Dostęp do przedmiotu / aktywności", "Dostęp do osoby", "Zmiana miejsca", "Obniżenie bodźców (cisza, przyciemnienie, mniej osób)", "Czas / przeczekanie bez interwencji", "Wyjście z sytuacji grupowej", "Kontakt z domem", "Wsparcie sensoryczne (ciężar, ucisk, ruch, chłód/ciepło)", "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)", "Inne"],
     places: ["Pokój", "Świetlica / pokój dzienny", "Stołówka / jadalnia", "Łazienka", "Korytarz", "Miejsce nauki", "Na zewnątrz / boisko", "Inne"],
     dependencies: ["miejsca", "osoby dorosłej", "pory dnia", "rodzaju aktywności", "liczby osób", "hałasu", "światła", "przejść między aktywnościami", "zmian planu / dyżurów / zastępstw", "kontaktu z domem / powrotu z domu", "składu grupy / współlokatora / współdzielenia pokoju"],
     escalationContexts: ["Koniec aktywności", "Oczekiwanie", "Zmiana planu", "Polecenie", "Ograniczenie dostępu", "Przejście do innego miejsca", "Sytuacja grupowa / współdzielenie przestrzeni", "Konflikt o rzeczy wspólne / granice / miejsce w pokoju", "Wieczorna rutyna / przygotowanie do snu / cisza nocna", "Rozmowa z domem / po powrocie z domu / po weekendzie", "Inne"]
@@ -162,7 +178,7 @@ export const environments = {
     interventions: ["Rozmowa", "Przypomnienie zasad", "Przesunięcie w czasie", "Zmiana aktywności", "Obniżenie wymagań / wycofanie wymagania", "Zaangażowanie innego nauczyciela / pedagoga", "Zaproponowanie czegoś pomagającego się uspokoić", "Uczeń sam poprosił o coś pomagającego się uspokoić", "Brak interwencji", "Inne"],
     harms: ["uraz osoby", "autoagresja", "zniszczenie przedmiotów", "brak szkód"],
     after: ["Sala wyciszeń (izolacja)", "Interwencja fizyczna", "Powrót do zajęć", "Kontakt z rodzicem / opiekunem", "Inne"],
-    endedBy: ["wycofanie wymagania", "dostęp do przedmiotu / aktywności", "dostęp do osoby", "zmiana miejsca", "obniżenie bodźców", "czas / przeczekanie", "wyjście z sytuacji", "inne"],
+    endedBy: ["Wycofanie wymagania", "Dostęp do przedmiotu / aktywności", "Dostęp do osoby", "Zmiana miejsca", "Obniżenie bodźców (cisza, przyciemnienie, mniej osób)", "Czas / przeczekanie bez interwencji", "Wyjście z sytuacji", "Wsparcie sensoryczne (ciężar, ucisk, ruch, chłód/ciepło)", "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)", "Inne"],
     places: ["Sala lekcyjna", "Świetlica", "Sala SI", "Kuchnia", "Korytarz", "Toaleta", "Inne"],
     dependencies: ["miejsca", "osoby dorosłej", "pory dnia", "rodzaju zajęć", "liczby osób", "hałasu", "światła", "przejść między aktywnościami", "zmian planu / zastępstw", "nieobecności nauczyciela, z którym uczeń zwykle pracuje"],
     escalationContexts: ["Koniec zajęć", "Oczekiwanie", "Zmiana planu", "Polecenie", "Ograniczenie dostępu", "Przejście do innego pomieszczenia", "Przejście między zajęciami (zmiana nauczyciela)", "Inne"]
@@ -171,11 +187,10 @@ export const environments = {
 
 export function blankForm(env: EnvironmentConfig): SituationForm {
   return {
-    meta: { date: "", time: "", place: "", lead: "", present: "" },
+    meta: { date: "", time: "", place: "", initials: "", lead: "", present: "" },
     simple: {
       antecedents: "",
       signals: "",
-      interventions: "",
       behavior: "",
       helped: "",
       notes: "",
@@ -196,7 +211,6 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       sensoryIntensityOther: "",
       antecedents: [],
       factDescription: "",
-      predictability: "",
       expectations: [],
       expectationOther: "",
       influence: "",
@@ -210,6 +224,10 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       sensorySignalsOther: "",
       timeToEscalation: "",
       firstSignal: "",
+      maskingContinued: "",
+      maskingStrategies: [],
+      maskingStrategiesOther: "",
+      maskingDuration: "",
       predicts: "",
       phase: "",
       interventions: [],
@@ -234,8 +252,8 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       endedBy: [],
       endedByOther: "",
       worsened: "",
-      rewards: [],
-      rewardsOther: ""
+      recoverySupports: [],
+      recoverySupportsOther: ""
     },
     map: {
       rows: env.places.map((place) => ({ place, time: "", activity: "" })),

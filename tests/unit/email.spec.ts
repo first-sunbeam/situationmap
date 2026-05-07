@@ -26,9 +26,9 @@ describe("budowanie wiadomości e-mail", () => {
     expect(email.body).toContain("Środowisko: Dom");
     expect(email.body).toContain("Wersja formularza: prosta");
     expect(email.body).toContain("Data: 2026-05-02");
-    expect(email.body).toContain("Jaki był przebieg sytuacji i co można było zaobserwować?: Protest, płacz i odmowa przejścia do kolejnej aktywności.");
+    expect(email.body).toContain("3. Przebieg sytuacji – co można było zaobserwować?: Protest, płacz i odmowa przejścia do kolejnej aktywności.");
     expect(email.body).toContain(
-      "Co pomogło obniżyć napięcie lub wyregulować sytuację?: Przerwa i cisza.",
+      "4. Co pomogło (lub nie pomogło) wyregulować sytuację?: Przerwa i cisza.",
     );
   });
 
@@ -42,7 +42,7 @@ describe("budowanie wiadomości e-mail", () => {
 
     expect(email.body).toContain("Data: -");
     expect(email.body).not.toContain("Krótki opis sytuacji: -");
-    expect(email.body).toContain("Jaki był przebieg sytuacji i co można było zaobserwować?: -");
+    expect(email.body).toContain("3. Przebieg sytuacji – co można było zaobserwować?: -");
   });
 
   it("łączy tablice checkboxów przecinkami", () => {

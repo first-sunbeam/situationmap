@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { formLabels } from "../config/formLabels";
+import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, FieldErrors, PdfAction, SituationForm } from "../types/form";
 import MetaFields from "./form/MetaFields.vue";
 import TextAreaField from "./form/TextAreaField.vue";
@@ -12,6 +14,8 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
   resetSimple: () => void;
   fieldErrors: FieldErrors;
 }>();
+
+const subject = computed(() => getSubjectInline(form));
 </script>
 
 <template>
@@ -39,44 +43,39 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
         <div class="field-grid">
           <TextAreaField
             v-model="form.simple.antecedents"
-            :label="formLabels.simple.antecedents"
-            hint="Np. zmiana planu, hałas, oczekiwanie, polecenie, odmowa, koniec aktywności, przejście do innej aktywności. PLUS uwzględnij: czy dziecko było głodne/zmęczone/przegrzane/bolało je coś; czy było dużo bodźców (tłok, hałas, światło, zapachy); czy sytuacja była nieprzewidywalna lub nagła."
+            :label="`1. Co wydarzyło się tuż przed i jaki był stan ${subject}?`"
+            hint="Np. zmiana planu, polecenie, hałas, tłok, koniec aktywności, przejście. Stan: głód, zmęczenie, przegrzanie, ból, dużo bodźców, sytuacja nagła/nieprzewidywalna."
           />
           <TextAreaField
             v-model="form.simple.signals"
             :label="formLabels.simple.signals"
-            hint="Np. milczenie, napięcie ciała, protest, szybsze mówienie, wycofanie, jęczenie, podniesiony głos, powtarzanie słów."
-          />
-          <TextAreaField
-            v-model="form.simple.interventions"
-            :label="formLabels.simple.interventions"
-            hint="Co zrobiła lub powiedziała osoba dorosła / otoczenie? Czy reakcja obniżyła wymagania, czy je podtrzymała? Czy dziecko miało możliwość wyboru/autonomii w tym momencie?"
+            hint="Sygnały: np. milczenie, napięcie ciała, szybsze mówienie, wycofanie, podniesiony głos. Reakcja dorosłego: co zrobiono/powiedziano? Czy obniżono wymagania, czy je podtrzymano? Czy był wybór?"
           />
           <TextAreaField
             v-model="form.simple.behavior"
             :label="formLabels.simple.behavior"
-            hint="Opisz fakty i obserwacje: słowa, ruchy, działania, odmowę, płacz, krzyk, wycofanie, ucieczkę, rzucanie przedmiotami itd."
+            hint="Opisz fakty: słowa, ruchy, odmowa, płacz, krzyk, wycofanie, ucieczka, rzucanie przedmiotami."
             required
             :error="fieldErrors['simple.behavior']"
           />
           <TextAreaField
             v-model="form.simple.helped"
             :label="formLabels.simple.helped"
-            hint="Np. wycofanie wymagania, zmiana miejsca, obniżenie bodźców (cisza/przyciemnienie), czas bez oczekiwań, dostęp do osoby/przedmiotu, możliwość wyboru. Jeśli nic nie pomogło, wpisz to wprost."
+            hint="Np. wycofanie wymagania, zmiana miejsca, cisza, czas bez oczekiwań, dostęp do osoby/przedmiotu, wybór. Jeśli nic nie pomogło – wpisz wprost."
             required
             :error="fieldErrors['simple.helped']"
           />
           <TextAreaField
             v-model="form.simple.notes"
-            :label="formLabels.simple.notes"
-            hint="Czy mogło o czymś decydować (np. kiedy, jak, z kim, w jakiej kolejności), czy raczej sytuacja była narzucona, nagła albo poza jego kontrolą?"
+            :label="`5. Wpływ i autonomia – zakres kontroli dla ${subject}`"
+            hint="Czy mogło decydować (kiedy, jak, z kim, w jakiej kolejności), czy sytuacja była narzucona/nagła?"
             required
             :error="fieldErrors['simple.notes']"
           />
           <TextAreaField
             v-model="form.simple.recoveryTime"
             :label="formLabels.simple.recoveryTime"
-            hint="Np. 5 minut, pół godziny, kilka godzin. To pokazuje, ile czasu układ nerwowy potrzebował na powrót do stanu gotowości poznawczej – uspokojenie emocjonalne ≠ gotowość do działania."
+            hint="Od uspokojenia do gotowości na rozmowę/aktywność: 5 min / 30 min / kilka godzin. Uspokojenie emocjonalne ≠ gotowość poznawcza."
           />
         </div>
       </section>

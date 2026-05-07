@@ -30,6 +30,7 @@ export interface MetaForm {
   date: string;
   time: string;
   place: string;
+  initials: string;
   lead: string;
   present: string;
 }
@@ -37,7 +38,6 @@ export interface MetaForm {
 export interface SimpleFormData {
   antecedents: string;
   signals: string;
-  interventions: string;
   behavior: string;
   helped: string;
   notes: string;
@@ -59,7 +59,6 @@ export interface IncidentFormData {
   sensoryIntensityOther: string;
   antecedents: string[];
   factDescription: string;
-  predictability: string;
   expectations: string[];
   expectationOther: string;
   influence: string;
@@ -73,6 +72,10 @@ export interface IncidentFormData {
   sensorySignalsOther: string;
   timeToEscalation: string;
   firstSignal: string;
+  maskingContinued: string;
+  maskingStrategies: string[];
+  maskingStrategiesOther: string;
+  maskingDuration: string;
   predicts: string;
   phase: string;
   interventions: string[];
@@ -97,8 +100,8 @@ export interface IncidentFormData {
   endedBy: string[];
   endedByOther: string;
   worsened: string;
-  rewards: string[];
-  rewardsOther: string;
+  recoverySupports: string[];
+  recoverySupportsOther: string;
 }
 
 export interface MapRow {

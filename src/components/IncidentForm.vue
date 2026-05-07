@@ -7,6 +7,7 @@ import BaselineStep from "./incident/BaselineStep.vue";
 import BeforeStep from "./incident/BeforeStep.vue";
 import ExpectationsStep from "./incident/ExpectationsStep.vue";
 import SignalsStep from "./incident/SignalsStep.vue";
+import MaskingStep from "./incident/MaskingStep.vue";
 import ActionsStep from "./incident/ActionsStep.vue";
 import BehaviorStep from "./incident/BehaviorStep.vue";
 import AfterStep from "./incident/AfterStep.vue";
@@ -19,10 +20,11 @@ const steps = [
   { ...incidentStepDefinitions[2], component: BeforeStep },
   { ...incidentStepDefinitions[3], component: ExpectationsStep },
   { ...incidentStepDefinitions[4], component: SignalsStep },
-  { ...incidentStepDefinitions[5], component: ActionsStep },
-  { ...incidentStepDefinitions[6], component: BehaviorStep },
-  { ...incidentStepDefinitions[7], component: AfterStep },
-  { ...incidentStepDefinitions[8], component: RegulationStep }
+  { ...incidentStepDefinitions[5], component: MaskingStep },
+  { ...incidentStepDefinitions[6], component: ActionsStep },
+  { ...incidentStepDefinitions[7], component: BehaviorStep },
+  { ...incidentStepDefinitions[8], component: RegulationStep },
+  { ...incidentStepDefinitions[9], component: AfterStep }
 ] satisfies Array<IncidentStepDefinition & { component: Component }>;
 
 const { env, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();

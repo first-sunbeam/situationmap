@@ -82,8 +82,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     message: "Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
     isComplete: (form) => hasAnyValue([
       form.incident.antecedents,
-      form.incident.factDescription,
-      form.incident.predictability
+      form.incident.factDescription
     ])
   },
   {
@@ -127,9 +126,23 @@ export const incidentSections: IncidentSectionDefinition[] = [
       ])) && hasRequiredOtherValue(form.incident.activationSignals, form.incident.activationSignalsOther) && hasRequiredOtherValue(form.incident.shutdownSignals, form.incident.shutdownSignalsOther) && hasRequiredOtherValue(form.incident.sensorySignals, form.incident.sensorySignalsOther)
   },
   {
+    id: "masking",
+    label: formLabels.incident.maskingSection,
+    badge: "3B",
+    errorKey: "incident.maskingSection",
+    extraErrorKeys: ["incident.maskingStrategiesOther"],
+    summary: "Strategie kompensacyjne i maskowanie: uzupełnij przynajmniej jedno pole albo przejdź dalej, jeśli nie dotyczy.",
+    message: "Uzupełnij przynajmniej jedno pole w tej sekcji albo przejdź dalej, jeśli nie dotyczy.",
+    isComplete: (form) => form.incident.maskingContinued !== "Tak" || (hasAnyValue([
+      form.incident.maskingStrategies,
+      form.incident.maskingStrategiesOther,
+      form.incident.maskingDuration
+    ]) && hasRequiredOtherValue(form.incident.maskingStrategies, form.incident.maskingStrategiesOther))
+  },
+  {
     id: "actions",
     label: formLabels.incident.actionsSection,
-    badge: "3A",
+    badge: "4",
     errorKey: "incident.actionsSection",
     extraErrorKeys: ["incident.interventionDetails"],
     summary: "Działania: uzupełnij przynajmniej jedno pole.",
@@ -159,9 +172,26 @@ export const incidentSections: IncidentSectionDefinition[] = [
     ])
   },
   {
+    id: "regulation",
+    label: formLabels.incident.regulationSection,
+    badge: "6",
+    errorKey: "incident.regulationSection",
+    extraErrorKeys: ["incident.endedByOther", "incident.recoverySupportsOther"],
+    summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło zakończyć eskalację.",
+    message: "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
+    isComplete: (form) => hasAnyValue([
+      form.incident.endedBy,
+      form.incident.endedByOther,
+      form.incident.calmTime,
+      form.incident.cognitiveRecoveryTime,
+      form.incident.recoverySupports,
+      form.incident.recoverySupportsOther
+    ]) && hasRequiredOtherValue(form.incident.endedBy, form.incident.endedByOther) && hasRequiredOtherValue(form.incident.recoverySupports, form.incident.recoverySupportsOther)
+  },
+  {
     id: "after",
     label: formLabels.incident.afterSection,
-    badge: "6",
+    badge: "7",
     errorKey: "incident.afterSection",
     extraErrorKeys: ["incident.afterOther", "incident.physicalCount"],
     summary: "Po zdarzeniu: uzupełnij przynajmniej jedno pole.",
@@ -169,25 +199,10 @@ export const incidentSections: IncidentSectionDefinition[] = [
     isComplete: (form) => hasAnyValue([
       form.incident.after,
       form.incident.afterOther,
-      form.incident.calmTime,
-      form.incident.cognitiveRecoveryTime,
       form.incident.physicalThisWeek,
       form.incident.physicalCount,
       form.incident.lowerThreshold,
       form.incident.physicalNote
     ]) && hasRequiredPhysicalCount(form.incident.physicalThisWeek, form.incident.physicalCount) && hasRequiredOtherValue(form.incident.after, form.incident.afterOther)
-  },
-  {
-    id: "regulation",
-    label: formLabels.incident.regulationSection,
-    badge: "7-9",
-    errorKey: "incident.regulationSection",
-    extraErrorKeys: ["incident.endedByOther", "incident.rewardsOther"],
-    summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło zakończyć eskalację.",
-    message: "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
-    isComplete: (form) => hasAnyValue([
-      form.incident.endedBy,
-      form.incident.endedByOther
-    ]) && hasRequiredOtherValue(form.incident.endedBy, form.incident.endedByOther) && hasRequiredOtherValue(form.incident.rewards, form.incident.rewardsOther)
   }
 ];

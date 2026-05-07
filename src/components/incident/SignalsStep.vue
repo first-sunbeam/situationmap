@@ -29,7 +29,6 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
         v-model="form.incident.activationSignals"
         :label="formLabels.incident.activationSignals"
         :options="activationSignalOptions"
-        :required="form.incident.signalsAppeared === 'Tak'"
       />
       <InputField
         v-if="hasOther(form.incident.activationSignals, form.incident.activationSignalsOther)"

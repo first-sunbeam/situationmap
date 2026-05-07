@@ -5,11 +5,11 @@ export const SIMPLE_VALIDATION_MESSAGES = {
   time: "Dane podstawowe: uzupełnij pole godzina.",
   place: "Dane podstawowe: uzupełnij pole miejsce.",
   behavior:
-    "Formularz prosty: uzupełnij pole „Jaki był przebieg sytuacji i co można było zaobserwować?”.",
+    "Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.",
   helped:
-    "Formularz prosty: uzupełnij pole „Co pomogło obniżyć napięcie lub wyregulować sytuację?”.",
+    "Formularz prosty: uzupełnij pole „4. Co pomogło (lub nie pomogło) wyregulować sytuację?”.",
   notes:
-    "Formularz prosty: uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.",
+    "Formularz prosty: uzupełnij pole „5. Wpływ i autonomia – zakres kontroli dla dziecka/ucznia”.",
 } as const;
 
 export class SimpleFormPage {
@@ -35,13 +35,13 @@ export class SimpleFormPage {
 
   get behaviorField(): Locator {
     return this.page.getByLabel(
-      "Jaki był przebieg sytuacji i co można było zaobserwować?"
+      "3. Przebieg sytuacji – co można było zaobserwować?"
     );
   }
 
   get helpedField(): Locator {
     return this.page.getByLabel(
-      "Co pomogło obniżyć napięcie lub wyregulować sytuację?"
+      "4. Co pomogło (lub nie pomogło) wyregulować sytuację?"
     );
   }
 
@@ -50,7 +50,7 @@ export class SimpleFormPage {
   }
 
   get influenceField(): Locator {
-    return this.page.getByLabel("Na co dziecko/uczeń miało wpływ, a na co nie?");
+    return this.page.getByLabel("5. Wpływ i autonomia – zakres kontroli dla dziecka/ucznia");
   }
 
   // ── Validation messages ───────────────────────────────────────────────────
