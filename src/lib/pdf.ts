@@ -16,8 +16,30 @@ function selectedList(value: ExportValue): string {
   return values.filter(Boolean).length ? values.filter(Boolean).join(", ") : "........................................";
 }
 
+function formatLabel(label: string): PdfNode[] {
+  const parts: PdfNode[] = [];
+  const pattern = /_([^_]+)_/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = pattern.exec(label)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push({ text: label.slice(lastIndex, match.index), bold: true });
+    }
+    parts.push({ text: match[1], bold: true, italics: true, decoration: "underline" });
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < label.length) {
+    parts.push({ text: label.slice(lastIndex), bold: true });
+  }
+
+  parts.push({ text: ": ", bold: true });
+  return parts;
+}
+
 function fieldLine(label: string, value: ExportValue): PdfNode {
-  return { text: [{ text: `${label}: `, bold: true }, selectedList(value)], margin: [0, 2, 0, 2] };
+  return { text: [...formatLabel(label), selectedList(value)], margin: [0, 2, 0, 2] };
 }
 
 function exportRows(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): PdfContent {
