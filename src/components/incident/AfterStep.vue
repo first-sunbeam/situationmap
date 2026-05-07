@@ -34,7 +34,12 @@ const { env, form, fieldErrors, calmTime, yesNoUnknown } = useFormState();
         :required="form.incident.physicalThisWeek === 'Tak'"
         :error="fieldErrors['incident.physicalCount']"
       />
-      <SelectField v-model="form.incident.lowerThreshold" :label="formLabels.incident.lowerThreshold" :options="yesNoUnknown" />
+      <SelectField
+        v-model="form.incident.lowerThreshold"
+        :label="formLabels.incident.lowerThreshold"
+        :options="yesNoUnknown"
+        hint="Np. napięcie rosło szybciej, trudniej było wrócić do równowagi albo reakcja była silniejsza niż zwykle."
+      />
       <InputField v-model="form.incident.physicalNote" :label="formLabels.incident.physicalNote" full />
     </div>
   </section>

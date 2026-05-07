@@ -60,7 +60,7 @@ export const formLabels = {
     calmTime: "Czas do pełnego uspokojenia",
     physicalThisWeek: "Interwencja fizyczna w tym tygodniu?",
     physicalCount: "Ile razy?",
-    lowerThreshold: "Niższy próg / szybsza reakcja?",
+    lowerThreshold: "Czy dziecko/uczeń reagowało szybciej lub mocniej niż zwykle?",
     physicalNote: "Notatka o interwencji fizycznej",
     endedBy: "Co najbardziej pomogło zakończyć eskalację?",
     endedByOther: "Jeśli inne, wpisz jakie",
