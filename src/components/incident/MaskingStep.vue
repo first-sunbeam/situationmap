@@ -26,7 +26,6 @@ const subject = computed(() => getSubjectInline(form.value, "dziecko/uczeń"));
         <legend class="field-label">Strategie maskowania i czas „trzymania się”</legend>
         <ChoiceGroupField
           v-model="form.incident.maskingStrategies"
-          :label="formLabels.incident.maskingStrategies"
           :options="maskingStrategyOptions"
         />
         <InputField

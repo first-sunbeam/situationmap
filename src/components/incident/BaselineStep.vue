@@ -6,17 +6,41 @@ import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
 function hasOther(selected: string[] = [], value = "") {
-  return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
+  return (
+    selected.includes("Inne") ||
+    selected.includes("inne") ||
+    String(value || "").trim() !== ""
+  );
 }
 
-const { env, form, fieldErrors, bodyStateOptions, sensoryIntensityOptions, tensionLevels, yesNoUnknown } = useFormState();
+const {
+  env,
+  form,
+  fieldErrors,
+  bodyStateOptions,
+  sensoryIntensityOptions,
+  tensionLevels,
+  yesNoUnknown,
+} = useFormState();
 </script>
 
 <template>
-  <section class="section" :class="{ invalidSection: fieldErrors['incident.baselineSection'] }">
-    <h3>{{ formLabels.incident.baselineSection }} <span class="required-mark">*</span></h3>
-    <p class="section-hint">Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – obie grupy czynników wpływają na próg dysregulacji.</p>
-    <p v-if="fieldErrors['incident.baselineSection']" class="field-error">{{ fieldErrors['incident.baselineSection'] }}</p>
+  <section
+    class="section"
+    :class="{ invalidSection: fieldErrors['incident.baselineSection'] }"
+  >
+    <h3>
+      {{ formLabels.incident.baselineSection }}
+      <span class="required-mark">*</span>
+    </h3>
+    <p class="section-hint">
+      Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała
+      (interocepcja) i z integracją bodźców zewnętrznych – obie grupy czynników
+      wpływają na próg dysregulacji.
+    </p>
+    <p v-if="fieldErrors['incident.baselineSection']" class="field-error">
+      {{ fieldErrors["incident.baselineSection"] }}
+    </p>
     <div class="field-grid">
       <SelectField
         v-model="form.incident.tension"
@@ -24,8 +48,16 @@ const { env, form, fieldErrors, bodyStateOptions, sensoryIntensityOptions, tensi
         :options="tensionLevels"
         hint="Jak wyglądał stan osoby przed zdarzeniem?"
       />
-      <SelectField v-model="form.incident.tired" :label="formLabels.incident.tired" :options="yesNoUnknown" />
-      <SelectField v-model="form.incident.slept" :label="formLabels.incident.slept" :options="yesNoUnknown" />
+      <SelectField
+        v-model="form.incident.tired"
+        :label="formLabels.incident.tired"
+        :options="yesNoUnknown"
+      />
+      <SelectField
+        v-model="form.incident.slept"
+        :label="formLabels.incident.slept"
+        :options="yesNoUnknown"
+      />
       <InputField
         v-model="form.incident.sleepDetails"
         :label="formLabels.incident.sleepDetails"
@@ -33,21 +65,38 @@ const { env, form, fieldErrors, bodyStateOptions, sensoryIntensityOptions, tensi
         :error="fieldErrors['incident.sleepDetails']"
       />
       <template v-if="env.stayStages">
-        <SelectField v-model="form.incident.stayStage" :label="formLabels.incident.stayStage" :options="env.stayStages" />
-        <SelectField v-model="form.incident.stayStageLoad" :label="formLabels.incident.stayStageLoad" :options="yesNoUnknown" />
+        <SelectField
+          v-model="form.incident.stayStage"
+          :label="formLabels.incident.stayStage"
+          :options="env.stayStages"
+        />
+        <SelectField
+          v-model="form.incident.stayStageLoad"
+          :label="formLabels.incident.stayStageLoad"
+          :options="yesNoUnknown"
+        />
       </template>
-      <ChoiceGroupField v-model="form.incident.burdens" :label="formLabels.incident.burdens" :options="env.burdens" />
-      <InputField
-        v-if="hasOther(form.incident.burdens, form.incident.burdensOther)"
-        v-model="form.incident.burdensOther"
-        :label="formLabels.incident.burdensOther"
-        :required="form.incident.burdens.includes('inne')"
-        :error="fieldErrors['incident.burdensOther']"
-        full
-      />
+      <fieldset class="field group-field full">
+        <legend class="field-label">{{ formLabels.incident.burdens }}</legend>
+        <ChoiceGroupField
+          v-model="form.incident.burdens"
+          :options="env.burdens"
+        />
+        <InputField
+          v-if="hasOther(form.incident.burdens, form.incident.burdensOther)"
+          v-model="form.incident.burdensOther"
+          :label="formLabels.incident.burdensOther"
+          :required="form.incident.burdens.includes('inne')"
+          :error="fieldErrors['incident.burdensOther']"
+          full
+        />
+      </fieldset>
       <fieldset class="field group-field full">
         <legend class="field-label">{{ formLabels.incident.bodyState }}</legend>
-        <ChoiceGroupField v-model="form.incident.bodyState" :label="formLabels.incident.bodyState" :options="bodyStateOptions" />
+        <ChoiceGroupField
+          v-model="form.incident.bodyState"
+          :options="bodyStateOptions"
+        />
         <InputField
           v-if="hasOther(form.incident.bodyState, form.incident.bodyStateOther)"
           v-model="form.incident.bodyStateOther"
@@ -58,10 +107,20 @@ const { env, form, fieldErrors, bodyStateOptions, sensoryIntensityOptions, tensi
         />
       </fieldset>
       <fieldset class="field group-field full">
-        <legend class="field-label">{{ formLabels.incident.sensoryIntensity }}</legend>
-        <ChoiceGroupField v-model="form.incident.sensoryIntensity" :label="formLabels.incident.sensoryIntensity" :options="sensoryIntensityOptions" />
+        <legend class="field-label">
+          {{ formLabels.incident.sensoryIntensity }}
+        </legend>
+        <ChoiceGroupField
+          v-model="form.incident.sensoryIntensity"
+          :options="sensoryIntensityOptions"
+        />
         <InputField
-          v-if="hasOther(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther)"
+          v-if="
+            hasOther(
+              form.incident.sensoryIntensity,
+              form.incident.sensoryIntensityOther,
+            )
+          "
           v-model="form.incident.sensoryIntensityOther"
           :label="formLabels.incident.sensoryIntensityOther"
           :required="form.incident.sensoryIntensity.includes('inne')"

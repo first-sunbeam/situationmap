@@ -26,10 +26,9 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
         :error="fieldErrors['incident.timeToEscalation']"
       />
       <fieldset class="field group-field full">
-        <legend class="field-label">Typ reakcji</legend>
+        <legend class="field-label">{{ formLabels.incident.activationSignals }}</legend>
         <ChoiceGroupField
           v-model="form.incident.activationSignals"
-          :label="formLabels.incident.activationSignals"
           :options="activationSignalOptions"
         />
         <InputField
@@ -40,9 +39,9 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
           :error="fieldErrors['incident.activationSignalsOther']"
           full
         />
+        <h4 class="field-label">{{ formLabels.incident.shutdownSignals }}</h4>
         <ChoiceGroupField
           v-model="form.incident.shutdownSignals"
-          :label="formLabels.incident.shutdownSignals"
           :options="shutdownSignalOptions"
         />
         <InputField
@@ -53,9 +52,9 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
           :error="fieldErrors['incident.shutdownSignalsOther']"
           full
         />
+        <h4 class="field-label">{{ formLabels.incident.sensorySignals }}</h4>
         <ChoiceGroupField
           v-model="form.incident.sensorySignals"
-          :label="formLabels.incident.sensorySignals"
           :options="sensorySignalOptions"
         />
         <InputField
