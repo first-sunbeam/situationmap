@@ -40,6 +40,9 @@ export function fillMinimalIncident(form: HomeForm): void {
   form.incident.antecedents = ["Zmiana aktywności"];
   form.incident.expectations = ["Brak wymagań"];
   form.incident.influence = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
+  form.incident.predictabilityWhat = "Nie";
+  form.incident.predictabilityDuration = "Nie wiem";
+  form.incident.predictabilityChoice = "Częściowo";
   form.incident.signalsAppeared = "Nie";
   form.incident.phase = "Żółta - narastające napięcie";
   form.incident.behavior = "Protest słowny.";
@@ -68,9 +71,16 @@ export function createFilledHomeForm(): HomeForm {
   const form = createHomeForm();
   fillSimpleForm(form);
   form.incident.antecedents = ["Zmiana aktywności"];
-  form.incident.endedBy = ["czas / przeczekanie"];
+  form.incident.endedBy = ["Czas / przeczekanie bez interwencji"];
   form.incident.tension = "1 podwyższony";
   form.incident.influence = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
+  form.incident.predictabilityWhat = "Nie";
+  form.incident.predictabilityDuration = "Nie wiem";
+  form.incident.predictabilityChoice = "Częściowo";
+  form.incident.escalationDuration = "15 minut";
+  form.incident.calmTime = "15-30 minut";
+  form.incident.cognitiveRecoveryTime = "1-2 godziny po";
+  form.incident.recoverySupports = ["Cisza i brak bodźców"];
   form.map.rows[0].time = "2h";
   form.map.rows[0].activity = "Zabawa";
   return form;

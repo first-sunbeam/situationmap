@@ -17,7 +17,6 @@ const { env, form, fieldErrors, intensity } = useFormState();
     <div class="field-grid">
       <TextAreaField v-model="form.incident.behavior" :label="formLabels.incident.behavior" />
       <SelectField v-model="form.incident.intensity" :label="formLabels.incident.intensity" :options="intensity" />
-      <InputField v-model="form.incident.escalationDuration" :label="formLabels.incident.escalationDuration" />
       <ChoiceGroupField v-model="form.incident.harms" :label="formLabels.incident.harms" :options="env.harms" />
     </div>
   </section>

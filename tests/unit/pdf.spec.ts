@@ -47,6 +47,10 @@ describe("generowanie PDF", () => {
 
     expect(content).toContain(environments.home.incidentTitle);
     expect(content).toContain("0. Poziom bazowy i kontekst dnia");
+    expect(content).toContain("Czy było wiadomo, co się wydarzy?");
+    expect(content).toContain("Czas trwania eskalacji");
+    expect(content).toContain("15 minut");
+    expect(content).toContain("Czas do pełnego uspokojenia emocjonalnego");
     expect(content).toContain("1 podwyższony");
     expect(content).not.toContain(environments.home.mapTitle);
   });

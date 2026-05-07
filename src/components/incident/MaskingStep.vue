@@ -12,7 +12,7 @@ function hasOther(selected: string[] = [], value = "") {
 }
 
 const { form, fieldErrors, maskingDurationOptions, maskingStrategyOptions, yesNoUnknown } = useFormState();
-const subject = computed(() => getSubjectInline(form.value));
+const subject = computed(() => getSubjectInline(form.value, "dziecko/uczeń"));
 </script>
 
 <template>
@@ -22,21 +22,23 @@ const subject = computed(() => getSubjectInline(form.value));
     <p v-if="fieldErrors['incident.maskingSection']" class="field-error">{{ fieldErrors['incident.maskingSection'] }}</p>
     <div class="field-grid">
       <SelectField v-model="form.incident.maskingContinued" :label="`Kontynuowanie aktywności mimo narastającego napięcia przez ${subject}`" :options="yesNoUnknown" />
-      <ChoiceGroupField
-        v-if="form.incident.maskingContinued === 'Tak'"
-        v-model="form.incident.maskingStrategies"
-        :label="formLabels.incident.maskingStrategies"
-        :options="maskingStrategyOptions"
-      />
-      <InputField
-        v-if="hasOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther)"
-        v-model="form.incident.maskingStrategiesOther"
-        :label="formLabels.incident.maskingStrategiesOther"
-        :required="form.incident.maskingStrategies.includes('Inne')"
-        :error="fieldErrors['incident.maskingStrategiesOther']"
-        full
-      />
-      <SelectField v-if="form.incident.maskingContinued === 'Tak'" v-model="form.incident.maskingDuration" :label="`Czas „trzymania się” przed eskalacją przez ${subject}`" :options="maskingDurationOptions" />
+      <fieldset v-if="form.incident.maskingContinued === 'Tak'" class="field group-field full">
+        <legend class="field-label">Strategie maskowania i czas „trzymania się”</legend>
+        <ChoiceGroupField
+          v-model="form.incident.maskingStrategies"
+          :label="formLabels.incident.maskingStrategies"
+          :options="maskingStrategyOptions"
+        />
+        <InputField
+          v-if="hasOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther)"
+          v-model="form.incident.maskingStrategiesOther"
+          :label="formLabels.incident.maskingStrategiesOther"
+          :required="form.incident.maskingStrategies.includes('Inne')"
+          :error="fieldErrors['incident.maskingStrategiesOther']"
+          full
+        />
+        <SelectField v-model="form.incident.maskingDuration" :label="`Czas „trzymania się” przed eskalacją przez ${subject}`" :options="maskingDurationOptions" />
+      </fieldset>
     </div>
   </section>
 </template>

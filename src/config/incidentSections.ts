@@ -95,7 +95,10 @@ export const incidentSections: IncidentSectionDefinition[] = [
     message: "Zaznacz przynajmniej jedną opcję albo wpisz własną odpowiedź oraz uzupełnij pole wpływu osoby.",
     isComplete: (form) => hasAnyValue([
       form.incident.expectations,
-      form.incident.expectationOther
+      form.incident.expectationOther,
+      form.incident.predictabilityWhat,
+      form.incident.predictabilityDuration,
+      form.incident.predictabilityChoice
     ]) && hasRequiredText(form.incident.influence) && hasRequiredOtherValue(form.incident.expectations, form.incident.expectationOther)
   },
   {
@@ -167,7 +170,6 @@ export const incidentSections: IncidentSectionDefinition[] = [
     isComplete: (form) => hasAnyValue([
       form.incident.behavior,
       form.incident.intensity,
-      form.incident.escalationDuration,
       form.incident.harms
     ])
   },
@@ -180,6 +182,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło zakończyć eskalację.",
     message: "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
     isComplete: (form) => hasAnyValue([
+      form.incident.escalationDuration,
       form.incident.endedBy,
       form.incident.endedByOther,
       form.incident.calmTime,

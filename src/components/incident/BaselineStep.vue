@@ -45,24 +45,30 @@ const { env, form, fieldErrors, bodyStateOptions, sensoryIntensityOptions, tensi
         :error="fieldErrors['incident.burdensOther']"
         full
       />
-      <ChoiceGroupField v-model="form.incident.bodyState" :label="formLabels.incident.bodyState" :options="bodyStateOptions" />
-      <InputField
-        v-if="hasOther(form.incident.bodyState, form.incident.bodyStateOther)"
-        v-model="form.incident.bodyStateOther"
-        :label="formLabels.incident.bodyStateOther"
-        :required="form.incident.bodyState.includes('inne')"
-        :error="fieldErrors['incident.bodyStateOther']"
-        full
-      />
-      <ChoiceGroupField v-model="form.incident.sensoryIntensity" :label="formLabels.incident.sensoryIntensity" :options="sensoryIntensityOptions" />
-      <InputField
-        v-if="hasOther(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther)"
-        v-model="form.incident.sensoryIntensityOther"
-        :label="formLabels.incident.sensoryIntensityOther"
-        :required="form.incident.sensoryIntensity.includes('inne')"
-        :error="fieldErrors['incident.sensoryIntensityOther']"
-        full
-      />
+      <fieldset class="field group-field full">
+        <legend class="field-label">{{ formLabels.incident.bodyState }}</legend>
+        <ChoiceGroupField v-model="form.incident.bodyState" :label="formLabels.incident.bodyState" :options="bodyStateOptions" />
+        <InputField
+          v-if="hasOther(form.incident.bodyState, form.incident.bodyStateOther)"
+          v-model="form.incident.bodyStateOther"
+          :label="formLabels.incident.bodyStateOther"
+          :required="form.incident.bodyState.includes('inne')"
+          :error="fieldErrors['incident.bodyStateOther']"
+          full
+        />
+      </fieldset>
+      <fieldset class="field group-field full">
+        <legend class="field-label">{{ formLabels.incident.sensoryIntensity }}</legend>
+        <ChoiceGroupField v-model="form.incident.sensoryIntensity" :label="formLabels.incident.sensoryIntensity" :options="sensoryIntensityOptions" />
+        <InputField
+          v-if="hasOther(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther)"
+          v-model="form.incident.sensoryIntensityOther"
+          :label="formLabels.incident.sensoryIntensityOther"
+          :required="form.incident.sensoryIntensity.includes('inne')"
+          :error="fieldErrors['incident.sensoryIntensityOther']"
+          full
+        />
+      </fieldset>
     </div>
   </section>
 </template>

@@ -19,10 +19,27 @@ const subject = computed(() => getSubjectInline(form.value));
 <template>
   <section class="section" :class="{ invalidSection: fieldErrors['incident.regulationSection'] }">
     <h3>{{ formLabels.incident.regulationSection }} <span class="required-mark">*</span></h3>
-    <p class="section-hint">To pytanie dotyczy momentu PO pełnej eskalacji – co w końcu zatrzymało kryzys?</p>
+    <p class="section-hint">Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin.</p>
     <p v-if="fieldErrors['incident.regulationSection']" class="field-error">{{ fieldErrors['incident.regulationSection'] }}</p>
     <div class="field-grid">
-      <ChoiceGroupField v-model="form.incident.endedBy" :label="formLabels.incident.endedBy" :options="env.endedBy" required />
+      <fieldset class="field group-field full">
+        <legend class="field-label">Czas eskalacji i powrotu do dostępności</legend>
+        <InputField v-model="form.incident.escalationDuration" :label="formLabels.incident.escalationDuration" />
+        <SelectField v-model="form.incident.calmTime" :label="formLabels.incident.calmTime" :options="calmTime" />
+        <SelectField
+          v-model="form.incident.cognitiveRecoveryTime"
+          :label="formLabels.incident.cognitiveRecoveryTime"
+          :options="cognitiveRecoveryOptions"
+          :hint="`Gotowość na rozmowę, rozumienie poleceń, kontakt wzrokowy lub powrót do aktywności u ${subject}.`"
+        />
+      </fieldset>
+      <ChoiceGroupField
+        v-model="form.incident.endedBy"
+        :label="formLabels.incident.endedBy"
+        :options="env.endedBy"
+        hint="To pytanie dotyczy momentu PO pełnej eskalacji – co w końcu zatrzymało kryzys?"
+        required
+      />
       <InputField
         v-if="hasOther(form.incident.endedBy, form.incident.endedByOther)"
         v-model="form.incident.endedByOther"
@@ -32,13 +49,6 @@ const subject = computed(() => getSubjectInline(form.value));
         full
       />
       <TextAreaField v-model="form.incident.worsened" :label="formLabels.incident.worsened" hint="Np. nacisk, pośpiech, hałas, dotyk, obecność dodatkowych osób, próba rozmowy, odmowa, kontynuowanie wymagań." />
-      <SelectField v-model="form.incident.calmTime" :label="formLabels.incident.calmTime" :options="calmTime" />
-      <SelectField
-        v-model="form.incident.cognitiveRecoveryTime"
-        :label="formLabels.incident.cognitiveRecoveryTime"
-        :options="cognitiveRecoveryOptions"
-        :hint="`Gotowość na rozmowę, rozumienie poleceń, kontakt wzrokowy lub powrót do aktywności u ${subject}.`"
-      />
       <ChoiceGroupField
         v-model="form.incident.recoverySupports"
         :label="formLabels.incident.recoverySupports"

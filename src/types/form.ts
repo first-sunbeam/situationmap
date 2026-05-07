@@ -10,14 +10,11 @@ export interface EnvironmentConfig {
   footer: string;
   incidentTitle: string;
   mapTitle: string;
-  person: string;
-  personShort: string;
   lead: string;
   stayStages?: string[];
   burdens: string[];
   antecedents: string[];
   expectations: string[];
-  interventions: string[];
   harms: string[];
   after: string[];
   endedBy: string[];
@@ -63,6 +60,9 @@ export interface IncidentFormData {
   expectationOther: string;
   influence: string;
   noInfluence: string;
+  predictabilityWhat: string;
+  predictabilityDuration: string;
+  predictabilityChoice: string;
   signalsAppeared: string;
   activationSignals: string[];
   activationSignalsOther: string;

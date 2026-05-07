@@ -25,45 +25,48 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
         :required="form.incident.signalsAppeared === 'Tak'"
         :error="fieldErrors['incident.timeToEscalation']"
       />
-      <ChoiceGroupField
-        v-model="form.incident.activationSignals"
-        :label="formLabels.incident.activationSignals"
-        :options="activationSignalOptions"
-      />
-      <InputField
-        v-if="hasOther(form.incident.activationSignals, form.incident.activationSignalsOther)"
-        v-model="form.incident.activationSignalsOther"
-        :label="formLabels.incident.activationSignalsOther"
-        :required="form.incident.activationSignals.includes('inne')"
-        :error="fieldErrors['incident.activationSignalsOther']"
-        full
-      />
-      <ChoiceGroupField
-        v-model="form.incident.shutdownSignals"
-        :label="formLabels.incident.shutdownSignals"
-        :options="shutdownSignalOptions"
-      />
-      <InputField
-        v-if="hasOther(form.incident.shutdownSignals, form.incident.shutdownSignalsOther)"
-        v-model="form.incident.shutdownSignalsOther"
-        :label="formLabels.incident.shutdownSignalsOther"
-        :required="form.incident.shutdownSignals.includes('inne')"
-        :error="fieldErrors['incident.shutdownSignalsOther']"
-        full
-      />
-      <ChoiceGroupField
-        v-model="form.incident.sensorySignals"
-        :label="formLabels.incident.sensorySignals"
-        :options="sensorySignalOptions"
-      />
-      <InputField
-        v-if="hasOther(form.incident.sensorySignals, form.incident.sensorySignalsOther)"
-        v-model="form.incident.sensorySignalsOther"
-        :label="formLabels.incident.sensorySignalsOther"
-        :required="form.incident.sensorySignals.includes('inne')"
-        :error="fieldErrors['incident.sensorySignalsOther']"
-        full
-      />
+      <fieldset class="field group-field full">
+        <legend class="field-label">Typ reakcji</legend>
+        <ChoiceGroupField
+          v-model="form.incident.activationSignals"
+          :label="formLabels.incident.activationSignals"
+          :options="activationSignalOptions"
+        />
+        <InputField
+          v-if="hasOther(form.incident.activationSignals, form.incident.activationSignalsOther)"
+          v-model="form.incident.activationSignalsOther"
+          :label="formLabels.incident.activationSignalsOther"
+          :required="form.incident.activationSignals.includes('inne')"
+          :error="fieldErrors['incident.activationSignalsOther']"
+          full
+        />
+        <ChoiceGroupField
+          v-model="form.incident.shutdownSignals"
+          :label="formLabels.incident.shutdownSignals"
+          :options="shutdownSignalOptions"
+        />
+        <InputField
+          v-if="hasOther(form.incident.shutdownSignals, form.incident.shutdownSignalsOther)"
+          v-model="form.incident.shutdownSignalsOther"
+          :label="formLabels.incident.shutdownSignalsOther"
+          :required="form.incident.shutdownSignals.includes('inne')"
+          :error="fieldErrors['incident.shutdownSignalsOther']"
+          full
+        />
+        <ChoiceGroupField
+          v-model="form.incident.sensorySignals"
+          :label="formLabels.incident.sensorySignals"
+          :options="sensorySignalOptions"
+        />
+        <InputField
+          v-if="hasOther(form.incident.sensorySignals, form.incident.sensorySignalsOther)"
+          v-model="form.incident.sensorySignalsOther"
+          :label="formLabels.incident.sensorySignalsOther"
+          :required="form.incident.sensorySignals.includes('inne')"
+          :error="fieldErrors['incident.sensorySignalsOther']"
+          full
+        />
+      </fieldset>
       <InputField v-model="form.incident.firstSignal" :label="formLabels.incident.firstSignal" />
       <SelectField v-model="form.incident.predicts" :label="formLabels.incident.predicts" :options="yesNoUnknown" />
     </div>
