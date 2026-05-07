@@ -15,7 +15,7 @@ const { env, form, fieldErrors } = useFormState();
 <template>
   <section class="section" :class="{ invalidSection: fieldErrors['incident.regulationSection'] }">
     <h3>{{ formLabels.incident.regulationSection }} <span class="required-mark">*</span></h3>
-    <p class="section-hint">Pole obowiązkowe: zaznacz, co najbardziej pomogło w tej sytuacji.</p>
+    <p class="section-hint">Pole obowiązkowe: zaznacz, co najbardziej pomogło zakończyć eskalację.</p>
     <p v-if="fieldErrors['incident.regulationSection']" class="field-error">{{ fieldErrors['incident.regulationSection'] }}</p>
     <div class="field-grid">
       <ChoiceGroupField v-model="form.incident.endedBy" :label="formLabels.incident.endedBy" :options="env.endedBy" required />

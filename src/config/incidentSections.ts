@@ -178,8 +178,8 @@ export const incidentSections: IncidentSectionDefinition[] = [
     badge: "7-9",
     errorKey: "incident.regulationSection",
     extraErrorKeys: ["incident.endedByOther"],
-    summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło w tej sytuacji.",
-    message: "Zaznacz, co najbardziej pomogło w tej sytuacji.",
+    summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło zakończyć eskalację.",
+    message: "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
     isComplete: (form) => hasAnyValue([
       form.incident.endedBy,
       form.incident.endedByOther

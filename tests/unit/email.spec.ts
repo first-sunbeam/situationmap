@@ -74,7 +74,7 @@ describe("budowanie wiadomości e-mail", () => {
     });
 
     expect(email.body).toContain("Karta zdarzenia");
-    expect(email.body).toContain("Poziom napięcia: 1 podwyższony");
+    expect(email.body).toContain("Poziom napięcia przed zdarzeniem: 1 podwyższony");
     expect(email.body).toContain("Opis zachowania: Protest słowny.");
     expect(email.body).not.toContain("Mapa środowiska");
   });

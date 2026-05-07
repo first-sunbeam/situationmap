@@ -55,7 +55,7 @@ describe("walidacja formularza", () => {
 
     expect(result.fieldErrors["incident.baselineSection"]).toBe("Uzupełnij przynajmniej jedno pole w tej sekcji.");
     expect(result.fieldErrors["incident.beforeSection"]).toBe("Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.");
-    expect(result.fieldErrors["incident.regulationSection"]).toBe("Zaznacz, co najbardziej pomogło w tej sytuacji.");
+    expect(result.fieldErrors["incident.regulationSection"]).toBe("Zaznacz, co najbardziej pomogło zakończyć eskalację.");
     expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Na co dziecko/uczeń miało wpływ, a na co nie?”.");
   });
 

@@ -110,7 +110,7 @@ export class ExtendedFormPage {
 
   get beforeDescriptionField(): Locator {
     return this.sectionContainer("before").getByLabel(
-      "Krótki opis sytuacji (fakty, bez interpretacji)"
+      "Doprecyzowanie tego, co było bezpośrednio przed"
     );
   }
 

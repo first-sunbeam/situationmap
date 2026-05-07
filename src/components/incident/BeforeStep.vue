@@ -16,13 +16,13 @@ const { env, form, fieldErrors } = useFormState();
         v-model="form.incident.antecedents"
         :label="formLabels.incident.antecedents"
         :options="env.antecedents"
-        hint="Zaznacz opcje lub krótko opisz sytuację."
+        hint="Zaznacz opcje lub dopisz ważny szczegół."
         :error="fieldErrors['incident.beforeSection']"
       />
       <TextAreaField
         v-model="form.incident.factDescription"
         :label="formLabels.incident.factDescription"
-        hint="Krótko opisz, co się wydarzyło przed eskalacją."
+        hint="Dopisz fakty, których nie da się jasno zaznaczyć na liście."
         :error="fieldErrors['incident.factDescription']"
       />
     </div>
