@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { formLabels } from "../config/formLabels";
 import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, FieldErrors, PdfAction, SituationForm } from "../types/form";
+import LabelText from "./form/LabelText.vue";
 import MetaFields from "./form/MetaFields.vue";
 import SelectField from "./form/SelectField.vue";
 import TextAreaField from "./form/TextAreaField.vue";
@@ -44,7 +45,7 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
         <h3>{{ formLabels.simple.section }}</h3>
         <div class="field-grid">
           <div class="simple-question-heading full">
-            <h4 class="field-label">{{ `1. Co wydarzyło się tuż przed i jaki był stan ${subject}?` }}</h4>
+            <h4 class="field-label"><LabelText :text="`1. Co wydarzyło się tuż przed i jaki był stan ${subject}?`" /></h4>
             <p class="field-hint">Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – to wpływa na próg dysregulacji.</p>
           </div>
           <TextAreaField
@@ -86,7 +87,7 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
             :error="fieldErrors['simple.helped']"
           />
           <div class="simple-question-heading full">
-            <h4 class="field-label">{{ `5. Wpływ i autonomia – zakres kontroli dla ${subject}` }}</h4>
+            <h4 class="field-label"><LabelText :text="`5. Wpływ i autonomia – zakres kontroli dla ${subject}`" /></h4>
             <p class="field-hint">W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym.</p>
           </div>
           <TextAreaField
