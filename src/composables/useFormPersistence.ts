@@ -45,9 +45,14 @@ export function hydrateForm(envKey: EnvironmentKey, value: PersistedForm | undef
     map: {
       ...fallback.map,
       ...(value.map || {}),
-      rows: Array.isArray(value.map?.rows) ? value.map.rows : fallback.map.rows,
+      preferredPlaces: Array.isArray(value.map?.preferredPlaces) ? value.map.preferredPlaces : fallback.map.preferredPlaces,
+      avoidedPlaces: Array.isArray(value.map?.avoidedPlaces) ? value.map.avoidedPlaces : fallback.map.avoidedPlaces,
+      activityRoles: Array.isArray(value.map?.activityRoles) ? value.map.activityRoles : fallback.map.activityRoles,
+      easiestWhen: Array.isArray(value.map?.easiestWhen) ? value.map.easiestWhen : fallback.map.easiestWhen,
+      reducers: Array.isArray(value.map?.reducers) ? value.map.reducers : fallback.map.reducers,
       dependsOn: Array.isArray(value.map?.dependsOn) ? value.map.dependsOn : fallback.map.dependsOn,
-      escalationContexts: Array.isArray(value.map?.escalationContexts) ? value.map.escalationContexts : fallback.map.escalationContexts
+      escalationContexts: Array.isArray(value.map?.escalationContexts) ? value.map.escalationContexts : fallback.map.escalationContexts,
+      escalationReducers: Array.isArray(value.map?.escalationReducers) ? value.map.escalationReducers : fallback.map.escalationReducers
     }
   };
 }

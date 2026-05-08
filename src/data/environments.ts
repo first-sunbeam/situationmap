@@ -34,6 +34,11 @@ export const recoverySupportOptions = [
 ];
 export const maskingDurationOptions = ["Kilka minut", "10-30 minut", "Ponad 30 minut", "Cały dzień (eskalacja wieczorem/w domu)"];
 export const cognitiveRecoveryOptions = ["Od razu po uspokojeniu", "10-30 minut po", "1-2 godziny po", "Kilka godzin lub następnego dnia"];
+export const homePlaceOptions = ["Pokój dziecka", "Salon / wspólna przestrzeń", "Kuchnia / jadalnia", "Łazienka", "Przedpokój / przejścia", "Na zewnątrz (ogród, balkon)", "Samochód", "Inne"];
+export const activityRoleOptions = ["Prowadzący / kontrolujący (decyduje o zasadach, przebiegu)", "Uczestnik / współpracujący (równy partner)", "Obserwator / towarzyszący (obecność bez aktywnego udziału)", "Sam / bez interakcji z innymi"];
+export const optimalConditionOptions = ["Cisza / minimalne bodźce słuchowe", "Przyciemnione / naturalne światło", "Spokojne otoczenie / mała liczba osób", "Możliwość kontrolowania bodźców", "Samotność / czas bez wymagań społecznych", "Obecność bliskiej osoby (bez wymagań)", "Interakcja 1:1 (nie grupa)", "Kontakt bez bezpośredniej komunikacji (równoległa aktywność)", "Ma wpływ na przebieg aktywności (kiedy, jak, z kim)", "Wie, co się wydarzy i jak długo to potrwa", "Może negocjować lub wybierać", "Rutyny / powtarzalność", "Najedzone / napite", "Wypoczęte / nie zmęczone", "Komfortowa temperatura", "Bez bólu / dyskomfortu", "Inne"];
+export const reducerOptions = ["Cisza / wyciszenie bodźców", "Ruch (huśtawka, trampolina, spacer)", "Ciężar / ucisk (koc, przytulenie, ściskanie)", "Chłód lub ciepło (zimny prysznic, ciepła kąpiel)", "Stereotypie (bujanie, kręcenie, podskakiwanie)", "Jedzenie / picie", "Sen / drzemka", "Toaleta", "Obecność bliskiej osoby (bez wymagań)", "Samotność / wycofanie się", "Kontakt fizyczny (przytulenie)", "Dystans / przestrzeń osobista", "Wycofanie wymagania", "Dostęp do ulubionej aktywności", "Wybór / możliwość decyzji", "Informacja, ile to potrwa", "Inne"];
+export const escalationReducerOptions = ["Ostrzeżenie / przygotowanie („Za 5 minut kończymy”)", "Wizualizacja / timer / plan", "Wybór (kiedy, jak, w jakiej kolejności)", "Negocjacja (możliwość omówienia, co się wydarzy)", "Jasny koniec (konkretna informacja, ile potrwa)", "Brak pośpiechu / elastyczność czasowa", "Obecność bliskiej osoby", "Dostęp do regulacji sensorycznej (np. przedmiot, ruch)", "Inne"];
 
 export const yesNoUnknown = ["Tak", "Nie", "Nie wiem"];
 export const yesNoPartial = ["Tak", "Nie", "Częściowo"];
@@ -121,9 +126,12 @@ export const environments = {
       "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)",
       "Inne"
     ],
-    places: ["Pokój", "Salon / wspólna przestrzeń", "Kuchnia / jadalnia", "Łazienka", "Przedpokój / przejścia", "Na zewnątrz", "Samochód", "Inne"],
-    dependencies: ["miejsca", "osoby dorosłej", "pory dnia", "rodzaju aktywności", "liczby osób", "hałasu", "światła", "przejść między aktywnościami", "zmian planu", "obecności rodzeństwa / gości"],
-    escalationContexts: ["Koniec aktywności", "Oczekiwanie", "Zmiana planu", "Polecenie", "Ograniczenie dostępu", "Przejście do innego miejsca", "Posiłek / higiena / wyjście z domu", "Spacer / zmiana trasy / powrót ze spaceru", "Wyjście do lekarza / terapii / sklepu / na plac zabaw", "Kontakt z rodzeństwem / sytuacja wspólna", "Inne"]
+    places: ["Pokój dziecka", "Salon / wspólna przestrzeń", "Kuchnia / jadalnia", "Łazienka", "Przedpokój / przejścia", "Na zewnątrz (ogród, balkon)", "Samochód", "Inne"],
+    dependencies: ["Miejsce", "Osoba dorosła", "Pora dnia", "Rodzaj aktywności", "Liczba osób", "Hałas", "Światło", "Przejścia między aktywnościami", "Zmiany planu", "Obecność rodzeństwa / gości"],
+    escalationContexts: ["Koniec aktywności", "Oczekiwanie / czekanie", "Zmiana planu", "Polecenie / nowe wymaganie", "Ograniczenie dostępu (do przedmiotu, osoby, aktywności)", "Przejście do innego miejsca", "Posiłek / higiena / wyjście z domu", "Spacer / zmiana trasy / powrót ze spaceru", "Wyjście do lekarza / terapii / sklepu / na plac zabaw", "Kontakt z rodzeństwem / sytuacja wspólna", "Inne"],
+    mapOptimalConditions: optimalConditionOptions,
+    mapReducers: reducerOptions,
+    mapEscalationReducers: escalationReducerOptions
   },
   center: {
     icon: "⌾",
@@ -140,9 +148,12 @@ export const environments = {
     harms: ["uraz osoby", "autoagresja", "zniszczenie przedmiotów", "opuszczenie wyznaczonego miejsca / oddalenie się", "zakłócenie funkcjonowania grupy", "brak szkód"],
     after: ["Przejście do spokojniejszego miejsca", "Interwencja fizyczna", "Powrót do aktywności / planu dnia", "Kontakt z rodzicem / opiekunem", "Kontakt z pedagogiem / psychologiem / kierownikiem", "Inne"],
     endedBy: ["Wycofanie wymagania", "Dostęp do przedmiotu / aktywności", "Dostęp do osoby", "Zmiana miejsca", "Obniżenie bodźców (cisza, przyciemnienie, mniej osób)", "Czas / przeczekanie bez interwencji", "Wyjście z sytuacji grupowej", "Kontakt z domem", "Wsparcie sensoryczne (ciężar, ucisk, ruch, chłód/ciepło)", "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)", "Inne"],
-    places: ["Pokój", "Świetlica / pokój dzienny", "Stołówka / jadalnia", "Łazienka", "Korytarz", "Miejsce nauki", "Na zewnątrz / boisko", "Inne"],
-    dependencies: ["miejsca", "osoby dorosłej", "pory dnia", "rodzaju aktywności", "liczby osób", "hałasu", "światła", "przejść między aktywnościami", "zmian planu / dyżurów / zastępstw", "kontaktu z domem / powrotu z domu", "składu grupy / współlokatora / współdzielenia pokoju"],
-    escalationContexts: ["Koniec aktywności", "Oczekiwanie", "Zmiana planu", "Polecenie", "Ograniczenie dostępu", "Przejście do innego miejsca", "Sytuacja grupowa / współdzielenie przestrzeni", "Konflikt o rzeczy wspólne / granice / miejsce w pokoju", "Wieczorna rutyna / przygotowanie do snu / cisza nocna", "Rozmowa z domem / po powrocie z domu / po weekendzie", "Inne"]
+    places: ["Pokój / przestrzeń prywatna", "Świetlica / pokój dzienny", "Stołówka / jadalnia", "Łazienka", "Korytarz / przejścia", "Miejsce nauki", "Sala terapii / gabinet", "Na zewnątrz / boisko", "Inne"],
+    dependencies: ["Miejsce", "Osoba dyżurująca / wychowawca", "Pora dnia", "Rodzaj aktywności", "Liczba osób", "Hałas", "Światło", "Przejścia między aktywnościami", "Zmiany planu / dyżurów / zastępstw", "Kontakt z domem / powrót z domu", "Skład grupy / współlokator / współdzielenie pokoju"],
+    escalationContexts: ["Koniec aktywności", "Oczekiwanie / czekanie", "Zmiana planu", "Polecenie / nowe wymaganie", "Ograniczenie dostępu", "Przejście do innego miejsca", "Sytuacja grupowa / współdzielenie przestrzeni", "Konflikt o rzeczy wspólne / granice / miejsce w pokoju", "Wieczorna rutyna / przygotowanie do snu / cisza nocna", "Rozmowa z domem / po powrocie z domu / po weekendzie", "Inne"],
+    mapOptimalConditions: ["Cisza / minimalne bodźce słuchowe", "Mniejsza grupa lub czas poza grupą", "Stały wychowawca / znana osoba dyżurująca", "Jasny plan dnia i uprzedzenie o zmianach", "Możliwość wycofania się do bezpiecznego miejsca", "Możliwość decydowania o kolejności czynności", "Przewidywalne zasady współdzielenia przestrzeni", "Kontakt z domem w ustalonej, przewidywalnej formie", "Najedzone / napite", "Wypoczęte / po spokojnym śnie", "Komfortowa temperatura", "Bez bólu / dyskomfortu", "Inne"],
+    mapReducers: ["Cisza / wyciszenie bodźców", "Wyjście z grupy do spokojniejszego miejsca", "Obecność znanego wychowawcy bez nacisku", "Kontakt z domem według ustaleń", "Ruch (spacer, boisko, sala ruchowa)", "Ciężar / ucisk / przedmiot sensoryczny", "Jedzenie / picie", "Sen / odpoczynek", "Toaleta", "Wycofanie wymagania", "Wybór / możliwość decyzji", "Informacja, ile to potrwa", "Inne"],
+    mapEscalationReducers: ["Uprzedzenie o zmianie dyżuru / planu", "Plan wizualny / timer", "Wybór kolejności czynności", "Negocjacja i czas na odpowiedź", "Jasny koniec aktywności", "Brak pośpiechu / elastyczność czasowa", "Możliwość przejścia do bezpiecznego miejsca", "Obecność znanego wychowawcy", "Ustalenie zasad kontaktu z domem", "Dostęp do regulacji sensorycznej", "Inne"]
   },
   school: {
     icon: "✎",
@@ -158,9 +169,12 @@ export const environments = {
     harms: ["uraz osoby", "autoagresja", "zniszczenie przedmiotów", "brak szkód"],
     after: ["Sala wyciszeń (izolacja)", "Interwencja fizyczna", "Powrót do zajęć", "Kontakt z rodzicem / opiekunem", "Inne"],
     endedBy: ["Wycofanie wymagania", "Dostęp do przedmiotu / aktywności", "Dostęp do osoby", "Zmiana miejsca", "Obniżenie bodźców (cisza, przyciemnienie, mniej osób)", "Czas / przeczekanie bez interwencji", "Wyjście z sytuacji", "Wsparcie sensoryczne (ciężar, ucisk, ruch, chłód/ciepło)", "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)", "Inne"],
-    places: ["Sala lekcyjna", "Świetlica", "Sala SI", "Kuchnia", "Korytarz", "Toaleta", "Inne"],
-    dependencies: ["miejsca", "osoby dorosłej", "pory dnia", "rodzaju zajęć", "liczby osób", "hałasu", "światła", "przejść między aktywnościami", "zmian planu / zastępstw", "nieobecności nauczyciela, z którym uczeń zwykle pracuje"],
-    escalationContexts: ["Koniec zajęć", "Oczekiwanie", "Zmiana planu", "Polecenie", "Ograniczenie dostępu", "Przejście do innego pomieszczenia", "Przejście między zajęciami (zmiana nauczyciela)", "Inne"]
+    places: ["Sala lekcyjna", "Korytarz", "Szatnia", "Stołówka / jadalnia", "Toaleta", "Świetlica", "Sala gimnastyczna", "Plac zabaw / boisko", "Gabinet pedagoga/psychologa", "Autobus / droga do szkoły", "Inne"],
+    dependencies: ["Miejsce", "Nauczyciel / osoba dorosła", "Pora dnia", "Rodzaj zajęć", "Liczba osób", "Hałas", "Światło", "Przejścia między aktywnościami / lekcjami", "Zmiany planu / zastępstwa", "Nieobecność osoby, z którą uczeń zwykle pracuje", "Sytuacja grupowa / rówieśnicy"],
+    escalationContexts: ["Koniec zajęć / aktywności", "Oczekiwanie / czekanie", "Zmiana planu / zastępstwo", "Polecenie / nowe zadanie", "Ograniczenie dostępu", "Przejście do innego pomieszczenia", "Przejście między zajęciami (zmiana nauczyciela)", "Praca w grupie / kontakt z rówieśnikami", "Przerwa / korytarz / tłok", "Stołówka / posiłek", "W-F / aktywność ruchowa / przebieranie", "Sprawdzian / odpowiedź / ocena", "Wyjście ze szkoły / powrót do domu", "Inne"],
+    mapOptimalConditions: ["Cisza / minimalne bodźce słuchowe", "Mniejsza grupa lub praca 1:1", "Stała, znana osoba dorosła", "Miejsce z mniejszym ruchem osób", "Jasny plan lekcji i uprzedzenie o zmianach", "Wie, ile potrwa zadanie i kiedy będzie koniec", "Może wybrać kolejność / sposób wykonania", "Może poprosić o przerwę bez zwracania uwagi grupy", "Rutyny / powtarzalność", "Najedzone / napite", "Wypoczęte / nie zmęczone", "Komfortowa temperatura", "Bez bólu / dyskomfortu", "Inne"],
+    mapReducers: ["Cisza / wyciszenie bodźców", "Wyjście do spokojniejszego miejsca", "Krótka przerwa od wymagań", "Obecność zaufanej osoby dorosłej bez nacisku", "Kontakt 1:1 zamiast komunikatu przy grupie", "Ruch (spacer, sala ruchowa, boisko)", "Przedmiot sensoryczny / słuchawki / kaptur", "Jedzenie / picie", "Toaleta", "Wycofanie lub zmniejszenie wymagania", "Wybór / możliwość decyzji", "Informacja, ile to potrwa", "Inne"],
+    mapEscalationReducers: ["Uprzedzenie / przygotowanie przed zmianą", "Plan wizualny / timer / lista kroków", "Wybór (kiedy, jak, w jakiej kolejności)", "Negocjacja i czas na odpowiedź", "Jasny koniec zadania lub aktywności", "Brak pośpiechu / elastyczność czasowa", "Możliwość przerwy poza grupą", "Obecność zaufanej osoby dorosłej", "Dostęp do regulacji sensorycznej", "Komunikat prywatny zamiast przy klasie", "Inne"]
   }
 } satisfies Record<string, EnvironmentConfig>;
 
@@ -241,17 +255,27 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       recoverySupportsOther: ""
     },
     map: {
-      rows: env.places.map((place) => ({ place, time: "", activity: "" })),
-      preferred: "",
-      avoided: "",
+      preferredPlaces: [],
+      preferredPlacesOther: "",
+      preferredReason: "",
+      avoidedPlaces: [],
+      avoidedPlacesOther: "",
+      avoidedReason: "",
       likes: "",
-      easiestWhen: "",
+      activityRoles: [],
+      easiestWhen: [],
+      easiestWhenOther: "",
       cooperatesWith: "",
-      reducers: "",
+      reducers: [],
+      reducersOther: "",
+      energySources: "",
       dependsOn: [],
       dependsDescription: "",
+      safeBase: "",
       escalationContexts: [],
       escalationOther: "",
+      escalationReducers: [],
+      escalationReducersOther: "",
       noAggression: "",
       noAggressionWhere: ""
     }

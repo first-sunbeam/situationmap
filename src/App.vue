@@ -127,9 +127,9 @@ const {
           />
 
           <template v-else>
-            <IncidentForm v-if="activeMode !== 'map'" />
+            <IncidentForm v-show="activeMode !== 'map'" />
 
-            <EnvironmentMapForm v-if="activeMode !== 'incident'" />
+            <EnvironmentMapForm v-show="activeMode !== 'incident'" />
           </template>
         </div>
       </div>

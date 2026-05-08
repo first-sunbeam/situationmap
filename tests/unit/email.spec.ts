@@ -3,6 +3,7 @@ import { environments } from "../../src/data/environments";
 import { buildEmail } from "../../src/lib/email";
 import {
   createHomeForm,
+  fillMapForm,
   fillRequiredMeta,
   fillSimpleForm,
 } from "./helpers/formFixtures";
@@ -79,10 +80,9 @@ describe("budowanie wiadomości e-mail", () => {
     expect(email.body).not.toContain("Mapa środowiska");
   });
 
-  it("zawiera wiersze mapy w trybie mapy i pomija sekcję incydentu", () => {
+  it("zawiera mapę w trybie mapy i pomija sekcję incydentu", () => {
     const form = createHomeForm();
-    form.map.rows[0].time = "2h";
-    form.map.rows[0].activity = "Zabawa";
+    fillMapForm(form);
 
     const email = buildEmail({
       env: environments.home,
@@ -92,7 +92,7 @@ describe("budowanie wiadomości e-mail", () => {
     });
 
     expect(email.body).toContain("Mapa środowiska");
-    expect(email.body).toContain("- Pokój: czas 2h, aktywność Zabawa");
+    expect(email.body).toContain("W jakich miejscach dziecko/uczeń najchętniej przebywa?: Pokój dziecka");
     expect(email.body).not.toContain("Karta zdarzenia");
   });
 });

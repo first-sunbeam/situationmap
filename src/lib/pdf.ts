@@ -62,22 +62,6 @@ function metaColumns(env: EnvironmentConfig, form: SituationForm): PdfNode {
   };
 }
 
-function mapPlacesSection(form: SituationForm): PdfContent {
-  return section(formLabels.map.places, [
-    {
-      table: {
-        headerRows: 1,
-        widths: ["30%", "20%", "50%"],
-        body: [
-          [{ text: formLabels.map.placeColumn, bold: true }, { text: `${formLabels.map.timeColumn} (h/dzień)`, bold: true }, { text: formLabels.map.activityColumn, bold: true }],
-          ...form.map.rows.map((row) => [row.place, row.time || "........", row.activity || "........................................"])
-        ]
-      },
-      layout: "lightHorizontalLines"
-    }
-  ]);
-}
-
 function createDocument(content: PdfContent, env: EnvironmentConfig): Record<string, unknown> {
   return {
     pageSize: "A4",
@@ -125,7 +109,6 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
   if (mode !== "incident") {
     content.push(
       { text: env.mapTitle, style: "title" },
-      ...mapPlacesSection(data),
       ...mapExportSections.flatMap((exportSection) => section(
         exportSection.title,
         exportRows(env, data, exportSection.rows)

@@ -9,18 +9,19 @@ function isBlank(value: string): boolean {
 
 function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors, summary: string[]) {
   const requiredTextFields: Array<[string, string, string]> = [
-    ["map.preferred", formLabels.map.preferred, form.map.preferred],
-    ["map.avoided", formLabels.map.avoided, form.map.avoided],
-    ["map.likes", formLabels.map.likes, form.map.likes],
-    ["map.easiestWhen", formLabels.map.easiestWhen, form.map.easiestWhen],
-    ["map.cooperatesWith", formLabels.map.cooperatesWith, form.map.cooperatesWith],
-    ["map.reducers", formLabels.map.reducers, form.map.reducers]
+    ["map.preferredReason", "Dlaczego te miejsca? Co je wyróżnia?", form.map.preferredReason],
+    ["map.avoidedReason", "Co w tych miejscach aktywuje napięcie?", form.map.avoidedReason],
+    ["map.likes", "W jakie aktywności dziecko/uczeń najchętniej się angażuje?", form.map.likes],
+    ["map.cooperatesWith", "Dziecko/uczeń najłatwiej współpracuje z", form.map.cooperatesWith]
   ];
 
-  if (!form.map.rows.some((row) => !isBlank(row.time) || !isBlank(row.activity))) {
-    fieldErrors["map.rows"] = "Uzupełnij przynajmniej jeden wiersz miejsc i aktywności.";
-    summary.push("Uzupełnij przynajmniej jeden wiersz miejsc i aktywności.");
-  }
+  const requiredChoiceFields: Array<[string, string, string[]]> = [
+    ["map.preferredPlaces", "W jakich miejscach dziecko/uczeń najchętniej przebywa?", form.map.preferredPlaces],
+    ["map.avoidedPlaces", "Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?", form.map.avoidedPlaces],
+    ["map.easiestWhen", "Dziecko/uczeń najłatwiej funkcjonuje, gdy", form.map.easiestWhen],
+    ["map.reducers", "Co OBNIŻA napięcie", form.map.reducers],
+    ["map.escalationContexts", formLabels.map.escalationContexts, form.map.escalationContexts]
+  ];
 
   for (const [key, label, value] of requiredTextFields) {
     if (isBlank(value)) {
@@ -29,9 +30,11 @@ function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors
     }
   }
 
-  if (!form.map.escalationContexts.length) {
-    fieldErrors["map.escalationContexts"] = "Zaznacz przynajmniej jedną sytuację eskalacji.";
-    summary.push("Zaznacz przynajmniej jedną sytuację eskalacji.");
+  for (const [key, label, selected] of requiredChoiceFields) {
+    if (!selected.length) {
+      fieldErrors[key] = `Zaznacz przynajmniej jedną opcję: ${label}.`;
+      summary.push(`Zaznacz przynajmniej jedną opcję „${label}”.`);
+    }
   }
 }
 
@@ -153,7 +156,10 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
       summary.push(`${formLabels.map.dependsOn}: ${message}`);
     }
 
+    requireOtherField({ fieldErrors, summary, selected: form.map.preferredPlaces, value: form.map.preferredPlacesOther, fieldKey: "map.preferredPlacesOther", sectionLabel: "W jakich miejscach dziecko/uczeń najchętniej przebywa?" });
+    requireOtherField({ fieldErrors, summary, selected: form.map.avoidedPlaces, value: form.map.avoidedPlacesOther, fieldKey: "map.avoidedPlacesOther", sectionLabel: "Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?" });
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: formLabels.map.escalationContexts });
+    requireOtherField({ fieldErrors, summary, selected: form.map.escalationReducers, value: form.map.escalationReducersOther, fieldKey: "map.escalationReducersOther", sectionLabel: "Co zmniejsza ryzyko eskalacji?" });
 
     if (form.map.noAggression === "Tak" && isBlank(form.map.noAggressionWhere)) {
       const message = "Skoro są sytuacje bez agresji, opisz jakie.";

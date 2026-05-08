@@ -1,6 +1,6 @@
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow } from "../config/exportSections";
 import { formLabels } from "../config/formLabels";
-import type { EnvironmentConfig, ExtendedMode, FormVariant, MapRow, SituationForm } from "../types/form";
+import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow } from "../config/exportSections";
+import type { EnvironmentConfig, ExtendedMode, FormVariant, SituationForm } from "../types/form";
 
 type EmailValue = string | string[];
 
@@ -20,14 +20,6 @@ function section(title: string, rows: string[]): string {
 
 function rowsToLines(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): string[] {
   return rows.map((row) => line(resolveExportLabel(row.label, env, form), row.value(env, form)));
-}
-
-function mapRows(rows: MapRow[]): string {
-  const filled = rows.filter((row) => row.time || row.activity);
-  if (!filled.length) return "-";
-  return filled
-    .map((row) => `- ${row.place}: czas ${row.time || "-"}, aktywność ${row.activity || "-"}`)
-    .join("\n");
 }
 
 export function buildEmail({ env, form, variant, mode }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode }): EmailContent {
@@ -54,10 +46,7 @@ export function buildEmail({ env, form, variant, mode }: { env: EnvironmentConfi
     }
 
     if (mode !== "incident") {
-      const mapRowsText = [
-        `${formLabels.map.places}:\n${mapRows(form.map.rows)}`,
-        ...mapExportSections.flatMap((exportSection) => rowsToLines(env, form, exportSection.rows))
-      ];
+      const mapRowsText = mapExportSections.flatMap((exportSection) => rowsToLines(env, form, exportSection.rows));
       parts.push(section(formLabels.map.section, mapRowsText));
     }
   }

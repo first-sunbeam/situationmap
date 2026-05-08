@@ -21,6 +21,9 @@ export interface EnvironmentConfig {
   places: string[];
   dependencies: string[];
   escalationContexts: string[];
+  mapOptimalConditions?: string[];
+  mapReducers?: string[];
+  mapEscalationReducers?: string[];
 }
 
 export interface MetaForm {
@@ -114,17 +117,27 @@ export interface MapRow {
 }
 
 export interface EnvironmentMapFormData {
-  rows: MapRow[];
-  preferred: string;
-  avoided: string;
+  preferredPlaces: string[];
+  preferredPlacesOther: string;
+  preferredReason: string;
+  avoidedPlaces: string[];
+  avoidedPlacesOther: string;
+  avoidedReason: string;
   likes: string;
-  easiestWhen: string;
+  activityRoles: string[];
+  easiestWhen: string[];
+  easiestWhenOther: string;
   cooperatesWith: string;
-  reducers: string;
+  reducers: string[];
+  reducersOther: string;
+  energySources: string;
   dependsOn: string[];
   dependsDescription: string;
+  safeBase: string;
   escalationContexts: string[];
   escalationOther: string;
+  escalationReducers: string[];
+  escalationReducersOther: string;
   noAggression: string;
   noAggressionWhere: string;
 }

@@ -59,8 +59,8 @@ describe("generowanie PDF", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "map"));
 
     expect(content).toContain(environments.home.mapTitle);
-    expect(content).toContain("Miejsca i aktywności");
-    expect(content).toContain("Zabawa");
+    expect(content).toContain("1. Miejsca i preferowane przestrzenie");
+    expect(content).toContain("Pokój dziecka");
     expect(content).not.toContain(environments.home.incidentTitle);
   });
 

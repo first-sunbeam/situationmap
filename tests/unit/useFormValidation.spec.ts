@@ -206,14 +206,15 @@ describe("walidacja formularza", () => {
   it("wymaga obowiązkowych pól mapy w trybie mapy", () => {
     const result = validateForm({ variant: "extended", mode: "map", form: createHomeForm() });
 
-    expect(result.fieldErrors["map.rows"]).toBe("Uzupełnij przynajmniej jeden wiersz miejsc i aktywności.");
-    expect(result.fieldErrors["map.preferred"]).toBe("Uzupełnij pole: Chętnie przebywa w.");
-    expect(result.fieldErrors["map.avoided"]).toBe("Uzupełnij pole: Unika / wychodzi z trudem z.");
-    expect(result.fieldErrors["map.likes"]).toBe("Uzupełnij pole: Najchętniej angażuje się w.");
-    expect(result.fieldErrors["map.easiestWhen"]).toBe("Uzupełnij pole: Najłatwiej funkcjonuje, gdy.");
-    expect(result.fieldErrors["map.cooperatesWith"]).toBe("Uzupełnij pole: Najłatwiej współpracuje z.");
-    expect(result.fieldErrors["map.reducers"]).toBe("Uzupełnij pole: Co obniża napięcie?.");
-    expect(result.fieldErrors["map.escalationContexts"]).toBe("Zaznacz przynajmniej jedną sytuację eskalacji.");
+    expect(result.fieldErrors["map.preferredPlaces"]).toBe("Zaznacz przynajmniej jedną opcję: W jakich miejscach dziecko/uczeń najchętniej przebywa?.");
+    expect(result.fieldErrors["map.preferredReason"]).toBe("Uzupełnij pole: Dlaczego te miejsca? Co je wyróżnia?.");
+    expect(result.fieldErrors["map.avoidedPlaces"]).toBe("Zaznacz przynajmniej jedną opcję: Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?.");
+    expect(result.fieldErrors["map.avoidedReason"]).toBe("Uzupełnij pole: Co w tych miejscach aktywuje napięcie?.");
+    expect(result.fieldErrors["map.likes"]).toBe("Uzupełnij pole: W jakie aktywności dziecko/uczeń najchętniej się angażuje?.");
+    expect(result.fieldErrors["map.easiestWhen"]).toBe("Zaznacz przynajmniej jedną opcję: Dziecko/uczeń najłatwiej funkcjonuje, gdy.");
+    expect(result.fieldErrors["map.cooperatesWith"]).toBe("Uzupełnij pole: Dziecko/uczeń najłatwiej współpracuje z.");
+    expect(result.fieldErrors["map.reducers"]).toBe("Zaznacz przynajmniej jedną opcję: Co OBNIŻA napięcie.");
+    expect(result.fieldErrors["map.escalationContexts"]).toBe("Zaznacz przynajmniej jedną opcję: Najczęstsze sytuacje eskalacji.");
   });
 
   it("akceptuje tryb mapy, gdy obowiązkowe pola mapy są wypełnione", () => {
@@ -222,8 +223,8 @@ describe("walidacja formularza", () => {
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 
-    expect(result.fieldErrors["map.rows"]).toBeUndefined();
-    expect(result.fieldErrors["map.preferred"]).toBeUndefined();
+    expect(result.fieldErrors["map.preferredPlaces"]).toBeUndefined();
+    expect(result.fieldErrors["map.preferredReason"]).toBeUndefined();
     expect(result.fieldErrors["map.escalationContexts"]).toBeUndefined();
   });
 });

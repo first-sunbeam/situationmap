@@ -160,39 +160,55 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
 
 export const mapExportSections: ExportSection[] = [
   {
-    title: "2. Miejsca regulacyjne",
+    title: "1. Miejsca i preferowane przestrzenie",
     rows: [
-      { label: formLabels.map.preferred, value: (_env, form) => form.map.preferred },
-      { label: formLabels.map.avoided, value: (_env, form) => form.map.avoided }
+      { label: "W jakich miejscach dziecko/uczeń najchętniej przebywa?", value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
+      { label: "Dlaczego te miejsca? Co je wyróżnia?", value: (_env, form) => form.map.preferredReason },
+      { label: "Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?", value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
+      { label: "Co w tych miejscach aktywuje napięcie?", value: (_env, form) => form.map.avoidedReason }
     ]
   },
   {
-    title: "2A. Warunki dobrego funkcjonowania",
+    title: "2. Preferowane aktywności i rola",
     rows: [
-      { label: formLabels.map.likes, value: (_env, form) => form.map.likes },
-      { label: formLabels.map.easiestWhen, value: (_env, form) => form.map.easiestWhen },
-      { label: formLabels.map.cooperatesWith, value: (_env, form) => form.map.cooperatesWith },
-      { label: formLabels.map.reducers, value: (_env, form) => form.map.reducers }
+      { label: "W jakie aktywności dziecko/uczeń najchętniej się angażuje?", value: (_env, form) => form.map.likes },
+      { label: "Jaka rola w tych aktywnościach?", value: (_env, form) => form.map.activityRoles }
     ]
   },
   {
-    title: "3. Zależności",
+    title: "3. Warunki optymalnego funkcjonowania",
+    rows: [
+      { label: "Dziecko/uczeń najłatwiej funkcjonuje, gdy", value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
+    ]
+  },
+  {
+    title: "4. Co wspiera i co obniża napięcie",
+    rows: [
+      { label: "Dziecko/uczeń najłatwiej współpracuje z", value: (_env, form) => form.map.cooperatesWith },
+      { label: "Co OBNIŻA napięcie", value: (_env, form) => withOther(form.map.reducers, form.map.reducersOther) },
+      { label: "Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?", value: (_env, form) => form.map.energySources }
+    ]
+  },
+  {
+    title: "5. Czynniki zmieniające zachowanie",
     rows: [
       { label: formLabels.map.dependsOn, value: (_env, form) => form.map.dependsOn },
-      { label: formLabels.map.dependsDescription, value: (_env, form) => form.map.dependsDescription }
+      { label: "Jak zmienia się zachowanie?", value: (_env, form) => form.map.dependsDescription }
     ]
   },
   {
-    title: "4. Eskalacja",
+    title: "6. Bezpieczne przestrzenie i osoby",
     rows: [
-      { label: formLabels.map.escalationContexts, value: (_env, form) => withOther(form.map.escalationContexts, form.map.escalationOther) }
+      { label: "Gdzie/z kim dziecko/uczeń czuje się najbezpieczniej?", value: (_env, form) => form.map.safeBase }
     ]
   },
   {
-    title: "5. Sytuacje bez agresji",
+    title: "7. Najczęstsze sytuacje eskalacji",
     rows: [
+      { label: formLabels.map.escalationContexts, value: (_env, form) => withOther(form.map.escalationContexts, form.map.escalationOther) },
+      { label: "Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?", value: (_env, form) => withOther(form.map.escalationReducers, form.map.escalationReducersOther) },
       { label: formLabels.map.noAggression, value: (_env, form) => form.map.noAggression },
-      { label: formLabels.map.noAggressionWhere, value: (_env, form) => form.map.noAggressionWhere }
+      { label: "Jakie to sytuacje i co je wyróżnia?", value: (_env, form) => form.map.noAggressionWhere }
     ]
   }
 ];

@@ -52,14 +52,14 @@ export function fillMinimalIncident(form: HomeForm): void {
 
 /** Wypełnia wiersz mapy środowiska i wymagane pola opisowe. */
 export function fillMapForm(form: HomeForm): void {
-  form.map.rows[0].time = "2h";
-  form.map.rows[0].activity = "Zabawa";
-  form.map.preferred = "Pokój";
-  form.map.avoided = "Korytarz";
+  form.map.preferredPlaces = ["Pokój dziecka"];
+  form.map.preferredReason = "Cisza i ulubione przedmioty.";
+  form.map.avoidedPlaces = ["Kuchnia / jadalnia"];
+  form.map.avoidedReason = "Hałas i zapachy.";
   form.map.likes = "Klocki";
-  form.map.easiestWhen = "Jest cicho";
+  form.map.easiestWhen = ["Cisza / minimalne bodźce słuchowe"];
   form.map.cooperatesWith = "Rodzic";
-  form.map.reducers = "Przerwa";
+  form.map.reducers = ["Cisza / wyciszenie bodźców"];
   form.map.escalationContexts = ["Oczekiwanie"];
 }
 
@@ -81,7 +81,6 @@ export function createFilledHomeForm(): HomeForm {
   form.incident.calmTime = "15-30 minut";
   form.incident.cognitiveRecoveryTime = "1-2 godziny po";
   form.incident.recoverySupports = ["Cisza i brak bodźców"];
-  form.map.rows[0].time = "2h";
-  form.map.rows[0].activity = "Zabawa";
+  fillMapForm(form);
   return form;
 }
