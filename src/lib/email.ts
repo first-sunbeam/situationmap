@@ -1,5 +1,6 @@
 import { formLabels } from "../config/formLabels";
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow } from "../config/exportSections";
+import { getIncidentExportSections, getMetaExportSection, mapExportSections, simpleExportSection, type ExportRow } from "../config/exportSections";
+import { resolveRows } from "./exportUtils";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, SituationForm } from "../types/form";
 
 type EmailValue = string | string[];
@@ -19,7 +20,7 @@ function section(title: string, rows: string[]): string {
 }
 
 function rowsToLines(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): string[] {
-  return rows.map((row) => line(resolveExportLabel(row.label, env, form), row.value(env, form)));
+  return resolveRows(env, form, rows, line);
 }
 
 export function buildEmail({ env, form, variant, mode }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode }): EmailContent {
@@ -40,13 +41,13 @@ export function buildEmail({ env, form, variant, mode }: { env: EnvironmentConfi
     if (mode !== "map") {
       const incidentRows = [
         ...getMetaExportSection(env).rows,
-        ...getIncidentExportSections(env).flatMap((exportSection) => exportSection.rows)
+        ...getIncidentExportSections(env).flatMap((s) => s.rows)
       ];
       parts.push(section("Karta zdarzenia", rowsToLines(env, form, incidentRows)));
     }
 
     if (mode !== "incident") {
-      const mapRowsText = mapExportSections.flatMap((exportSection) => rowsToLines(env, form, exportSection.rows));
+      const mapRowsText = mapExportSections.flatMap((s) => rowsToLines(env, form, s.rows));
       parts.push(section(formLabels.map.section, mapRowsText));
     }
   }

@@ -1,7 +1,8 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow, type ExportValue } from "../config/exportSections";
+import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow, type ExportSection, type ExportValue } from "../config/exportSections";
 import { formLabels } from "../config/formLabels";
+import { resolveRows } from "./exportUtils";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, PdfAction, SituationForm } from "../types/form";
 
 // Typy pdfmake nie obejmują poprawnie wariantu build/vfs_fonts używanego w bundlerze.
@@ -43,11 +44,15 @@ function fieldLine(label: string, value: ExportValue): PdfNode {
 }
 
 function exportRows(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): PdfContent {
-  return rows.map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form)));
+  return resolveRows(env, form, rows, fieldLine);
 }
 
 function section(title: string, body: PdfContent): PdfContent {
   return [{ text: title, style: "sectionHeader", margin: [0, 10, 0, 5] }, ...body];
+}
+
+function sectionsFromExport(env: EnvironmentConfig, form: SituationForm, exportSections: ExportSection[]): PdfContent {
+  return exportSections.flatMap((s) => section(s.title, exportRows(env, form, s.rows)));
 }
 
 function metaColumns(env: EnvironmentConfig, form: SituationForm): PdfNode {
@@ -100,19 +105,13 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
     { text: env.incidentTitle, style: "title" },
     { text: "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
     metaColumns(env, data),
-    ...getIncidentExportSections(env).flatMap((exportSection) => section(
-      exportSection.title,
-      exportRows(env, data, exportSection.rows)
-    ))
+    ...sectionsFromExport(env, data, getIncidentExportSections(env))
   ];
 
   if (mode !== "incident") {
     content.push(
       { text: env.mapTitle, style: "title" },
-      ...mapExportSections.flatMap((exportSection) => section(
-        exportSection.title,
-        exportRows(env, data, exportSection.rows)
-      ))
+      ...sectionsFromExport(env, data, mapExportSections)
     );
   }
 
