@@ -104,9 +104,9 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
     {
       title: formLabels.incident.maskingSection,
       rows: [
-        { label: (_env, form) => `Kontynuowanie aktywności mimo narastającego napięcia przez ${getSubjectInline(form, "dziecko/uczeń")}`, value: (_env, form) => form.incident.maskingContinued },
+        { label: (_env, form) => `Kontynuowanie aktywności mimo narastającego napięcia przez ${getSubjectInline(form)}`, value: (_env, form) => form.incident.maskingContinued },
         { label: formLabels.incident.maskingStrategies, value: (_env, form) => withOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther) },
-        { label: (_env, form) => `Czas „trzymania się” przed eskalacją przez ${getSubjectInline(form, "dziecko/uczeń")}`, value: (_env, form) => form.incident.maskingDuration }
+        { label: (_env, form) => `Czas „trzymania się” przed eskalacją przez ${getSubjectInline(form)}`, value: (_env, form) => form.incident.maskingDuration }
       ]
     },
     {
@@ -162,29 +162,29 @@ export const mapExportSections: ExportSection[] = [
   {
     title: "1. Miejsca i preferowane przestrzenie",
     rows: [
-      { label: "W jakich miejscach dziecko/uczeń najchętniej przebywa?", value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
+      { label: (_env, form) => `W jakich miejscach ${getSubjectInline(form, "dziecko/uczeń")} najchętniej przebywa?`, value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
       { label: "Dlaczego te miejsca? Co je wyróżnia?", value: (_env, form) => form.map.preferredReason },
-      { label: "Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?", value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
+      { label: (_env, form) => `Z jakich miejsc ${getSubjectInline(form, "dziecko/uczeń")} unika lub wychodzi z trudem?`, value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
       { label: "Co w tych miejscach aktywuje napięcie?", value: (_env, form) => form.map.avoidedReason }
     ]
   },
   {
     title: "2. Preferowane aktywności i rola",
     rows: [
-      { label: "W jakie aktywności dziecko/uczeń najchętniej się angażuje?", value: (_env, form) => form.map.likes },
-      { label: "Jaka rola w tych aktywnościach?", value: (_env, form) => form.map.activityRoles }
+      { label: (_env, form) => `W jakie aktywności ${getSubjectInline(form, "dziecko/uczeń")} najchętniej się angażuje?`, value: (_env, form) => form.map.likes },
+      { label: (_env, form) => `Jaką rolę ${getSubjectInline(form, "dziecko/uczeń")} najczęściej przyjmuje w tych aktywnościach?`, value: (_env, form) => form.map.activityRoles }
     ]
   },
   {
     title: "3. Warunki optymalnego funkcjonowania",
     rows: [
-      { label: "Dziecko/uczeń najłatwiej funkcjonuje, gdy", value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
+      { label: (_env, form) => `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej funkcjonuje, gdy`, value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
     ]
   },
   {
     title: "4. Co wspiera i co obniża napięcie",
     rows: [
-      { label: "Dziecko/uczeń najłatwiej współpracuje z", value: (_env, form) => form.map.cooperatesWith },
+      { label: (_env, form) => `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej współpracuje z`, value: (_env, form) => form.map.cooperatesWith },
       { label: "Co OBNIŻA napięcie", value: (_env, form) => withOther(form.map.reducers, form.map.reducersOther) },
       { label: "Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?", value: (_env, form) => form.map.energySources }
     ]
@@ -199,7 +199,7 @@ export const mapExportSections: ExportSection[] = [
   {
     title: "6. Bezpieczne przestrzenie i osoby",
     rows: [
-      { label: "Gdzie/z kim dziecko/uczeń czuje się najbezpieczniej?", value: (_env, form) => form.map.safeBase }
+      { label: (_env, form) => `Gdzie/z kim ${getSubjectInline(form, "dziecko/uczeń")} czuje się najbezpieczniej?`, value: (_env, form) => form.map.safeBase }
     ]
   },
   {

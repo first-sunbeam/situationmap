@@ -8,17 +8,19 @@ function isBlank(value: string): boolean {
 }
 
 function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors, summary: string[]) {
+  const subject = getSubjectInline(form, "dziecko/uczeń");
+  const subjectStart = getSubjectInline(form, "Dziecko/uczeń");
   const requiredTextFields: Array<[string, string, string]> = [
     ["map.preferredReason", "Dlaczego te miejsca? Co je wyróżnia?", form.map.preferredReason],
     ["map.avoidedReason", "Co w tych miejscach aktywuje napięcie?", form.map.avoidedReason],
-    ["map.likes", "W jakie aktywności dziecko/uczeń najchętniej się angażuje?", form.map.likes],
-    ["map.cooperatesWith", "Dziecko/uczeń najłatwiej współpracuje z", form.map.cooperatesWith]
+    ["map.likes", `W jakie aktywności ${subject} najchętniej się angażuje?`, form.map.likes],
+    ["map.cooperatesWith", `${subjectStart} najłatwiej współpracuje z`, form.map.cooperatesWith]
   ];
 
   const requiredChoiceFields: Array<[string, string, string[]]> = [
-    ["map.preferredPlaces", "W jakich miejscach dziecko/uczeń najchętniej przebywa?", form.map.preferredPlaces],
-    ["map.avoidedPlaces", "Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?", form.map.avoidedPlaces],
-    ["map.easiestWhen", "Dziecko/uczeń najłatwiej funkcjonuje, gdy", form.map.easiestWhen],
+    ["map.preferredPlaces", `W jakich miejscach ${subject} najchętniej przebywa?`, form.map.preferredPlaces],
+    ["map.avoidedPlaces", `Z jakich miejsc ${subject} unika lub wychodzi z trudem?`, form.map.avoidedPlaces],
+    ["map.easiestWhen", `${subjectStart} najłatwiej funkcjonuje, gdy`, form.map.easiestWhen],
     ["map.reducers", "Co OBNIŻA napięcie", form.map.reducers],
     ["map.escalationContexts", formLabels.map.escalationContexts, form.map.escalationContexts]
   ];
@@ -156,8 +158,9 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
       summary.push(`${formLabels.map.dependsOn}: ${message}`);
     }
 
-    requireOtherField({ fieldErrors, summary, selected: form.map.preferredPlaces, value: form.map.preferredPlacesOther, fieldKey: "map.preferredPlacesOther", sectionLabel: "W jakich miejscach dziecko/uczeń najchętniej przebywa?" });
-    requireOtherField({ fieldErrors, summary, selected: form.map.avoidedPlaces, value: form.map.avoidedPlacesOther, fieldKey: "map.avoidedPlacesOther", sectionLabel: "Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?" });
+    const subject = getSubjectInline(form, "dziecko/uczeń");
+    requireOtherField({ fieldErrors, summary, selected: form.map.preferredPlaces, value: form.map.preferredPlacesOther, fieldKey: "map.preferredPlacesOther", sectionLabel: `W jakich miejscach ${subject} najchętniej przebywa?` });
+    requireOtherField({ fieldErrors, summary, selected: form.map.avoidedPlaces, value: form.map.avoidedPlacesOther, fieldKey: "map.avoidedPlacesOther", sectionLabel: `Z jakich miejsc ${subject} unika lub wychodzi z trudem?` });
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: formLabels.map.escalationContexts });
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationReducers, value: form.map.escalationReducersOther, fieldKey: "map.escalationReducersOther", sectionLabel: "Co zmniejsza ryzyko eskalacji?" });
 
