@@ -71,21 +71,25 @@ const subject = computed(() => getSubjectInline(form.value));
           />
         </div>
       </fieldset>
-      <ChoiceGroupField
-        v-model="form.incident.expectations"
-        :label="formLabels.incident.expectations"
-        :options="env.expectations"
-      />
-      <InputField
-        v-if="
-          hasOther(form.incident.expectations, form.incident.expectationOther)
-        "
-        v-model="form.incident.expectationOther"
-        :label="formLabels.incident.expectationOther"
-        :required="form.incident.expectations.includes('inne')"
-        :error="fieldErrors['incident.expectationOther']"
-        full
-      />
+      <fieldset class="field group-field full">
+        <legend class="field-label">
+          {{ formLabels.incident.expectations }}
+        </legend>
+        <ChoiceGroupField
+          v-model="form.incident.expectations"
+          :options="env.expectations"
+        />
+        <InputField
+          v-if="
+            hasOther(form.incident.expectations, form.incident.expectationOther)
+          "
+          v-model="form.incident.expectationOther"
+          :label="formLabels.incident.expectationOther"
+          :required="form.incident.expectations.includes('inne')"
+          :error="fieldErrors['incident.expectationOther']"
+          full
+        />
+      </fieldset>
     </div>
   </section>
 </template>

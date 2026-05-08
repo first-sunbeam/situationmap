@@ -66,12 +66,14 @@ const riskReducerOptions = computed(() => env.value.mapEscalationReducers || esc
       <section class="section" :class="{ invalidSection: hasMapSectionError }">
         <h3>1. Miejsca i preferowane przestrzenie</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.preferredPlaces" label="W jakich miejscach dziecko/uczeń najchętniej przebywa?" :options="placeOptions" :error="fieldErrors['map.preferredPlaces']" required />
-          <InputField v-if="hasOther(form.map.preferredPlaces, form.map.preferredPlacesOther)" v-model="form.map.preferredPlacesOther" label="Inne miejsce" full />
+          <ChoiceGroupField v-model="form.map.preferredPlaces" label="W jakich miejscach dziecko/uczeń najchętniej przebywa?" :options="placeOptions" :error="fieldErrors['map.preferredPlaces']" grouped required>
+            <InputField v-if="hasOther(form.map.preferredPlaces, form.map.preferredPlacesOther)" v-model="form.map.preferredPlacesOther" label="Inne miejsce" full />
+          </ChoiceGroupField>
           <TextAreaField v-model="form.map.preferredReason" label="Dlaczego te miejsca? Co je wyróżnia?" hint="Np. cisza, samotność, przewidywalność, ulubione przedmioty, dostęp do bliskiej osoby, możliwość kontrolowania bodźców (światło, dźwięk)." :error="fieldErrors['map.preferredReason']" required />
 
-          <ChoiceGroupField v-model="form.map.avoidedPlaces" label="Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?" :options="placeOptions" :error="fieldErrors['map.avoidedPlaces']" required />
-          <InputField v-if="hasOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther)" v-model="form.map.avoidedPlacesOther" label="Inne miejsce" full />
+          <ChoiceGroupField v-model="form.map.avoidedPlaces" label="Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?" :options="placeOptions" :error="fieldErrors['map.avoidedPlaces']" grouped required>
+            <InputField v-if="hasOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther)" v-model="form.map.avoidedPlacesOther" label="Inne miejsce" full />
+          </ChoiceGroupField>
           <TextAreaField v-model="form.map.avoidedReason" label="Co w tych miejscach aktywuje napięcie?" hint="Np. hałas, tłok, brak kontroli nad bodźcami, nieprzewidywalność, narzucone wymagania, obecność innych osób." :error="fieldErrors['map.avoidedReason']" required />
         </div>
       </section>
@@ -80,15 +82,16 @@ const riskReducerOptions = computed(() => env.value.mapEscalationReducers || esc
         <h3>2. Preferowane aktywności i rola</h3>
         <div class="field-grid">
           <TextAreaField v-model="form.map.likes" label="W jakie aktywności dziecko/uczeń najchętniej się angażuje?" hint="Np. samodzielna zabawa, ekran, ruch (huśtawka, trampolina), tworzenie, czytanie, kontakt z bliską osobą, rutyny." :error="fieldErrors['map.likes']" required />
-          <ChoiceGroupField v-model="form.map.activityRoles" label="Jaka rola w tych aktywnościach?" :options="activityRoleOptions" hint="W PDA preferowana rola to często prowadzący — dziecko funkcjonuje najlepiej, gdy ma kontrolę nad przebiegiem aktywności." />
+          <ChoiceGroupField v-model="form.map.activityRoles" label="Jaka rola w tych aktywnościach?" :options="activityRoleOptions" hint="W PDA preferowana rola to często prowadzący — dziecko funkcjonuje najlepiej, gdy ma kontrolę nad przebiegiem aktywności." grouped />
         </div>
       </section>
 
       <section class="section">
         <h3>3. Warunki optymalnego funkcjonowania</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.easiestWhen" label="Dziecko/uczeń najłatwiej funkcjonuje, gdy:" :options="conditionOptions" :error="fieldErrors['map.easiestWhen']" required />
-          <TextAreaField v-if="hasOther(form.map.easiestWhen, form.map.easiestWhenOther)" v-model="form.map.easiestWhenOther" label="Inne warunki" />
+          <ChoiceGroupField v-model="form.map.easiestWhen" label="Dziecko/uczeń najłatwiej funkcjonuje, gdy:" :options="conditionOptions" :error="fieldErrors['map.easiestWhen']" grouped required>
+            <TextAreaField v-if="hasOther(form.map.easiestWhen, form.map.easiestWhenOther)" v-model="form.map.easiestWhenOther" label="Inne warunki" />
+          </ChoiceGroupField>
         </div>
       </section>
 
@@ -96,8 +99,9 @@ const riskReducerOptions = computed(() => env.value.mapEscalationReducers || esc
         <h3>4. Co wspiera i co obniża napięcie</h3>
         <div class="field-grid">
           <TextAreaField v-model="form.map.cooperatesWith" label="Dziecko/uczeń najłatwiej współpracuje z:" hint="Np. mama, tata, rodzeństwo, konkretna osoba — opisz, co wyróżnia tę osobę." :error="fieldErrors['map.cooperatesWith']" required />
-          <ChoiceGroupField v-model="form.map.reducers" label="Co OBNIŻA napięcie (reguluje w momencie dyskomfortu)?" :options="tensionReducerOptions" :error="fieldErrors['map.reducers']" required />
-          <TextAreaField v-if="hasOther(form.map.reducers, form.map.reducersOther)" v-model="form.map.reducersOther" label="Inne" />
+          <ChoiceGroupField v-model="form.map.reducers" label="Co OBNIŻA napięcie (reguluje w momencie dyskomfortu)?" :options="tensionReducerOptions" :error="fieldErrors['map.reducers']" grouped required>
+            <TextAreaField v-if="hasOther(form.map.reducers, form.map.reducersOther)" v-model="form.map.reducersOther" label="Inne" />
+          </ChoiceGroupField>
           <TextAreaField v-model="form.map.energySources" label="Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?" hint="Np. silne zainteresowanie, ulubiona osoba, satysfakcja z dokończenia, jasny koniec aktywności. W PDA to pokazuje koszt maskowania, a nie brak trudności." />
         </div>
       </section>
@@ -105,7 +109,7 @@ const riskReducerOptions = computed(() => env.value.mapEscalationReducers || esc
       <section class="section">
         <h3>5. Czynniki zmieniające zachowanie</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.dependsOn" :label="formLabels.map.dependsOn" :options="env.dependencies" />
+          <ChoiceGroupField v-model="form.map.dependsOn" :label="formLabels.map.dependsOn" :options="env.dependencies" grouped />
           <TextAreaField v-model="form.map.dependsDescription" label="Jak zmienia się zachowanie?" :required="Boolean(form.map.dependsOn.length)" :error="fieldErrors['map.dependsDescription']" />
         </div>
       </section>
@@ -119,10 +123,12 @@ const riskReducerOptions = computed(() => env.value.mapEscalationReducers || esc
       <section class="section">
         <h3>7. Najczęstsze sytuacje eskalacji</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.escalationContexts" :label="formLabels.map.escalationContexts" :options="env.escalationContexts" :error="fieldErrors['map.escalationContexts']" required />
-          <InputField v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" v-model="form.map.escalationOther" :label="formLabels.map.escalationOther" required :error="fieldErrors['map.escalationOther']" full />
-          <ChoiceGroupField v-model="form.map.escalationReducers" label="Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?" :options="riskReducerOptions" hint="W PDA przewidywalność i autonomia zmniejszają aktywację układu zagrożenia." />
-          <TextAreaField v-if="hasOther(form.map.escalationReducers, form.map.escalationReducersOther)" v-model="form.map.escalationReducersOther" label="Inne" />
+          <ChoiceGroupField v-model="form.map.escalationContexts" :label="formLabels.map.escalationContexts" :options="env.escalationContexts" :error="fieldErrors['map.escalationContexts']" grouped required>
+            <InputField v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" v-model="form.map.escalationOther" :label="formLabels.map.escalationOther" required :error="fieldErrors['map.escalationOther']" full />
+          </ChoiceGroupField>
+          <ChoiceGroupField v-model="form.map.escalationReducers" label="Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?" :options="riskReducerOptions" hint="W PDA przewidywalność i autonomia zmniejszają aktywację układu zagrożenia." grouped>
+            <TextAreaField v-if="hasOther(form.map.escalationReducers, form.map.escalationReducersOther)" v-model="form.map.escalationReducersOther" label="Inne" />
+          </ChoiceGroupField>
           <SelectField v-model="form.map.noAggression" :label="formLabels.map.noAggression" :options="yesNoUnknown" />
           <TextAreaField v-model="form.map.noAggressionWhere" label="Jakie to sytuacje i co je wyróżnia?" hint="Sytuacje bez eskalacji pokazują, jakie warunki wspierają regulację. To klucz do projektowania wsparcia." :required="form.map.noAggression === 'Tak'" :error="fieldErrors['map.noAggressionWhere']" />
         </div>

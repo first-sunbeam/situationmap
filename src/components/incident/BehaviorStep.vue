@@ -10,14 +10,37 @@ const { env, form, fieldErrors, intensity } = useFormState();
 </script>
 
 <template>
-  <section class="section" :class="{ invalidSection: fieldErrors['incident.behaviorSection'] }">
-    <h3>{{ formLabels.incident.behaviorSection }} <span class="required-mark">*</span></h3>
-    <p class="section-hint">Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od intencji lub „nieposłuszeństwa”.</p>
-    <p v-if="fieldErrors['incident.behaviorSection']" class="field-error">{{ fieldErrors['incident.behaviorSection'] }}</p>
+  <section
+    class="section"
+    :class="{ invalidSection: fieldErrors['incident.behaviorSection'] }"
+  >
+    <h3>
+      {{ formLabels.incident.behaviorSection }}
+      <span class="required-mark">*</span>
+    </h3>
+    <p class="section-hint">
+      Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od
+      intencji lub „nieposłuszeństwa”.
+    </p>
+    <p v-if="fieldErrors['incident.behaviorSection']" class="field-error">
+      {{ fieldErrors["incident.behaviorSection"] }}
+    </p>
     <div class="field-grid">
-      <TextAreaField v-model="form.incident.behavior" :label="formLabels.incident.behavior" />
-      <SelectField v-model="form.incident.intensity" :label="formLabels.incident.intensity" :options="intensity" />
-      <ChoiceGroupField v-model="form.incident.harms" :label="formLabels.incident.harms" :options="env.harms" />
+      <TextAreaField
+        v-model="form.incident.behavior"
+        :label="formLabels.incident.behavior"
+      />
+      <SelectField
+        v-model="form.incident.intensity"
+        :label="formLabels.incident.intensity"
+        :options="intensity"
+      />
+      <fieldset class="field group-field full">
+        <legend class="field-label">
+          {{ formLabels.incident.harms }}
+        </legend>
+        <ChoiceGroupField v-model="form.incident.harms" :options="env.harms" />
+      </fieldset>
     </div>
   </section>
 </template>

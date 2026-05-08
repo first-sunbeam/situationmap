@@ -7,6 +7,7 @@ const {
   options,
   required = false,
   full = true,
+  grouped = false,
   hint,
   error,
 } = defineProps<{
@@ -14,6 +15,7 @@ const {
   options: readonly string[];
   required?: boolean;
   full?: boolean;
+  grouped?: boolean;
   hint?: string;
   error?: string;
 }>();
@@ -37,7 +39,7 @@ function toggleOption(option: string): void {
 </script>
 
 <template>
-  <fieldset class="field choice-field full" :class="{ full }">
+  <fieldset class="field choice-field" :class="{ full, 'group-field': grouped }">
     <legend v-if="label" class="field-label">
       <LabelText :text="label" />
       <span v-if="required" class="required-mark">*</span>
@@ -58,5 +60,7 @@ function toggleOption(option: string): void {
         {{ item }}
       </label>
     </div>
+
+    <slot />
   </fieldset>
 </template>
