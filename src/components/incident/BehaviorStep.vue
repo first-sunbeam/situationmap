@@ -2,6 +2,7 @@
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
@@ -10,21 +11,12 @@ const { env, form, fieldErrors, intensity } = useFormState();
 </script>
 
 <template>
-  <section
-    class="section"
-    :class="{ invalidSection: fieldErrors['incident.behaviorSection'] }"
+  <FormSection
+    :title="formLabels.incident.behaviorSection"
+    hint="Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od intencji lub „nieposłuszeństwa”."
+    :error="fieldErrors['incident.behaviorSection']"
+    required
   >
-    <h3>
-      {{ formLabels.incident.behaviorSection }}
-      <span class="required-mark">*</span>
-    </h3>
-    <p class="section-hint">
-      Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od
-      intencji lub „nieposłuszeństwa”.
-    </p>
-    <p v-if="fieldErrors['incident.behaviorSection']" class="field-error">
-      {{ fieldErrors["incident.behaviorSection"] }}
-    </p>
     <div class="field-grid">
       <TextAreaField
         v-model="form.incident.behavior"
@@ -42,5 +34,5 @@ const { env, form, fieldErrors, intensity } = useFormState();
         <ChoiceGroupField v-model="form.incident.harms" :options="env.harms" />
       </fieldset>
     </div>
-  </section>
+  </FormSection>
 </template>

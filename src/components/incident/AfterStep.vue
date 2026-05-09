@@ -2,6 +2,7 @@
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
+import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
@@ -9,21 +10,12 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
 </script>
 
 <template>
-  <section
-    class="section"
-    :class="{ invalidSection: fieldErrors['incident.afterSection'] }"
+  <FormSection
+    :title="formLabels.incident.afterSection"
+    hint="Ta sekcja opisuje, co wydarzyło się po opanowaniu sytuacji i po powrocie do względnej równowagi."
+    :error="fieldErrors['incident.afterSection']"
+    required
   >
-    <h3>
-      {{ formLabels.incident.afterSection }}
-      <span class="required-mark">*</span>
-    </h3>
-    <p class="section-hint">
-      Ta sekcja opisuje, co wydarzyło się po opanowaniu sytuacji i po powrocie
-      do względnej równowagi.
-    </p>
-    <p v-if="fieldErrors['incident.afterSection']" class="field-error">
-      {{ fieldErrors["incident.afterSection"] }}
-    </p>
     <div class="field-grid">
       <ChoiceGroupWithOther
         v-model="form.incident.after"
@@ -57,5 +49,5 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
         full
       />
     </div>
-  </section>
+  </FormSection>
 </template>

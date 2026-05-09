@@ -2,6 +2,7 @@
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
+import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
@@ -17,22 +18,12 @@ const {
 </script>
 
 <template>
-  <section
-    class="section"
-    :class="{ invalidSection: fieldErrors['incident.baselineSection'] }"
+  <FormSection
+    :title="formLabels.incident.baselineSection"
+    hint="Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – obie grupy czynników wpływają na próg dysregulacji."
+    :error="fieldErrors['incident.baselineSection']"
+    required
   >
-    <h3>
-      {{ formLabels.incident.baselineSection }}
-      <span class="required-mark">*</span>
-    </h3>
-    <p class="section-hint">
-      Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała
-      (interocepcja) i z integracją bodźców zewnętrznych – obie grupy czynników
-      wpływają na próg dysregulacji.
-    </p>
-    <p v-if="fieldErrors['incident.baselineSection']" class="field-error">
-      {{ fieldErrors["incident.baselineSection"] }}
-    </p>
     <div class="field-grid">
       <SelectField
         v-model="form.incident.tension"
@@ -93,5 +84,5 @@ const {
         :other-error="fieldErrors['incident.sensoryIntensityOther']"
       />
     </div>
-  </section>
+  </FormSection>
 </template>

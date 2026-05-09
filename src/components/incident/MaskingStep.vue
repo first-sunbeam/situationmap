@@ -3,6 +3,7 @@ import { useFormState } from "../../composables/useFormState";
 import { hasOther } from "../../lib/formUtils";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
@@ -10,10 +11,11 @@ const { form, fieldErrors, maskingDurationOptions, maskingStrategyOptions, subje
 </script>
 
 <template>
-  <section class="section" :class="{ invalidSection: fieldErrors['incident.maskingSection'] }">
-    <h3>{{ formLabels.incident.maskingSection }}</h3>
-    <p class="section-hint">U osób z PDA maskowanie to często nieświadoma strategia „przetrwania” – dziecko kontynuuje mimo przeciążenia, a potem następuje opóźniona eskalacja. Czas maskowania + intensywność późniejszego wybuchu pokazują koszt „trzymania się razem”.</p>
-    <p v-if="fieldErrors['incident.maskingSection']" class="field-error">{{ fieldErrors['incident.maskingSection'] }}</p>
+  <FormSection
+    :title="formLabels.incident.maskingSection"
+    hint="U osób z PDA maskowanie to często nieświadoma strategia „przetrwania” – dziecko kontynuuje mimo przeciążenia, a potem następuje opóźniona eskalacja. Czas maskowania + intensywność późniejszego wybuchu pokazują koszt „trzymania się razem”."
+    :error="fieldErrors['incident.maskingSection']"
+  >
     <div class="field-grid">
       <SelectField v-model="form.incident.maskingContinued" :label="`Kontynuowanie aktywności mimo narastającego napięcia przez ${subjectNominative}`" :options="yesNoUnknown" />
       <fieldset v-if="form.incident.maskingContinued === 'Tak'" class="field group-field full">
@@ -33,5 +35,5 @@ const { form, fieldErrors, maskingDurationOptions, maskingStrategyOptions, subje
         <SelectField v-model="form.incident.maskingDuration" :label="`Czas „trzymania się” przed eskalacją przez ${subjectNominative}`" :options="maskingDurationOptions" />
       </fieldset>
     </div>
-  </section>
+  </FormSection>
 </template>

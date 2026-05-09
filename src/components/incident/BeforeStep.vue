@@ -2,24 +2,19 @@
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import FormSection from "../form/FormSection.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
 const { env, form, fieldErrors } = useFormState();
 </script>
 
 <template>
-  <section
-    class="section"
-    :class="{ invalidSection: fieldErrors['incident.beforeSection'] }"
+  <FormSection
+    :title="formLabels.incident.beforeSection"
+    hint="To, co wydarzyło się bezpośrednio przed, pomaga odróżnić wyzwalacz sytuacyjny od późniejszej reakcji układu nerwowego."
+    :error="fieldErrors['incident.beforeSection']"
+    required
   >
-    <h3>
-      {{ formLabels.incident.beforeSection }}
-      <span class="required-mark">*</span>
-    </h3>
-    <p class="section-hint">
-      To, co wydarzyło się bezpośrednio przed, pomaga odróżnić wyzwalacz
-      sytuacyjny od późniejszej reakcji układu nerwowego.
-    </p>
     <div class="field-grid">
       <fieldset class="field group-field full">
         <legend class="field-label">
@@ -39,5 +34,5 @@ const { env, form, fieldErrors } = useFormState();
         />
       </fieldset>
     </div>
-  </section>
+  </FormSection>
 </template>

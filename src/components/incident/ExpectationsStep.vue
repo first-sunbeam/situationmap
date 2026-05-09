@@ -2,6 +2,7 @@
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
+import FormSection from "../form/FormSection.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
@@ -9,21 +10,12 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
 </script>
 
 <template>
-  <section
-    class="section"
-    :class="{ invalidSection: fieldErrors['incident.expectationsSection'] }"
+  <FormSection
+    :title="formLabels.incident.expectationsSection"
+    hint="W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym."
+    :error="fieldErrors['incident.expectationsSection']"
+    required
   >
-    <h3>
-      {{ formLabels.incident.expectationsSection }}
-      <span class="required-mark">*</span>
-    </h3>
-    <p class="section-hint">
-      W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w
-      układzie nerwowym.
-    </p>
-    <p v-if="fieldErrors['incident.expectationsSection']" class="field-error">
-      {{ fieldErrors["incident.expectationsSection"] }}
-    </p>
     <div class="field-grid">
       <TextAreaField
         v-model="form.incident.influence"
@@ -68,5 +60,5 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
         :other-error="fieldErrors['incident.expectationOther']"
       />
     </div>
-  </section>
+  </FormSection>
 </template>

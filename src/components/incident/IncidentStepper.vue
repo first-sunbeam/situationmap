@@ -3,13 +3,26 @@ import type { IncidentStepDefinition } from "../../config/incidentSteps";
 
 const activeStep = defineModel<string>({ required: true });
 
-defineProps<{
+const props = defineProps<{
   steps: IncidentStepDefinition[];
   currentStep: IncidentStepDefinition;
   progressValue: string;
   isStepErrored: (step: IncidentStepDefinition) => boolean;
   isStepComplete: (step: IncidentStepDefinition) => boolean;
 }>();
+
+type StepStatus = "active" | "error" | "complete" | "default";
+
+function stepStatus(step: IncidentStepDefinition): StepStatus {
+  if (activeStep.value === step.id) return "active";
+  if (props.isStepErrored(step)) return "error";
+  if (props.isStepComplete(step)) return "complete";
+  return "default";
+}
+
+function stepBadge(step: IncidentStepDefinition): string {
+  return stepStatus(step) === "complete" ? "✓" : step.badge;
+}
 
 function goToStep(stepId: string) {
   activeStep.value = stepId;
@@ -31,15 +44,11 @@ function goToStep(stepId: string) {
         :key="step.id"
         type="button"
         class="stepper-button"
-        :class="{
-          active: activeStep === step.id,
-          error: isStepErrored(step),
-          complete: isStepComplete(step) && !isStepErrored(step)
-        }"
+        :class="stepStatus(step)"
         :aria-current="activeStep === step.id ? 'step' : undefined"
         @click="goToStep(step.id)"
       >
-        <span>{{ isStepComplete(step) && !isStepErrored(step) ? '✓' : step.badge }}</span>
+        <span>{{ stepBadge(step) }}</span>
         <small>{{ step.label }}</small>
       </button>
     </div>

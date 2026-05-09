@@ -2,6 +2,7 @@
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
+import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
@@ -18,22 +19,12 @@ const {
 </script>
 
 <template>
-  <section
-    class="section"
-    :class="{ invalidSection: fieldErrors['incident.regulationSection'] }"
+  <FormSection
+    :title="formLabels.incident.regulationSection"
+    hint="Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin."
+    :error="fieldErrors['incident.regulationSection']"
+    required
   >
-    <h3>
-      {{ formLabels.incident.regulationSection }}
-      <span class="required-mark">*</span>
-    </h3>
-    <p class="section-hint">
-      Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje
-      czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od
-      kilku minut do kilku godzin.
-    </p>
-    <p v-if="fieldErrors['incident.regulationSection']" class="field-error">
-      {{ fieldErrors["incident.regulationSection"] }}
-    </p>
     <div class="field-grid">
       <fieldset class="field group-field full">
         <legend class="field-label">
@@ -80,5 +71,5 @@ const {
         :hint="`Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin. Szybki „powrót do normy” na zewnątrz przy późniejszej eskalacji wieczorem/w domu może oznaczać kontynuowanie maskowania u ${subject}.`"
       />
     </div>
-  </section>
+  </FormSection>
 </template>

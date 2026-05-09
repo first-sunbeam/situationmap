@@ -3,6 +3,7 @@ import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import { hasOther } from "../../lib/formUtils";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
@@ -10,10 +11,12 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
 </script>
 
 <template>
-  <section class="section" :class="{ invalidSection: fieldErrors['incident.signalsSection'] }">
-    <h3>{{ formLabels.incident.signalsSection }} <span class="required-mark">*</span></h3>
-    <p class="section-hint">Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja.</p>
-    <p v-if="fieldErrors['incident.signalsSection']" class="field-error">{{ fieldErrors['incident.signalsSection'] }}</p>
+  <FormSection
+    :title="formLabels.incident.signalsSection"
+    hint="Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja."
+    :error="fieldErrors['incident.signalsSection']"
+    required
+  >
     <div class="field-grid">
       <SelectField v-model="form.incident.signalsAppeared" :label="formLabels.incident.signalsAppeared" :options="yesNoUnknown" />
       <InputField
@@ -66,5 +69,5 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
       <InputField v-model="form.incident.firstSignal" :label="formLabels.incident.firstSignal" />
       <SelectField v-model="form.incident.predicts" :label="formLabels.incident.predicts" :options="yesNoUnknown" />
     </div>
-  </section>
+  </FormSection>
 </template>

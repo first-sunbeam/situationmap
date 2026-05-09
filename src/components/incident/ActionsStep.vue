@@ -2,6 +2,7 @@
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
+import FormSection from "../form/FormSection.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
@@ -16,21 +17,12 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
 </script>
 
 <template>
-  <section
-    class="section"
-    :class="{ invalidSection: fieldErrors['incident.actionsSection'] }"
+  <FormSection
+    :title="formLabels.incident.actionsSection"
+    hint="Interwencja jest skuteczniejsza, gdy odpowiada na typ obciążenia: sensoryczny, interoceptywny, autonomii albo przewidywalności."
+    :error="fieldErrors['incident.actionsSection']"
+    required
   >
-    <h3>
-      {{ formLabels.incident.actionsSection }}
-      <span class="required-mark">*</span>
-    </h3>
-    <p class="section-hint">
-      Interwencja jest skuteczniejsza, gdy odpowiada na typ obciążenia:
-      sensoryczny, interoceptywny, autonomii albo przewidywalności.
-    </p>
-    <p v-if="fieldErrors['incident.actionsSection']" class="field-error">
-      {{ fieldErrors["incident.actionsSection"] }}
-    </p>
     <div class="field-grid">
       <SelectField
         v-model="form.incident.phase"
@@ -68,5 +60,5 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
         hint="Np. co warto zauważyć wcześniej następnym razem albo jakie wsparcie mogłoby pomóc wcześniej."
       />
     </div>
-  </section>
+  </FormSection>
 </template>
