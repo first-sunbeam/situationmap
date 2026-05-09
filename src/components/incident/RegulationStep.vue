@@ -1,30 +1,20 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useFormState } from "../../composables/useFormState";
-import { getSubjectInline } from "../../lib/subject";
 import { formLabels } from "../../config/formLabels";
-import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
-
-function hasOther(selected: string[] = [], value = "") {
-  return (
-    selected.includes("Inne") ||
-    selected.includes("inne") ||
-    String(value || "").trim() !== ""
-  );
-}
 
 const {
   env,
   form,
   fieldErrors,
+  subject,
   calmTime,
   cognitiveRecoveryOptions,
   recoverySupportOptions,
 } = useFormState();
-const subject = computed(() => getSubjectInline(form.value));
 </script>
 
 <template>
@@ -65,53 +55,30 @@ const subject = computed(() => getSubjectInline(form.value));
           :hint="`Gotowość na rozmowę, rozumienie poleceń, kontakt wzrokowy lub powrót do aktywności u ${subject}.`"
         />
       </fieldset>
-      <fieldset class="field group-field full">
-        <legend class="field-label">
-          {{ formLabels.incident.endedBy }}
-        </legend>
-        <ChoiceGroupField
-          v-model="form.incident.endedBy"
-          :options="env.endedBy"
-          hint="To pytanie dotyczy momentu PO pełnej eskalacji – co w końcu zatrzymało kryzys?"
-          required
-        />
-        <InputField
-          v-if="hasOther(form.incident.endedBy, form.incident.endedByOther)"
-          v-model="form.incident.endedByOther"
-          :label="formLabels.incident.endedByOther"
-          :required="form.incident.endedBy.includes('inne')"
-          :error="fieldErrors['incident.endedByOther']"
-          full
-        />
-      </fieldset>
+      <ChoiceGroupWithOther
+        v-model="form.incident.endedBy"
+        v-model:other="form.incident.endedByOther"
+        :label="formLabels.incident.endedBy"
+        :options="env.endedBy"
+        :other-label="formLabels.incident.endedByOther"
+        :other-error="fieldErrors['incident.endedByOther']"
+        hint="To pytanie dotyczy momentu PO pełnej eskalacji – co w końcu zatrzymało kryzys?"
+        required
+      />
       <TextAreaField
         v-model="form.incident.worsened"
         :label="formLabels.incident.worsened"
         hint="Np. nacisk, pośpiech, hałas, dotyk, obecność dodatkowych osób, próba rozmowy, odmowa, kontynuowanie wymagań."
       />
-      <fieldset class="field group-field full">
-        <legend class="field-label">
-          {{ formLabels.incident.recoverySupports }}
-        </legend>
-        <ChoiceGroupField
-          v-model="form.incident.recoverySupports"
-          :options="recoverySupportOptions"
-          :hint="`Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin. Szybki „powrót do normy” na zewnątrz przy późniejszej eskalacji wieczorem/w domu może oznaczać kontynuowanie maskowania u ${subject}.`"
-        />
-        <InputField
-          v-if="
-            hasOther(
-              form.incident.recoverySupports,
-              form.incident.recoverySupportsOther,
-            )
-          "
-          v-model="form.incident.recoverySupportsOther"
-          :label="formLabels.incident.recoverySupportsOther"
-          :required="form.incident.recoverySupports.includes('Inne')"
-          :error="fieldErrors['incident.recoverySupportsOther']"
-          full
-        />
-      </fieldset>
+      <ChoiceGroupWithOther
+        v-model="form.incident.recoverySupports"
+        v-model:other="form.incident.recoverySupportsOther"
+        :label="formLabels.incident.recoverySupports"
+        :options="recoverySupportOptions"
+        :other-label="formLabels.incident.recoverySupportsOther"
+        :other-error="fieldErrors['incident.recoverySupportsOther']"
+        :hint="`Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin. Szybki „powrót do normy” na zewnątrz przy późniejszej eskalacji wieczorem/w domu może oznaczać kontynuowanie maskowania u ${subject}.`"
+      />
     </div>
   </section>
 </template>

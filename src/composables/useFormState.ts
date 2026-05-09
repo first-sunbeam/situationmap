@@ -24,6 +24,7 @@ import {
   yesNoUnknown
 } from "../data/environments";
 import { buildEmail, openEmail } from "../lib/email";
+import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, PdfAction } from "../types/form";
 import { createForms, hydrateForm, loadState, useFormPersistence, type EnvironmentKey } from "./useFormPersistence";
 import { useValidationFlow } from "./useValidationFlow";
@@ -44,6 +45,8 @@ function createFormState() {
 
   const env = computed<EnvironmentConfig>(() => environments[activeEnvKey.value]);
   const form = computed(() => forms[activeEnvKey.value]);
+  const subject = computed(() => getSubjectInline(form.value));
+  const subjectNominative = computed(() => getSubjectInline(form.value, "dziecko/uczeń"));
   const modeLabel = computed(() => activeVariant.value === "simple"
     ? "formularz prosty"
     : { incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]
@@ -153,6 +156,8 @@ function createFormState() {
     environments,
     env,
     form,
+    subject,
+    subjectNominative,
     activationSignalOptions,
     activityRoleOptions,
     bodyStateOptions,

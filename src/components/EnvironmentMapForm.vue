@@ -2,16 +2,13 @@
 import { computed } from "vue";
 import { useFormState } from "../composables/useFormState";
 import { formLabels } from "../config/formLabels";
+import { hasOther } from "../lib/formUtils";
 import { getSubjectInline } from "../lib/subject";
 import ChoiceGroupField from "./form/ChoiceGroupField.vue";
 import InputField from "./form/InputField.vue";
 import SelectField from "./form/SelectField.vue";
 import TextAreaField from "./form/TextAreaField.vue";
 import MetaFields from "./form/MetaFields.vue";
-
-function hasOther(selected: string[] = [], value = "") {
-  return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
-}
 
 const {
   env,

@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useFormState } from "../../composables/useFormState";
-import { getSubjectInline } from "../../lib/subject";
 import { formLabels } from "../../config/formLabels";
-import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
-function hasOther(selected: string[] = [], value = "") {
-  return (
-    selected.includes("Inne") ||
-    selected.includes("inne") ||
-    String(value || "").trim() !== ""
-  );
-}
-
-const { env, form, fieldErrors, yesNoUnknown } = useFormState();
-const subject = computed(() => getSubjectInline(form.value));
+const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
 </script>
 
 <template>
@@ -36,20 +25,14 @@ const subject = computed(() => getSubjectInline(form.value));
       {{ fieldErrors["incident.afterSection"] }}
     </p>
     <div class="field-grid">
-      <fieldset class="field group-field full">
-        <legend class="field-label">
-          {{ formLabels.incident.after }}
-        </legend>
-        <ChoiceGroupField v-model="form.incident.after" :options="env.after" />
-        <InputField
-          v-if="hasOther(form.incident.after, form.incident.afterOther)"
-          v-model="form.incident.afterOther"
-          :label="formLabels.incident.afterOther"
-          :required="form.incident.after.includes('Inne')"
-          :error="fieldErrors['incident.afterOther']"
-          full
-        />
-      </fieldset>
+      <ChoiceGroupWithOther
+        v-model="form.incident.after"
+        v-model:other="form.incident.afterOther"
+        :label="formLabels.incident.after"
+        :options="env.after"
+        :other-label="formLabels.incident.afterOther"
+        :other-error="fieldErrors['incident.afterOther']"
+      />
       <SelectField
         v-model="form.incident.physicalThisWeek"
         :label="formLabels.incident.physicalThisWeek"

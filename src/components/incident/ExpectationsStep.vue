@@ -1,23 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useFormState } from "../../composables/useFormState";
-import { getSubjectInline } from "../../lib/subject";
 import { formLabels } from "../../config/formLabels";
-import ChoiceGroupField from "../form/ChoiceGroupField.vue";
-import InputField from "../form/InputField.vue";
+import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
-function hasOther(selected: string[] = [], value = "") {
-  return (
-    selected.includes("Inne") ||
-    selected.includes("inne") ||
-    String(value || "").trim() !== ""
-  );
-}
-
-const { env, form, fieldErrors, yesNoUnknown } = useFormState();
-const subject = computed(() => getSubjectInline(form.value));
+const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
 </script>
 
 <template>
@@ -71,25 +59,14 @@ const subject = computed(() => getSubjectInline(form.value));
           />
         </div>
       </fieldset>
-      <fieldset class="field group-field full">
-        <legend class="field-label">
-          {{ formLabels.incident.expectations }}
-        </legend>
-        <ChoiceGroupField
-          v-model="form.incident.expectations"
-          :options="env.expectations"
-        />
-        <InputField
-          v-if="
-            hasOther(form.incident.expectations, form.incident.expectationOther)
-          "
-          v-model="form.incident.expectationOther"
-          :label="formLabels.incident.expectationOther"
-          :required="form.incident.expectations.includes('inne')"
-          :error="fieldErrors['incident.expectationOther']"
-          full
-        />
-      </fieldset>
+      <ChoiceGroupWithOther
+        v-model="form.incident.expectations"
+        v-model:other="form.incident.expectationOther"
+        :label="formLabels.incident.expectations"
+        :options="env.expectations"
+        :other-label="formLabels.incident.expectationOther"
+        :other-error="fieldErrors['incident.expectationOther']"
+      />
     </div>
   </section>
 </template>

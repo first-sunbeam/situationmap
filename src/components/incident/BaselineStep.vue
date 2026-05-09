@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
-import ChoiceGroupField from "../form/ChoiceGroupField.vue";
+import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
-
-function hasOther(selected: string[] = [], value = "") {
-  return (
-    selected.includes("Inne") ||
-    selected.includes("inne") ||
-    String(value || "").trim() !== ""
-  );
-}
 
 const {
   env,
@@ -76,58 +68,30 @@ const {
           :options="yesNoUnknown"
         />
       </template>
-      <fieldset class="field group-field full">
-        <legend class="field-label">{{ formLabels.incident.burdens }}</legend>
-        <ChoiceGroupField
-          v-model="form.incident.burdens"
-          :options="env.burdens"
-        />
-        <InputField
-          v-if="hasOther(form.incident.burdens, form.incident.burdensOther)"
-          v-model="form.incident.burdensOther"
-          :label="formLabels.incident.burdensOther"
-          :required="form.incident.burdens.includes('inne')"
-          :error="fieldErrors['incident.burdensOther']"
-          full
-        />
-      </fieldset>
-      <fieldset class="field group-field full">
-        <legend class="field-label">{{ formLabels.incident.bodyState }}</legend>
-        <ChoiceGroupField
-          v-model="form.incident.bodyState"
-          :options="bodyStateOptions"
-        />
-        <InputField
-          v-if="hasOther(form.incident.bodyState, form.incident.bodyStateOther)"
-          v-model="form.incident.bodyStateOther"
-          :label="formLabels.incident.bodyStateOther"
-          :required="form.incident.bodyState.includes('inne')"
-          :error="fieldErrors['incident.bodyStateOther']"
-          full
-        />
-      </fieldset>
-      <fieldset class="field group-field full">
-        <legend class="field-label">
-          {{ formLabels.incident.sensoryIntensity }}
-        </legend>
-        <ChoiceGroupField
-          v-model="form.incident.sensoryIntensity"
-          :options="sensoryIntensityOptions"
-        />
-        <InputField
-          v-if="
-            hasOther(
-              form.incident.sensoryIntensity,
-              form.incident.sensoryIntensityOther,
-            )
-          "
-          v-model="form.incident.sensoryIntensityOther"
-          :label="formLabels.incident.sensoryIntensityOther"
-          :required="form.incident.sensoryIntensity.includes('inne')"
-          :error="fieldErrors['incident.sensoryIntensityOther']"
-          full
-        />
-      </fieldset>
+      <ChoiceGroupWithOther
+        v-model="form.incident.burdens"
+        v-model:other="form.incident.burdensOther"
+        :label="formLabels.incident.burdens"
+        :options="env.burdens"
+        :other-label="formLabels.incident.burdensOther"
+        :other-error="fieldErrors['incident.burdensOther']"
+      />
+      <ChoiceGroupWithOther
+        v-model="form.incident.bodyState"
+        v-model:other="form.incident.bodyStateOther"
+        :label="formLabels.incident.bodyState"
+        :options="bodyStateOptions"
+        :other-label="formLabels.incident.bodyStateOther"
+        :other-error="fieldErrors['incident.bodyStateOther']"
+      />
+      <ChoiceGroupWithOther
+        v-model="form.incident.sensoryIntensity"
+        v-model:other="form.incident.sensoryIntensityOther"
+        :label="formLabels.incident.sensoryIntensity"
+        :options="sensoryIntensityOptions"
+        :other-label="formLabels.incident.sensoryIntensityOther"
+        :other-error="fieldErrors['incident.sensoryIntensityOther']"
+      />
     </div>
   </section>
 </template>

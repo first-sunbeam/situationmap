@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
-import ChoiceGroupField from "../form/ChoiceGroupField.vue";
-import InputField from "../form/InputField.vue";
+import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
-
-function hasOther(selected: string[] = [], value = "") {
-  return (
-    selected.includes("Inne") ||
-    selected.includes("inne") ||
-    String(value || "").trim() !== ""
-  );
-}
 
 const {
   form,
@@ -48,28 +39,14 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
         hint="Np. możliwa współpraca, narastające napięcie, pełna eskalacja."
         full
       />
-      <fieldset class="field group-field full">
-        <legend class="field-label">
-          {{ formLabels.incident.interventions }}
-        </legend>
-        <ChoiceGroupField
-          v-model="form.incident.interventions"
-          :options="interventionTypeOptions"
-        />
-        <InputField
-          v-if="
-            hasOther(
-              form.incident.interventions,
-              form.incident.interventionDetails,
-            )
-          "
-          v-model="form.incident.interventionDetails"
-          :label="formLabels.incident.interventionDetails"
-          :required="form.incident.interventions.includes('Inne')"
-          :error="fieldErrors['incident.interventionDetails']"
-          full
-        />
-      </fieldset>
+      <ChoiceGroupWithOther
+        v-model="form.incident.interventions"
+        v-model:other="form.incident.interventionDetails"
+        :label="formLabels.incident.interventions"
+        :options="interventionTypeOptions"
+        :other-label="formLabels.incident.interventionDetails"
+        :other-error="fieldErrors['incident.interventionDetails']"
+      />
       <SelectField
         v-model="form.incident.unconditional"
         :label="formLabels.incident.unconditional"

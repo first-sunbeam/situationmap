@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import { formLabels } from "../../config/formLabels";
+import { hasOther } from "../../lib/formUtils";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
-
-function hasOther(selected: string[] = [], value = "") {
-  return selected.includes("Inne") || selected.includes("inne") || String(value || "").trim() !== "";
-}
 
 const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdownSignalOptions, yesNoUnknown } = useFormState();
 </script>
