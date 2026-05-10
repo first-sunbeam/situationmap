@@ -85,7 +85,7 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
     {
       title: formLabels.incident.expectationsSection,
       rows: [
-        { label: (_env, form) => `Co było jasne dla ${getSubjectInline(form)} i na co był wpływ w tym momencie?`, value: incidentValue("influence") },
+        { label: (_env, form) => `Jaki był zakres wpływu i przewidywalności w tym momencie dla ${getSubjectInline(form)}?`, value: incidentValue("influence") },
         { label: (_env, form) => `Co było nieznane dla ${getSubjectInline(form)}, narzucone albo poza wpływem?`, value: incidentValue("noInfluence") },
         { label: formLabels.incident.predictabilityWhat, value: incidentValue("predictabilityWhat") },
         { label: formLabels.incident.predictabilityDuration, value: incidentValue("predictabilityDuration") },

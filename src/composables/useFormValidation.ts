@@ -118,7 +118,7 @@ export function validateForm({ variant, mode, form }: { variant: FormVariant; mo
     requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: formLabels.incident.expectationsSection });
 
     if (isBlank(form.incident.influence)) {
-      const message = `Uzupełnij pole „Co było jasne dla ${subject} i na co był wpływ w tym momencie?”.`;
+      const message = `Uzupełnij pole „Jaki był zakres wpływu i przewidywalności w tym momencie dla ${subject}?”.`;
       fieldErrors["incident.influence"] = message;
       summary.push(`${formLabels.incident.expectationsSection}: ${message}`);
     }

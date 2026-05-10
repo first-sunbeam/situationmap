@@ -19,7 +19,7 @@ export const formLabels = {
     helped: "4. Co pomogło (lub nie pomogło) wyregulować sytuację?",
     notes: "5. Wpływ i autonomia – zakres kontroli",
     predictability: "Czy było wiadomo, co się wydarzy i jak długo to potrwa?",
-    recoveryTime: "6. Czas do powrotu do gotowości"
+    recoveryTime: "6. Czas do odzyskania gotowości do współpracy"
   },
   incident: {
     baselineSection: "0. Poziom bazowy i kontekst dnia",
@@ -48,7 +48,7 @@ export const formLabels = {
     factDescription: "Doprecyzowanie tego, co było bezpośrednio przed",
     expectations: "Oczekiwania",
     expectationOther: "Jeśli inne, wpisz jakie",
-    influence: "Co dziecko/uczeń wiedziało i na co miało wpływ w tym momencie?",
+    influence: "Jaki był zakres wpływu i przewidywalności w tym momencie dla dziecka/ucznia?",
     noInfluence: "Co było nieznane, narzucone albo poza wpływem dziecka/ucznia?",
     predictability: "Przewidywalność sytuacji",
     predictabilityWhat: "Czy było wiadomo, co się wydarzy?",
@@ -57,7 +57,7 @@ export const formLabels = {
     signalsAppeared: "Czy pojawiły się sygnały?",
     activationSignals: "Typ 1: Aktywacja (sympatyczny)",
     activationSignalsOther: "Jeśli inne, wpisz jakie",
-    shutdownSignals: "Typ 2: Shutdown (parasympatyczny/freeze)",
+    shutdownSignals: "Typ 2: Shutdown (zamrożenie/wyłączenie)",
     shutdownSignalsOther: "Jeśli inne, wpisz jakie",
     sensorySignals: "Typ 3: Sensoryczny",
     sensorySignalsOther: "Jeśli inne, wpisz jakie",

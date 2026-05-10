@@ -19,7 +19,7 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
     <div class="field-grid">
       <TextAreaField
         v-model="form.incident.influence"
-        :label="`Co było jasne dla ${subject} i na co był wpływ w tym momencie?`"
+        :label="`Jaki był zakres wpływu i przewidywalności w tym momencie dla ${subject}?`"
         hint="Czy znało kolejny krok, czas trwania lub zakończenie aktywności? Co mogło wybrać, zmienić albo zakończyć?"
         required
         :error="fieldErrors['incident.influence']"
