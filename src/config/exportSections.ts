@@ -20,6 +20,10 @@ function withOther(values: string[], other: string): string[] {
   return other ? [...values, other] : values;
 }
 
+function incidentValue(field: keyof SituationForm["incident"]): ExportRow["value"] {
+  return (_env, form) => form.incident[field];
+}
+
 export function resolveExportLabel(label: ExportLabel, env: EnvironmentConfig, form: SituationForm): string {
   return typeof label === "function" ? label(env, form) : label;
 }
@@ -58,13 +62,13 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
     {
       title: formLabels.incident.baselineSection,
       rows: [
-        { label: formLabels.incident.tension, value: (_env, form) => form.incident.tension },
-        { label: formLabels.incident.tired, value: (_env, form) => form.incident.tired },
-        { label: formLabels.incident.slept, value: (_env, form) => form.incident.slept },
-        { label: formLabels.incident.sleepDetails, value: (_env, form) => form.incident.sleepDetails },
+        { label: formLabels.incident.tension, value: incidentValue("tension") },
+        { label: formLabels.incident.tired, value: incidentValue("tired") },
+        { label: formLabels.incident.slept, value: incidentValue("slept") },
+        { label: formLabels.incident.sleepDetails, value: incidentValue("sleepDetails") },
         ...(env.stayStages ? [
-          { label: formLabels.incident.stayStage, value: (_env: EnvironmentConfig, form: SituationForm) => form.incident.stayStage },
-          { label: formLabels.incident.stayStageLoad, value: (_env: EnvironmentConfig, form: SituationForm) => form.incident.stayStageLoad }
+          { label: formLabels.incident.stayStage, value: incidentValue("stayStage") },
+          { label: formLabels.incident.stayStageLoad, value: incidentValue("stayStageLoad") }
         ] : []),
         { label: formLabels.incident.burdens, value: (_env, form) => withOther(form.incident.burdens, form.incident.burdensOther) },
         { label: formLabels.incident.bodyState, value: (_env, form) => withOther(form.incident.bodyState, form.incident.bodyStateOther) },
@@ -74,69 +78,69 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
     {
       title: formLabels.incident.beforeSection,
       rows: [
-        { label: formLabels.incident.antecedents, value: (_env, form) => form.incident.antecedents },
-        { label: formLabels.incident.factDescription, value: (_env, form) => form.incident.factDescription }
+        { label: formLabels.incident.antecedents, value: incidentValue("antecedents") },
+        { label: formLabels.incident.factDescription, value: incidentValue("factDescription") }
       ]
     },
     {
       title: formLabels.incident.expectationsSection,
       rows: [
-        { label: (_env, form) => `Co było jasne dla ${getSubjectInline(form)} i na co był wpływ w tym momencie?`, value: (_env, form) => form.incident.influence },
-        { label: (_env, form) => `Co było nieznane dla ${getSubjectInline(form)}, narzucone albo poza wpływem?`, value: (_env, form) => form.incident.noInfluence },
-        { label: formLabels.incident.predictabilityWhat, value: (_env, form) => form.incident.predictabilityWhat },
-        { label: formLabels.incident.predictabilityDuration, value: (_env, form) => form.incident.predictabilityDuration },
-        { label: formLabels.incident.predictabilityChoice, value: (_env, form) => form.incident.predictabilityChoice },
+        { label: (_env, form) => `Co było jasne dla ${getSubjectInline(form)} i na co był wpływ w tym momencie?`, value: incidentValue("influence") },
+        { label: (_env, form) => `Co było nieznane dla ${getSubjectInline(form)}, narzucone albo poza wpływem?`, value: incidentValue("noInfluence") },
+        { label: formLabels.incident.predictabilityWhat, value: incidentValue("predictabilityWhat") },
+        { label: formLabels.incident.predictabilityDuration, value: incidentValue("predictabilityDuration") },
+        { label: formLabels.incident.predictabilityChoice, value: incidentValue("predictabilityChoice") },
         { label: formLabels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) }
       ]
     },
     {
       title: formLabels.incident.signalsSection,
       rows: [
-        { label: formLabels.incident.signalsAppeared, value: (_env, form) => form.incident.signalsAppeared },
+        { label: formLabels.incident.signalsAppeared, value: incidentValue("signalsAppeared") },
         { label: formLabels.incident.activationSignals, value: (_env, form) => withOther(form.incident.activationSignals, form.incident.activationSignalsOther) },
         { label: formLabels.incident.shutdownSignals, value: (_env, form) => withOther(form.incident.shutdownSignals, form.incident.shutdownSignalsOther) },
         { label: formLabels.incident.sensorySignals, value: (_env, form) => withOther(form.incident.sensorySignals, form.incident.sensorySignalsOther) },
-        { label: formLabels.incident.timeToEscalation, value: (_env, form) => form.incident.timeToEscalation },
-        { label: formLabels.incident.firstSignal, value: (_env, form) => form.incident.firstSignal },
-        { label: formLabels.incident.predicts, value: (_env, form) => form.incident.predicts }
+        { label: formLabels.incident.timeToEscalation, value: incidentValue("timeToEscalation") },
+        { label: formLabels.incident.firstSignal, value: incidentValue("firstSignal") },
+        { label: formLabels.incident.predicts, value: incidentValue("predicts") }
       ]
     },
     {
       title: formLabels.incident.maskingSection,
       rows: [
-        { label: (_env, form) => `Kontynuowanie aktywności mimo narastającego napięcia przez ${getSubjectInline(form)}`, value: (_env, form) => form.incident.maskingContinued },
+        { label: (_env, form) => `Kontynuowanie aktywności mimo narastającego napięcia przez ${getSubjectInline(form)}`, value: incidentValue("maskingContinued") },
         { label: formLabels.incident.maskingStrategies, value: (_env, form) => withOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther) },
-        { label: (_env, form) => `Czas „trzymania się” przed eskalacją przez ${getSubjectInline(form)}`, value: (_env, form) => form.incident.maskingDuration }
+        { label: (_env, form) => `Czas „trzymania się” przed eskalacją przez ${getSubjectInline(form)}`, value: incidentValue("maskingDuration") }
       ]
     },
     {
       title: formLabels.incident.actionsSection,
       rows: [
-        { label: formLabels.incident.phase, value: (_env, form) => form.incident.phase },
-        { label: formLabels.incident.interventions, value: (_env, form) => form.incident.interventions },
-        { label: formLabels.incident.interventionDetails, value: (_env, form) => form.incident.interventionDetails },
-        { label: formLabels.incident.unconditional, value: (_env, form) => form.incident.unconditional },
-        { label: formLabels.incident.usedRegulator, value: (_env, form) => form.incident.usedRegulator },
-        { label: formLabels.incident.reducedTension, value: (_env, form) => form.incident.reducedTension },
-        { label: formLabels.incident.earlierWhat, value: (_env, form) => form.incident.earlierWhat }
+        { label: formLabels.incident.phase, value: incidentValue("phase") },
+        { label: formLabels.incident.interventions, value: incidentValue("interventions") },
+        { label: formLabels.incident.interventionDetails, value: incidentValue("interventionDetails") },
+        { label: formLabels.incident.unconditional, value: incidentValue("unconditional") },
+        { label: formLabels.incident.usedRegulator, value: incidentValue("usedRegulator") },
+        { label: formLabels.incident.reducedTension, value: incidentValue("reducedTension") },
+        { label: formLabels.incident.earlierWhat, value: incidentValue("earlierWhat") }
       ]
     },
     {
       title: formLabels.incident.behaviorSection,
       rows: [
-        { label: formLabels.incident.behavior, value: (_env, form) => form.incident.behavior },
-        { label: formLabels.incident.intensity, value: (_env, form) => form.incident.intensity },
-        { label: formLabels.incident.harms, value: (_env, form) => form.incident.harms }
+        { label: formLabels.incident.behavior, value: incidentValue("behavior") },
+        { label: formLabels.incident.intensity, value: incidentValue("intensity") },
+        { label: formLabels.incident.harms, value: incidentValue("harms") }
       ]
     },
     {
       title: formLabels.incident.regulationSection,
       rows: [
-        { label: formLabels.incident.escalationDuration, value: (_env, form) => form.incident.escalationDuration },
+        { label: formLabels.incident.escalationDuration, value: incidentValue("escalationDuration") },
         { label: formLabels.incident.endedBy, value: (_env, form) => withOther(form.incident.endedBy, form.incident.endedByOther) },
-        { label: formLabels.incident.worsened, value: (_env, form) => form.incident.worsened },
-        { label: formLabels.incident.calmTime, value: (_env, form) => form.incident.calmTime },
-        { label: formLabels.incident.cognitiveRecoveryTime, value: (_env, form) => form.incident.cognitiveRecoveryTime },
+        { label: formLabels.incident.worsened, value: incidentValue("worsened") },
+        { label: formLabels.incident.calmTime, value: incidentValue("calmTime") },
+        { label: formLabels.incident.cognitiveRecoveryTime, value: incidentValue("cognitiveRecoveryTime") },
         { label: formLabels.incident.recoverySupports, value: (_env, form) => withOther(form.incident.recoverySupports, form.incident.recoverySupportsOther) }
       ]
     },
@@ -149,10 +153,10 @@ export function getIncidentExportSections(env: EnvironmentConfig): ExportSection
     {
       title: formLabels.incident.physicalSection,
       rows: [
-        { label: formLabels.incident.physicalThisWeek, value: (_env, form) => form.incident.physicalThisWeek },
-        { label: formLabels.incident.physicalCount, value: (_env, form) => form.incident.physicalCount },
-        { label: (_env, form) => `Szybsza lub silniejsza reakcja niż zwykle u ${getSubjectInline(form)}`, value: (_env, form) => form.incident.lowerThreshold },
-        { label: formLabels.incident.physicalNote, value: (_env, form) => form.incident.physicalNote }
+        { label: formLabels.incident.physicalThisWeek, value: incidentValue("physicalThisWeek") },
+        { label: formLabels.incident.physicalCount, value: incidentValue("physicalCount") },
+        { label: (_env, form) => `Szybsza lub silniejsza reakcja niż zwykle u ${getSubjectInline(form)}`, value: incidentValue("lowerThreshold") },
+        { label: formLabels.incident.physicalNote, value: incidentValue("physicalNote") }
       ]
     }
   ];

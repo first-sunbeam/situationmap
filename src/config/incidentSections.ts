@@ -30,23 +30,87 @@ export function hasSelectedOther(values: string[]): boolean {
 }
 
 export function hasRequiredOtherValue(selected: string[], value: string): boolean {
-  return !hasSelectedOther(selected) || String(value || "").trim() !== "";
+  return !hasSelectedOther(selected) || hasRequiredText(value);
 }
 
-export function hasRequiredSleepDetails(slept: string, sleepDetails: string): boolean {
-  return slept !== "Tak" || String(sleepDetails || "").trim() !== "";
-}
-
-export function hasRequiredTimeToEscalation(signalsAppeared: string, timeToEscalation: string): boolean {
-  return signalsAppeared !== "Tak" || String(timeToEscalation || "").trim() !== "";
-}
-
-export function hasRequiredPhysicalCount(physicalThisWeek: string, physicalCount: string): boolean {
-  return physicalThisWeek !== "Tak" || String(physicalCount || "").trim() !== "";
+export function hasRequiredOtherValues(...requirements: Array<[selected: string[], value: string]>): boolean {
+  return requirements.every(([selected, value]) => hasRequiredOtherValue(selected, value));
 }
 
 function hasRequiredText(value: string): boolean {
   return String(value || "").trim() !== "";
+}
+
+export function hasRequiredSleepDetails(slept: string, sleepDetails: string): boolean {
+  return slept !== "Tak" || hasRequiredText(sleepDetails);
+}
+
+export function hasRequiredTimeToEscalation(signalsAppeared: string, timeToEscalation: string): boolean {
+  return signalsAppeared !== "Tak" || hasRequiredText(timeToEscalation);
+}
+
+export function hasRequiredPhysicalCount(physicalThisWeek: string, physicalCount: string): boolean {
+  return physicalThisWeek !== "Tak" || hasRequiredText(physicalCount);
+}
+
+function hasRequiredBaselineOtherValues(form: SituationForm): boolean {
+  return hasRequiredOtherValues(
+    [form.incident.burdens, form.incident.burdensOther],
+    [form.incident.bodyState, form.incident.bodyStateOther],
+    [form.incident.sensoryIntensity, form.incident.sensoryIntensityOther]
+  );
+}
+
+function hasSignalTypeValue(form: SituationForm): boolean {
+  return hasAnyValue([
+    form.incident.activationSignals,
+    form.incident.activationSignalsOther,
+    form.incident.shutdownSignals,
+    form.incident.shutdownSignalsOther,
+    form.incident.sensorySignals,
+    form.incident.sensorySignalsOther
+  ]);
+}
+
+function hasAnySignalsSectionValue(form: SituationForm): boolean {
+  return hasAnyValue([
+    form.incident.signalsAppeared,
+    form.incident.activationSignals,
+    form.incident.activationSignalsOther,
+    form.incident.shutdownSignals,
+    form.incident.shutdownSignalsOther,
+    form.incident.sensorySignals,
+    form.incident.sensorySignalsOther,
+    form.incident.timeToEscalation,
+    form.incident.firstSignal,
+    form.incident.predicts
+  ]);
+}
+
+function hasRequiredSignalOtherValues(form: SituationForm): boolean {
+  return hasRequiredOtherValues(
+    [form.incident.activationSignals, form.incident.activationSignalsOther],
+    [form.incident.shutdownSignals, form.incident.shutdownSignalsOther],
+    [form.incident.sensorySignals, form.incident.sensorySignalsOther]
+  );
+}
+
+function isSignalsSectionComplete(form: SituationForm): boolean {
+  const hasRequiredSignalDetails = form.incident.signalsAppeared !== "Tak"
+    ? hasAnySignalsSectionValue(form)
+    : hasSignalTypeValue(form) && hasRequiredTimeToEscalation(form.incident.signalsAppeared, form.incident.timeToEscalation);
+
+  return hasRequiredSignalDetails && hasRequiredSignalOtherValues(form);
+}
+
+function isMaskingSectionComplete(form: SituationForm): boolean {
+  if (form.incident.maskingContinued !== "Tak") return true;
+
+  return hasAnyValue([
+    form.incident.maskingStrategies,
+    form.incident.maskingStrategiesOther,
+    form.incident.maskingDuration
+  ]) && hasRequiredOtherValue(form.incident.maskingStrategies, form.incident.maskingStrategiesOther);
 }
 
 export const incidentSections: IncidentSectionDefinition[] = [
@@ -71,7 +135,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.bodyStateOther,
       form.incident.sensoryIntensity,
       form.incident.sensoryIntensityOther
-    ]) && hasRequiredSleepDetails(form.incident.slept, form.incident.sleepDetails) && hasRequiredOtherValue(form.incident.burdens, form.incident.burdensOther) && hasRequiredOtherValue(form.incident.bodyState, form.incident.bodyStateOther) && hasRequiredOtherValue(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther)
+    ]) && hasRequiredSleepDetails(form.incident.slept, form.incident.sleepDetails) && hasRequiredBaselineOtherValues(form)
   },
   {
     id: "before",
@@ -113,20 +177,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     message: (form) => form.incident.signalsAppeared === "Tak"
       ? "Skoro sygnały się pojawiły, wskaż jakie."
       : "Uzupełnij przynajmniej jedno pole w tej sekcji.",
-    isComplete: (form) => (form.incident.signalsAppeared === "Tak"
-      ? hasAnyValue([form.incident.activationSignals, form.incident.activationSignalsOther, form.incident.shutdownSignals, form.incident.shutdownSignalsOther, form.incident.sensorySignals, form.incident.sensorySignalsOther]) && hasRequiredTimeToEscalation(form.incident.signalsAppeared, form.incident.timeToEscalation)
-      : hasAnyValue([
-        form.incident.signalsAppeared,
-        form.incident.activationSignals,
-        form.incident.activationSignalsOther,
-        form.incident.shutdownSignals,
-        form.incident.shutdownSignalsOther,
-        form.incident.sensorySignals,
-        form.incident.sensorySignalsOther,
-        form.incident.timeToEscalation,
-        form.incident.firstSignal,
-        form.incident.predicts
-      ])) && hasRequiredOtherValue(form.incident.activationSignals, form.incident.activationSignalsOther) && hasRequiredOtherValue(form.incident.shutdownSignals, form.incident.shutdownSignalsOther) && hasRequiredOtherValue(form.incident.sensorySignals, form.incident.sensorySignalsOther)
+    isComplete: isSignalsSectionComplete
   },
   {
     id: "masking",
@@ -136,11 +187,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     extraErrorKeys: ["incident.maskingStrategiesOther"],
     summary: "Strategie kompensacyjne i maskowanie: uzupełnij przynajmniej jedno pole albo przejdź dalej, jeśli nie dotyczy.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji albo przejdź dalej, jeśli nie dotyczy.",
-    isComplete: (form) => form.incident.maskingContinued !== "Tak" || (hasAnyValue([
-      form.incident.maskingStrategies,
-      form.incident.maskingStrategiesOther,
-      form.incident.maskingDuration
-    ]) && hasRequiredOtherValue(form.incident.maskingStrategies, form.incident.maskingStrategiesOther))
+    isComplete: isMaskingSectionComplete
   },
   {
     id: "actions",
@@ -189,7 +236,10 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.cognitiveRecoveryTime,
       form.incident.recoverySupports,
       form.incident.recoverySupportsOther
-    ]) && hasRequiredOtherValue(form.incident.endedBy, form.incident.endedByOther) && hasRequiredOtherValue(form.incident.recoverySupports, form.incident.recoverySupportsOther)
+    ]) && hasRequiredOtherValues(
+      [form.incident.endedBy, form.incident.endedByOther],
+      [form.incident.recoverySupports, form.incident.recoverySupportsOther]
+    )
   },
   {
     id: "after",
