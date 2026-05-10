@@ -214,6 +214,7 @@ button {
 .tab-button,
 .mode-button,
 .icon-button,
+.language-button,
 .primary-button,
 .secondary-button {
   min-height: 42px;
@@ -277,6 +278,34 @@ button {
   flex: 0 0 auto;
   width: 1em;
   height: 1em;
+}
+
+/* --- Language button --- */
+
+.language-button {
+  display: inline-grid;
+  place-items: center;
+  min-width: 42px;
+  padding: 0 10px;
+  background: #f1f0ec;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font-weight: 800;
+}
+
+.language-button:hover {
+  transform: translateY(-1px);
+}
+
+:root[data-theme="dark"] .language-button {
+  background: #142a26;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .language-button:hover {
+  background: #193632;
+  box-shadow: var(--shadow-hover);
 }
 
 /* --- Icon button --- */

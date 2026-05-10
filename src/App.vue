@@ -4,10 +4,12 @@ import IncidentForm from "./components/IncidentForm.vue";
 import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";
 import { useFormState } from "./composables/useFormState";
 import { useTheme } from "./composables/useTheme";
+import { useLanguage } from "./i18n/useLanguage";
 import SvgIcon from "./components/ui/SvgIcon.vue";
 import IconSprite from "./components/ui/IconSprite.vue";
 
 const { isDarkTheme, toggleTheme } = useTheme();
+const { languageLabel, toggleLanguageLabel, toggleLanguage } = useLanguage();
 
 const {
   activeEnvKey,
@@ -48,6 +50,15 @@ const {
           </button>
         </nav>
         <div class="actions">
+          <button
+            class="language-button"
+            type="button"
+            :title="toggleLanguageLabel"
+            :aria-label="toggleLanguageLabel"
+            @click="toggleLanguage"
+          >
+            {{ languageLabel }}
+          </button>
           <button
             class="icon-button"
             :title="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
