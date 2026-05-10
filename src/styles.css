@@ -263,6 +263,22 @@ button {
   border-color: #51d5c8;
 }
 
+/* --- Icons --- */
+
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.svg-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 1em;
+  height: 1em;
+}
+
 /* --- Icon button --- */
 
 .icon-button {
@@ -487,7 +503,7 @@ button {
 :root[data-theme="dark"] .mode-indicator {
   background: #0a1715;
   border-color: #35534f;
-  color: var(--muted);
+  color: transparent;
 }
 
 :root[data-theme="dark"] .mode-button.active .mode-indicator {

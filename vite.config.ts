@@ -8,7 +8,7 @@ export default defineConfig(({ command }) => ({
     vue(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "favicon.svg", "favicon-16x16.png", "favicon-32x32.png", "apple-touch-icon.png"],
+      includeAssets: ["favicon.svg", "apple-touch-icon.svg"],
       manifest: {
         name: "SituationMap",
         short_name: "SituationMap",
@@ -21,21 +21,21 @@ export default defineConfig(({ command }) => ({
         lang: "pl",
         icons: [
           {
-            src: "pwa-192.png",
+            src: "pwa-192.svg",
             sizes: "192x192",
-            type: "image/png",
+            type: "image/svg+xml",
             purpose: "any"
           },
           {
-            src: "pwa-512.png",
+            src: "pwa-512.svg",
             sizes: "512x512",
-            type: "image/png",
+            type: "image/svg+xml",
             purpose: "any maskable"
           },
           {
-            src: "apple-touch-icon.png",
+            src: "apple-touch-icon.svg",
             sizes: "180x180",
-            type: "image/png",
+            type: "image/svg+xml",
             purpose: "any"
           }
         ]

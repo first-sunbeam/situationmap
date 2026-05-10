@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IncidentStepDefinition } from "../../config/incidentSteps";
+import SvgIcon from "../ui/SvgIcon.vue";
 
 const activeStep = defineModel<string>({ required: true });
 
@@ -18,10 +19,6 @@ function stepStatus(step: IncidentStepDefinition): StepStatus {
   if (props.isStepErrored(step)) return "error";
   if (props.isStepComplete(step)) return "complete";
   return "default";
-}
-
-function stepBadge(step: IncidentStepDefinition): string {
-  return stepStatus(step) === "complete" ? "✓" : step.badge;
 }
 
 function goToStep(stepId: string) {
@@ -48,7 +45,10 @@ function goToStep(stepId: string) {
         :aria-current="activeStep === step.id ? 'step' : undefined"
         @click="goToStep(step.id)"
       >
-        <span>{{ stepBadge(step) }}</span>
+        <span>
+          <SvgIcon v-if="stepStatus(step) === 'complete'" name="check" />
+          <template v-else>{{ step.badge }}</template>
+        </span>
         <small>{{ step.label }}</small>
       </button>
     </div>

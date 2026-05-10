@@ -9,6 +9,7 @@ import InputField from "./form/InputField.vue";
 import SelectField from "./form/SelectField.vue";
 import TextAreaField from "./form/TextAreaField.vue";
 import MetaFields from "./form/MetaFields.vue";
+import SvgIcon from "./ui/SvgIcon.vue";
 
 const {
   env,
@@ -52,8 +53,8 @@ const subjectStart = computed(() => getSubjectInline(form.value, "Dziecko/uczeń
         <p>Mapa opisuje miejsca, aktywności, warunki regulacji i sytuacje zwiększające ryzyko eskalacji.</p>
       </div>
       <div class="heading-actions">
-        <button class="secondary-button" @click="resetMap">↺ Wyczyść formularz</button>
-        <button class="primary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
+        <button class="secondary-button" @click="resetMap"><SvgIcon name="reset" /> Wyczyść formularz</button>
+        <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
       </div>
     </div>
 
@@ -136,8 +137,8 @@ const subjectStart = computed(() => getSubjectInline(form.value, "Dziecko/uczeń
     </div>
 
     <div class="footer-actions">
-      <button class="secondary-button" @click="buildPdf('open')">↗ Podgląd</button>
-      <button class="primary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
+      <button class="secondary-button" @click="buildPdf('open')"><SvgIcon name="external" /> Podgląd</button>
+      <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
     </div>
   </section>
 </template>

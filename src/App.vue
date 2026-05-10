@@ -4,6 +4,8 @@ import IncidentForm from "./components/IncidentForm.vue";
 import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";
 import { useFormState } from "./composables/useFormState";
 import { useTheme } from "./composables/useTheme";
+import SvgIcon from "./components/ui/SvgIcon.vue";
+import IconSprite from "./components/ui/IconSprite.vue";
 
 const { isDarkTheme, toggleTheme } = useTheme();
 
@@ -25,6 +27,7 @@ const {
 </script>
 
 <template>
+  <IconSprite />
   <div class="app-shell">
     <header class="topbar">
       <div class="topbar-inner">
@@ -40,7 +43,7 @@ const {
             :class="{ active: activeEnvKey === key }"
             @click="activeEnvKey = key"
           >
-            <span aria-hidden="true">{{ item.icon }}</span>
+            <SvgIcon :name="item.icon" />
             <span>{{ item.label }}</span>
           </button>
         </nav>
@@ -51,18 +54,12 @@ const {
             :aria-label="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
             @click="toggleTheme"
           >
-            <svg v-if="isDarkTheme" class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <circle cx="12" cy="12" r="4" fill="currentColor" />
-              <path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-            <svg v-else class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
+            <SvgIcon class="button-icon" :name="isDarkTheme ? 'sun' : 'moon'" />
           </button>
-          <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" aria-label="Otwórz podgląd PDF" @click="buildPdf('open')">↗</button>
-          <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" aria-label="Wyślij e-mail" @click="sendEmail">✉</button>
-          <button v-if="activeVariant === 'simple'" class="icon-button" title="Pobierz PDF" aria-label="Pobierz PDF" @click="buildPdf('download')">↓</button>
-          <button class="icon-button" title="Wyczyść formularze" aria-label="Wyczyść formularze" @click="resetCurrent">↺</button>
+          <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" aria-label="Otwórz podgląd PDF" @click="buildPdf('open')"><SvgIcon class="button-icon" name="external" /></button>
+          <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" aria-label="Wyślij e-mail" @click="sendEmail"><SvgIcon class="button-icon" name="email" /></button>
+          <button v-if="activeVariant === 'simple'" class="icon-button" title="Pobierz PDF" aria-label="Pobierz PDF" @click="buildPdf('download')"><SvgIcon class="button-icon" name="download" /></button>
+          <button class="icon-button" title="Wyczyść formularze" aria-label="Wyczyść formularze" @click="resetCurrent"><SvgIcon class="button-icon" name="reset" /></button>
         </div>
       </div>
     </header>
@@ -79,11 +76,11 @@ const {
             <p class="mode-label">Wersja formularza</p>
             <div class="mode-switch">
               <button class="mode-button" :class="{ active: activeVariant === 'simple' }" @click="activeVariant = 'simple'">
-                <span class="mode-indicator" aria-hidden="true">{{ activeVariant === 'simple' ? '✓' : '' }}</span>
+                <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeVariant === 'simple'" name="check" /></span>
                 <span>Prosta</span>
               </button>
               <button class="mode-button" :class="{ active: activeVariant === 'extended' }" @click="activeVariant = 'extended'">
-                <span class="mode-indicator" aria-hidden="true">{{ activeVariant === 'extended' ? '✓' : '' }}</span>
+                <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeVariant === 'extended'" name="check" /></span>
                 <span>Rozszerzona</span>
               </button>
             </div>
@@ -92,11 +89,11 @@ const {
               <p class="mode-label" style="margin-top: 14px">Zakres formularza rozszerzonego</p>
               <div class="mode-switch">
                 <button class="mode-button" :class="{ active: activeMode === 'incident' }" @click="activeMode = 'incident'">
-                  <span class="mode-indicator" aria-hidden="true">{{ activeMode === 'incident' ? '✓' : '' }}</span>
+                  <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeMode === 'incident'" name="check" /></span>
                   <span>Karta zdarzenia</span>
                 </button>
                 <button class="mode-button" :class="{ active: activeMode === 'map' }" @click="activeMode = 'map'">
-                  <span class="mode-indicator" aria-hidden="true">{{ activeMode === 'map' ? '✓' : '' }}</span>
+                  <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeMode === 'map'" name="check" /></span>
                   <span>Mapa środowiska</span>
                 </button>
               </div>

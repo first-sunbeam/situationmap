@@ -56,7 +56,7 @@ import type { EnvironmentConfig, SituationForm } from "../types/form";
 
 export const environments = {
   home: {
-    icon: "⌂",
+    icon: "home",
     label: "Dom",
     header: "Narzędzie monitorowania sytuacji domowych",
     footer: "© 2026 Małgorzata Mikołajczyk | Powielanie do użytku rodziny i specjalistów wyłącznie w pełnej, niezmienionej wersji",
@@ -134,7 +134,7 @@ export const environments = {
     mapEscalationReducers: escalationReducerOptions
   },
   center: {
-    icon: "⌾",
+    icon: "center",
     label: "Placówka całodobowa",
     header: "Narzędzie monitorowania sytuacji w placówce całodobowej",
     footer: "© 2026 Małgorzata Mikołajczyk | Powielanie do użytku placówki i rodziny wyłącznie w pełnej, niezmienionej wersji",
@@ -156,7 +156,7 @@ export const environments = {
     mapEscalationReducers: ["Uprzedzenie o zmianie dyżuru / planu", "Plan wizualny / timer", "Wybór kolejności czynności", "Negocjacja i czas na odpowiedź", "Jasny koniec aktywności", "Brak pośpiechu / elastyczność czasowa", "Możliwość przejścia do bezpiecznego miejsca", "Obecność znanego wychowawcy", "Ustalenie zasad kontaktu z domem", "Dostęp do regulacji sensorycznej", "Inne"]
   },
   school: {
-    icon: "✎",
+    icon: "school",
     label: "Szkoła",
     header: "Narzędzie monitorowania sytuacji szkolnych",
     footer: "© 2026 Małgorzata Mikołajczyk | Powielanie do użytku szkolnego wyłącznie w pełnej, niezmienionej wersji",

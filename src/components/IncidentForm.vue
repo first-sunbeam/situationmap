@@ -13,6 +13,7 @@ import BehaviorStep from "./incident/BehaviorStep.vue";
 import AfterStep from "./incident/AfterStep.vue";
 import RegulationStep from "./incident/RegulationStep.vue";
 import IncidentStepper from "./incident/IncidentStepper.vue";
+import SvgIcon from "./ui/SvgIcon.vue";
 
 const steps = [
   { ...incidentStepDefinitions[0], component: MetaStep },
@@ -74,8 +75,8 @@ watch(activeStep, (stepId) => {
         <p>Przy opisie sytuacji warto zapisać fakty, oznaki przeciążenia, warunki środowiskowe i działania poprzedzające eskalację.</p>
       </div>
       <div class="heading-actions">
-        <button class="secondary-button" @click="resetIncident">↺ Wyczyść formularz</button>
-        <button class="primary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
+        <button class="secondary-button" @click="resetIncident"><SvgIcon name="reset" /> Wyczyść formularz</button>
+        <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
       </div>
     </div>
 
@@ -93,13 +94,13 @@ watch(activeStep, (stepId) => {
     </div>
 
     <div class="section-nav" :class="{ single: isFirstStep || isLastStep }">
-      <button v-if="!isFirstStep" class="secondary-button" type="button" @click="previousStep">← Poprzedni krok</button>
-      <button v-if="!isLastStep" class="secondary-button" type="button" @click="nextStep">Następny krok →</button>
+      <button v-if="!isFirstStep" class="secondary-button" type="button" @click="previousStep"><SvgIcon name="arrow-left" /> Poprzedni krok</button>
+      <button v-if="!isLastStep" class="secondary-button" type="button" @click="nextStep">Następny krok <SvgIcon name="arrow-right" /></button>
     </div>
 
     <div class="footer-actions">
-      <button class="secondary-button" @click="buildPdf('open')">↗ Podgląd</button>
-      <button class="primary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
+      <button class="secondary-button" @click="buildPdf('open')"><SvgIcon name="external" /> Podgląd</button>
+      <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
     </div>
   </section>
 </template>

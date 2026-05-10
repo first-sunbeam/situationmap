@@ -7,6 +7,7 @@ import LabelText from "./form/LabelText.vue";
 import MetaFields from "./form/MetaFields.vue";
 import SelectField from "./form/SelectField.vue";
 import TextAreaField from "./form/TextAreaField.vue";
+import SvgIcon from "./ui/SvgIcon.vue";
 
 const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps<{
   env: EnvironmentConfig;
@@ -29,9 +30,9 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
         <p>Krótka wersja do szybkiego zgłoszenia sytuacji. Możesz otworzyć wiadomość e-mail albo pobrać PDF i załączyć go ręcznie.</p>
       </div>
       <div class="heading-actions">
-        <button class="secondary-button" @click="resetSimple">↺ Wyczyść formularz</button>
-        <button class="secondary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
-        <button class="primary-button" @click="sendEmail"><span aria-hidden="true">✉</span> Wyślij</button>
+        <button class="secondary-button" @click="resetSimple"><SvgIcon name="reset" /> Wyczyść formularz</button>
+        <button class="secondary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
+        <button class="primary-button" @click="sendEmail"><SvgIcon name="email" /> Wyślij</button>
       </div>
     </div>
 
@@ -113,9 +114,9 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
     </div>
 
     <div class="footer-actions">
-      <button class="secondary-button" @click="resetSimple">↺ Wyczyść formularz</button>
-      <button class="secondary-button" @click="buildPdf('download')">↓ Pobierz PDF</button>
-      <button class="primary-button" @click="sendEmail"><span aria-hidden="true">✉</span> Wyślij</button>
+      <button class="secondary-button" @click="resetSimple"><SvgIcon name="reset" /> Wyczyść formularz</button>
+      <button class="secondary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
+      <button class="primary-button" @click="sendEmail"><SvgIcon name="email" /> Wyślij</button>
     </div>
   </section>
 </template>
