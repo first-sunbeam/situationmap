@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { useLanguage } from "../../i18n/useLanguage";
 import LabelText from "./LabelText.vue";
 import { useFieldIds } from "./useFieldIds";
 
@@ -21,6 +23,8 @@ const {
 }>();
 
 const model = defineModel<string>({ required: true });
+const { language } = useLanguage();
+const resolvedPlaceholder = computed(() => placeholder === "Wybierz" && language.value === "en" ? "Select" : placeholder);
 
 const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
 </script>
@@ -41,7 +45,7 @@ const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
       :aria-describedby="describedBy"
       :aria-invalid="error ? 'true' : undefined"
     >
-      <option value="">{{ placeholder }}</option>
+      <option value="">{{ resolvedPlaceholder }}</option>
       <option v-for="item in options" :key="item" :value="item">{{ item }}</option>
     </select>
 

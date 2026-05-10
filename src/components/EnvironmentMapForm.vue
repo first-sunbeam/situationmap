@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useFormState } from "../composables/useFormState";
-import { formLabels } from "../config/formLabels";
 import { hasOther } from "../lib/formUtils";
 import { getSubjectInline } from "../lib/subject";
 import ChoiceGroupField from "./form/ChoiceGroupField.vue";
@@ -12,6 +11,7 @@ import MetaFields from "./form/MetaFields.vue";
 import SvgIcon from "./ui/SvgIcon.vue";
 
 const {
+  labels,
   env,
   form,
   buildPdf,
@@ -110,7 +110,7 @@ const subjectStart = computed(() => getSubjectInline(form.value, "Dziecko/uczeń
       <section class="section">
         <h3>5. Czynniki zmieniające zachowanie</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.dependsOn" :label="formLabels.map.dependsOn" :options="env.dependencies" grouped />
+          <ChoiceGroupField v-model="form.map.dependsOn" :label="labels.map.dependsOn" :options="env.dependencies" grouped />
           <TextAreaField v-model="form.map.dependsDescription" label="Jak zmienia się zachowanie?" :required="Boolean(form.map.dependsOn.length)" :error="fieldErrors['map.dependsDescription']" />
         </div>
       </section>
@@ -124,13 +124,13 @@ const subjectStart = computed(() => getSubjectInline(form.value, "Dziecko/uczeń
       <section class="section">
         <h3>7. Najczęstsze sytuacje eskalacji</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.escalationContexts" :label="formLabels.map.escalationContexts" :options="env.escalationContexts" :error="fieldErrors['map.escalationContexts']" grouped required>
-            <InputField v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" v-model="form.map.escalationOther" :label="formLabels.map.escalationOther" required :error="fieldErrors['map.escalationOther']" full />
+          <ChoiceGroupField v-model="form.map.escalationContexts" :label="labels.map.escalationContexts" :options="env.escalationContexts" :error="fieldErrors['map.escalationContexts']" grouped required>
+            <InputField v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" v-model="form.map.escalationOther" :label="labels.map.escalationOther" required :error="fieldErrors['map.escalationOther']" full />
           </ChoiceGroupField>
           <ChoiceGroupField v-model="form.map.escalationReducers" label="Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?" :options="riskReducerOptions" hint="W PDA przewidywalność i autonomia zmniejszają aktywację układu zagrożenia." grouped>
             <TextAreaField v-if="hasOther(form.map.escalationReducers, form.map.escalationReducersOther)" v-model="form.map.escalationReducersOther" label="Inne" />
           </ChoiceGroupField>
-          <SelectField v-model="form.map.noAggression" :label="formLabels.map.noAggression" :options="yesNoUnknown" />
+          <SelectField v-model="form.map.noAggression" :label="labels.map.noAggression" :options="yesNoUnknown" />
           <TextAreaField v-model="form.map.noAggressionWhere" label="Jakie to sytuacje i co je wyróżnia?" hint="Sytuacje bez eskalacji pokazują, jakie warunki wspierają regulację. To klucz do projektowania wsparcia." :required="form.map.noAggression === 'Tak'" :error="fieldErrors['map.noAggressionWhere']" />
         </div>
       </section>

@@ -1,32 +1,31 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
-import { formLabels } from "../../config/formLabels";
 import { hasOther } from "../../lib/formUtils";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
 import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
-const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdownSignalOptions, yesNoUnknown } = useFormState();
+const { labels, form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdownSignalOptions, yesNoUnknown } = useFormState();
 </script>
 
 <template>
   <FormSection
-    :title="formLabels.incident.signalsSection"
+    :title="labels.incident.signalsSection"
     hint="Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja."
     :error="fieldErrors['incident.signalsSection']"
     required
   >
     <div class="field-grid">
-      <SelectField v-model="form.incident.signalsAppeared" :label="formLabels.incident.signalsAppeared" :options="yesNoUnknown" />
+      <SelectField v-model="form.incident.signalsAppeared" :label="labels.incident.signalsAppeared" :options="yesNoUnknown" />
       <InputField
         v-model="form.incident.timeToEscalation"
-        :label="formLabels.incident.timeToEscalation"
+        :label="labels.incident.timeToEscalation"
         :required="form.incident.signalsAppeared === 'Tak'"
         :error="fieldErrors['incident.timeToEscalation']"
       />
       <fieldset class="field group-field full">
-        <legend class="field-label">{{ formLabels.incident.activationSignals }}</legend>
+        <legend class="field-label">{{ labels.incident.activationSignals }}</legend>
         <ChoiceGroupField
           v-model="form.incident.activationSignals"
           :options="activationSignalOptions"
@@ -34,12 +33,12 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
         <InputField
           v-if="hasOther(form.incident.activationSignals, form.incident.activationSignalsOther)"
           v-model="form.incident.activationSignalsOther"
-          :label="formLabels.incident.activationSignalsOther"
+          :label="labels.incident.activationSignalsOther"
           :required="form.incident.activationSignals.includes('inne')"
           :error="fieldErrors['incident.activationSignalsOther']"
           full
         />
-        <h4 class="field-label">{{ formLabels.incident.shutdownSignals }}</h4>
+        <h4 class="field-label">{{ labels.incident.shutdownSignals }}</h4>
         <ChoiceGroupField
           v-model="form.incident.shutdownSignals"
           :options="shutdownSignalOptions"
@@ -47,12 +46,12 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
         <InputField
           v-if="hasOther(form.incident.shutdownSignals, form.incident.shutdownSignalsOther)"
           v-model="form.incident.shutdownSignalsOther"
-          :label="formLabels.incident.shutdownSignalsOther"
+          :label="labels.incident.shutdownSignalsOther"
           :required="form.incident.shutdownSignals.includes('inne')"
           :error="fieldErrors['incident.shutdownSignalsOther']"
           full
         />
-        <h4 class="field-label">{{ formLabels.incident.sensorySignals }}</h4>
+        <h4 class="field-label">{{ labels.incident.sensorySignals }}</h4>
         <ChoiceGroupField
           v-model="form.incident.sensorySignals"
           :options="sensorySignalOptions"
@@ -60,14 +59,14 @@ const { form, fieldErrors, activationSignalOptions, sensorySignalOptions, shutdo
         <InputField
           v-if="hasOther(form.incident.sensorySignals, form.incident.sensorySignalsOther)"
           v-model="form.incident.sensorySignalsOther"
-          :label="formLabels.incident.sensorySignalsOther"
+          :label="labels.incident.sensorySignalsOther"
           :required="form.incident.sensorySignals.includes('inne')"
           :error="fieldErrors['incident.sensorySignalsOther']"
           full
         />
       </fieldset>
-      <InputField v-model="form.incident.firstSignal" :label="formLabels.incident.firstSignal" />
-      <SelectField v-model="form.incident.predicts" :label="formLabels.incident.predicts" :options="yesNoUnknown" />
+      <InputField v-model="form.incident.firstSignal" :label="labels.incident.firstSignal" />
+      <SelectField v-model="form.incident.predicts" :label="labels.incident.predicts" :options="yesNoUnknown" />
     </div>
   </FormSection>
 </template>

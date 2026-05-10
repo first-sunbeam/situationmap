@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { formLabels } from "../config/formLabels";
+import { getFormLabels } from "../config/formLabels";
+import { useLanguage } from "../i18n/useLanguage";
 import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, FieldErrors, PdfAction, SituationForm } from "../types/form";
 import LabelText from "./form/LabelText.vue";
@@ -18,6 +19,8 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
   fieldErrors: FieldErrors;
 }>();
 
+const { language } = useLanguage();
+const labels = computed(() => getFormLabels(language.value));
 const subject = computed(() => getSubjectInline(form));
 const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin lub następnego dnia"];
 </script>
@@ -38,12 +41,12 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
 
     <div class="sections">
       <section class="section">
-        <h3>{{ formLabels.meta.section }}</h3>
+        <h3>{{ labels.meta.section }}</h3>
         <MetaFields :env="env" :form="form" :field-errors="fieldErrors" />
       </section>
 
       <section class="section">
-        <h3>{{ formLabels.simple.section }}</h3>
+        <h3>{{ labels.simple.section }}</h3>
         <div class="field-grid">
           <div class="simple-question-heading full">
             <h4 class="field-label"><LabelText :text="`1. Co wydarzyło się tuż przed i jaki był stan ${subject}?`" /></h4>
@@ -51,38 +54,38 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
           </div>
           <TextAreaField
             v-model="form.simple.stateBefore"
-            :label="formLabels.simple.stateBefore"
+            :label="labels.simple.stateBefore"
             hint="Np. głód, zmęczenie, przegrzanie, ból, dużo bodźców, słaby sen, zmiana planu wcześniej w dniu."
           />
           <TextAreaField
             v-model="form.simple.antecedents"
-            :label="formLabels.simple.beforeLastMinutes"
+            :label="labels.simple.beforeLastMinutes"
             hint="Np. polecenie, hałas, tłok, koniec aktywności, przejście, korekta zachowania."
           />
           <div class="simple-question-heading full">
-            <h4 class="field-label">{{ formLabels.simple.signals }}</h4>
+            <h4 class="field-label">{{ labels.simple.signals }}</h4>
             <p class="field-hint">Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja.</p>
           </div>
           <TextAreaField
             v-model="form.simple.signals"
-            :label="formLabels.simple.signalsObserved"
+            :label="labels.simple.signalsObserved"
             hint="Np. milczenie, napięcie ciała, szybsze mówienie, wycofanie, podniesiony głos, zatykanie uszu, ucieczka z pomieszczenia."
           />
           <TextAreaField
             v-model="form.simple.interventions"
-            :label="formLabels.simple.adultReaction"
+            :label="labels.simple.adultReaction"
             hint="Co zrobiono/powiedziano? Czy obniżono wymagania, czy je podtrzymano? Czy był wybór, czas bez wymagań lub możliwość wycofania się?"
           />
           <TextAreaField
             v-model="form.simple.behavior"
-            :label="formLabels.simple.behavior"
+            :label="labels.simple.behavior"
             hint="Opisz fakty: słowa, ruchy, odmowa, płacz, krzyk, wycofanie, ucieczka, rzucanie przedmiotami."
             required
             :error="fieldErrors['simple.behavior']"
           />
           <TextAreaField
             v-model="form.simple.helped"
-            :label="formLabels.simple.helped"
+            :label="labels.simple.helped"
             hint="Np. wycofanie wymagania, zmiana miejsca, cisza, czas bez oczekiwań, dostęp do osoby/przedmiotu, wybór. Jeśli nic nie pomogło – wpisz wprost."
             required
             :error="fieldErrors['simple.helped']"
@@ -100,11 +103,11 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
           />
           <TextAreaField
             v-model="form.simple.predictability"
-            :label="formLabels.simple.predictability"
+            :label="labels.simple.predictability"
           />
           <SelectField
             v-model="form.simple.recoveryTime"
-            :label="formLabels.simple.recoveryTime"
+            :label="labels.simple.recoveryTime"
             :options="readinessOptions"
             hint="Od uspokojenia do gotowości na rozmowę/aktywność. Uspokojenie emocjonalne ≠ gotowość poznawcza."
             full

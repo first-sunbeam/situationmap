@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
-import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
-const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
+const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
 </script>
 
 <template>
   <FormSection
-    :title="formLabels.incident.afterSection"
+    :title="labels.incident.afterSection"
     hint="Ta sekcja opisuje, co wydarzyło się po opanowaniu sytuacji i po powrocie do względnej równowagi."
     :error="fieldErrors['incident.afterSection']"
     required
@@ -20,20 +19,20 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
       <ChoiceGroupWithOther
         v-model="form.incident.after"
         v-model:other="form.incident.afterOther"
-        :label="formLabels.incident.after"
+        :label="labels.incident.after"
         :options="env.after"
-        :other-label="formLabels.incident.afterOther"
+        :other-label="labels.incident.afterOther"
         :other-error="fieldErrors['incident.afterOther']"
       />
       <SelectField
         v-model="form.incident.physicalThisWeek"
-        :label="formLabels.incident.physicalThisWeek"
+        :label="labels.incident.physicalThisWeek"
         :options="yesNoUnknown"
         hint="Np. przytrzymanie dla bezpieczeństwa, fizyczne przeniesienie, blokowanie ruchów."
       />
       <InputField
         v-model="form.incident.physicalCount"
-        :label="formLabels.incident.physicalCount"
+        :label="labels.incident.physicalCount"
         :required="form.incident.physicalThisWeek === 'Tak'"
         :error="fieldErrors['incident.physicalCount']"
       />
@@ -45,7 +44,7 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
       />
       <InputField
         v-model="form.incident.physicalNote"
-        :label="formLabels.incident.physicalNote"
+        :label="labels.incident.physicalNote"
         full
       />
     </div>

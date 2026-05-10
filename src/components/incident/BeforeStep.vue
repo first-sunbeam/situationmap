@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
-import { formLabels } from "../../config/formLabels";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
 import FormSection from "../form/FormSection.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
-const { env, form, fieldErrors } = useFormState();
+const { labels, env, form, fieldErrors } = useFormState();
 </script>
 
 <template>
   <FormSection
-    :title="formLabels.incident.beforeSection"
+    :title="labels.incident.beforeSection"
     hint="To, co wydarzyło się bezpośrednio przed, pomaga odróżnić wyzwalacz sytuacyjny od późniejszej reakcji układu nerwowego."
     :error="fieldErrors['incident.beforeSection']"
     required
@@ -18,7 +17,7 @@ const { env, form, fieldErrors } = useFormState();
     <div class="field-grid">
       <fieldset class="field group-field full">
         <legend class="field-label">
-          {{ formLabels.incident.antecedents }}
+          {{ labels.incident.antecedents }}
         </legend>
         <ChoiceGroupField
           v-model="form.incident.antecedents"
@@ -28,7 +27,7 @@ const { env, form, fieldErrors } = useFormState();
         />
         <TextAreaField
           v-model="form.incident.factDescription"
-          :label="formLabels.incident.factDescription"
+          :label="labels.incident.factDescription"
           hint="Dopisz fakty, których nie da się jasno zaznaczyć na liście."
           :error="fieldErrors['incident.factDescription']"
         />

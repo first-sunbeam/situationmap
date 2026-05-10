@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
-import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import FormSection from "../form/FormSection.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
 const {
+  labels,
   form,
   fieldErrors,
   interventionTypeOptions,
@@ -18,7 +18,7 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
 
 <template>
   <FormSection
-    :title="formLabels.incident.actionsSection"
+    :title="labels.incident.actionsSection"
     hint="Interwencja jest skuteczniejsza, gdy odpowiada na typ obciążenia: sensoryczny, interoceptywny, autonomii albo przewidywalności."
     :error="fieldErrors['incident.actionsSection']"
     required
@@ -26,7 +26,7 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
     <div class="field-grid">
       <SelectField
         v-model="form.incident.phase"
-        :label="formLabels.incident.phase"
+        :label="labels.incident.phase"
         :options="regulationPhase"
         hint="Np. możliwa współpraca, narastające napięcie, pełna eskalacja."
         full
@@ -34,29 +34,29 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
       <ChoiceGroupWithOther
         v-model="form.incident.interventions"
         v-model:other="form.incident.interventionDetails"
-        :label="formLabels.incident.interventions"
+        :label="labels.incident.interventions"
         :options="interventionTypeOptions"
-        :other-label="formLabels.incident.interventionDetails"
+        :other-label="labels.incident.interventionDetails"
         :other-error="fieldErrors['incident.interventionDetails']"
       />
       <SelectField
         v-model="form.incident.unconditional"
-        :label="formLabels.incident.unconditional"
+        :label="labels.incident.unconditional"
         :options="unconditionalOptions"
       />
       <SelectField
         v-model="form.incident.usedRegulator"
-        :label="formLabels.incident.usedRegulator"
+        :label="labels.incident.usedRegulator"
         :options="yesNoPartial"
       />
       <SelectField
         v-model="form.incident.reducedTension"
-        :label="formLabels.incident.reducedTension"
+        :label="labels.incident.reducedTension"
         :options="yesNoPartial"
       />
       <TextAreaField
         v-model="form.incident.earlierWhat"
-        :label="formLabels.incident.earlierWhat"
+        :label="labels.incident.earlierWhat"
         hint="Np. co warto zauważyć wcześniej następnym razem albo jakie wsparcie mogłoby pomóc wcześniej."
       />
     </div>

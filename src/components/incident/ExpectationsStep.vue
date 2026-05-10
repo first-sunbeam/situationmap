@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
-import { formLabels } from "../../config/formLabels";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import FormSection from "../form/FormSection.vue";
 import SelectField from "../form/SelectField.vue";
 import TextAreaField from "../form/TextAreaField.vue";
 
-const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
+const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
 </script>
 
 <template>
   <FormSection
-    :title="formLabels.incident.expectationsSection"
+    :title="labels.incident.expectationsSection"
     hint="W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym."
     :error="fieldErrors['incident.expectationsSection']"
     required
@@ -31,22 +30,22 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
       />
       <fieldset class="field group-field full">
         <legend class="field-label">
-          {{ formLabels.incident.predictability }}
+          {{ labels.incident.predictability }}
         </legend>
         <div class="field-grid">
           <SelectField
             v-model="form.incident.predictabilityWhat"
-            :label="formLabels.incident.predictabilityWhat"
+            :label="labels.incident.predictabilityWhat"
             :options="yesNoUnknown"
           />
           <SelectField
             v-model="form.incident.predictabilityDuration"
-            :label="formLabels.incident.predictabilityDuration"
+            :label="labels.incident.predictabilityDuration"
             :options="yesNoUnknown"
           />
           <SelectField
             v-model="form.incident.predictabilityChoice"
-            :label="formLabels.incident.predictabilityChoice"
+            :label="labels.incident.predictabilityChoice"
             :options="yesNoUnknown"
           />
         </div>
@@ -54,9 +53,9 @@ const { env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
       <ChoiceGroupWithOther
         v-model="form.incident.expectations"
         v-model:other="form.incident.expectationOther"
-        :label="formLabels.incident.expectations"
+        :label="labels.incident.expectations"
         :options="env.expectations"
-        :other-label="formLabels.incident.expectationOther"
+        :other-label="labels.incident.expectationOther"
         :other-error="fieldErrors['incident.expectationOther']"
       />
     </div>

@@ -23,6 +23,8 @@ import {
   yesNoPartial,
   yesNoUnknown
 } from "../data/environments";
+import { getFormLabels } from "../config/formLabels";
+import { useLanguage } from "../i18n/useLanguage";
 import { buildEmail, openEmail } from "../lib/email";
 import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, PdfAction } from "../types/form";
@@ -32,6 +34,7 @@ import { useValidationFlow } from "./useValidationFlow";
 let formState: ReturnType<typeof createFormState> | undefined;
 
 function createFormState() {
+  const { language } = useLanguage();
   const initial = loadState();
   const activeEnvKey = ref(initial.activeEnvKey);
   const activeVariant = ref(initial.activeVariant);
@@ -45,6 +48,7 @@ function createFormState() {
 
   const env = computed<EnvironmentConfig>(() => environments[activeEnvKey.value]);
   const form = computed(() => forms[activeEnvKey.value]);
+  const labels = computed(() => getFormLabels(language.value));
   const subject = computed(() => getSubjectInline(form.value));
   const subjectNominative = computed(() => getSubjectInline(form.value, "dziecko/uczeń"));
   const modeLabel = computed(() => activeVariant.value === "simple"
@@ -156,6 +160,7 @@ function createFormState() {
     environments,
     env,
     form,
+    labels,
     subject,
     subjectNominative,
     activationSignalOptions,
