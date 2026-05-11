@@ -30,7 +30,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: ./dist/
-          remote_path: ${{ secrets.SITE_REMOTE_PATH }}/situationmap/
+          remote_path: ${{ secrets.SITE_REMOTE_PATH }}/map/
           remote_host: ${{ secrets.SITE_REMOTE_HOST }}
           remote_user: ${{ secrets.SITE_REMOTE_USER }}
           remote_port: ${{ secrets.SITE_REMOTE_PORT }}
