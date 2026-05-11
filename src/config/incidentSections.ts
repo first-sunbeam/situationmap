@@ -115,17 +115,17 @@ function isMaskingSectionComplete(form: SituationForm): boolean {
 
 export function getIncidentSectionTexts(section: IncidentSectionDefinition, form: SituationForm, labels: FormLabels): { summary: string; message: string } {
   const textById: Record<string, { summary: string; message: string }> = {
-    baseline: { summary: labels.ui.baselineSummary, message: labels.ui.baselineMessage },
-    before: { summary: labels.ui.beforeSummary, message: labels.ui.beforeMessage },
-    expectations: { summary: labels.ui.expectationsSummary, message: labels.ui.expectationsMessage },
+    baseline: { summary: labels.validation.baselineSummary, message: labels.validation.baselineMessage },
+    before: { summary: labels.validation.beforeSummary, message: labels.validation.beforeMessage },
+    expectations: { summary: labels.validation.expectationsSummary, message: labels.validation.expectationsMessage },
     signals: form.incident.signalsAppeared === "Tak"
-      ? { summary: labels.ui.signalsYesSummary, message: labels.ui.signalsYesMessage }
-      : { summary: labels.ui.signalsDefaultSummary, message: labels.ui.baselineMessage },
-    masking: { summary: labels.ui.maskingSummary, message: labels.ui.maskingMessage },
-    actions: { summary: labels.ui.actionsSummary, message: labels.ui.baselineMessage },
-    behavior: { summary: labels.ui.behaviorSummary, message: labels.ui.baselineMessage },
-    regulation: { summary: labels.ui.regulationSummary, message: labels.ui.regulationMessage },
-    after: { summary: labels.ui.afterSummary, message: labels.ui.baselineMessage }
+      ? { summary: labels.validation.signalsYesSummary, message: labels.validation.signalsYesMessage }
+      : { summary: labels.validation.signalsDefaultSummary, message: labels.validation.baselineMessage },
+    masking: { summary: labels.validation.maskingSummary, message: labels.validation.maskingMessage },
+    actions: { summary: labels.validation.actionsSummary, message: labels.validation.baselineMessage },
+    behavior: { summary: labels.validation.behaviorSummary, message: labels.validation.baselineMessage },
+    regulation: { summary: labels.validation.regulationSummary, message: labels.validation.regulationMessage },
+    after: { summary: labels.validation.afterSummary, message: labels.validation.baselineMessage }
   };
 
   return textById[section.id] || {

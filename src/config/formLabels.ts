@@ -204,7 +204,9 @@ export const formLabelsByLanguage = {
       escalationReducersLabel: "Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?",
       escalationReducersHint: "W PDA przewidywalność i autonomia zmniejszają aktywację układu zagrożenia.",
       noAggressionWhereLabel: "Jakie to sytuacje i co je wyróżnia?",
-      noAggressionWhereHint: "Sytuacje bez eskalacji pokazują, jakie warunki wspierają regulację. To klucz do projektowania wsparcia.",
+      noAggressionWhereHint: "Sytuacje bez eskalacji pokazują, jakie warunki wspierają regulację. To klucz do projektowania wsparcia."
+    },
+    validation: {
       requiredField: "Uzupełnij pole",
       basicInfoRequired: "Dane podstawowe: uzupełnij pole",
       simpleForm: "Formularz prosty",
@@ -491,7 +493,9 @@ export const formLabelsByLanguage = {
       escalationReducersLabel: "What REDUCES escalation risk in these situations?",
       escalationReducersHint: "In PDA, predictability and autonomy reduce activation of the threat system.",
       noAggressionWhereLabel: "Which situations are these and what makes them distinctive?",
-      noAggressionWhereHint: "Situations without escalation show what conditions support regulation. This is key for designing support.",
+      noAggressionWhereHint: "Situations without escalation show what conditions support regulation. This is key for designing support."
+    },
+    validation: {
       requiredField: "Complete the field",
       basicInfoRequired: "Basic information: complete field",
       simpleForm: "Simple form",

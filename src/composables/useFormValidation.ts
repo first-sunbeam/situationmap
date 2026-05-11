@@ -27,15 +27,15 @@ function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors
 
   for (const [key, label, value] of requiredTextFields) {
     if (isBlank(value)) {
-      fieldErrors[key] = `${labels.ui.requiredField}: ${label}.`;
-      summary.push(`${labels.ui.requiredField} „${label}”.`);
+      fieldErrors[key] = `${labels.validation.requiredField}: ${label}.`;
+      summary.push(`${labels.validation.requiredField} „${label}”.`);
     }
   }
 
   for (const [key, label, selected] of requiredChoiceFields) {
     if (!selected.length) {
-      fieldErrors[key] = `${labels.ui.chooseAtLeastOne}: ${label}.`;
-      summary.push(`${labels.ui.chooseAtLeastOne} „${label}”.`);
+      fieldErrors[key] = `${labels.validation.chooseAtLeastOne}: ${label}.`;
+      summary.push(`${labels.validation.chooseAtLeastOne} „${label}”.`);
     }
   }
 }
@@ -59,7 +59,7 @@ function requireOtherField({
 }) {
   if (!hasSelectedOther(selected) || !isBlank(value)) return;
 
-  const message = labels.ui.otherRequired;
+  const message = labels.validation.otherRequired;
   fieldErrors[fieldKey] = message;
   summary.push(`${sectionLabel}: ${message}`);
 }
@@ -78,26 +78,26 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
   if (variant === "simple" || mode !== "map") {
     for (const [key, label, value] of meta) {
       if (!String(value || "").trim()) {
-        const message = `${labels.ui.requiredField}: ${label}.`;
+        const message = `${labels.validation.requiredField}: ${label}.`;
         fieldErrors[key] = message;
-        summary.push(`${labels.ui.basicInfoRequired} ${label.toLowerCase()}.`);
+        summary.push(`${labels.validation.basicInfoRequired} ${label.toLowerCase()}.`);
       }
     }
   }
 
   if (variant === "simple" && isBlank(form.simple.behavior)) {
-    fieldErrors["simple.behavior"] = `${labels.ui.requiredField} „${labels.simple.behavior}”.`;
-    summary.push(`${labels.ui.simpleForm}: ${labels.ui.requiredField.toLowerCase()} „${labels.simple.behavior}”.`);
+    fieldErrors["simple.behavior"] = `${labels.validation.requiredField} „${labels.simple.behavior}”.`;
+    summary.push(`${labels.validation.simpleForm}: ${labels.validation.requiredField.toLowerCase()} „${labels.simple.behavior}”.`);
   }
 
   if (variant === "simple" && !String(form.simple.helped || "").trim()) {
-    fieldErrors["simple.helped"] = `${labels.ui.requiredField} „${labels.simple.helped}” ${labels.ui.simpleHelpedRequiredSuffix}`;
-    summary.push(`${labels.ui.simpleForm}: ${labels.ui.requiredField.toLowerCase()} „${labels.simple.helped}”.`);
+    fieldErrors["simple.helped"] = `${labels.validation.requiredField} „${labels.simple.helped}” ${labels.validation.simpleHelpedRequiredSuffix}`;
+    summary.push(`${labels.validation.simpleForm}: ${labels.validation.requiredField.toLowerCase()} „${labels.simple.helped}”.`);
   }
 
   if (variant === "simple" && isBlank(form.simple.notes)) {
-    fieldErrors["simple.notes"] = `${labels.ui.requiredField} „${labels.ui.decisionPossibilityFor} ${subject}”.`;
-    summary.push(`${labels.ui.simpleForm}: ${labels.ui.requiredField.toLowerCase()} „${labels.ui.decisionPossibilityFor} ${subject}”.`);
+    fieldErrors["simple.notes"] = `${labels.validation.requiredField} „${labels.ui.decisionPossibilityFor} ${subject}”.`;
+    summary.push(`${labels.validation.simpleForm}: ${labels.validation.requiredField.toLowerCase()} „${labels.ui.decisionPossibilityFor} ${subject}”.`);
   }
 
   if (variant === "extended" && mode !== "map") {
@@ -110,7 +110,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     }
 
     if (form.incident.slept === "Tak" && isBlank(form.incident.sleepDetails)) {
-      const message = labels.ui.sleepDetailsRequired;
+      const message = labels.validation.sleepDetailsRequired;
       fieldErrors["incident.sleepDetails"] = message;
       summary.push(`${labels.incident.baselineSection}: ${message}`);
     }
@@ -121,12 +121,12 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     requireOtherField({ fieldErrors, summary, selected: form.incident.expectations, value: form.incident.expectationOther, fieldKey: "incident.expectationOther", sectionLabel: labels.incident.expectationsSection, labels });
 
     if (isBlank(form.incident.influence)) {
-      const message = `${labels.ui.requiredField} „${labels.ui.influenceFor} ${subject}?”.`;
+      const message = `${labels.validation.requiredField} „${labels.ui.influenceFor} ${subject}?”.`;
       fieldErrors["incident.influence"] = message;
       summary.push(`${labels.incident.expectationsSection}: ${message}`);
     }
     if (form.incident.signalsAppeared === "Tak" && isBlank(form.incident.timeToEscalation)) {
-      const message = labels.ui.signalsTimeRequired;
+      const message = labels.validation.signalsTimeRequired;
       fieldErrors["incident.timeToEscalation"] = message;
       summary.push(`${labels.incident.signalsSection}: ${message}`);
     }
@@ -138,7 +138,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: labels.incident.actionsSection, labels });
 
     if (form.incident.physicalThisWeek === "Tak" && isBlank(form.incident.physicalCount)) {
-      const message = labels.ui.physicalCountRequired;
+      const message = labels.validation.physicalCountRequired;
       fieldErrors["incident.physicalCount"] = message;
       summary.push(`${labels.incident.afterSection}: ${message}`);
     }
@@ -156,7 +156,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     validateMapRequiredFields(form, fieldErrors, summary, labels);
 
     if (form.map.dependsOn.length && isBlank(form.map.dependsDescription)) {
-      const message = labels.ui.dependenciesRequired;
+      const message = labels.validation.dependenciesRequired;
       fieldErrors["map.dependsDescription"] = message;
       summary.push(`${labels.map.dependsOn}: ${message}`);
     }
@@ -168,7 +168,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationReducers, value: form.map.escalationReducersOther, fieldKey: "map.escalationReducersOther", sectionLabel: labels.ui.escalationReducersLabel, labels });
 
     if (form.map.noAggression === "Tak" && isBlank(form.map.noAggressionWhere)) {
-      const message = labels.ui.noAggressionRequired;
+      const message = labels.validation.noAggressionRequired;
       fieldErrors["map.noAggressionWhere"] = message;
       summary.push(`${labels.map.noAggression}: ${message}`);
     }
