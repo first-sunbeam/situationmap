@@ -894,8 +894,14 @@ button {
   gap: 7px;
 }
 
-.field.full {
+.field.full,
+.field-grid > .full {
   grid-column: 1 / -1;
+}
+
+.simple-question-heading {
+  display: grid;
+  gap: 6px;
 }
 
 .choice-field {
