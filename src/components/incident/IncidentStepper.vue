@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useFormState } from "../../composables/useFormState";
 import type { IncidentStepDefinition } from "../../config/incidentSteps";
 import SvgIcon from "../ui/SvgIcon.vue";
 
 const activeStep = defineModel<string>({ required: true });
+
+const { labels } = useFormState();
 
 const props = defineProps<{
   steps: IncidentStepDefinition[];
@@ -29,13 +32,13 @@ function goToStep(stepId: string) {
 <template>
   <div class="stepper">
     <div class="stepper-head">
-      <strong>Aktualna sekcja: {{ currentStep.badge }}</strong>
+      <strong>{{ labels.ui.currentSection }}: {{ currentStep.badge }}</strong>
       <span>{{ currentStep.label }}</span>
     </div>
     <div class="stepper-progress" aria-hidden="true">
       <span class="stepper-progress-bar" :style="{ width: progressValue }"></span>
     </div>
-    <div class="stepper-list" aria-label="Postęp formularza rozszerzonego">
+    <div class="stepper-list" :aria-label="labels.ui.stepperProgress">
       <button
         v-for="step in steps"
         :key="step.id"
@@ -53,7 +56,7 @@ function goToStep(stepId: string) {
       </button>
     </div>
     <label class="stepper-mobile">
-      <span class="field-label">Przejdź do kroku</span>
+      <span class="field-label">{{ labels.ui.goToStep }}</span>
       <select class="text-input" v-model="activeStep">
         <option v-for="step in steps" :key="step.id" :value="step.id">{{ step.badge }}. {{ step.label }}</option>
       </select>

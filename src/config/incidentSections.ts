@@ -1,5 +1,5 @@
 import type { SituationForm } from "../types/form";
-import { formLabels } from "./formLabels";
+import { formLabels, type FormLabels } from "./formLabels";
 
 type FormValue = string | string[];
 
@@ -111,6 +111,27 @@ function isMaskingSectionComplete(form: SituationForm): boolean {
     form.incident.maskingStrategiesOther,
     form.incident.maskingDuration
   ]) && hasRequiredOtherValue(form.incident.maskingStrategies, form.incident.maskingStrategiesOther);
+}
+
+export function getIncidentSectionTexts(section: IncidentSectionDefinition, form: SituationForm, labels: FormLabels): { summary: string; message: string } {
+  const textById: Record<string, { summary: string; message: string }> = {
+    baseline: { summary: labels.ui.baselineSummary, message: labels.ui.baselineMessage },
+    before: { summary: labels.ui.beforeSummary, message: labels.ui.beforeMessage },
+    expectations: { summary: labels.ui.expectationsSummary, message: labels.ui.expectationsMessage },
+    signals: form.incident.signalsAppeared === "Tak"
+      ? { summary: labels.ui.signalsYesSummary, message: labels.ui.signalsYesMessage }
+      : { summary: labels.ui.signalsDefaultSummary, message: labels.ui.baselineMessage },
+    masking: { summary: labels.ui.maskingSummary, message: labels.ui.maskingMessage },
+    actions: { summary: labels.ui.actionsSummary, message: labels.ui.baselineMessage },
+    behavior: { summary: labels.ui.behaviorSummary, message: labels.ui.baselineMessage },
+    regulation: { summary: labels.ui.regulationSummary, message: labels.ui.regulationMessage },
+    after: { summary: labels.ui.afterSummary, message: labels.ui.baselineMessage }
+  };
+
+  return textById[section.id] || {
+    summary: resolveIncidentSectionText(section.summary, form),
+    message: resolveIncidentSectionText(section.message, form)
+  };
 }
 
 export const incidentSections: IncidentSectionDefinition[] = [

@@ -11,22 +11,22 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
 <template>
   <FormSection
     :title="labels.incident.expectationsSection"
-    hint="W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym."
+    :hint="labels.ui.expectationsSectionHint"
     :error="fieldErrors['incident.expectationsSection']"
     required
   >
     <div class="field-grid">
       <TextAreaField
         v-model="form.incident.influence"
-        :label="`Jaki był zakres wpływu i przewidywalności w tym momencie dla ${subject}?`"
-        hint="Czy znało kolejny krok, czas trwania lub zakończenie aktywności? Co mogło wybrać, zmienić albo zakończyć?"
+        :label="`${labels.ui.influenceFor} ${subject}?`"
+        :hint="labels.ui.influenceHint"
         required
         :error="fieldErrors['incident.influence']"
       />
       <TextAreaField
         v-model="form.incident.noInfluence"
-        :label="`Co było nieznane dla ${subject}, narzucone albo poza wpływem?`"
-        hint="Czego nie wiedziało? Co było nagłe, narzucone, nieuniknione albo bez możliwości negocjacji?"
+        :label="`${labels.ui.noInfluenceFor} ${subject}, ${labels.ui.noInfluenceSuffix}`"
+        :hint="labels.ui.noInfluenceHint"
       />
       <fieldset class="field group-field full">
         <legend class="field-label">

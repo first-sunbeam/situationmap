@@ -12,7 +12,7 @@ const { labels, env, form, fieldErrors, intensity } = useFormState();
 <template>
   <FormSection
     :title="labels.incident.behaviorSection"
-    hint="Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od intencji lub „nieposłuszeństwa”."
+    :hint="labels.ui.behaviorSectionHint"
     :error="fieldErrors['incident.behaviorSection']"
     required
   >

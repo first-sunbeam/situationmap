@@ -63,7 +63,7 @@ function createFormState() {
     applyValidation,
     requestValidationNavigation,
     scrollToValidationTarget
-  } = useValidationFlow({ activeVariant, activeMode, form });
+  } = useValidationFlow({ activeVariant, activeMode, form, labels });
 
   useFormPersistence({ activeEnvKey, activeVariant, activeMode, forms, status });
 

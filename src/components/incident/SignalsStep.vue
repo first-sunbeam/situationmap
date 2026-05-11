@@ -12,7 +12,7 @@ const { labels, form, fieldErrors, activationSignalOptions, sensorySignalOptions
 <template>
   <FormSection
     :title="labels.incident.signalsSection"
-    hint="Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja."
+    :hint="labels.ui.signalsSectionHint"
     :error="fieldErrors['incident.signalsSection']"
     required
   >

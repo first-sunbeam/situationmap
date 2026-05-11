@@ -10,7 +10,7 @@ const { labels, env, form, fieldErrors } = useFormState();
 <template>
   <FormSection
     :title="labels.incident.beforeSection"
-    hint="To, co wydarzyło się bezpośrednio przed, pomaga odróżnić wyzwalacz sytuacyjny od późniejszej reakcji układu nerwowego."
+    :hint="labels.ui.beforeSectionHint"
     :error="fieldErrors['incident.beforeSection']"
     required
   >
@@ -22,13 +22,13 @@ const { labels, env, form, fieldErrors } = useFormState();
         <ChoiceGroupField
           v-model="form.incident.antecedents"
           :options="env.antecedents"
-          hint="Zaznacz opcje lub dopisz ważny szczegół."
+          :hint="labels.ui.beforeChoiceHint"
           :error="fieldErrors['incident.beforeSection']"
         />
         <TextAreaField
           v-model="form.incident.factDescription"
           :label="labels.incident.factDescription"
-          hint="Dopisz fakty, których nie da się jasno zaznaczyć na liście."
+          :hint="labels.ui.beforeDetailsHint"
           :error="fieldErrors['incident.factDescription']"
         />
       </fieldset>

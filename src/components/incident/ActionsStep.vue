@@ -19,7 +19,7 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
 <template>
   <FormSection
     :title="labels.incident.actionsSection"
-    hint="Interwencja jest skuteczniejsza, gdy odpowiada na typ obciążenia: sensoryczny, interoceptywny, autonomii albo przewidywalności."
+    :hint="labels.ui.actionsSectionHint"
     :error="fieldErrors['incident.actionsSection']"
     required
   >
@@ -28,7 +28,7 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
         v-model="form.incident.phase"
         :label="labels.incident.phase"
         :options="regulationPhase"
-        hint="Np. możliwa współpraca, narastające napięcie, pełna eskalacja."
+        :hint="labels.ui.phaseHint"
         full
       />
       <ChoiceGroupWithOther
@@ -57,7 +57,7 @@ const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
       <TextAreaField
         v-model="form.incident.earlierWhat"
         :label="labels.incident.earlierWhat"
-        hint="Np. co warto zauważyć wcześniej następnym razem albo jakie wsparcie mogłoby pomóc wcześniej."
+        :hint="labels.ui.futureCueHint"
       />
     </div>
   </FormSection>

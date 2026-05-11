@@ -15,7 +15,7 @@ export const interventionTypeOptions = [
 export const maskingStrategyOptions = [
   "Maskowanie (ukrywanie dyskomfortu, udawanie że wszystko OK)",
   "Strategia kompensacyjna (wycofanie w fantazję, kontrolowanie rozmowy, humor)",
-  "Wsparcie dorosłego (obecność, zachęta)",
+  "Wsparcie osoby towarzyszącej (obecność, spokojny komunikat bez presji)",
   "Jasny koniec aktywności (wiedza, że to się skończy, np. „jeszcze 5 minut”)",
   "Lęk przed konsekwencjami (strach przed oceną, karą, rozczarowaniem)",
   "Silna motywacja wewnętrzna (bardzo chciało dokończyć)",

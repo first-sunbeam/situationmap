@@ -41,8 +41,8 @@ const placeOptions = computed(() => env.value.places);
 const conditionOptions = computed(() => env.value.mapOptimalConditions || optimalConditionOptions);
 const tensionReducerOptions = computed(() => env.value.mapReducers || reducerOptions);
 const riskReducerOptions = computed(() => env.value.mapEscalationReducers || escalationReducerOptions);
-const subject = computed(() => getSubjectInline(form.value, "dziecko/uczeń"));
-const subjectStart = computed(() => getSubjectInline(form.value, "Dziecko/uczeń"));
+const subject = computed(() => getSubjectInline(form.value, labels.value.map.section === "Environment map" ? "the child/student" : "dziecko/uczeń"));
+const subjectStart = computed(() => getSubjectInline(form.value, labels.value.map.section === "Environment map" ? "The child/student" : "Dziecko/uczeń"));
 </script>
 
 <template>
@@ -50,11 +50,11 @@ const subjectStart = computed(() => getSubjectInline(form.value, "Dziecko/uczeń
     <div class="form-heading">
       <div>
         <h2>{{ env.mapTitle }}</h2>
-        <p>Mapa opisuje miejsca, aktywności, warunki regulacji i sytuacje zwiększające ryzyko eskalacji.</p>
+        <p>{{ labels.ui.mapIntro }}</p>
       </div>
       <div class="heading-actions">
-        <button class="secondary-button" @click="resetMap"><SvgIcon name="reset" /> Wyczyść formularz</button>
-        <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
+        <button class="secondary-button" @click="resetMap"><SvgIcon name="reset" /> {{ labels.ui.resetForm }}</button>
+        <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> {{ labels.ui.downloadPdf }}</button>
       </div>
     </div>
 
@@ -67,78 +67,78 @@ const subjectStart = computed(() => getSubjectInline(form.value, "Dziecko/uczeń
       <section class="section" :class="{ invalidSection: hasMapSectionError }">
         <h3>1. Miejsca i preferowane przestrzenie</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.preferredPlaces" :label="`W jakich miejscach ${subject} najchętniej przebywa?`" :options="placeOptions" :error="fieldErrors['map.preferredPlaces']" grouped required>
-            <InputField v-if="hasOther(form.map.preferredPlaces, form.map.preferredPlacesOther)" v-model="form.map.preferredPlacesOther" label="Inne miejsce" full />
+          <ChoiceGroupField v-model="form.map.preferredPlaces" :label="`${labels.ui.preferredPlacesFor} ${subject} ${labels.ui.preferredPlacesSuffix}`" :options="placeOptions" :error="fieldErrors['map.preferredPlaces']" grouped required>
+            <InputField v-if="hasOther(form.map.preferredPlaces, form.map.preferredPlacesOther)" v-model="form.map.preferredPlacesOther" :label="labels.ui.otherPlace" full />
           </ChoiceGroupField>
-          <TextAreaField v-model="form.map.preferredReason" label="Dlaczego te miejsca? Co je wyróżnia?" hint="Np. cisza, samotność, przewidywalność, ulubione przedmioty, dostęp do bliskiej osoby, możliwość kontrolowania bodźców (światło, dźwięk)." :error="fieldErrors['map.preferredReason']" required />
+          <TextAreaField v-model="form.map.preferredReason" :label="labels.ui.preferredReason" :hint="labels.ui.preferredReasonHint" :error="fieldErrors['map.preferredReason']" required />
 
-          <ChoiceGroupField v-model="form.map.avoidedPlaces" :label="`Z jakich miejsc ${subject} unika lub wychodzi z trudem?`" :options="placeOptions" :error="fieldErrors['map.avoidedPlaces']" grouped required>
-            <InputField v-if="hasOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther)" v-model="form.map.avoidedPlacesOther" label="Inne miejsce" full />
+          <ChoiceGroupField v-model="form.map.avoidedPlaces" :label="`${labels.ui.avoidedPlacesFor} ${subject} ${labels.ui.avoidedPlacesSuffix}`" :options="placeOptions" :error="fieldErrors['map.avoidedPlaces']" grouped required>
+            <InputField v-if="hasOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther)" v-model="form.map.avoidedPlacesOther" :label="labels.ui.otherPlace" full />
           </ChoiceGroupField>
-          <TextAreaField v-model="form.map.avoidedReason" label="Co w tych miejscach aktywuje napięcie?" hint="Np. hałas, tłok, brak kontroli nad bodźcami, nieprzewidywalność, narzucone wymagania, obecność innych osób." :error="fieldErrors['map.avoidedReason']" required />
+          <TextAreaField v-model="form.map.avoidedReason" :label="labels.ui.avoidedReason" :hint="labels.ui.avoidedReasonHint" :error="fieldErrors['map.avoidedReason']" required />
         </div>
       </section>
 
       <section class="section">
-        <h3>2. Preferowane aktywności i rola</h3>
+        <h3>{{ labels.ui.mapActivitiesTitle }}</h3>
         <div class="field-grid">
-          <TextAreaField v-model="form.map.likes" :label="`W jakie aktywności ${subject} najchętniej się angażuje?`" hint="Np. samodzielna zabawa, ekran, ruch (huśtawka, trampolina), tworzenie, czytanie, kontakt z bliską osobą, rutyny." :error="fieldErrors['map.likes']" required />
-          <ChoiceGroupField v-model="form.map.activityRoles" :label="`Jaką rolę ${subject} najczęściej przyjmuje w tych aktywnościach?`" :options="activityRoleOptions" hint="W PDA preferowana rola to często prowadzący — dziecko funkcjonuje najlepiej, gdy ma kontrolę nad przebiegiem aktywności." grouped />
+          <TextAreaField v-model="form.map.likes" :label="`${labels.ui.likesFor} ${subject} ${labels.ui.likesSuffix}`" :hint="labels.ui.likesHint" :error="fieldErrors['map.likes']" required />
+          <ChoiceGroupField v-model="form.map.activityRoles" :label="`${labels.ui.activityRoleFor} ${subject} ${labels.ui.activityRoleSuffix}`" :options="activityRoleOptions" :hint="labels.ui.activityRoleHint" grouped />
         </div>
       </section>
 
       <section class="section">
         <h3>3. Warunki optymalnego funkcjonowania</h3>
         <div class="field-grid">
-          <ChoiceGroupField v-model="form.map.easiestWhen" :label="`${subjectStart} najłatwiej funkcjonuje, gdy:`" :options="conditionOptions" :error="fieldErrors['map.easiestWhen']" grouped required>
+          <ChoiceGroupField v-model="form.map.easiestWhen" :label="`${subjectStart} ${labels.ui.easiestWhenSuffix}`" :options="conditionOptions" :error="fieldErrors['map.easiestWhen']" grouped required>
             <TextAreaField v-if="hasOther(form.map.easiestWhen, form.map.easiestWhenOther)" v-model="form.map.easiestWhenOther" label="Inne warunki" />
           </ChoiceGroupField>
         </div>
       </section>
 
       <section class="section">
-        <h3>4. Co wspiera i co obniża napięcie</h3>
+        <h3>{{ labels.ui.mapSupportTitle }}</h3>
         <div class="field-grid">
-          <TextAreaField v-model="form.map.cooperatesWith" :label="`${subjectStart} najłatwiej współpracuje z:`" hint="Np. mama, tata, rodzeństwo, konkretna osoba — opisz, co wyróżnia tę osobę." :error="fieldErrors['map.cooperatesWith']" required />
-          <ChoiceGroupField v-model="form.map.reducers" label="Co OBNIŻA napięcie (reguluje w momencie dyskomfortu)?" :options="tensionReducerOptions" :error="fieldErrors['map.reducers']" grouped required>
+          <TextAreaField v-model="form.map.cooperatesWith" :label="`${subjectStart} ${labels.ui.cooperatesWithSuffix}`" :hint="labels.ui.cooperatesWithHint" :error="fieldErrors['map.cooperatesWith']" required />
+          <ChoiceGroupField v-model="form.map.reducers" :label="labels.ui.reducersLabel" :options="tensionReducerOptions" :error="fieldErrors['map.reducers']" grouped required>
             <TextAreaField v-if="hasOther(form.map.reducers, form.map.reducersOther)" v-model="form.map.reducersOther" label="Inne" />
           </ChoiceGroupField>
-          <TextAreaField v-model="form.map.energySources" label="Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?" hint="Np. silne zainteresowanie, ulubiona osoba, satysfakcja z dokończenia, jasny koniec aktywności. W PDA to pokazuje koszt maskowania, a nie brak trudności." />
+          <TextAreaField v-model="form.map.energySources" :label="labels.ui.energySourcesLabel" :hint="labels.ui.energySourcesHint" />
         </div>
       </section>
 
       <section class="section">
-        <h3>5. Czynniki zmieniające zachowanie</h3>
+        <h3>{{ labels.ui.mapDependsTitle }}</h3>
         <div class="field-grid">
           <ChoiceGroupField v-model="form.map.dependsOn" :label="labels.map.dependsOn" :options="env.dependencies" grouped />
-          <TextAreaField v-model="form.map.dependsDescription" label="Jak zmienia się zachowanie?" :required="Boolean(form.map.dependsOn.length)" :error="fieldErrors['map.dependsDescription']" />
+          <TextAreaField v-model="form.map.dependsDescription" :label="labels.ui.behaviorChangeLabel" :required="Boolean(form.map.dependsOn.length)" :error="fieldErrors['map.dependsDescription']" />
         </div>
       </section>
 
       <section class="section">
         <h3>6. Bezpieczne przestrzenie i osoby</h3>
-        <p class="section-hint">Teoria poliwagalna: układ nerwowy potrzebuje „bezpiecznej bazy” — miejsca/osoby, które aktywują tryb zaangażowania społecznego, nie tryb zagrożenia.</p>
-        <TextAreaField v-model="form.map.safeBase" :label="`Gdzie/z kim ${subject} czuje się najbezpieczniej?`" />
+        <p class="section-hint">{{ labels.ui.safeBaseHint }}</p>
+        <TextAreaField v-model="form.map.safeBase" :label="`${labels.ui.safeBaseFor} ${subject} ${labels.ui.safeBaseSuffix}`" />
       </section>
 
       <section class="section">
-        <h3>7. Najczęstsze sytuacje eskalacji</h3>
+        <h3>{{ labels.ui.mapEscalationTitle }}</h3>
         <div class="field-grid">
           <ChoiceGroupField v-model="form.map.escalationContexts" :label="labels.map.escalationContexts" :options="env.escalationContexts" :error="fieldErrors['map.escalationContexts']" grouped required>
             <InputField v-if="hasOther(form.map.escalationContexts, form.map.escalationOther)" v-model="form.map.escalationOther" :label="labels.map.escalationOther" required :error="fieldErrors['map.escalationOther']" full />
           </ChoiceGroupField>
-          <ChoiceGroupField v-model="form.map.escalationReducers" label="Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?" :options="riskReducerOptions" hint="W PDA przewidywalność i autonomia zmniejszają aktywację układu zagrożenia." grouped>
+          <ChoiceGroupField v-model="form.map.escalationReducers" :label="labels.ui.escalationReducersLabel" :options="riskReducerOptions" :hint="labels.ui.escalationReducersHint" grouped>
             <TextAreaField v-if="hasOther(form.map.escalationReducers, form.map.escalationReducersOther)" v-model="form.map.escalationReducersOther" label="Inne" />
           </ChoiceGroupField>
           <SelectField v-model="form.map.noAggression" :label="labels.map.noAggression" :options="yesNoUnknown" />
-          <TextAreaField v-model="form.map.noAggressionWhere" label="Jakie to sytuacje i co je wyróżnia?" hint="Sytuacje bez eskalacji pokazują, jakie warunki wspierają regulację. To klucz do projektowania wsparcia." :required="form.map.noAggression === 'Tak'" :error="fieldErrors['map.noAggressionWhere']" />
+          <TextAreaField v-model="form.map.noAggressionWhere" :label="labels.ui.noAggressionWhereLabel" :hint="labels.ui.noAggressionWhereHint" :required="form.map.noAggression === 'Tak'" :error="fieldErrors['map.noAggressionWhere']" />
         </div>
       </section>
     </div>
 
     <div class="footer-actions">
-      <button class="secondary-button" @click="buildPdf('open')"><SvgIcon name="external" /> Podgląd</button>
-      <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
+      <button class="secondary-button" @click="buildPdf('open')"><SvgIcon name="external" /> {{ labels.ui.preview }}</button>
+      <button class="primary-button" @click="buildPdf('download')"><SvgIcon name="download" /> {{ labels.ui.downloadPdf }}</button>
     </div>
   </section>
 </template>

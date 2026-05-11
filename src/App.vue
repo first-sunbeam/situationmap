@@ -20,6 +20,7 @@ const {
   fieldErrors,
   environments,
   env,
+  labels,
   form,
   buildPdf,
   sendEmail,
@@ -35,9 +36,9 @@ const {
       <div class="topbar-inner">
         <div class="brand">
           <span class="brand-title">SituationMap</span>
-          <span class="brand-subtitle">Karta zdarzenia i mapa środowiska</span>
+          <span class="brand-subtitle">{{ labels.ui.brandSubtitle }}</span>
         </div>
-        <nav class="environment-tabs" aria-label="Wybór środowiska">
+        <nav class="environment-tabs" :aria-label="labels.ui.environmentNav">
           <button
             v-for="(item, key) in environments"
             :key="key"
@@ -61,56 +62,56 @@ const {
           </button>
           <button
             class="icon-button"
-            :title="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
-            :aria-label="isDarkTheme ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'"
+            :title="isDarkTheme ? labels.ui.enableLightTheme : labels.ui.enableDarkTheme"
+            :aria-label="isDarkTheme ? labels.ui.enableLightTheme : labels.ui.enableDarkTheme"
             @click="toggleTheme"
           >
             <SvgIcon class="button-icon" :name="isDarkTheme ? 'sun' : 'moon'" />
           </button>
-          <button v-if="activeVariant === 'extended'" class="icon-button" title="Otwórz podgląd PDF" aria-label="Otwórz podgląd PDF" @click="buildPdf('open')"><SvgIcon class="button-icon" name="external" /></button>
-          <button v-if="activeVariant === 'simple'" class="icon-button" title="Wyślij e-mail" aria-label="Wyślij e-mail" @click="sendEmail"><SvgIcon class="button-icon" name="email" /></button>
-          <button v-if="activeVariant === 'simple'" class="icon-button" title="Pobierz PDF" aria-label="Pobierz PDF" @click="buildPdf('download')"><SvgIcon class="button-icon" name="download" /></button>
-          <button class="icon-button" title="Wyczyść formularze" aria-label="Wyczyść formularze" @click="resetCurrent"><SvgIcon class="button-icon" name="reset" /></button>
+          <button v-if="activeVariant === 'extended'" class="icon-button" :title="labels.ui.openPdfPreview" :aria-label="labels.ui.openPdfPreview" @click="buildPdf('open')"><SvgIcon class="button-icon" name="external" /></button>
+          <button v-if="activeVariant === 'simple'" class="icon-button" :title="labels.ui.sendEmail" :aria-label="labels.ui.sendEmail" @click="sendEmail"><SvgIcon class="button-icon" name="email" /></button>
+          <button v-if="activeVariant === 'simple'" class="icon-button" :title="labels.ui.downloadPdf" :aria-label="labels.ui.downloadPdf" @click="buildPdf('download')"><SvgIcon class="button-icon" name="download" /></button>
+          <button class="icon-button" :title="labels.ui.resetForms" :aria-label="labels.ui.resetForms" @click="resetCurrent"><SvgIcon class="button-icon" name="reset" /></button>
         </div>
       </div>
     </header>
 
     <main>
       <section class="hero">
-        <h1>Wypełnij formularz dla środowiska: {{ env.label }}</h1>
-        <p>Masz do wyboru wersję prostą i rozszerzoną. W wersji prostej możesz wysłać formularz e-mailem, a w wersji rozszerzonej wygenerować PDF.</p>
+        <h1>{{ labels.ui.currentEnvironment }} {{ env.label }}</h1>
+        <p>{{ labels.ui.heroText }}</p>
       </section>
 
       <div class="workspace">
         <aside class="sidebar">
           <div class="panel mode-card">
-            <p class="mode-label">Wersja formularza</p>
+            <p class="mode-label">{{ labels.ui.formVersion }}</p>
             <div class="mode-switch">
               <button class="mode-button" :class="{ active: activeVariant === 'simple' }" @click="activeVariant = 'simple'">
                 <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeVariant === 'simple'" name="check" /></span>
-                <span>Prosta</span>
+                <span>{{ labels.ui.simpleVariant }}</span>
               </button>
               <button class="mode-button" :class="{ active: activeVariant === 'extended' }" @click="activeVariant = 'extended'">
                 <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeVariant === 'extended'" name="check" /></span>
-                <span>Rozszerzona</span>
+                <span>{{ labels.ui.extendedVariant }}</span>
               </button>
             </div>
 
             <template v-if="activeVariant === 'extended'">
-              <p class="mode-label" style="margin-top: 14px">Zakres formularza rozszerzonego</p>
+              <p class="mode-label" style="margin-top: 14px">{{ labels.ui.extendedScope }}</p>
               <div class="mode-switch">
                 <button class="mode-button" :class="{ active: activeMode === 'incident' }" @click="activeMode = 'incident'">
                   <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeMode === 'incident'" name="check" /></span>
-                  <span>Karta zdarzenia</span>
+                  <span>{{ labels.ui.incidentMode }}</span>
                 </button>
                 <button class="mode-button" :class="{ active: activeMode === 'map' }" @click="activeMode = 'map'">
                   <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeMode === 'map'" name="check" /></span>
-                  <span>Mapa środowiska</span>
+                  <span>{{ labels.ui.mapMode }}</span>
                 </button>
               </div>
             </template>
 
-            <div class="note">Dane zapisują się lokalnie w tej przeglądarce. E-mail otwiera się w domyślnym programie pocztowym z gotową treścią odpowiedzi.</div>
+            <div class="note">{{ labels.ui.localStorageNote }}</div>
           </div>
         </aside>
 
@@ -118,7 +119,7 @@ const {
           <p v-if="status" class="status" aria-live="polite">{{ status }}</p>
 
           <section v-if="validationErrors.length" class="panel validation-panel" aria-live="polite" tabindex="-1">
-            <strong>Popraw przed dalszą akcją:</strong>
+            <strong>{{ labels.ui.validationHeading }}</strong>
             <ul>
               <li v-for="error in validationErrors" :key="error">{{ error }}</li>
             </ul>
@@ -144,7 +145,7 @@ const {
     </main>
 
     <footer class="site-footer">
-      <p><a href="http://autyzm.poznan.pl/" target="_blank" rel="noreferrer">Małgorzata Mikołajczyk</a> · Psycholog · Analityk zachowania (BCBA)</p>
+      <p><a href="http://autyzm.poznan.pl/" target="_blank" rel="noreferrer">Małgorzata Mikołajczyk</a> · {{ labels.ui.footerBio }}</p>
     </footer>
   </div>
 </template>

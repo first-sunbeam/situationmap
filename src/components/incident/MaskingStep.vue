@@ -12,13 +12,13 @@ const { labels, form, fieldErrors, maskingDurationOptions, maskingStrategyOption
 <template>
   <FormSection
     :title="labels.incident.maskingSection"
-    hint="U osób z PDA maskowanie to często nieświadoma strategia „przetrwania” – dziecko kontynuuje mimo przeciążenia, a potem następuje opóźniona eskalacja. Czas maskowania + intensywność późniejszego wybuchu pokazują koszt „trzymania się razem”."
+    :hint="labels.ui.maskingSectionHint"
     :error="fieldErrors['incident.maskingSection']"
   >
     <div class="field-grid">
-      <SelectField v-model="form.incident.maskingContinued" :label="`Kontynuowanie aktywności mimo narastającego napięcia przez ${subjectNominative}`" :options="yesNoUnknown" />
+      <SelectField v-model="form.incident.maskingContinued" :label="`${labels.ui.maskingContinuedFor} ${subjectNominative}`" :options="yesNoUnknown" />
       <fieldset v-if="form.incident.maskingContinued === 'Tak'" class="field group-field full">
-        <legend class="field-label">Strategie maskowania i czas „trzymania się”</legend>
+        <legend class="field-label">{{ labels.ui.maskingGroupLegend }}</legend>
         <ChoiceGroupField
           v-model="form.incident.maskingStrategies"
           :options="maskingStrategyOptions"
@@ -31,7 +31,7 @@ const { labels, form, fieldErrors, maskingDurationOptions, maskingStrategyOption
           :error="fieldErrors['incident.maskingStrategiesOther']"
           full
         />
-        <SelectField v-model="form.incident.maskingDuration" :label="`Czas „trzymania się” przed eskalacją przez ${subjectNominative}`" :options="maskingDurationOptions" />
+        <SelectField v-model="form.incident.maskingDuration" :label="`${labels.ui.maskingDurationFor} ${subjectNominative}`" :options="maskingDurationOptions" />
       </fieldset>
     </div>
   </FormSection>

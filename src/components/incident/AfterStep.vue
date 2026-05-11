@@ -11,7 +11,7 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
 <template>
   <FormSection
     :title="labels.incident.afterSection"
-    hint="Ta sekcja opisuje, co wydarzyło się po opanowaniu sytuacji i po powrocie do względnej równowagi."
+    :hint="labels.ui.afterSectionHint"
     :error="fieldErrors['incident.afterSection']"
     required
   >
@@ -28,7 +28,7 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
         v-model="form.incident.physicalThisWeek"
         :label="labels.incident.physicalThisWeek"
         :options="yesNoUnknown"
-        hint="Np. przytrzymanie dla bezpieczeństwa, fizyczne przeniesienie, blokowanie ruchów."
+        :hint="labels.ui.physicalInterventionHint"
       />
       <InputField
         v-model="form.incident.physicalCount"
@@ -38,9 +38,9 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
       />
       <SelectField
         v-model="form.incident.lowerThreshold"
-        :label="`Szybsza lub silniejsza reakcja niż zwykle u ${subject}`"
+        :label="`${labels.ui.lowerThresholdFor} ${subject}`"
         :options="yesNoUnknown"
-        hint="Np. napięcie rosło szybciej, trudniej było wrócić do równowagi albo reakcja była silniejsza niż zwykle."
+        :hint="labels.ui.lowerThresholdHint"
       />
       <InputField
         v-model="form.incident.physicalNote"

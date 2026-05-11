@@ -53,7 +53,7 @@ export function getSimpleExportSection(labels: FormLabels = formLabels): ExportS
       { label: labels.simple.behavior, value: (_env, form) => form.simple.behavior },
       { label: labels.simple.helped, value: (_env, form) => form.simple.helped },
       { label: (_env, form) => labels.simple.notes.replace("zakres kontroli", `zakres kontroli dla ${getSubjectInline(form)}`).replace("scope of control", `scope of control for ${getSubjectInline(form)}`), value: (_env, form) => form.simple.notes },
-      { label: labels.simple.predictability, value: (_env, form) => form.simple.predictability },
+      { label: (_env, form) => `${labels.simple.predictability} ${getSubjectInline(form)} ${labels.ui.predictabilitySuffix}`, value: (_env, form) => form.simple.predictability },
       { label: labels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
     ]
   };

@@ -20,7 +20,7 @@ const {
 <template>
   <FormSection
     :title="labels.incident.baselineSection"
-    hint="Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – obie grupy czynników wpływają na próg dysregulacji."
+    :hint="labels.ui.baselineSectionHint"
     :error="fieldErrors['incident.baselineSection']"
     required
   >
@@ -29,7 +29,7 @@ const {
         v-model="form.incident.tension"
         :label="labels.incident.tension"
         :options="tensionLevels"
-        hint="Jak wyglądał stan osoby przed zdarzeniem?"
+        :hint="labels.ui.baselineTensionHint"
       />
       <SelectField
         v-model="form.incident.tired"

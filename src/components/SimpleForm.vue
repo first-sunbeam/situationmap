@@ -29,13 +29,13 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
   <section class="panel form-panel">
     <div class="form-heading">
       <div>
-        <h2>Formularz prosty - {{ env.label }}</h2>
-        <p>Krótka wersja do szybkiego zgłoszenia sytuacji. Możesz otworzyć wiadomość e-mail albo pobrać PDF i załączyć go ręcznie.</p>
+        <h2>{{ labels.ui.simpleVariant }} - {{ env.label }}</h2>
+        <p>{{ labels.ui.simpleIntro }}</p>
       </div>
       <div class="heading-actions">
-        <button class="secondary-button" @click="resetSimple"><SvgIcon name="reset" /> Wyczyść formularz</button>
-        <button class="secondary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
-        <button class="primary-button" @click="sendEmail"><SvgIcon name="email" /> Wyślij</button>
+        <button class="secondary-button" @click="resetSimple"><SvgIcon name="reset" /> {{ labels.ui.resetForm }}</button>
+        <button class="secondary-button" @click="buildPdf('download')"><SvgIcon name="download" /> {{ labels.ui.downloadPdf }}</button>
+        <button class="primary-button" @click="sendEmail"><SvgIcon name="email" /> {{ labels.ui.send }}</button>
       </div>
     </div>
 
@@ -49,67 +49,67 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
         <h3>{{ labels.simple.section }}</h3>
         <div class="field-grid">
           <div class="simple-question-heading full">
-            <h4 class="field-label"><LabelText :text="`1. Co wydarzyło się tuż przed i jaki był stan ${subject}?`" /></h4>
-            <p class="field-hint">Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – to wpływa na próg dysregulacji.</p>
+            <h4 class="field-label"><LabelText :text="`${labels.ui.simpleStateQuestion} ${subject}?`" /></h4>
+            <p class="field-hint">{{ labels.ui.simpleStateHint }}</p>
           </div>
           <TextAreaField
             v-model="form.simple.stateBefore"
             :label="labels.simple.stateBefore"
-            hint="Np. głód, zmęczenie, przegrzanie, ból, dużo bodźców, słaby sen, zmiana planu wcześniej w dniu."
+            :hint="labels.ui.simpleStateBeforeHint"
           />
           <TextAreaField
             v-model="form.simple.antecedents"
             :label="labels.simple.beforeLastMinutes"
-            hint="Np. polecenie, hałas, tłok, koniec aktywności, przejście, korekta zachowania."
+            :hint="labels.ui.simpleBeforeHint"
           />
           <div class="simple-question-heading full">
             <h4 class="field-label">{{ labels.simple.signals }}</h4>
-            <p class="field-hint">Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja.</p>
+            <p class="field-hint">{{ labels.ui.simpleSignalsHint }}</p>
           </div>
           <TextAreaField
             v-model="form.simple.signals"
             :label="labels.simple.signalsObserved"
-            hint="Np. milczenie, napięcie ciała, szybsze mówienie, wycofanie, podniesiony głos, zatykanie uszu, ucieczka z pomieszczenia."
+            :hint="labels.ui.simpleSignalsObservedHint"
           />
           <TextAreaField
             v-model="form.simple.interventions"
             :label="labels.simple.adultReaction"
-            hint="Co zrobiono/powiedziano? Czy obniżono wymagania, czy je podtrzymano? Czy był wybór, czas bez wymagań lub możliwość wycofania się?"
+            :hint="labels.ui.simpleAdultReactionHint"
           />
           <TextAreaField
             v-model="form.simple.behavior"
             :label="labels.simple.behavior"
-            hint="Opisz fakty: słowa, ruchy, odmowa, płacz, krzyk, wycofanie, ucieczka, rzucanie przedmiotami."
+            :hint="labels.ui.simpleBehaviorHint"
             required
             :error="fieldErrors['simple.behavior']"
           />
           <TextAreaField
             v-model="form.simple.helped"
             :label="labels.simple.helped"
-            hint="Np. wycofanie wymagania, zmiana miejsca, cisza, czas bez oczekiwań, dostęp do osoby/przedmiotu, wybór. Jeśli nic nie pomogło – wpisz wprost."
+            :hint="labels.ui.simpleHelpedHint"
             required
             :error="fieldErrors['simple.helped']"
           />
           <div class="simple-question-heading full">
-            <h4 class="field-label"><LabelText :text="`5. Wpływ i autonomia – zakres kontroli dla ${subject}`" /></h4>
-            <p class="field-hint">W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym.</p>
+            <h4 class="field-label"><LabelText :text="`${labels.ui.simpleAutonomyQuestion} ${subject}`" /></h4>
+            <p class="field-hint">{{ labels.ui.simpleAutonomyHint }}</p>
           </div>
           <TextAreaField
             v-model="form.simple.notes"
-            :label="`Możliwość decyzji dla ${subject}`"
-            hint="Czy była możliwość decyzji: kiedy, jak, z kim albo w jakiej kolejności? Czy sytuacja była narzucona, nagła albo bez wyboru?"
+            :label="`${labels.ui.decisionPossibilityFor} ${subject}`"
+            :hint="labels.ui.simpleNotesHint"
             required
             :error="fieldErrors['simple.notes']"
           />
           <TextAreaField
             v-model="form.simple.predictability"
-            :label="labels.simple.predictability"
+            :label="`${labels.simple.predictability} ${subject} ${labels.ui.predictabilitySuffix}`"
           />
           <SelectField
             v-model="form.simple.recoveryTime"
             :label="labels.simple.recoveryTime"
             :options="readinessOptions"
-            hint="Od uspokojenia do gotowości na rozmowę/aktywność. Uspokojenie emocjonalne ≠ gotowość poznawcza."
+            :hint="labels.ui.simpleRecoveryHint"
             full
           />
         </div>
@@ -117,9 +117,9 @@ const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin
     </div>
 
     <div class="footer-actions">
-      <button class="secondary-button" @click="resetSimple"><SvgIcon name="reset" /> Wyczyść formularz</button>
-      <button class="secondary-button" @click="buildPdf('download')"><SvgIcon name="download" /> Pobierz PDF</button>
-      <button class="primary-button" @click="sendEmail"><SvgIcon name="email" /> Wyślij</button>
+      <button class="secondary-button" @click="resetSimple"><SvgIcon name="reset" /> {{ labels.ui.resetForm }}</button>
+      <button class="secondary-button" @click="buildPdf('download')"><SvgIcon name="download" /> {{ labels.ui.downloadPdf }}</button>
+      <button class="primary-button" @click="sendEmail"><SvgIcon name="email" /> {{ labels.ui.send }}</button>
     </div>
   </section>
 </template>

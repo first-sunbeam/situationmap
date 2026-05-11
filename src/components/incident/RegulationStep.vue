@@ -21,14 +21,14 @@ const {
 <template>
   <FormSection
     :title="labels.incident.regulationSection"
-    hint="Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin."
+    :hint="labels.ui.regulationSectionHint"
     :error="fieldErrors['incident.regulationSection']"
     required
   >
     <div class="field-grid">
       <fieldset class="field group-field full">
         <legend class="field-label">
-          Czas eskalacji i powrotu do dostępności
+          {{ labels.ui.escalationRecoveryLegend }}
         </legend>
         <InputField
           v-model="form.incident.escalationDuration"
@@ -43,7 +43,7 @@ const {
           v-model="form.incident.cognitiveRecoveryTime"
           :label="labels.incident.cognitiveRecoveryTime"
           :options="cognitiveRecoveryOptions"
-          :hint="`Gotowość na rozmowę, rozumienie poleceń, kontakt wzrokowy lub powrót do aktywności u ${subject}.`"
+          :hint="`${labels.ui.cognitiveRecoveryHintFor} ${subject}.`"
         />
       </fieldset>
       <ChoiceGroupWithOther
@@ -53,13 +53,13 @@ const {
         :options="env.endedBy"
         :other-label="labels.incident.endedByOther"
         :other-error="fieldErrors['incident.endedByOther']"
-        hint="To pytanie dotyczy momentu PO pełnej eskalacji – co w końcu zatrzymało kryzys?"
+        :hint="labels.ui.endedByHint"
         required
       />
       <TextAreaField
         v-model="form.incident.worsened"
         :label="labels.incident.worsened"
-        hint="Np. nacisk, pośpiech, hałas, dotyk, obecność dodatkowych osób, próba rozmowy, odmowa, kontynuowanie wymagań."
+        :hint="labels.ui.worsenedHint"
       />
       <ChoiceGroupWithOther
         v-model="form.incident.recoverySupports"
@@ -68,7 +68,7 @@ const {
         :options="recoverySupportOptions"
         :other-label="labels.incident.recoverySupportsOther"
         :other-error="fieldErrors['incident.recoverySupportsOther']"
-        :hint="`Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin. Szybki „powrót do normy” na zewnątrz przy późniejszej eskalacji wieczorem/w domu może oznaczać kontynuowanie maskowania u ${subject}.`"
+        :hint="`${labels.ui.recoverySupportsHintPrefix} ${subject}.`"
       />
     </div>
   </FormSection>
