@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import AboutFormsPage from "./components/AboutFormsPage.vue";
 import SimpleForm from "./components/SimpleForm.vue";
 import IncidentForm from "./components/IncidentForm.vue";
 import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";
@@ -10,6 +12,7 @@ import IconSprite from "./components/ui/IconSprite.vue";
 
 const { isDarkTheme, toggleTheme } = useTheme();
 const { languageLabel, toggleLanguageLabel, toggleLanguage } = useLanguage();
+const activePage = ref<"forms" | "about">("forms");
 
 const {
   activeEnvKey,
@@ -78,8 +81,14 @@ const {
 
     <main>
       <section class="hero">
-        <h1>{{ labels.ui.currentEnvironment }} {{ env.label }}</h1>
-        <p>{{ labels.ui.heroText }}</p>
+        <template v-if="activePage === 'about'">
+          <h1>{{ labels.ui.aboutHeroTitle }}</h1>
+          <p>{{ labels.ui.aboutHeroText }}</p>
+        </template>
+        <template v-else>
+          <h1>{{ labels.ui.currentEnvironment }} {{ env.label }}</h1>
+          <p>{{ labels.ui.heroText }}</p>
+        </template>
       </section>
 
       <div class="workspace">
@@ -87,17 +96,17 @@ const {
           <div class="panel mode-card">
             <p class="mode-label">{{ labels.ui.formVersion }}</p>
             <div class="mode-switch">
-              <button class="mode-button" :class="{ active: activeVariant === 'simple' }" @click="activeVariant = 'simple'">
-                <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeVariant === 'simple'" name="check" /></span>
+              <button class="mode-button" :class="{ active: activePage === 'forms' && activeVariant === 'simple' }" @click="activePage = 'forms'; activeVariant = 'simple'">
+                <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activePage === 'forms' && activeVariant === 'simple'" name="check" /></span>
                 <span>{{ labels.ui.simpleVariant }}</span>
               </button>
-              <button class="mode-button" :class="{ active: activeVariant === 'extended' }" @click="activeVariant = 'extended'">
-                <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activeVariant === 'extended'" name="check" /></span>
+              <button class="mode-button" :class="{ active: activePage === 'forms' && activeVariant === 'extended' }" @click="activePage = 'forms'; activeVariant = 'extended'">
+                <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activePage === 'forms' && activeVariant === 'extended'" name="check" /></span>
                 <span>{{ labels.ui.extendedVariant }}</span>
               </button>
             </div>
 
-            <template v-if="activeVariant === 'extended'">
+            <template v-if="activePage === 'forms' && activeVariant === 'extended'">
               <p class="mode-label" style="margin-top: 14px">{{ labels.ui.extendedScope }}</p>
               <div class="mode-switch">
                 <button class="mode-button" :class="{ active: activeMode === 'incident' }" @click="activeMode = 'incident'">
@@ -112,21 +121,28 @@ const {
             </template>
 
             <div class="note">{{ labels.ui.localStorageNote }}</div>
+
+            <button class="mode-button sidebar-about-button" :class="{ active: activePage === 'about' }" @click="activePage = 'about'">
+              <span class="mode-indicator" aria-hidden="true"><SvgIcon v-if="activePage === 'about'" name="check" /></span>
+              <span>{{ labels.ui.aboutFormsView }}</span>
+            </button>
           </div>
         </aside>
 
         <div class="forms-stack">
-          <p v-if="status" class="status" aria-live="polite">{{ status }}</p>
+          <p v-if="activePage === 'forms' && status" class="status" aria-live="polite">{{ status }}</p>
 
-          <section v-if="validationErrors.length" class="panel validation-panel" aria-live="polite" tabindex="-1">
+          <section v-if="activePage === 'forms' && validationErrors.length" class="panel validation-panel" aria-live="polite" tabindex="-1">
             <strong>{{ labels.ui.validationHeading }}</strong>
             <ul>
               <li v-for="error in validationErrors" :key="error">{{ error }}</li>
             </ul>
           </section>
 
+          <AboutFormsPage v-if="activePage === 'about'" />
+
           <SimpleForm
-            v-if="activeVariant === 'simple'"
+            v-else-if="activeVariant === 'simple'"
             :env="env"
             :form="form"
             :send-email="sendEmail"

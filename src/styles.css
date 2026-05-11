@@ -541,6 +541,10 @@ button {
   color: #07564f;
 }
 
+.sidebar-about-button {
+  margin-top: 14px;
+}
+
 /* =============================================================================
    NOTE
    ============================================================================= */
@@ -565,6 +569,156 @@ button {
 .forms-stack {
   display: grid;
   gap: 24px;
+}
+
+/* =============================================================================
+   ABOUT PAGE
+   ============================================================================= */
+
+.about-page {
+  padding: 24px;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.about-nav {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--surface) 92%, var(--accent-soft));
+}
+
+.about-nav h2 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.about-nav a {
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.about-nav a:hover,
+.about-nav a:focus-visible {
+  background: var(--accent-soft);
+}
+
+.about-content {
+  display: grid;
+  gap: 18px;
+}
+
+.about-section {
+  scroll-margin-top: 96px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.about-section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.about-section h2 {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.about-section p {
+  max-width: 78ch;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.about-badge {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--teal-dark);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.about-note {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--gold);
+  background: color-mix(in srgb, var(--gold) 10%, transparent);
+  border-radius: 12px;
+}
+
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.about-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--surface) 94%, var(--accent-soft));
+}
+
+.about-card h3 {
+  margin: 0 0 8px;
+}
+
+.about-card p {
+  margin: 0;
+}
+
+.about-list {
+  margin: 12px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+.about-list li {
+  margin-bottom: 8px;
+}
+
+.about-table-wrap {
+  overflow-x: auto;
+  margin-top: 14px;
+}
+
+.about-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.about-table th,
+.about-table td {
+  padding: 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.about-table th {
+  background: color-mix(in srgb, var(--surface) 82%, var(--accent-soft));
+  color: var(--ink);
 }
 
 /* =============================================================================
@@ -1183,8 +1337,13 @@ button {
     justify-content: flex-start;
   }
 
-  .workspace {
+  .workspace,
+  .about-layout {
     grid-template-columns: 1fr;
+  }
+
+  .about-nav {
+    position: static;
   }
 
   .sidebar {
@@ -1237,7 +1396,8 @@ button {
   .form-panel,
   .mode-card,
   .validation-panel,
-  .section {
+  .section,
+  .about-page {
     width: 100%;
     max-width: 100%;
     padding: 16px;
