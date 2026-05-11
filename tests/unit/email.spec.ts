@@ -50,7 +50,7 @@ describe("budowanie wiadomości e-mail", () => {
 
   it("łączy tablice checkboxów przecinkami", () => {
     const form = createHomeForm();
-    form.incident.antecedents = ["Zmiana aktywności", "Czekanie"];
+    form.incident.antecedents = ["zmiana_aktywnosci", "czekanie"];
 
     const email = buildEmail({
       env: environments.home,
@@ -67,7 +67,7 @@ describe("budowanie wiadomości e-mail", () => {
 
   it("zawiera pola incydentu w trybie rozszerzonej karty zdarzenia", () => {
     const form = createHomeForm();
-    form.incident.tension = "1 podwyższony";
+    form.incident.tension = "1_podwyzszony";
     form.incident.behavior = "Protest słowny.";
 
     const email = buildEmail({

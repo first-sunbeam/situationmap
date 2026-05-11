@@ -26,7 +26,7 @@ export function resolveIncidentSectionText(value: string | ((form: SituationForm
 }
 
 export function hasSelectedOther(values: string[]): boolean {
-  return values.some((value) => value.toLowerCase() === "inne");
+  return values.some((value) => value.toLowerCase() === "other");
 }
 
 export function hasRequiredOtherValue(selected: string[], value: string): boolean {
@@ -42,15 +42,15 @@ function hasRequiredText(value: string): boolean {
 }
 
 export function hasRequiredSleepDetails(slept: string, sleepDetails: string): boolean {
-  return slept !== "Tak" || hasRequiredText(sleepDetails);
+  return slept !== "yes" || hasRequiredText(sleepDetails);
 }
 
 export function hasRequiredTimeToEscalation(signalsAppeared: string, timeToEscalation: string): boolean {
-  return signalsAppeared !== "Tak" || hasRequiredText(timeToEscalation);
+  return signalsAppeared !== "yes" || hasRequiredText(timeToEscalation);
 }
 
 export function hasRequiredPhysicalCount(physicalThisWeek: string, physicalCount: string): boolean {
-  return physicalThisWeek !== "Tak" || hasRequiredText(physicalCount);
+  return physicalThisWeek !== "yes" || hasRequiredText(physicalCount);
 }
 
 function hasRequiredBaselineOtherValues(form: SituationForm): boolean {
@@ -96,7 +96,7 @@ function hasRequiredSignalOtherValues(form: SituationForm): boolean {
 }
 
 function isSignalsSectionComplete(form: SituationForm): boolean {
-  const hasRequiredSignalDetails = form.incident.signalsAppeared !== "Tak"
+  const hasRequiredSignalDetails = form.incident.signalsAppeared !== "yes"
     ? hasAnySignalsSectionValue(form)
     : hasSignalTypeValue(form) && hasRequiredTimeToEscalation(form.incident.signalsAppeared, form.incident.timeToEscalation);
 
@@ -104,7 +104,7 @@ function isSignalsSectionComplete(form: SituationForm): boolean {
 }
 
 function isMaskingSectionComplete(form: SituationForm): boolean {
-  if (form.incident.maskingContinued !== "Tak") return true;
+  if (form.incident.maskingContinued !== "yes") return true;
 
   return hasAnyValue([
     form.incident.maskingStrategies,
@@ -118,7 +118,7 @@ export function getIncidentSectionTexts(section: IncidentSectionDefinition, form
     baseline: { summary: labels.validation.baselineSummary, message: labels.validation.baselineMessage },
     before: { summary: labels.validation.beforeSummary, message: labels.validation.beforeMessage },
     expectations: { summary: labels.validation.expectationsSummary, message: labels.validation.expectationsMessage },
-    signals: form.incident.signalsAppeared === "Tak"
+    signals: form.incident.signalsAppeared === "yes"
       ? { summary: labels.validation.signalsYesSummary, message: labels.validation.signalsYesMessage }
       : { summary: labels.validation.signalsDefaultSummary, message: labels.validation.baselineMessage },
     masking: { summary: labels.validation.maskingSummary, message: labels.validation.maskingMessage },
@@ -192,10 +192,10 @@ export const incidentSections: IncidentSectionDefinition[] = [
     badge: "3",
     errorKey: "incident.signalsSection",
     extraErrorKeys: ["incident.activationSignalsOther", "incident.shutdownSignalsOther", "incident.sensorySignalsOther", "incident.timeToEscalation"],
-    summary: (form) => form.incident.signalsAppeared === "Tak"
+    summary: (form) => form.incident.signalsAppeared === "yes"
       ? "Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie."
       : "Pierwsze oznaki narastającego napięcia: uzupełnij przynajmniej jedno pole.",
-    message: (form) => form.incident.signalsAppeared === "Tak"
+    message: (form) => form.incident.signalsAppeared === "yes"
       ? "Skoro sygnały się pojawiły, wskaż jakie."
       : "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: isSignalsSectionComplete

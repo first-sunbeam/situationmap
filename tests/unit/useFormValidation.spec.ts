@@ -73,7 +73,7 @@ describe("walidacja formularza", () => {
   it("wymaga opisu wpływu osoby w sekcji oczekiwań", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.incident.expectations = ["Brak wymagań"];
+    form.incident.expectations = ["brak_wymagan"];
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
@@ -85,7 +85,7 @@ describe("walidacja formularza", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
     fillMinimalIncident(form);
-    form.incident.signalsAppeared = "Tak"; // nadpisuje "Nie" z fillMinimalIncident
+    form.incident.signalsAppeared = "yes"; // nadpisuje "no" z fillMinimalIncident
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
@@ -98,7 +98,7 @@ describe("walidacja formularza", () => {
   it("wymaga szczegółów snu, gdy zaznaczono sen lub odpoczynek w ciągu dnia", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.incident.slept = "Tak";
+    form.incident.slept = "yes";
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
@@ -113,7 +113,7 @@ describe("walidacja formularza", () => {
   it("wymaga liczby interwencji, gdy zaznaczono interwencję fizyczną w tym tygodniu", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.incident.physicalThisWeek = "Tak";
+    form.incident.physicalThisWeek = "yes";
 
     const result = validateForm({ variant: "extended", mode: "incident", form });
 
@@ -125,15 +125,15 @@ describe("walidacja formularza", () => {
     );
   });
 
-  // ── Opcja "inne" – pola warunkowe ───────────────────────────────────────────
+  // ── Opcja "other" – pola warunkowe ───────────────────────────────────────────
 
   it.each<[string, (form: HomeForm) => void]>([
-    ["incident.burdensOther",       (f) => { f.incident.burdens       = ["inne"]; }],
-    ["incident.expectationOther",   (f) => { f.incident.expectations  = ["inne"]; }],
-    ["incident.activationSignalsOther", (f) => { f.incident.activationSignals = ["inne"]; }],
-    ["incident.interventionDetails",(f) => { f.incident.interventions = ["Inne"]; }],
-    ["incident.afterOther",         (f) => { f.incident.after         = ["Inne"]; }],
-    ["incident.endedByOther",       (f) => { f.incident.endedBy       = ["inne"]; }],
+    ["incident.burdensOther",       (f) => { f.incident.burdens       = ["other"]; }],
+    ["incident.expectationOther",   (f) => { f.incident.expectations  = ["other"]; }],
+    ["incident.activationSignalsOther", (f) => { f.incident.activationSignals = ["other"]; }],
+    ["incident.interventionDetails",(f) => { f.incident.interventions = ["other"]; }],
+    ["incident.afterOther",         (f) => { f.incident.after         = ["other"]; }],
+    ["incident.endedByOther",       (f) => { f.incident.endedBy       = ["other"]; }],
   ])("wymaga opisu po zaznaczeniu opcji inne w incydencie: %s", (fieldKey, selectOther) => {
     const form = createHomeForm();
     fillRequiredMeta(form);
@@ -145,16 +145,16 @@ describe("walidacja formularza", () => {
   });
 
   it.each<[string, (form: HomeForm) => void]>([
-    ["baseline",     (f) => { f.incident.burdens       = ["inne"]; }],
-    ["baseline",     (f) => { f.incident.slept          = "Tak"; }],
-    ["signals",      (f) => { f.incident.signalsAppeared = "Tak"; f.incident.activationSignals = ["napięcie mięśniowe"]; }],
-    ["expectations", (f) => { f.incident.expectations  = ["inne"]; }],
-    ["expectations", (f) => { f.incident.expectations  = ["Brak wymagań"]; }],
-    ["signals",      (f) => { f.incident.activationSignals = ["inne"]; }],
-    ["actions",      (f) => { f.incident.interventions = ["Inne"]; }],
-    ["after",        (f) => { f.incident.after         = ["Inne"]; }],
-    ["after",        (f) => { f.incident.physicalThisWeek = "Tak"; }],
-    ["regulation",   (f) => { f.incident.endedBy       = ["inne"]; }],
+    ["baseline",     (f) => { f.incident.burdens       = ["other"]; }],
+    ["baseline",     (f) => { f.incident.slept          = "yes"; }],
+    ["signals",      (f) => { f.incident.signalsAppeared = "yes"; f.incident.activationSignals = ["napiecie_miesniowe"]; }],
+    ["expectations", (f) => { f.incident.expectations  = ["other"]; }],
+    ["expectations", (f) => { f.incident.expectations  = ["brak_wymagan"]; }],
+    ["signals",      (f) => { f.incident.activationSignals = ["other"]; }],
+    ["actions",      (f) => { f.incident.interventions = ["other"]; }],
+    ["after",        (f) => { f.incident.after         = ["other"]; }],
+    ["after",        (f) => { f.incident.physicalThisWeek = "yes"; }],
+    ["regulation",   (f) => { f.incident.endedBy       = ["other"]; }],
   ])("nie oznacza sekcji incydentu jako ukończonej, gdy brakuje wymaganego pola warunkowego: %s", (sectionId, selectOther) => {
     const form = createHomeForm();
     selectOther(form);
@@ -168,7 +168,7 @@ describe("walidacja formularza", () => {
 
   it("wymaga opisu mapy po zaznaczeniu innego kontekstu eskalacji", () => {
     const form = createHomeForm();
-    form.map.escalationContexts = ["Inne"];
+    form.map.escalationContexts = ["other"];
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 
@@ -177,7 +177,7 @@ describe("walidacja formularza", () => {
 
   it("wymaga opisu zależności, gdy zaznaczono od czego zmienia się zachowanie", () => {
     const form = createHomeForm();
-    form.map.dependsOn = ["hałasu"];
+    form.map.dependsOn = ["halas"];
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 
@@ -191,7 +191,7 @@ describe("walidacja formularza", () => {
 
   it("wymaga opisu sytuacji bez agresji, gdy zaznaczono że takie sytuacje są", () => {
     const form = createHomeForm();
-    form.map.noAggression = "Tak";
+    form.map.noAggression = "yes";
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 

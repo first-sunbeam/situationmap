@@ -23,7 +23,7 @@ export class MapFormPage {
   }
 
   get noiseCheckbox(): Locator {
-    return this.page.getByRole("checkbox", { name: "hałasu" });
+    return this.page.getByRole("checkbox", { name: "hałas" });
   }
 
   get dependsDescriptionField(): Locator {

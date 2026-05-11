@@ -23,7 +23,7 @@ import {
   yesNoPartial,
   yesNoUnknown
 } from "../../src/data/environments";
-import { translateOption } from "../../src/i18n/options";
+import { optionLabels } from "../../src/i18n/options";
 
 function collectOptionValues(): string[] {
   const optionLists: readonly (readonly string[])[] = [
@@ -74,7 +74,7 @@ function collectOptionValues(): string[] {
 
 describe("tłumaczenia opcji formularza", () => {
   it("ma angielskie tłumaczenie dla każdej predefiniowanej opcji", () => {
-    const missingTranslations = collectOptionValues().filter((value) => translateOption(value, "en") === value);
+    const missingTranslations = collectOptionValues().filter((value) => !(value in optionLabels.en));
 
     expect(missingTranslations).toEqual([]);
   });

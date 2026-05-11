@@ -36,31 +36,31 @@ export function fillSimpleForm(form: HomeForm): void {
  * Sygnały pominięte celowo — testy sygnałów ustawiają je samodzielnie.
  */
 export function fillMinimalIncident(form: HomeForm): void {
-  form.incident.tension = "1 podwyższony";
-  form.incident.antecedents = ["Zmiana aktywności"];
-  form.incident.expectations = ["Brak wymagań"];
+  form.incident.tension = "1_podwyzszony";
+  form.incident.antecedents = ["zmiana_aktywnosci"];
+  form.incident.expectations = ["brak_wymagan"];
   form.incident.influence = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
-  form.incident.predictabilityWhat = "Nie";
-  form.incident.predictabilityDuration = "Nie wiem";
-  form.incident.predictabilityChoice = "Częściowo";
-  form.incident.signalsAppeared = "Nie";
-  form.incident.phase = "Żółta - narastające napięcie";
+  form.incident.predictabilityWhat = "no";
+  form.incident.predictabilityDuration = "not_sure";
+  form.incident.predictabilityChoice = "partially";
+  form.incident.signalsAppeared = "no";
+  form.incident.phase = "zolta_narastajace_napiecie";
   form.incident.behavior = "Protest słowny.";
-  form.incident.after = ["Przejście do spokojniejszego miejsca"];
+  form.incident.after = ["przejscie_do_spokojniejszego_miejsca"];
   form.incident.endedBy = ["czas / przeczekanie"];
 }
 
 /** Wypełnia wiersz mapy środowiska i wymagane pola opisowe. */
 export function fillMapForm(form: HomeForm): void {
-  form.map.preferredPlaces = ["Pokój dziecka"];
+  form.map.preferredPlaces = ["pokoj_dziecka"];
   form.map.preferredReason = "Cisza i ulubione przedmioty.";
-  form.map.avoidedPlaces = ["Kuchnia / jadalnia"];
+  form.map.avoidedPlaces = ["kuchnia_jadalnia"];
   form.map.avoidedReason = "Hałas i zapachy.";
   form.map.likes = "Klocki";
-  form.map.easiestWhen = ["Cisza / minimalne bodźce słuchowe"];
+  form.map.easiestWhen = ["cisza_minimalne_bodzce_sluchowe"];
   form.map.cooperatesWith = "Rodzic";
-  form.map.reducers = ["Cisza / wyciszenie bodźców"];
-  form.map.escalationContexts = ["Oczekiwanie"];
+  form.map.reducers = ["cisza_wyciszenie_bodzcow"];
+  form.map.escalationContexts = ["oczekiwanie_czekanie"];
 }
 
 // ── Gotowe kompozyty ──────────────────────────────────────────────────────────
@@ -70,17 +70,17 @@ export function fillMapForm(form: HomeForm): void {
 export function createFilledHomeForm(): HomeForm {
   const form = createHomeForm();
   fillSimpleForm(form);
-  form.incident.antecedents = ["Zmiana aktywności"];
-  form.incident.endedBy = ["Czas / przeczekanie bez interwencji"];
-  form.incident.tension = "1 podwyższony";
+  form.incident.antecedents = ["zmiana_aktywnosci"];
+  form.incident.endedBy = ["czas_przeczekanie_bez_interwencji"];
+  form.incident.tension = "1_podwyzszony";
   form.incident.influence = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
-  form.incident.predictabilityWhat = "Nie";
-  form.incident.predictabilityDuration = "Nie wiem";
-  form.incident.predictabilityChoice = "Częściowo";
+  form.incident.predictabilityWhat = "no";
+  form.incident.predictabilityDuration = "not_sure";
+  form.incident.predictabilityChoice = "partially";
   form.incident.escalationDuration = "15 minut";
-  form.incident.calmTime = "15-30 minut";
-  form.incident.cognitiveRecoveryTime = "1-2 godziny po";
-  form.incident.recoverySupports = ["Cisza i brak bodźców"];
+  form.incident.calmTime = "15_30_minut";
+  form.incident.cognitiveRecoveryTime = "1_2_godziny_po";
+  form.incident.recoverySupports = ["cisza_i_brak_bodzcow"];
   fillMapForm(form);
   return form;
 }

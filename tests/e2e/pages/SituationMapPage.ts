@@ -103,7 +103,7 @@ export class SituationMapPage {
 
   async getStoredState(): Promise<Record<string, unknown>> {
     return this.page.evaluate(() =>
-      JSON.parse(window.localStorage.getItem("situationmap-state") ?? "{}"),
+      JSON.parse(window.localStorage.getItem("situationmap-state-v2") ?? "{}"),
     );
   }
 }

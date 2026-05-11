@@ -109,7 +109,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
       }
     }
 
-    if (form.incident.slept === "Tak" && isBlank(form.incident.sleepDetails)) {
+    if (form.incident.slept === "yes" && isBlank(form.incident.sleepDetails)) {
       const message = labels.validation.sleepDetailsRequired;
       fieldErrors["incident.sleepDetails"] = message;
       summary.push(`${labels.incident.baselineSection}: ${message}`);
@@ -125,7 +125,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
       fieldErrors["incident.influence"] = message;
       summary.push(`${labels.incident.expectationsSection}: ${message}`);
     }
-    if (form.incident.signalsAppeared === "Tak" && isBlank(form.incident.timeToEscalation)) {
+    if (form.incident.signalsAppeared === "yes" && isBlank(form.incident.timeToEscalation)) {
       const message = labels.validation.signalsTimeRequired;
       fieldErrors["incident.timeToEscalation"] = message;
       summary.push(`${labels.incident.signalsSection}: ${message}`);
@@ -137,7 +137,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     requireOtherField({ fieldErrors, summary, selected: form.incident.maskingStrategies, value: form.incident.maskingStrategiesOther, fieldKey: "incident.maskingStrategiesOther", sectionLabel: labels.incident.maskingSection, labels });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: labels.incident.actionsSection, labels });
 
-    if (form.incident.physicalThisWeek === "Tak" && isBlank(form.incident.physicalCount)) {
+    if (form.incident.physicalThisWeek === "yes" && isBlank(form.incident.physicalCount)) {
       const message = labels.validation.physicalCountRequired;
       fieldErrors["incident.physicalCount"] = message;
       summary.push(`${labels.incident.afterSection}: ${message}`);
@@ -167,7 +167,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: labels.map.escalationContexts, labels });
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationReducers, value: form.map.escalationReducersOther, fieldKey: "map.escalationReducersOther", sectionLabel: labels.ui.escalationReducersLabel, labels });
 
-    if (form.map.noAggression === "Tak" && isBlank(form.map.noAggressionWhere)) {
+    if (form.map.noAggression === "yes" && isBlank(form.map.noAggressionWhere)) {
       const message = labels.validation.noAggressionRequired;
       fieldErrors["map.noAggressionWhere"] = message;
       summary.push(`${labels.map.noAggression}: ${message}`);

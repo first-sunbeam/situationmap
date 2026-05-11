@@ -81,7 +81,7 @@ export class ExtendedFormPage {
 
   get baselineOtherCheckbox(): Locator {
     return this.sectionContainer("baseline").getByRole("checkbox", {
-      name: "inne",
+      name: "other",
     });
   }
 

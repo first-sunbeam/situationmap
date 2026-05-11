@@ -13,7 +13,7 @@ const {
   regulationPhase,
   yesNoPartial,
 } = useFormState();
-const unconditionalOptions = ["Tak", "Nie", "Częściowo", "Nie wiem"];
+const unconditionalOptions = ["yes", "no", "partially", "not_sure"];
 </script>
 
 <template>

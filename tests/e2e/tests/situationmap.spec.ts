@@ -131,7 +131,7 @@ test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeła
     preferredPlace: "Pokój wyciszenia",
     noise: true,
     dependsDescription: "Przy większym hałasie szybciej narasta napięcie.",
-    noAggression: "Tak",
+    noAggression: "yes",
   });
 
   await expect(app.savedLocallyToast).toBeVisible();
@@ -141,11 +141,11 @@ test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeła
   expect((stored as any).activeVariant).toBe("extended");
   expect((stored as any).activeMode).toBe("map");
   expect(homeMap?.preferred).toBe("Pokój wyciszenia");
-  expect(homeMap?.dependsOn).toContain("hałasu");
+  expect(homeMap?.dependsOn).toContain("halas");
   expect(homeMap?.dependsDescription).toBe(
     "Przy większym hałasie szybciej narasta napięcie.",
   );
-  expect(homeMap?.noAggression).toBe("Tak");
+  expect(homeMap?.noAggression).toBe("yes");
 
   await page.reload();
 
@@ -155,7 +155,7 @@ test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeła
   await expect(mapForm.dependsDescriptionField).toHaveValue(
     "Przy większym hałasie szybciej narasta napięcie.",
   );
-  await expect(mapForm.noAggressionSelect).toHaveValue("Tak");
+  await expect(mapForm.noAggressionSelect).toHaveValue("yes");
 });
 
 // ── Extended form – stepper ───────────────────────────────────────────────────
@@ -230,7 +230,7 @@ test("formularz rozszerzony po nieudanym PDF prowadzi do pierwszej błędnej sek
   await expect(page.getByText(SIMPLE_VALIDATION_MESSAGES.place)).toBeVisible();
 });
 
-// ── Extended form – "inne" option ─────────────────────────────────────────────
+// ── Extended form – "other" option ─────────────────────────────────────────────
 
 test("opcja inne wymaga opisu i oznacza krok jako błędny", async ({ page }) => {
   const app = new SituationMapPage(page);

@@ -3,7 +3,7 @@ import { watch } from "vue";
 import { blankForm, environments } from "../data/environments";
 import type { ExtendedMode, FormVariant, SituationForm } from "../types/form";
 
-const STORAGE_KEY = "situationmap-state";
+const STORAGE_KEY = "situationmap-state-v2";
 const SAVE_STATUS_MESSAGE = "Formularz zapisano lokalnie.";
 
 export type EnvironmentKey = keyof typeof environments;
