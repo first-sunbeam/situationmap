@@ -118,7 +118,7 @@ describe("budowanie wiadomości e-mail", () => {
     expect(email.body).toContain("Form version: extended");
     expect(email.body).toContain("Environment map");
     expect(email.body).toContain("Where does the child/student prefer staying?: Child's room");
-    expect(email.body).toContain("What lowers tension?: Silence / reducing stimuli");
+    expect(email.body).toContain("What helps reduce tension?: Silence / reducing stimuli");
     expect(email.body).not.toContain("Mapa środowiska");
   });
 });

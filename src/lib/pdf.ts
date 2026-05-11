@@ -106,7 +106,7 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
 
   const content: PdfContent = [
     { text: language === "en" ? "INCIDENT REPORT" : env.incidentTitle, style: "title" },
-    { text: language === "en" ? "When describing the situation, note not only the behavior itself, but also signs of overload, tiredness, reduced availability, and environmental conditions." : "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
+    { text: language === "en" ? "When describing the situation, note not only the behavior itself, but also signs of overload, tiredness, reduced readiness, and environmental conditions." : "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
     metaColumns(env, data, labels, language),
     ...sectionsFromExport(env, data, getIncidentExportSections(env, labels), language)
   ];

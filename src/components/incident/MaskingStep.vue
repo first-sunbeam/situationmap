@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
-import { hasOther } from "../../lib/formUtils";
+import { hasOther, hasSelectedOther } from "../../lib/formUtils";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
 import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
@@ -27,7 +27,7 @@ const { labels, form, fieldErrors, maskingDurationOptions, maskingStrategyOption
           v-if="hasOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther)"
           v-model="form.incident.maskingStrategiesOther"
           :label="labels.incident.maskingStrategiesOther"
-          :required="form.incident.maskingStrategies.includes('Inne')"
+          :required="hasSelectedOther(form.incident.maskingStrategies)"
           :error="fieldErrors['incident.maskingStrategiesOther']"
           full
         />
