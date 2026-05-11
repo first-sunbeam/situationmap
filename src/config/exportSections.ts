@@ -24,6 +24,10 @@ function incidentValue(field: keyof SituationForm["incident"]): ExportRow["value
   return (_env, form) => form.incident[field];
 }
 
+function subjectForLanguage(form: SituationForm, labels: FormLabels): string {
+  return getSubjectInline(form, labels.map.section === "Environment map" ? "the child/student" : "dziecka/ucznia");
+}
+
 export function resolveExportLabel(label: ExportLabel, env: EnvironmentConfig, form: SituationForm): string {
   return typeof label === "function" ? label(env, form) : label;
 }
@@ -46,14 +50,14 @@ export function getSimpleExportSection(labels: FormLabels = formLabels): ExportS
   return {
     title: labels.simple.section,
     rows: [
-      { label: (_env, form) => labels.simple.antecedents.replace("dziecka/ucznia", getSubjectInline(form)), value: (_env, form) => form.simple.stateBefore },
+      { label: (_env, form) => labels.simple.antecedents.replace("dziecka/ucznia", subjectForLanguage(form, labels)).replace("the child/student", subjectForLanguage(form, labels)), value: (_env, form) => form.simple.stateBefore },
       { label: labels.simple.beforeLastMinutes, value: (_env, form) => form.simple.antecedents },
       { label: labels.simple.signalsObserved, value: (_env, form) => form.simple.signals },
       { label: labels.simple.adultReaction, value: (_env, form) => form.simple.interventions },
       { label: labels.simple.behavior, value: (_env, form) => form.simple.behavior },
       { label: labels.simple.helped, value: (_env, form) => form.simple.helped },
-      { label: (_env, form) => labels.simple.notes.replace("zakres kontroli", `zakres kontroli dla ${getSubjectInline(form)}`).replace("scope of control", `scope of control for ${getSubjectInline(form)}`), value: (_env, form) => form.simple.notes },
-      { label: (_env, form) => `${labels.simple.predictability} ${getSubjectInline(form)} ${labels.ui.predictabilitySuffix}`, value: (_env, form) => form.simple.predictability },
+      { label: (_env, form) => labels.simple.notes.replace("zakres kontroli", `zakres kontroli dla ${subjectForLanguage(form, labels)}`).replace("scope of control", `scope of control for ${subjectForLanguage(form, labels)}`), value: (_env, form) => form.simple.notes },
+      { label: (_env, form) => `${labels.simple.predictability} ${subjectForLanguage(form, labels)} ${labels.ui.predictabilitySuffix}`, value: (_env, form) => form.simple.predictability },
       { label: labels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
     ]
   };

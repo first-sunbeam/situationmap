@@ -21,7 +21,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
 
 const { language } = useLanguage();
 const labels = computed(() => getFormLabels(language.value));
-const subject = computed(() => getSubjectInline(form));
+const subject = computed(() => getSubjectInline(form, labels.value.map.section === "Environment map" ? "the child/student" : "dziecka/ucznia"));
 const readinessOptions = ["5 minut", "10-30 minut", "1-2 godziny", "Kilka godzin lub następnego dnia"];
 </script>
 

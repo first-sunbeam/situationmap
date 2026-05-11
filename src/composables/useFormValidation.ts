@@ -67,7 +67,7 @@ function requireOtherField({
 export function validateForm({ variant, mode, form, labels = formLabels }: { variant: FormVariant; mode: ExtendedMode; form: SituationForm; labels?: FormLabels }): ValidationResult {
   const fieldErrors: FieldErrors = {};
   const summary: string[] = [];
-  const subject = getSubjectInline(form);
+  const subject = getSubjectInline(form, labels.map.section === "Environment map" ? "the child/student" : "dziecka/ucznia");
   const meta: Array<[string, string, string]> = [
     ["meta.date", "Data", form.meta.date],
     ["meta.time", "Godzina", form.meta.time],
