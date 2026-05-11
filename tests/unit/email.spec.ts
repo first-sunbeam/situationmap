@@ -21,6 +21,7 @@ describe("budowanie wiadomości e-mail", () => {
       form,
       variant: "simple",
       mode: "incident",
+      language: "pl",
     });
 
     expect(email.subject).toBe("Formularz monitorowania - Dom - prosty");
@@ -39,6 +40,7 @@ describe("budowanie wiadomości e-mail", () => {
       form: createHomeForm(),
       variant: "simple",
       mode: "incident",
+      language: "pl",
     });
 
     expect(email.body).toContain("Data: -");
@@ -55,6 +57,7 @@ describe("budowanie wiadomości e-mail", () => {
       form,
       variant: "extended",
       mode: "incident",
+      language: "pl",
     });
 
     expect(email.body).toContain(
@@ -72,6 +75,7 @@ describe("budowanie wiadomości e-mail", () => {
       form,
       variant: "extended",
       mode: "incident",
+      language: "pl",
     });
 
     expect(email.body).toContain("Karta zdarzenia");
@@ -89,10 +93,32 @@ describe("budowanie wiadomości e-mail", () => {
       form,
       variant: "extended",
       mode: "map",
+      language: "pl",
     });
 
     expect(email.body).toContain("Mapa środowiska");
     expect(email.body).toContain("W jakich miejscach dziecko/uczeń najchętniej przebywa?: Pokój dziecka");
     expect(email.body).not.toContain("Karta zdarzenia");
+  });
+
+  it("buduje angielską treść i tłumaczy wartości checkboxów", () => {
+    const form = createHomeForm();
+    fillMapForm(form);
+
+    const email = buildEmail({
+      env: environments.home,
+      form,
+      variant: "extended",
+      mode: "map",
+      language: "en",
+    });
+
+    expect(email.subject).toBe("Monitoring form - Dom - extended");
+    expect(email.body).toContain("Environment: Dom");
+    expect(email.body).toContain("Form version: extended");
+    expect(email.body).toContain("Environment map");
+    expect(email.body).toContain("Where does the child/student prefer staying?: Child's room");
+    expect(email.body).toContain("What lowers tension?: Silence / reducing stimuli");
+    expect(email.body).not.toContain("Mapa środowiska");
   });
 });

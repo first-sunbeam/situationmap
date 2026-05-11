@@ -64,6 +64,17 @@ describe("generowanie PDF", () => {
     expect(content).not.toContain(environments.home.incidentTitle);
   });
 
+  it("buduje angielski dokument PDF i tłumaczy wartości opcji", () => {
+    const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "incident", "en"));
+
+    expect(content).toContain("INCIDENT REPORT");
+    expect(content).toContain("Baseline level and daily context");
+    expect(content).toContain("Was it clear what would happen?");
+    expect(content).toContain("1 elevated");
+    expect(content).toContain("Silence and no stimuli");
+    expect(content).not.toContain("KARTA MONITOROWANIA");
+  });
+
   it("pobiera wygenerowany PDF", () => {
     const setStatus = vi.fn();
 
@@ -73,6 +84,7 @@ describe("generowanie PDF", () => {
       variant: "simple",
       mode: "incident",
       modeLabel: "formularz prosty",
+      language: "pl",
       action: "download",
       setStatus,
     });
@@ -85,6 +97,23 @@ describe("generowanie PDF", () => {
     expect(setStatus).toHaveBeenCalledWith("PDF gotowy — został pobrany (formularz prosty).");
   });
 
+  it("ustawia angielski status po pobraniu PDF", () => {
+    const setStatus = vi.fn();
+
+    buildPdf({
+      env: environments.home,
+      form: createFilledHomeForm(),
+      variant: "simple",
+      mode: "incident",
+      modeLabel: "simple form",
+      language: "en",
+      action: "download",
+      setStatus,
+    });
+
+    expect(setStatus).toHaveBeenCalledWith("PDF ready — downloaded (simple form).");
+  });
+
   it("otwiera wygenerowany PDF", () => {
     const setStatus = vi.fn();
 
@@ -94,6 +123,7 @@ describe("generowanie PDF", () => {
       variant: "extended",
       mode: "incident",
       modeLabel: "karta zdarzenia",
+      language: "pl",
       action: "open",
       setStatus,
     });
