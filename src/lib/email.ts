@@ -39,7 +39,7 @@ export function buildEmail({ env, form, variant, mode, language }: { env: Enviro
 
   if (variant === "simple") {
     const metaSection = getMetaExportSection(env, labels);
-    const simpleSection = getSimpleExportSection(labels);
+    const simpleSection = getSimpleExportSection(labels, language);
     parts.push(
       section(metaSection.title, rowsToLines(env, form, metaSection.rows, language)),
       section(simpleSection.title, rowsToLines(env, form, simpleSection.rows, language))
@@ -54,7 +54,7 @@ export function buildEmail({ env, form, variant, mode, language }: { env: Enviro
     }
 
     if (mode !== "incident") {
-      const mapRowsText = getMapExportSections(labels).flatMap((s) => rowsToLines(env, form, s.rows, language));
+      const mapRowsText = getMapExportSections(labels, language).flatMap((s) => rowsToLines(env, form, s.rows, language));
       parts.push(section(labels.map.section, mapRowsText));
     }
   }

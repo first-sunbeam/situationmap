@@ -91,7 +91,7 @@ function createDocument(content: PdfContent, env: EnvironmentConfig): Record<str
 }
 
 function makeSimpleDoc(env: EnvironmentConfig, data: SituationForm, labels: FormLabels, language: LanguageCode): Record<string, unknown> {
-  const simpleSection = getSimpleExportSection(labels);
+  const simpleSection = getSimpleExportSection(labels, language);
   return createDocument([
     { text: language === "en" ? `SIMPLE FORM - ${env.label.toUpperCase()}` : `FORMULARZ PROSTY - ${env.label.toUpperCase()}`, style: "title" },
     { text: language === "en" ? "Short situation report prepared for saving or manual email attachment." : "Krótka wersja zgłoszenia sytuacji przygotowana do zapisania lub ręcznego załączenia w wiadomości e-mail.", style: "hint" },
@@ -114,7 +114,7 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
   if (mode !== "incident") {
     content.push(
       { text: language === "en" ? "ENVIRONMENT MAP" : env.mapTitle, style: "title" },
-      ...sectionsFromExport(env, data, getMapExportSections(labels), language)
+      ...sectionsFromExport(env, data, getMapExportSections(labels, language), language)
     );
   }
 

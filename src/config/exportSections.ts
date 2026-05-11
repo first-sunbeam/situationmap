@@ -1,3 +1,4 @@
+import type { LanguageCode } from "../i18n/useLanguage";
 import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, SituationForm } from "../types/form";
 import { formLabels, type FormLabels } from "./formLabels";
@@ -24,8 +25,12 @@ function incidentValue(field: keyof SituationForm["incident"]): ExportRow["value
   return (_env, form) => form.incident[field];
 }
 
-function subjectForLanguage(form: SituationForm, labels: FormLabels): string {
-  return getSubjectInline(form, labels.map.section === "Environment map" ? "the child/student" : "dziecka/ucznia");
+function interpolate(template: string, values: Record<string, string>): string {
+  return Object.entries(values).reduce((text, [key, value]) => text.replaceAll(`{${key}}`, value), template);
+}
+
+function subject(form: SituationForm, language: LanguageCode, polishFallback = "dziecka/ucznia", englishFallback = "the child/student"): string {
+  return getSubjectInline(form, language === "en" ? englishFallback : polishFallback);
 }
 
 export function resolveExportLabel(label: ExportLabel, env: EnvironmentConfig, form: SituationForm): string {
@@ -46,18 +51,18 @@ export function getMetaExportSection(env: EnvironmentConfig, labels: FormLabels 
   };
 }
 
-export function getSimpleExportSection(labels: FormLabels = formLabels): ExportSection {
+export function getSimpleExportSection(labels: FormLabels = formLabels, language: LanguageCode = "pl"): ExportSection {
   return {
     title: labels.simple.section,
     rows: [
-      { label: (_env, form) => labels.simple.antecedents.replace("dziecka/ucznia", subjectForLanguage(form, labels)).replace("the child/student", subjectForLanguage(form, labels)), value: (_env, form) => form.simple.stateBefore },
+      { label: (_env, form) => interpolate(labels.ui.simpleAntecedentsFor, { subject: subject(form, language) }), value: (_env, form) => form.simple.stateBefore },
       { label: labels.simple.beforeLastMinutes, value: (_env, form) => form.simple.antecedents },
       { label: labels.simple.signalsObserved, value: (_env, form) => form.simple.signals },
       { label: labels.simple.adultReaction, value: (_env, form) => form.simple.interventions },
       { label: labels.simple.behavior, value: (_env, form) => form.simple.behavior },
       { label: labels.simple.helped, value: (_env, form) => form.simple.helped },
-      { label: (_env, form) => labels.simple.notes.replace("zakres kontroli", `zakres kontroli dla ${subjectForLanguage(form, labels)}`).replace("scope of control", `scope of control for ${subjectForLanguage(form, labels)}`), value: (_env, form) => form.simple.notes },
-      { label: (_env, form) => `${labels.simple.predictability} ${subjectForLanguage(form, labels)} ${labels.ui.predictabilitySuffix}`, value: (_env, form) => form.simple.predictability },
+      { label: (_env, form) => interpolate(labels.ui.simpleNotesFor, { subject: subject(form, language) }), value: (_env, form) => form.simple.notes },
+      { label: (_env, form) => interpolate(labels.ui.simplePredictabilityFor, { subject: subject(form, language) }), value: (_env, form) => form.simple.predictability },
       { label: labels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
     ]
   };
@@ -170,56 +175,56 @@ export function getIncidentExportSections(env: EnvironmentConfig, labels: FormLa
   ];
 }
 
-export function getMapExportSections(labels: FormLabels = formLabels): ExportSection[] {
+export function getMapExportSections(labels: FormLabels = formLabels, language: LanguageCode = "pl"): ExportSection[] {
   return [
     {
-      title: labels.map.section === "Environment map" ? "1. Places and preferred spaces" : "1. Miejsca i preferowane przestrzenie",
+      title: labels.ui.mapSectionPlaces,
       rows: [
-        { label: (_env, form) => labels.map.preferred.replace("Prefers staying in", `Where does ${getSubjectInline(form, "the child/student")} prefer staying?`).replace("Chętnie przebywa w", `W jakich miejscach ${getSubjectInline(form, "dziecko/uczeń")} najchętniej przebywa?`), value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
-        { label: labels.map.preferred === "Prefers staying in" ? "Why these places? What makes them distinctive?" : "Dlaczego te miejsca? Co je wyróżnia?", value: (_env, form) => form.map.preferredReason },
-        { label: (_env, form) => labels.map.avoided === "Avoids or finds it hard to leave" ? `Which places does ${getSubjectInline(form, "the child/student")} avoid or find hard to leave?` : `Z jakich miejsc ${getSubjectInline(form, "dziecko/uczeń")} unika lub wychodzi z trudem?`, value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
-        { label: labels.map.avoided === "Avoids or finds it hard to leave" ? "What activates tension in these places?" : "Co w tych miejscach aktywuje napięcie?", value: (_env, form) => form.map.avoidedReason }
+        { label: (_env, form) => interpolate(labels.ui.mapPreferredPlacesFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
+        { label: labels.ui.mapPreferredReason, value: (_env, form) => form.map.preferredReason },
+        { label: (_env, form) => interpolate(labels.ui.mapAvoidedPlacesFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
+        { label: labels.ui.mapAvoidedReason, value: (_env, form) => form.map.avoidedReason }
       ]
     },
     {
-      title: labels.map.section === "Environment map" ? "2. Preferred activities and role" : "2. Preferowane aktywności i rola",
+      title: labels.ui.mapSectionActivities,
       rows: [
-        { label: (_env, form) => labels.map.likes === "Most willingly engages in" ? `Which activities does ${getSubjectInline(form, "the child/student")} most willingly engage in?` : `W jakie aktywności ${getSubjectInline(form, "dziecko/uczeń")} najchętniej się angażuje?`, value: (_env, form) => form.map.likes },
-        { label: (_env, form) => labels.map.likes === "Most willingly engages in" ? `What role does ${getSubjectInline(form, "the child/student")} most often take in these activities?` : `Jaką rolę ${getSubjectInline(form, "dziecko/uczeń")} najczęściej przyjmuje w tych aktywnościach?`, value: (_env, form) => form.map.activityRoles }
+        { label: (_env, form) => interpolate(labels.ui.mapLikesFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => form.map.likes },
+        { label: (_env, form) => interpolate(labels.ui.mapActivityRoleFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => form.map.activityRoles }
       ]
     },
     {
-      title: labels.map.section === "Environment map" ? "3. Conditions for optimal functioning" : "3. Warunki optymalnego funkcjonowania",
+      title: labels.ui.mapSectionConditions,
       rows: [
-        { label: (_env, form) => labels.map.easiestWhen === "Functions most easily when" ? `${getSubjectInline(form, "The child/student")} functions most easily when` : `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej funkcjonuje, gdy`, value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
+        { label: (_env, form) => interpolate(labels.ui.mapEasiestWhenFor, { subject: subject(form, language, "Dziecko/uczeń", "The child/student") }), value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
       ]
     },
     {
-      title: labels.map.section === "Environment map" ? "4. What supports and lowers tension" : "4. Co wspiera i co obniża napięcie",
+      title: labels.ui.mapSectionSupport,
       rows: [
-        { label: (_env, form) => labels.map.cooperatesWith === "Cooperates most easily with" ? `${getSubjectInline(form, "The child/student")} cooperates most easily with` : `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej współpracuje z`, value: (_env, form) => form.map.cooperatesWith },
+        { label: (_env, form) => interpolate(labels.ui.mapCooperatesWithFor, { subject: subject(form, language, "Dziecko/uczeń", "The child/student") }), value: (_env, form) => form.map.cooperatesWith },
         { label: labels.map.reducers, value: (_env, form) => withOther(form.map.reducers, form.map.reducersOther) },
-        { label: labels.map.reducers === "What lowers tension?" ? "What gives energy / motivates functioning despite overload?" : "Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?", value: (_env, form) => form.map.energySources }
+        { label: labels.ui.mapEnergySources, value: (_env, form) => form.map.energySources }
       ]
     },
     {
-      title: labels.map.section === "Environment map" ? "5. Factors changing behavior" : "5. Czynniki zmieniające zachowanie",
+      title: labels.ui.mapSectionDepends,
       rows: [
         { label: labels.map.dependsOn, value: (_env, form) => form.map.dependsOn },
         { label: labels.map.dependsDescription, value: (_env, form) => form.map.dependsDescription }
       ]
     },
     {
-      title: labels.map.section === "Environment map" ? "6. Safe spaces and people" : "6. Bezpieczne przestrzenie i osoby",
+      title: labels.ui.mapSectionSafe,
       rows: [
-        { label: (_env, form) => labels.map.section === "Environment map" ? `Where/with whom does ${getSubjectInline(form, "the child/student")} feel safest?` : `Gdzie/z kim ${getSubjectInline(form, "dziecko/uczeń")} czuje się najbezpieczniej?`, value: (_env, form) => form.map.safeBase }
+        { label: (_env, form) => interpolate(labels.ui.mapSafeBaseFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => form.map.safeBase }
       ]
     },
     {
-      title: labels.map.section === "Environment map" ? "7. Most common escalation situations" : "7. Najczęstsze sytuacje eskalacji",
+      title: labels.ui.mapSectionEscalation,
       rows: [
         { label: labels.map.escalationContexts, value: (_env, form) => withOther(form.map.escalationContexts, form.map.escalationOther) },
-        { label: labels.map.escalationContexts === "Most common escalation situations" ? "What REDUCES escalation risk in these situations?" : "Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?", value: (_env, form) => withOther(form.map.escalationReducers, form.map.escalationReducersOther) },
+        { label: labels.ui.mapEscalationReducers, value: (_env, form) => withOther(form.map.escalationReducers, form.map.escalationReducersOther) },
         { label: labels.map.noAggression, value: (_env, form) => form.map.noAggression },
         { label: labels.map.noAggressionWhere, value: (_env, form) => form.map.noAggressionWhere }
       ]
