@@ -11,19 +11,19 @@ export interface EnvironmentConfig {
   incidentTitle: string;
   mapTitle: string;
   lead: string;
-  stayStages?: string[];
-  burdens: string[];
-  antecedents: string[];
-  expectations: string[];
-  harms: string[];
-  after: string[];
-  endedBy: string[];
-  places: string[];
-  dependencies: string[];
-  escalationContexts: string[];
-  mapOptimalConditions?: string[];
-  mapReducers?: string[];
-  mapEscalationReducers?: string[];
+  stayStages?: readonly string[];
+  burdens: readonly string[];
+  antecedents: readonly string[];
+  expectations: readonly string[];
+  harms: readonly string[];
+  after: readonly string[];
+  endedBy: readonly string[];
+  places: readonly string[];
+  dependencies: readonly string[];
+  escalationContexts: readonly string[];
+  mapOptimalConditions?: readonly string[];
+  mapReducers?: readonly string[];
+  mapEscalationReducers?: readonly string[];
 }
 
 export interface MetaForm {

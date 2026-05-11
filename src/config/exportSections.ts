@@ -29,8 +29,29 @@ function interpolate(template: string, values: Record<string, string>): string {
   return Object.entries(values).reduce((text, [key, value]) => text.replaceAll(`{${key}}`, value), template);
 }
 
-function subject(form: SituationForm, language: LanguageCode, polishFallback = "dziecka/ucznia", englishFallback = "the child/student"): string {
-  return getSubjectInline(form, language === "en" ? englishFallback : polishFallback);
+type SubjectCase = "genitive" | "lower" | "sentenceStart";
+
+const subjectFallbacks: Record<SubjectCase, Record<LanguageCode, string>> = {
+  genitive: {
+    pl: "dziecka/ucznia",
+    en: "the child/student"
+  },
+  lower: {
+    pl: "dziecko/uczeń",
+    en: "the child/student"
+  },
+  sentenceStart: {
+    pl: "Dziecko/uczeń",
+    en: "The child/student"
+  }
+};
+
+function exportSubject(form: SituationForm, language: LanguageCode, subjectCase: SubjectCase = "genitive"): string {
+  return getSubjectInline(form, subjectFallbacks[subjectCase][language]);
+}
+
+function labelWithSubject(template: string, form: SituationForm, language: LanguageCode, subjectCase: SubjectCase = "genitive"): string {
+  return interpolate(template, { subject: exportSubject(form, language, subjectCase) });
 }
 
 export function resolveExportLabel(label: ExportLabel, env: EnvironmentConfig, form: SituationForm): string {
@@ -55,15 +76,15 @@ export function getSimpleExportSection(labels: FormLabels = formLabels, language
   return {
     title: labels.simple.section,
     rows: [
-      { label: (_env, form) => interpolate(labels.ui.simpleAntecedentsFor, { subject: subject(form, language) }), value: (_env, form) => form.simple.stateBefore },
-      { label: labels.simple.beforeLastMinutes, value: (_env, form) => form.simple.antecedents },
-      { label: labels.simple.signalsObserved, value: (_env, form) => form.simple.signals },
-      { label: labels.simple.adultReaction, value: (_env, form) => form.simple.interventions },
-      { label: labels.simple.behavior, value: (_env, form) => form.simple.behavior },
-      { label: labels.simple.helped, value: (_env, form) => form.simple.helped },
-      { label: (_env, form) => interpolate(labels.ui.simpleNotesFor, { subject: subject(form, language) }), value: (_env, form) => form.simple.notes },
-      { label: (_env, form) => interpolate(labels.ui.simplePredictabilityFor, { subject: subject(form, language) }), value: (_env, form) => form.simple.predictability },
-      { label: labels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
+      { label: (_env, form) => labelWithSubject(labels.export.simpleAntecedentsFor, form, language), value: (_env, form) => form.simple.stateBefore },
+      { label: labels.export.simpleBeforeLastMinutes, value: (_env, form) => form.simple.antecedents },
+      { label: labels.export.simpleSignalsObserved, value: (_env, form) => form.simple.signals },
+      { label: labels.export.simpleSupportResponse, value: (_env, form) => form.simple.interventions },
+      { label: labels.export.simpleBehavior, value: (_env, form) => form.simple.behavior },
+      { label: labels.export.simpleHelped, value: (_env, form) => form.simple.helped },
+      { label: (_env, form) => labelWithSubject(labels.export.simpleNotesFor, form, language), value: (_env, form) => form.simple.notes },
+      { label: (_env, form) => labelWithSubject(labels.export.simplePredictabilityFor, form, language), value: (_env, form) => form.simple.predictability },
+      { label: labels.export.simpleRecoveryTime, value: (_env, form) => form.simple.recoveryTime }
     ]
   };
 }
@@ -178,55 +199,55 @@ export function getIncidentExportSections(env: EnvironmentConfig, labels: FormLa
 export function getMapExportSections(labels: FormLabels = formLabels, language: LanguageCode = "pl"): ExportSection[] {
   return [
     {
-      title: labels.ui.mapSectionPlaces,
+      title: labels.export.mapSectionPlaces,
       rows: [
-        { label: (_env, form) => interpolate(labels.ui.mapPreferredPlacesFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
-        { label: labels.ui.mapPreferredReason, value: (_env, form) => form.map.preferredReason },
-        { label: (_env, form) => interpolate(labels.ui.mapAvoidedPlacesFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
-        { label: labels.ui.mapAvoidedReason, value: (_env, form) => form.map.avoidedReason }
+        { label: (_env, form) => labelWithSubject(labels.export.mapPreferredPlacesFor, form, language, "lower"), value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
+        { label: labels.export.mapPreferredReason, value: (_env, form) => form.map.preferredReason },
+        { label: (_env, form) => labelWithSubject(labels.export.mapAvoidedPlacesFor, form, language, "lower"), value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
+        { label: labels.export.mapAvoidedReason, value: (_env, form) => form.map.avoidedReason }
       ]
     },
     {
-      title: labels.ui.mapSectionActivities,
+      title: labels.export.mapSectionActivities,
       rows: [
-        { label: (_env, form) => interpolate(labels.ui.mapLikesFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => form.map.likes },
-        { label: (_env, form) => interpolate(labels.ui.mapActivityRoleFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => form.map.activityRoles }
+        { label: (_env, form) => labelWithSubject(labels.export.mapLikesFor, form, language, "lower"), value: (_env, form) => form.map.likes },
+        { label: (_env, form) => labelWithSubject(labels.export.mapActivityRoleFor, form, language, "lower"), value: (_env, form) => form.map.activityRoles }
       ]
     },
     {
-      title: labels.ui.mapSectionConditions,
+      title: labels.export.mapSectionConditions,
       rows: [
-        { label: (_env, form) => interpolate(labels.ui.mapEasiestWhenFor, { subject: subject(form, language, "Dziecko/uczeń", "The child/student") }), value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
+        { label: (_env, form) => labelWithSubject(labels.export.mapEasiestWhenFor, form, language, "sentenceStart"), value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
       ]
     },
     {
-      title: labels.ui.mapSectionSupport,
+      title: labels.export.mapSectionSupport,
       rows: [
-        { label: (_env, form) => interpolate(labels.ui.mapCooperatesWithFor, { subject: subject(form, language, "Dziecko/uczeń", "The child/student") }), value: (_env, form) => form.map.cooperatesWith },
-        { label: labels.map.reducers, value: (_env, form) => withOther(form.map.reducers, form.map.reducersOther) },
-        { label: labels.ui.mapEnergySources, value: (_env, form) => form.map.energySources }
+        { label: (_env, form) => labelWithSubject(labels.export.mapCooperatesWithFor, form, language, "sentenceStart"), value: (_env, form) => form.map.cooperatesWith },
+        { label: labels.export.mapReducers, value: (_env, form) => withOther(form.map.reducers, form.map.reducersOther) },
+        { label: labels.export.mapEnergySources, value: (_env, form) => form.map.energySources }
       ]
     },
     {
-      title: labels.ui.mapSectionDepends,
+      title: labels.export.mapSectionDepends,
       rows: [
-        { label: labels.map.dependsOn, value: (_env, form) => form.map.dependsOn },
-        { label: labels.map.dependsDescription, value: (_env, form) => form.map.dependsDescription }
+        { label: labels.export.mapDependsOn, value: (_env, form) => form.map.dependsOn },
+        { label: labels.export.mapDependsDescription, value: (_env, form) => form.map.dependsDescription }
       ]
     },
     {
-      title: labels.ui.mapSectionSafe,
+      title: labels.export.mapSectionSafe,
       rows: [
-        { label: (_env, form) => interpolate(labels.ui.mapSafeBaseFor, { subject: subject(form, language, "dziecko/uczeń") }), value: (_env, form) => form.map.safeBase }
+        { label: (_env, form) => labelWithSubject(labels.export.mapSafeBaseFor, form, language, "lower"), value: (_env, form) => form.map.safeBase }
       ]
     },
     {
-      title: labels.ui.mapSectionEscalation,
+      title: labels.export.mapSectionEscalation,
       rows: [
-        { label: labels.map.escalationContexts, value: (_env, form) => withOther(form.map.escalationContexts, form.map.escalationOther) },
-        { label: labels.ui.mapEscalationReducers, value: (_env, form) => withOther(form.map.escalationReducers, form.map.escalationReducersOther) },
-        { label: labels.map.noAggression, value: (_env, form) => form.map.noAggression },
-        { label: labels.map.noAggressionWhere, value: (_env, form) => form.map.noAggressionWhere }
+        { label: labels.export.mapEscalationContexts, value: (_env, form) => withOther(form.map.escalationContexts, form.map.escalationOther) },
+        { label: labels.export.mapEscalationReducers, value: (_env, form) => withOther(form.map.escalationReducers, form.map.escalationReducersOther) },
+        { label: labels.export.mapNoAggression, value: (_env, form) => form.map.noAggression },
+        { label: labels.export.mapNoAggressionWhere, value: (_env, form) => form.map.noAggressionWhere }
       ]
     }
   ];

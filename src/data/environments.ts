@@ -1,8 +1,8 @@
-export const bodyStateOptions = ["głód", "pragnienie", "potrzeba toalety", "ból/dyskomfort", "zmęczenie fizyczne", "temperatura ciała (zimno/gorąco)", "napięcie mięśniowe", "inne"];
-export const sensoryIntensityOptions = ["hałas/dźwięki", "światło", "tłok/liczba osób", "zapachy", "tekstury/dotyk", "temperatura pomieszczenia", "inne"];
-export const activationSignalOptions = ["przyspieszone oddychanie", "napięcie mięśniowe", "pot", "drżenie", "rozszerzone źrenice", "ucieczka/walka", "inne"];
-export const shutdownSignalOptions = ["patrzenie w jeden punkt/podłogę", "brak reakcji na głos", "spowolnienie ruchów", "opadnięcie ciała", "wycofanie", "inne"];
-export const sensorySignalOptions = ["zatykanie uszu", "zasłanianie oczu", "stereotypie", "unikanie dotyku", "ucieczka z pomieszczenia", "inne"];
+export const bodyStateOptions = ["głód", "pragnienie", "potrzeba toalety", "ból/dyskomfort", "zmęczenie fizyczne", "temperatura ciała (zimno/gorąco)", "napięcie mięśniowe", "Inne"] as const;
+export const sensoryIntensityOptions = ["hałas/dźwięki", "światło", "tłok/liczba osób", "zapachy", "tekstury/dotyk", "temperatura pomieszczenia", "Inne"] as const;
+export const activationSignalOptions = ["przyspieszone oddychanie", "napięcie mięśniowe", "pot", "drżenie", "rozszerzone źrenice", "ucieczka/walka", "Inne"] as const;
+export const shutdownSignalOptions = ["patrzenie w jeden punkt/podłogę", "brak reakcji na głos", "spowolnienie ruchów", "opadnięcie ciała", "wycofanie", "Inne"] as const;
+export const sensorySignalOptions = ["zatykanie uszu", "zasłanianie oczu", "stereotypie", "unikanie dotyku", "ucieczka z pomieszczenia", "Inne"] as const;
 export const interventionTypeOptions = [
   "Obniżenie bodźców sensorycznych (wyciszenie, przyciemnienie, zmniejszenie liczby osób)",
   "Zwiększenie autonomii (zaproponowanie wyboru, możliwość decyzji)",
@@ -32,26 +32,25 @@ export const recoverySupportOptions = [
   "Czas (po prostu przeczekanie)",
   "Inne"
 ];
-export const maskingDurationOptions = ["Kilka minut", "10-30 minut", "Ponad 30 minut", "Cały dzień (eskalacja wieczorem/w domu)"];
-export const cognitiveRecoveryOptions = ["Od razu po uspokojeniu", "10-30 minut po", "1-2 godziny po", "Kilka godzin lub następnego dnia"];
-export const homePlaceOptions = ["Pokój dziecka", "Salon / wspólna przestrzeń", "Kuchnia / jadalnia", "Łazienka", "Przedpokój / przejścia", "Na zewnątrz (ogród, balkon)", "Samochód", "Inne"];
-export const activityRoleOptions = ["Prowadzący / kontrolujący (decyduje o zasadach, przebiegu)", "Uczestnik / współpracujący (równy partner)", "Obserwator / towarzyszący (obecność bez aktywnego udziału)", "Sam / bez interakcji z innymi"];
-export const optimalConditionOptions = ["Cisza / minimalne bodźce słuchowe", "Przyciemnione / naturalne światło", "Spokojne otoczenie / mała liczba osób", "Możliwość kontrolowania bodźców", "Samotność / czas bez wymagań społecznych", "Obecność bliskiej osoby (bez wymagań)", "Interakcja 1:1 (nie grupa)", "Kontakt bez bezpośredniej komunikacji (równoległa aktywność)", "Ma wpływ na przebieg aktywności (kiedy, jak, z kim)", "Wie, co się wydarzy i jak długo to potrwa", "Może negocjować lub wybierać", "Rutyny / powtarzalność", "Najedzone / napite", "Wypoczęte / nie zmęczone", "Komfortowa temperatura", "Bez bólu / dyskomfortu", "Inne"];
-export const reducerOptions = ["Cisza / wyciszenie bodźców", "Ruch (huśtawka, trampolina, spacer)", "Ciężar / ucisk (koc, przytulenie, ściskanie)", "Chłód lub ciepło (zimny prysznic, ciepła kąpiel)", "Stereotypie (bujanie, kręcenie, podskakiwanie)", "Jedzenie / picie", "Sen / drzemka", "Toaleta", "Obecność bliskiej osoby (bez wymagań)", "Samotność / wycofanie się", "Kontakt fizyczny (przytulenie)", "Dystans / przestrzeń osobista", "Wycofanie wymagania", "Dostęp do ulubionej aktywności", "Wybór / możliwość decyzji", "Informacja, ile to potrwa", "Inne"];
-export const escalationReducerOptions = ["Ostrzeżenie / przygotowanie („Za 5 minut kończymy”)", "Wizualizacja / timer / plan", "Wybór (kiedy, jak, w jakiej kolejności)", "Negocjacja (możliwość omówienia, co się wydarzy)", "Jasny koniec (konkretna informacja, ile potrwa)", "Brak pośpiechu / elastyczność czasowa", "Obecność bliskiej osoby", "Dostęp do regulacji sensorycznej (np. przedmiot, ruch)", "Inne"];
+export const maskingDurationOptions = ["Kilka minut", "10-30 minut", "Ponad 30 minut", "Cały dzień (eskalacja wieczorem/w domu)"] as const;
+export const cognitiveRecoveryOptions = ["Od razu po uspokojeniu", "10-30 minut po", "1-2 godziny po", "Kilka godzin lub następnego dnia"] as const;
+export const homePlaceOptions = ["Pokój dziecka", "Salon / wspólna przestrzeń", "Kuchnia / jadalnia", "Łazienka", "Przedpokój / przejścia", "Na zewnątrz (ogród, balkon)", "Samochód", "Inne"] as const;
+export const activityRoleOptions = ["Prowadzący / kontrolujący (decyduje o zasadach, przebiegu)", "Uczestnik / współpracujący (równy partner)", "Obserwator / towarzyszący (obecność bez aktywnego udziału)", "Sam / bez interakcji z innymi"] as const;
+export const optimalConditionOptions = ["Cisza / minimalne bodźce słuchowe", "Przyciemnione / naturalne światło", "Spokojne otoczenie / mała liczba osób", "Możliwość kontrolowania bodźców", "Samotność / czas bez wymagań społecznych", "Obecność bliskiej osoby (bez wymagań)", "Interakcja 1:1 (nie grupa)", "Kontakt bez bezpośredniej komunikacji (równoległa aktywność)", "Ma wpływ na przebieg aktywności (kiedy, jak, z kim)", "Wie, co się wydarzy i jak długo to potrwa", "Może negocjować lub wybierać", "Rutyny / powtarzalność", "Najedzone / napite", "Wypoczęte / nie zmęczone", "Komfortowa temperatura", "Bez bólu / dyskomfortu", "Inne"] as const;
+export const reducerOptions = ["Cisza / wyciszenie bodźców", "Ruch (huśtawka, trampolina, spacer)", "Ciężar / ucisk (koc, przytulenie, ściskanie)", "Chłód lub ciepło (zimny prysznic, ciepła kąpiel)", "Stereotypie (bujanie, kręcenie, podskakiwanie)", "Jedzenie / picie", "Sen / drzemka", "Toaleta", "Obecność bliskiej osoby (bez wymagań)", "Samotność / wycofanie się", "Kontakt fizyczny (przytulenie)", "Dystans / przestrzeń osobista", "Wycofanie wymagania", "Dostęp do ulubionej aktywności", "Wybór / możliwość decyzji", "Informacja, ile to potrwa", "Inne"] as const;
+export const escalationReducerOptions = ["Ostrzeżenie / przygotowanie („Za 5 minut kończymy”)", "Wizualizacja / timer / plan", "Wybór (kiedy, jak, w jakiej kolejności)", "Negocjacja (możliwość omówienia, co się wydarzy)", "Jasny koniec (konkretna informacja, ile potrwa)", "Brak pośpiechu / elastyczność czasowa", "Obecność bliskiej osoby", "Dostęp do regulacji sensorycznej (np. przedmiot, ruch)", "Inne"] as const;
 
-export const yesNoUnknown = ["Tak", "Nie", "Nie wiem"];
-export const yesNoPartial = ["Tak", "Nie", "Częściowo"];
-export const tensionLevels = ["0 niski / stabilny", "1 podwyższony", "2 wysoki", "3 bardzo wysoki"];
+export const yesNoUnknown = ["Tak", "Nie", "Nie wiem"] as const;
+export const yesNoPartial = ["Tak", "Nie", "Częściowo"] as const;
+export const tensionLevels = ["0 niski / stabilny", "1 podwyższony", "2 wysoki", "3 bardzo wysoki"] as const;
 export const regulationPhase = [
   "Zielona - możliwa rozmowa i współpraca",
   "Żółta - narastające napięcie",
   "Czerwona - pełna eskalacja / brak kontaktu",
   "Trudno określić"
 ];
-export const intensity = ["0 brak agresji", "1 lekkie", "2 umiarkowane", "3 wysokie ryzyko"];
-export const calmTime = ["Do 5 minut", "5-15 minut", "15-30 minut", "30-60 minut", "Ponad godzinę"];
-
+export const intensity = ["0 brak agresji", "1 lekkie", "2 umiarkowane", "3 wysokie ryzyko"] as const;
+export const calmTime = ["Do 5 minut", "5-15 minut", "15-30 minut", "30-60 minut", "Ponad godzinę"] as const;
 import type { EnvironmentConfig, SituationForm } from "../types/form";
 
 export const environments = {
@@ -71,7 +70,7 @@ export const environments = {
       "konflikt z rodzeństwem / dorosłym",
       "ból / dyskomfort / dolegliwości somatyczne",
       "nowe wymagania",
-      "inne"
+      "Inne"
     ],
     antecedents: [
       "Zmiana aktywności",
@@ -96,7 +95,7 @@ export const environments = {
       "Wymaganie czasowe",
       "Wymaganie dotyczące przejścia / tempa / zatrzymania",
       "Współpraca z domownikami / respektowanie ustaleń",
-      "inne"
+      "Inne"
     ],
     harms: [
       "uraz osoby",
@@ -126,7 +125,7 @@ export const environments = {
       "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)",
       "Inne"
     ],
-    places: ["Pokój dziecka", "Salon / wspólna przestrzeń", "Kuchnia / jadalnia", "Łazienka", "Przedpokój / przejścia", "Na zewnątrz (ogród, balkon)", "Samochód", "Inne"],
+    places: homePlaceOptions,
     dependencies: ["Miejsce", "Osoba dorosła", "Pora dnia", "Rodzaj aktywności", "Liczba osób", "Hałas", "Światło", "Przejścia między aktywnościami", "Zmiany planu", "Obecność rodzeństwa / gości"],
     escalationContexts: ["Koniec aktywności", "Oczekiwanie / czekanie", "Zmiana planu", "Polecenie / nowe wymaganie", "Ograniczenie dostępu (do przedmiotu, osoby, aktywności)", "Przejście do innego miejsca", "Posiłek / higiena / wyjście z domu", "Spacer / zmiana trasy / powrót ze spaceru", "Wyjście do lekarza / terapii / sklepu / na plac zabaw", "Kontakt z rodzeństwem / sytuacja wspólna", "Inne"],
     mapOptimalConditions: optimalConditionOptions,
@@ -141,10 +140,10 @@ export const environments = {
     incidentTitle: "KARTA MONITOROWANIA SYTUACJI - PLACÓWKA CAŁODOBOWA",
     mapTitle: "MAPA ŚRODOWISKA - PLACÓWKA CAŁODOBOWA",
     lead: "Wychowawca / osoba prowadząca",
-    stayStages: ["początek pobytu po weekendzie", "środek tygodnia", "koniec tygodnia przed wyjazdem", "dzień wyjazdu do domu", "dzień powrotu z domu do ośrodka", "po dłuższej przerwie / świętach / feriach", "inne"],
-    burdens: ["zmiana planu dnia", "kontakt telefoniczny / wideorozmowa z domem", "konflikt z rówieśnikami", "konflikt z dorosłym", "hałas / tłok / zwiększona liczba osób", "słaby sen / nocna pobudka", "nowe wymagania", "inne"],
+    stayStages: ["początek pobytu po weekendzie", "środek tygodnia", "koniec tygodnia przed wyjazdem", "dzień wyjazdu do domu", "dzień powrotu z domu do ośrodka", "po dłuższej przerwie / świętach / feriach", "Inne"],
+    burdens: ["zmiana planu dnia", "kontakt telefoniczny / wideorozmowa z domem", "konflikt z rówieśnikami", "konflikt z dorosłym", "hałas / tłok / zwiększona liczba osób", "słaby sen / nocna pobudka", "nowe wymagania", "Inne"],
     antecedents: ["Zmiana aktywności", "Kończenie aktywności / sprzątanie", "Rozpoczęcie nowego zadania / obowiązku", "Odrabianie lekcji / nauka własna", "Czynność samoobsługowa", "Wspólny posiłek / oczekiwanie na posiłek", "Czekanie", "Ograniczenie dostępu", "Korekta zachowania / przypomnienie zasad", "Powrót do pokoju / opuszczenie pokoju", "Wejście we wspólną przestrzeń / wyjście ze wspólnej przestrzeni", "Inny wychowawca niż zwykle / dyżur zastępczy", "Zmiana planu bez uprzedzenia", "Kontakt telefoniczny / wideorozmowa z domem", "Konflikt o przestrzeń, hałas, rzeczy wspólne lub zasady pokoju", "Wieczorna rutyna / cisza nocna / przygotowanie do snu"],
-    expectations: ["Brak wymagań", "Nowe zadanie / obowiązek", "Kontynuacja zadania", "Wymaganie czasowe", "Wymaganie dotyczące przejścia / tempa / zatrzymania", "Współpraca z grupą / respektowanie zasad wspólnych", "inne"],
+    expectations: ["Brak wymagań", "Nowe zadanie / obowiązek", "Kontynuacja zadania", "Wymaganie czasowe", "Wymaganie dotyczące przejścia / tempa / zatrzymania", "Współpraca z grupą / respektowanie zasad wspólnych", "Inne"],
     harms: ["uraz osoby", "autoagresja", "zniszczenie przedmiotów", "opuszczenie wyznaczonego miejsca / oddalenie się", "zakłócenie funkcjonowania grupy", "brak szkód"],
     after: ["Przejście do spokojniejszego miejsca", "Interwencja fizyczna", "Powrót do aktywności / planu dnia", "Kontakt z rodzicem / opiekunem", "Kontakt z pedagogiem / psychologiem / kierownikiem", "Inne"],
     endedBy: ["Wycofanie wymagania", "Dostęp do przedmiotu / aktywności", "Dostęp do osoby", "Zmiana miejsca", "Obniżenie bodźców (cisza, przyciemnienie, mniej osób)", "Czas / przeczekanie bez interwencji", "Wyjście z sytuacji grupowej", "Kontakt z domem", "Wsparcie sensoryczne (ciężar, ucisk, ruch, chłód/ciepło)", "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)", "Inne"],
@@ -163,9 +162,9 @@ export const environments = {
     incidentTitle: "KARTA MONITOROWANIA SYTUACJI - SZKOŁA",
     mapTitle: "MAPA ŚRODOWISKA SZKOLNEGO",
     lead: "Osoba prowadząca",
-    burdens: ["zmiana planu (zastępstwa / odwołania)", "nietypowe wydarzenie", "nowe wymagania", "inne"],
+    burdens: ["zmiana planu (zastępstwa / odwołania)", "nietypowe wydarzenie", "nowe wymagania", "Inne"],
     antecedents: ["Zmiana aktywności", "Kończenie aktywności / sprzątanie", "Rozpoczęcie nowego zadania", "Zadanie wymagające wysiłku poznawczego", "Zadanie wymagające współpracy z innymi", "Czekanie", "Ograniczenie dostępu", "Korekta zachowania / przypomnienie zasad", "Przejście do innego pomieszczenia", "Zastępstwo / inny nauczyciel niż zwykle", "Zmiana planu bez uprzedzenia"],
-    expectations: ["Brak wymagań", "Nowe zadanie", "Kontynuacja zadania", "Wymaganie czasowe", "Wymaganie dotyczące przejścia / tempa / zatrzymania", "inne"],
+    expectations: ["Brak wymagań", "Nowe zadanie", "Kontynuacja zadania", "Wymaganie czasowe", "Wymaganie dotyczące przejścia / tempa / zatrzymania", "Inne"],
     harms: ["uraz osoby", "autoagresja", "zniszczenie przedmiotów", "brak szkód"],
     after: ["Sala wyciszeń (izolacja)", "Interwencja fizyczna", "Powrót do zajęć", "Kontakt z rodzicem / opiekunem", "Inne"],
     endedBy: ["Wycofanie wymagania", "Dostęp do przedmiotu / aktywności", "Dostęp do osoby", "Zmiana miejsca", "Obniżenie bodźców (cisza, przyciemnienie, mniej osób)", "Czas / przeczekanie bez interwencji", "Wyjście z sytuacji", "Wsparcie sensoryczne (ciężar, ucisk, ruch, chłód/ciepło)", "Wsparcie interoceptywne (pomoc w nazwaniu stanu: „jesteś głodny?”, „bolą cię nogi?”)", "Inne"],
@@ -176,7 +175,7 @@ export const environments = {
     mapReducers: ["Cisza / wyciszenie bodźców", "Wyjście do spokojniejszego miejsca", "Krótka przerwa od wymagań", "Obecność zaufanej osoby dorosłej bez nacisku", "Kontakt 1:1 zamiast komunikatu przy grupie", "Ruch (spacer, sala ruchowa, boisko)", "Przedmiot sensoryczny / słuchawki / kaptur", "Jedzenie / picie", "Toaleta", "Wycofanie lub zmniejszenie wymagania", "Wybór / możliwość decyzji", "Informacja, ile to potrwa", "Inne"],
     mapEscalationReducers: ["Uprzedzenie / przygotowanie przed zmianą", "Plan wizualny / timer / lista kroków", "Wybór (kiedy, jak, w jakiej kolejności)", "Negocjacja i czas na odpowiedź", "Jasny koniec zadania lub aktywności", "Brak pośpiechu / elastyczność czasowa", "Możliwość przerwy poza grupą", "Obecność zaufanej osoby dorosłej", "Dostęp do regulacji sensorycznej", "Komunikat prywatny zamiast przy klasie", "Inne"]
   }
-} satisfies Record<string, EnvironmentConfig>;
+} as const satisfies Record<string, EnvironmentConfig>;
 
 export function blankForm(env: EnvironmentConfig): SituationForm {
   return {
