@@ -3,7 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig(({ command }) => ({
-  base: command === "serve" ? "/" : "/situationmap/",
+  base: command === "serve" ? "/" : "/map/",
   plugins: [
     vue(),
     VitePWA({
@@ -16,8 +16,8 @@ export default defineConfig(({ command }) => ({
         theme_color: "#173b37",
         background_color: "#f7f6f2",
         display: "standalone",
-        start_url: "/situationmap/",
-        scope: "/situationmap/",
+        start_url: "/map/",
+        scope: "/map/",
         lang: "pl",
         icons: [
           {
