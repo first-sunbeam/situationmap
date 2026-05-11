@@ -177,8 +177,8 @@ export function getMapExportSections(labels: FormLabels = formLabels): ExportSec
       rows: [
         { label: (_env, form) => labels.map.preferred.replace("Prefers staying in", `Where does ${getSubjectInline(form, "the child/student")} prefer staying?`).replace("Chętnie przebywa w", `W jakich miejscach ${getSubjectInline(form, "dziecko/uczeń")} najchętniej przebywa?`), value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
         { label: labels.map.preferred === "Prefers staying in" ? "Why these places? What makes them distinctive?" : "Dlaczego te miejsca? Co je wyróżnia?", value: (_env, form) => form.map.preferredReason },
-        { label: (_env, form) => labels.map.avoided === "Avoids / has difficulty leaving" ? `Which places does ${getSubjectInline(form, "the child/student")} avoid or have difficulty leaving?` : `Z jakich miejsc ${getSubjectInline(form, "dziecko/uczeń")} unika lub wychodzi z trudem?`, value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
-        { label: labels.map.avoided === "Avoids / has difficulty leaving" ? "What activates tension in these places?" : "Co w tych miejscach aktywuje napięcie?", value: (_env, form) => form.map.avoidedReason }
+        { label: (_env, form) => labels.map.avoided === "Avoids or finds it hard to leave" ? `Which places does ${getSubjectInline(form, "the child/student")} avoid or find hard to leave?` : `Z jakich miejsc ${getSubjectInline(form, "dziecko/uczeń")} unika lub wychodzi z trudem?`, value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
+        { label: labels.map.avoided === "Avoids or finds it hard to leave" ? "What activates tension in these places?" : "Co w tych miejscach aktywuje napięcie?", value: (_env, form) => form.map.avoidedReason }
       ]
     },
     {
