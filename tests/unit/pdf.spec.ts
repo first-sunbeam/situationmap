@@ -68,7 +68,7 @@ describe("generowanie PDF", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "incident", "en"));
 
     expect(content).toContain("INCIDENT REPORT");
-    expect(content).toContain("Baseline level and daily context");
+    expect(content).toContain("Baseline and daily context");
     expect(content).toContain("Was it clear what would happen?");
     expect(content).toContain("1 elevated");
     expect(content).toContain("Silence and no stimuli");
