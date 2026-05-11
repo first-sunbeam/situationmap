@@ -39,6 +39,11 @@ function toggleOption(option: string): void {
     ? model.value.filter((item) => item !== option)
     : [...model.value, option];
 }
+
+function formatChoiceLabel(value: string): string {
+  const label = translateOption(value, language.value);
+  return label.replace(/^([A-ZĄĆĘŁŃÓŚŹŻ])(?=[a-ząćęłńóśźż])/, (letter) => letter.toLowerCase());
+}
 </script>
 
 <template>
@@ -60,7 +65,7 @@ function toggleOption(option: string): void {
           :aria-invalid="error ? 'true' : undefined"
           @change="toggleOption(item)"
         />
-        {{ translateOption(item, language) }}
+        {{ formatChoiceLabel(item) }}
       </label>
     </div>
 

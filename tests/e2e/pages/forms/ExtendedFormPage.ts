@@ -104,7 +104,7 @@ export class ExtendedFormPage {
 
   get beforeActivityChangeCheckbox(): Locator {
     return this.sectionContainer("before").getByRole("checkbox", {
-      name: "Zmiana aktywności",
+      name: "zmiana aktywności",
     });
   }
 
