@@ -1,6 +1,6 @@
 import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, SituationForm } from "../types/form";
-import { formLabels } from "./formLabels";
+import { formLabels, type FormLabels } from "./formLabels";
 
 export type ExportValue = string | string[];
 
@@ -28,191 +28,199 @@ export function resolveExportLabel(label: ExportLabel, env: EnvironmentConfig, f
   return typeof label === "function" ? label(env, form) : label;
 }
 
-export function getMetaExportSection(env: EnvironmentConfig): ExportSection {
+export function getMetaExportSection(env: EnvironmentConfig, labels: FormLabels = formLabels): ExportSection {
   return {
-    title: formLabels.meta.section,
+    title: labels.meta.section,
     rows: [
-      { label: formLabels.meta.date, value: (_env, form) => form.meta.date },
-      { label: formLabels.meta.time, value: (_env, form) => form.meta.time },
-      { label: formLabels.meta.place, value: (_env, form) => form.meta.place },
-      { label: formLabels.meta.initials, value: (_env, form) => form.meta.initials },
+      { label: labels.meta.date, value: (_env, form) => form.meta.date },
+      { label: labels.meta.time, value: (_env, form) => form.meta.time },
+      { label: labels.meta.place, value: (_env, form) => form.meta.place },
+      { label: labels.meta.initials, value: (_env, form) => form.meta.initials },
       { label: env.lead, value: (_env, form) => form.meta.lead },
-      { label: formLabels.meta.present, value: (_env, form) => form.meta.present }
+      { label: labels.meta.present, value: (_env, form) => form.meta.present }
     ]
   };
 }
 
-export const simpleExportSection: ExportSection = {
-  title: formLabels.simple.section,
-  rows: [
-    { label: (_env, form) => `1. Co wydarzyło się tuż przed i jaki był stan ${getSubjectInline(form)}?`, value: (_env, form) => form.simple.stateBefore },
-    { label: formLabels.simple.beforeLastMinutes, value: (_env, form) => form.simple.antecedents },
-    { label: formLabels.simple.signalsObserved, value: (_env, form) => form.simple.signals },
-    { label: formLabels.simple.adultReaction, value: (_env, form) => form.simple.interventions },
-    { label: formLabels.simple.behavior, value: (_env, form) => form.simple.behavior },
-    { label: formLabels.simple.helped, value: (_env, form) => form.simple.helped },
-    { label: (_env, form) => `Możliwość decyzji dla ${getSubjectInline(form)}`, value: (_env, form) => form.simple.notes },
-    { label: formLabels.simple.predictability, value: (_env, form) => form.simple.predictability },
-    { label: formLabels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
-  ]
-};
+export function getSimpleExportSection(labels: FormLabels = formLabels): ExportSection {
+  return {
+    title: labels.simple.section,
+    rows: [
+      { label: (_env, form) => labels.simple.antecedents.replace("dziecka/ucznia", getSubjectInline(form)), value: (_env, form) => form.simple.stateBefore },
+      { label: labels.simple.beforeLastMinutes, value: (_env, form) => form.simple.antecedents },
+      { label: labels.simple.signalsObserved, value: (_env, form) => form.simple.signals },
+      { label: labels.simple.adultReaction, value: (_env, form) => form.simple.interventions },
+      { label: labels.simple.behavior, value: (_env, form) => form.simple.behavior },
+      { label: labels.simple.helped, value: (_env, form) => form.simple.helped },
+      { label: (_env, form) => labels.simple.notes.replace("zakres kontroli", `zakres kontroli dla ${getSubjectInline(form)}`).replace("scope of control", `scope of control for ${getSubjectInline(form)}`), value: (_env, form) => form.simple.notes },
+      { label: labels.simple.predictability, value: (_env, form) => form.simple.predictability },
+      { label: labels.simple.recoveryTime, value: (_env, form) => form.simple.recoveryTime }
+    ]
+  };
+}
 
-export function getIncidentExportSections(env: EnvironmentConfig): ExportSection[] {
+export const simpleExportSection = getSimpleExportSection();
+
+export function getIncidentExportSections(env: EnvironmentConfig, labels: FormLabels = formLabels): ExportSection[] {
   return [
     {
-      title: formLabels.incident.baselineSection,
+      title: labels.incident.baselineSection,
       rows: [
-        { label: formLabels.incident.tension, value: incidentValue("tension") },
-        { label: formLabels.incident.tired, value: incidentValue("tired") },
-        { label: formLabels.incident.slept, value: incidentValue("slept") },
-        { label: formLabels.incident.sleepDetails, value: incidentValue("sleepDetails") },
+        { label: labels.incident.tension, value: incidentValue("tension") },
+        { label: labels.incident.tired, value: incidentValue("tired") },
+        { label: labels.incident.slept, value: incidentValue("slept") },
+        { label: labels.incident.sleepDetails, value: incidentValue("sleepDetails") },
         ...(env.stayStages ? [
-          { label: formLabels.incident.stayStage, value: incidentValue("stayStage") },
-          { label: formLabels.incident.stayStageLoad, value: incidentValue("stayStageLoad") }
+          { label: labels.incident.stayStage, value: incidentValue("stayStage") },
+          { label: labels.incident.stayStageLoad, value: incidentValue("stayStageLoad") }
         ] : []),
-        { label: formLabels.incident.burdens, value: (_env, form) => withOther(form.incident.burdens, form.incident.burdensOther) },
-        { label: formLabels.incident.bodyState, value: (_env, form) => withOther(form.incident.bodyState, form.incident.bodyStateOther) },
-        { label: formLabels.incident.sensoryIntensity, value: (_env, form) => withOther(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther) }
+        { label: labels.incident.burdens, value: (_env, form) => withOther(form.incident.burdens, form.incident.burdensOther) },
+        { label: labels.incident.bodyState, value: (_env, form) => withOther(form.incident.bodyState, form.incident.bodyStateOther) },
+        { label: labels.incident.sensoryIntensity, value: (_env, form) => withOther(form.incident.sensoryIntensity, form.incident.sensoryIntensityOther) }
       ]
     },
     {
-      title: formLabels.incident.beforeSection,
+      title: labels.incident.beforeSection,
       rows: [
-        { label: formLabels.incident.antecedents, value: incidentValue("antecedents") },
-        { label: formLabels.incident.factDescription, value: incidentValue("factDescription") }
+        { label: labels.incident.antecedents, value: incidentValue("antecedents") },
+        { label: labels.incident.factDescription, value: incidentValue("factDescription") }
       ]
     },
     {
-      title: formLabels.incident.expectationsSection,
+      title: labels.incident.expectationsSection,
       rows: [
-        { label: (_env, form) => `Jaki był zakres wpływu i przewidywalności w tym momencie dla ${getSubjectInline(form)}?`, value: incidentValue("influence") },
-        { label: (_env, form) => `Co było nieznane dla ${getSubjectInline(form)}, narzucone albo poza wpływem?`, value: incidentValue("noInfluence") },
-        { label: formLabels.incident.predictabilityWhat, value: incidentValue("predictabilityWhat") },
-        { label: formLabels.incident.predictabilityDuration, value: incidentValue("predictabilityDuration") },
-        { label: formLabels.incident.predictabilityChoice, value: incidentValue("predictabilityChoice") },
-        { label: formLabels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) }
+        { label: labels.incident.influence, value: incidentValue("influence") },
+        { label: labels.incident.noInfluence, value: incidentValue("noInfluence") },
+        { label: labels.incident.predictabilityWhat, value: incidentValue("predictabilityWhat") },
+        { label: labels.incident.predictabilityDuration, value: incidentValue("predictabilityDuration") },
+        { label: labels.incident.predictabilityChoice, value: incidentValue("predictabilityChoice") },
+        { label: labels.incident.expectations, value: (_env, form) => withOther(form.incident.expectations, form.incident.expectationOther) }
       ]
     },
     {
-      title: formLabels.incident.signalsSection,
+      title: labels.incident.signalsSection,
       rows: [
-        { label: formLabels.incident.signalsAppeared, value: incidentValue("signalsAppeared") },
-        { label: formLabels.incident.activationSignals, value: (_env, form) => withOther(form.incident.activationSignals, form.incident.activationSignalsOther) },
-        { label: formLabels.incident.shutdownSignals, value: (_env, form) => withOther(form.incident.shutdownSignals, form.incident.shutdownSignalsOther) },
-        { label: formLabels.incident.sensorySignals, value: (_env, form) => withOther(form.incident.sensorySignals, form.incident.sensorySignalsOther) },
-        { label: formLabels.incident.timeToEscalation, value: incidentValue("timeToEscalation") },
-        { label: formLabels.incident.firstSignal, value: incidentValue("firstSignal") },
-        { label: formLabels.incident.predicts, value: incidentValue("predicts") }
+        { label: labels.incident.signalsAppeared, value: incidentValue("signalsAppeared") },
+        { label: labels.incident.activationSignals, value: (_env, form) => withOther(form.incident.activationSignals, form.incident.activationSignalsOther) },
+        { label: labels.incident.shutdownSignals, value: (_env, form) => withOther(form.incident.shutdownSignals, form.incident.shutdownSignalsOther) },
+        { label: labels.incident.sensorySignals, value: (_env, form) => withOther(form.incident.sensorySignals, form.incident.sensorySignalsOther) },
+        { label: labels.incident.timeToEscalation, value: incidentValue("timeToEscalation") },
+        { label: labels.incident.firstSignal, value: incidentValue("firstSignal") },
+        { label: labels.incident.predicts, value: incidentValue("predicts") }
       ]
     },
     {
-      title: formLabels.incident.maskingSection,
+      title: labels.incident.maskingSection,
       rows: [
-        { label: (_env, form) => `Kontynuowanie aktywności mimo narastającego napięcia przez ${getSubjectInline(form)}`, value: incidentValue("maskingContinued") },
-        { label: formLabels.incident.maskingStrategies, value: (_env, form) => withOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther) },
-        { label: (_env, form) => `Czas „trzymania się” przed eskalacją przez ${getSubjectInline(form)}`, value: incidentValue("maskingDuration") }
+        { label: labels.incident.maskingContinued, value: incidentValue("maskingContinued") },
+        { label: labels.incident.maskingStrategies, value: (_env, form) => withOther(form.incident.maskingStrategies, form.incident.maskingStrategiesOther) },
+        { label: labels.incident.maskingDuration, value: incidentValue("maskingDuration") }
       ]
     },
     {
-      title: formLabels.incident.actionsSection,
+      title: labels.incident.actionsSection,
       rows: [
-        { label: formLabels.incident.phase, value: incidentValue("phase") },
-        { label: formLabels.incident.interventions, value: incidentValue("interventions") },
-        { label: formLabels.incident.interventionDetails, value: incidentValue("interventionDetails") },
-        { label: formLabels.incident.unconditional, value: incidentValue("unconditional") },
-        { label: formLabels.incident.usedRegulator, value: incidentValue("usedRegulator") },
-        { label: formLabels.incident.reducedTension, value: incidentValue("reducedTension") },
-        { label: formLabels.incident.earlierWhat, value: incidentValue("earlierWhat") }
+        { label: labels.incident.phase, value: incidentValue("phase") },
+        { label: labels.incident.interventions, value: incidentValue("interventions") },
+        { label: labels.incident.interventionDetails, value: incidentValue("interventionDetails") },
+        { label: labels.incident.unconditional, value: incidentValue("unconditional") },
+        { label: labels.incident.usedRegulator, value: incidentValue("usedRegulator") },
+        { label: labels.incident.reducedTension, value: incidentValue("reducedTension") },
+        { label: labels.incident.earlierWhat, value: incidentValue("earlierWhat") }
       ]
     },
     {
-      title: formLabels.incident.behaviorSection,
+      title: labels.incident.behaviorSection,
       rows: [
-        { label: formLabels.incident.behavior, value: incidentValue("behavior") },
-        { label: formLabels.incident.intensity, value: incidentValue("intensity") },
-        { label: formLabels.incident.harms, value: incidentValue("harms") }
+        { label: labels.incident.behavior, value: incidentValue("behavior") },
+        { label: labels.incident.intensity, value: incidentValue("intensity") },
+        { label: labels.incident.harms, value: incidentValue("harms") }
       ]
     },
     {
-      title: formLabels.incident.regulationSection,
+      title: labels.incident.regulationSection,
       rows: [
-        { label: formLabels.incident.escalationDuration, value: incidentValue("escalationDuration") },
-        { label: formLabels.incident.endedBy, value: (_env, form) => withOther(form.incident.endedBy, form.incident.endedByOther) },
-        { label: formLabels.incident.worsened, value: incidentValue("worsened") },
-        { label: formLabels.incident.calmTime, value: incidentValue("calmTime") },
-        { label: formLabels.incident.cognitiveRecoveryTime, value: incidentValue("cognitiveRecoveryTime") },
-        { label: formLabels.incident.recoverySupports, value: (_env, form) => withOther(form.incident.recoverySupports, form.incident.recoverySupportsOther) }
+        { label: labels.incident.escalationDuration, value: incidentValue("escalationDuration") },
+        { label: labels.incident.endedBy, value: (_env, form) => withOther(form.incident.endedBy, form.incident.endedByOther) },
+        { label: labels.incident.worsened, value: incidentValue("worsened") },
+        { label: labels.incident.calmTime, value: incidentValue("calmTime") },
+        { label: labels.incident.cognitiveRecoveryTime, value: incidentValue("cognitiveRecoveryTime") },
+        { label: labels.incident.recoverySupports, value: (_env, form) => withOther(form.incident.recoverySupports, form.incident.recoverySupportsOther) }
       ]
     },
     {
-      title: formLabels.incident.afterSection,
+      title: labels.incident.afterSection,
       rows: [
-        { label: formLabels.incident.after, value: (_env, form) => withOther(form.incident.after, form.incident.afterOther) }
+        { label: labels.incident.after, value: (_env, form) => withOther(form.incident.after, form.incident.afterOther) }
       ]
     },
     {
-      title: formLabels.incident.physicalSection,
+      title: labels.incident.physicalSection,
       rows: [
-        { label: formLabels.incident.physicalThisWeek, value: incidentValue("physicalThisWeek") },
-        { label: formLabels.incident.physicalCount, value: incidentValue("physicalCount") },
-        { label: (_env, form) => `Szybsza lub silniejsza reakcja niż zwykle u ${getSubjectInline(form)}`, value: incidentValue("lowerThreshold") },
-        { label: formLabels.incident.physicalNote, value: incidentValue("physicalNote") }
+        { label: labels.incident.physicalThisWeek, value: incidentValue("physicalThisWeek") },
+        { label: labels.incident.physicalCount, value: incidentValue("physicalCount") },
+        { label: labels.incident.lowerThreshold, value: incidentValue("lowerThreshold") },
+        { label: labels.incident.physicalNote, value: incidentValue("physicalNote") }
       ]
     }
   ];
 }
 
-export const mapExportSections: ExportSection[] = [
-  {
-    title: "1. Miejsca i preferowane przestrzenie",
-    rows: [
-      { label: (_env, form) => `W jakich miejscach ${getSubjectInline(form, "dziecko/uczeń")} najchętniej przebywa?`, value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
-      { label: "Dlaczego te miejsca? Co je wyróżnia?", value: (_env, form) => form.map.preferredReason },
-      { label: (_env, form) => `Z jakich miejsc ${getSubjectInline(form, "dziecko/uczeń")} unika lub wychodzi z trudem?`, value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
-      { label: "Co w tych miejscach aktywuje napięcie?", value: (_env, form) => form.map.avoidedReason }
-    ]
-  },
-  {
-    title: "2. Preferowane aktywności i rola",
-    rows: [
-      { label: (_env, form) => `W jakie aktywności ${getSubjectInline(form, "dziecko/uczeń")} najchętniej się angażuje?`, value: (_env, form) => form.map.likes },
-      { label: (_env, form) => `Jaką rolę ${getSubjectInline(form, "dziecko/uczeń")} najczęściej przyjmuje w tych aktywnościach?`, value: (_env, form) => form.map.activityRoles }
-    ]
-  },
-  {
-    title: "3. Warunki optymalnego funkcjonowania",
-    rows: [
-      { label: (_env, form) => `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej funkcjonuje, gdy`, value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
-    ]
-  },
-  {
-    title: "4. Co wspiera i co obniża napięcie",
-    rows: [
-      { label: (_env, form) => `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej współpracuje z`, value: (_env, form) => form.map.cooperatesWith },
-      { label: "Co OBNIŻA napięcie", value: (_env, form) => withOther(form.map.reducers, form.map.reducersOther) },
-      { label: "Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?", value: (_env, form) => form.map.energySources }
-    ]
-  },
-  {
-    title: "5. Czynniki zmieniające zachowanie",
-    rows: [
-      { label: formLabels.map.dependsOn, value: (_env, form) => form.map.dependsOn },
-      { label: "Jak zmienia się zachowanie?", value: (_env, form) => form.map.dependsDescription }
-    ]
-  },
-  {
-    title: "6. Bezpieczne przestrzenie i osoby",
-    rows: [
-      { label: (_env, form) => `Gdzie/z kim ${getSubjectInline(form, "dziecko/uczeń")} czuje się najbezpieczniej?`, value: (_env, form) => form.map.safeBase }
-    ]
-  },
-  {
-    title: "7. Najczęstsze sytuacje eskalacji",
-    rows: [
-      { label: formLabels.map.escalationContexts, value: (_env, form) => withOther(form.map.escalationContexts, form.map.escalationOther) },
-      { label: "Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?", value: (_env, form) => withOther(form.map.escalationReducers, form.map.escalationReducersOther) },
-      { label: formLabels.map.noAggression, value: (_env, form) => form.map.noAggression },
-      { label: "Jakie to sytuacje i co je wyróżnia?", value: (_env, form) => form.map.noAggressionWhere }
-    ]
-  }
-];
+export function getMapExportSections(labels: FormLabels = formLabels): ExportSection[] {
+  return [
+    {
+      title: labels.map.section === "Environment map" ? "1. Places and preferred spaces" : "1. Miejsca i preferowane przestrzenie",
+      rows: [
+        { label: (_env, form) => labels.map.preferred.replace("Prefers staying in", `Where does ${getSubjectInline(form, "the child/student")} prefer staying?`).replace("Chętnie przebywa w", `W jakich miejscach ${getSubjectInline(form, "dziecko/uczeń")} najchętniej przebywa?`), value: (_env, form) => withOther(form.map.preferredPlaces, form.map.preferredPlacesOther) },
+        { label: labels.map.preferred === "Prefers staying in" ? "Why these places? What makes them distinctive?" : "Dlaczego te miejsca? Co je wyróżnia?", value: (_env, form) => form.map.preferredReason },
+        { label: (_env, form) => labels.map.avoided === "Avoids / has difficulty leaving" ? `Which places does ${getSubjectInline(form, "the child/student")} avoid or have difficulty leaving?` : `Z jakich miejsc ${getSubjectInline(form, "dziecko/uczeń")} unika lub wychodzi z trudem?`, value: (_env, form) => withOther(form.map.avoidedPlaces, form.map.avoidedPlacesOther) },
+        { label: labels.map.avoided === "Avoids / has difficulty leaving" ? "What activates tension in these places?" : "Co w tych miejscach aktywuje napięcie?", value: (_env, form) => form.map.avoidedReason }
+      ]
+    },
+    {
+      title: labels.map.section === "Environment map" ? "2. Preferred activities and role" : "2. Preferowane aktywności i rola",
+      rows: [
+        { label: (_env, form) => labels.map.likes === "Most willingly engages in" ? `Which activities does ${getSubjectInline(form, "the child/student")} most willingly engage in?` : `W jakie aktywności ${getSubjectInline(form, "dziecko/uczeń")} najchętniej się angażuje?`, value: (_env, form) => form.map.likes },
+        { label: (_env, form) => labels.map.likes === "Most willingly engages in" ? `What role does ${getSubjectInline(form, "the child/student")} most often take in these activities?` : `Jaką rolę ${getSubjectInline(form, "dziecko/uczeń")} najczęściej przyjmuje w tych aktywnościach?`, value: (_env, form) => form.map.activityRoles }
+      ]
+    },
+    {
+      title: labels.map.section === "Environment map" ? "3. Conditions for optimal functioning" : "3. Warunki optymalnego funkcjonowania",
+      rows: [
+        { label: (_env, form) => labels.map.easiestWhen === "Functions most easily when" ? `${getSubjectInline(form, "The child/student")} functions most easily when` : `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej funkcjonuje, gdy`, value: (_env, form) => withOther(form.map.easiestWhen, form.map.easiestWhenOther) }
+      ]
+    },
+    {
+      title: labels.map.section === "Environment map" ? "4. What supports and lowers tension" : "4. Co wspiera i co obniża napięcie",
+      rows: [
+        { label: (_env, form) => labels.map.cooperatesWith === "Cooperates most easily with" ? `${getSubjectInline(form, "The child/student")} cooperates most easily with` : `${getSubjectInline(form, "Dziecko/uczeń")} najłatwiej współpracuje z`, value: (_env, form) => form.map.cooperatesWith },
+        { label: labels.map.reducers, value: (_env, form) => withOther(form.map.reducers, form.map.reducersOther) },
+        { label: labels.map.reducers === "What lowers tension?" ? "What gives energy / motivates functioning despite overload?" : "Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?", value: (_env, form) => form.map.energySources }
+      ]
+    },
+    {
+      title: labels.map.section === "Environment map" ? "5. Factors changing behavior" : "5. Czynniki zmieniające zachowanie",
+      rows: [
+        { label: labels.map.dependsOn, value: (_env, form) => form.map.dependsOn },
+        { label: labels.map.dependsDescription, value: (_env, form) => form.map.dependsDescription }
+      ]
+    },
+    {
+      title: labels.map.section === "Environment map" ? "6. Safe spaces and people" : "6. Bezpieczne przestrzenie i osoby",
+      rows: [
+        { label: (_env, form) => labels.map.section === "Environment map" ? `Where/with whom does ${getSubjectInline(form, "the child/student")} feel safest?` : `Gdzie/z kim ${getSubjectInline(form, "dziecko/uczeń")} czuje się najbezpieczniej?`, value: (_env, form) => form.map.safeBase }
+      ]
+    },
+    {
+      title: labels.map.section === "Environment map" ? "7. Most common escalation situations" : "7. Najczęstsze sytuacje eskalacji",
+      rows: [
+        { label: labels.map.escalationContexts, value: (_env, form) => withOther(form.map.escalationContexts, form.map.escalationOther) },
+        { label: labels.map.escalationContexts === "Most common escalation situations" ? "What REDUCES escalation risk in these situations?" : "Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?", value: (_env, form) => withOther(form.map.escalationReducers, form.map.escalationReducersOther) },
+        { label: labels.map.noAggression, value: (_env, form) => form.map.noAggression },
+        { label: labels.map.noAggressionWhere, value: (_env, form) => form.map.noAggressionWhere }
+      ]
+    }
+  ];
+}
+
+export const mapExportSections = getMapExportSections();

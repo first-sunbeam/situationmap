@@ -1,7 +1,8 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, resolveExportLabel, simpleExportSection, type ExportRow, type ExportSection, type ExportValue } from "../config/exportSections";
-import { formLabels } from "../config/formLabels";
+import { getIncidentExportSections, getMapExportSections, getMetaExportSection, getSimpleExportSection, resolveExportLabel, type ExportRow, type ExportSection, type ExportValue } from "../config/exportSections";
+import { getFormLabels, type FormLabels } from "../config/formLabels";
+import type { LanguageCode } from "../i18n/useLanguage";
 import { resolveRows } from "./exportUtils";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, PdfAction, SituationForm } from "../types/form";
 
@@ -12,7 +13,7 @@ const pdfFontsBundle = pdfFonts as unknown as { pdfMake?: { vfs: Record<string, 
 type PdfNode = Record<string, unknown>;
 type PdfContent = PdfNode[];
 
-function selectedList(value: ExportValue): string {
+function selectedList(value: ExportValue, _language: LanguageCode): string {
   const values = Array.isArray(value) ? value : value ? [value] : [];
   return values.filter(Boolean).length ? values.filter(Boolean).join(", ") : "........................................";
 }
@@ -39,28 +40,28 @@ function formatLabel(label: string): PdfNode[] {
   return parts;
 }
 
-function fieldLine(label: string, value: ExportValue): PdfNode {
-  return { text: [...formatLabel(label), selectedList(value)], margin: [0, 2, 0, 2] };
+function fieldLine(label: string, value: ExportValue, language: LanguageCode): PdfNode {
+  return { text: [...formatLabel(label), selectedList(value, language)], margin: [0, 2, 0, 2] };
 }
 
-function exportRows(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): PdfContent {
-  return resolveRows(env, form, rows, fieldLine);
+function exportRows(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[], language: LanguageCode): PdfContent {
+  return resolveRows(env, form, rows, (label, value) => fieldLine(label, value, language), language);
 }
 
 function section(title: string, body: PdfContent): PdfContent {
   return [{ text: title, style: "sectionHeader", margin: [0, 10, 0, 5] }, ...body];
 }
 
-function sectionsFromExport(env: EnvironmentConfig, form: SituationForm, exportSections: ExportSection[]): PdfContent {
-  return exportSections.flatMap((s) => section(s.title, exportRows(env, form, s.rows)));
+function sectionsFromExport(env: EnvironmentConfig, form: SituationForm, exportSections: ExportSection[], language: LanguageCode): PdfContent {
+  return exportSections.flatMap((s) => section(s.title, exportRows(env, form, s.rows, language)));
 }
 
-function metaColumns(env: EnvironmentConfig, form: SituationForm): PdfNode {
-  const [date, time, place, initials, lead, present] = getMetaExportSection(env).rows;
+function metaColumns(env: EnvironmentConfig, form: SituationForm, labels: FormLabels, language: LanguageCode): PdfNode {
+  const [date, time, place, initials, lead, present] = getMetaExportSection(env, labels).rows;
   return {
     columns: [
-      [date, time, place, initials].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form))),
-      [lead, present].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form)))
+      [date, time, place, initials].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form), language)),
+      [lead, present].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form), language))
     ],
     columnGap: 18,
     margin: [0, 10, 0, 5]
@@ -89,50 +90,52 @@ function createDocument(content: PdfContent, env: EnvironmentConfig): Record<str
   };
 }
 
-function makeSimpleDoc(env: EnvironmentConfig, data: SituationForm): Record<string, unknown> {
+function makeSimpleDoc(env: EnvironmentConfig, data: SituationForm, labels: FormLabels, language: LanguageCode): Record<string, unknown> {
+  const simpleSection = getSimpleExportSection(labels);
   return createDocument([
-    { text: `FORMULARZ PROSTY - ${env.label.toUpperCase()}`, style: "title" },
-    { text: "Krótka wersja zgłoszenia sytuacji przygotowana do zapisania lub ręcznego załączenia w wiadomości e-mail.", style: "hint" },
-    metaColumns(env, data),
-    ...section(simpleExportSection.title, exportRows(env, data, simpleExportSection.rows))
+    { text: language === "en" ? `SIMPLE FORM - ${env.label.toUpperCase()}` : `FORMULARZ PROSTY - ${env.label.toUpperCase()}`, style: "title" },
+    { text: language === "en" ? "Short situation report prepared for saving or manual email attachment." : "Krótka wersja zgłoszenia sytuacji przygotowana do zapisania lub ręcznego załączenia w wiadomości e-mail.", style: "hint" },
+    metaColumns(env, data, labels, language),
+    ...section(simpleSection.title, exportRows(env, data, simpleSection.rows, language))
   ], env);
 }
 
-export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: FormVariant, mode: ExtendedMode): Record<string, unknown> {
-  if (variant === "simple") return makeSimpleDoc(env, data);
+export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: FormVariant, mode: ExtendedMode, language: LanguageCode = "pl"): Record<string, unknown> {
+  const labels = getFormLabels(language);
+  if (variant === "simple") return makeSimpleDoc(env, data, labels, language);
 
   const content: PdfContent = [
-    { text: env.incidentTitle, style: "title" },
-    { text: "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
-    metaColumns(env, data),
-    ...sectionsFromExport(env, data, getIncidentExportSections(env))
+    { text: language === "en" ? "INCIDENT REPORT" : env.incidentTitle, style: "title" },
+    { text: language === "en" ? "When describing the situation, note not only the behavior itself, but also signs of overload, tiredness, reduced availability, and environmental conditions." : "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
+    metaColumns(env, data, labels, language),
+    ...sectionsFromExport(env, data, getIncidentExportSections(env, labels), language)
   ];
 
   if (mode !== "incident") {
     content.push(
-      { text: env.mapTitle, style: "title" },
-      ...sectionsFromExport(env, data, mapExportSections)
+      { text: language === "en" ? "ENVIRONMENT MAP" : env.mapTitle, style: "title" },
+      ...sectionsFromExport(env, data, getMapExportSections(labels), language)
     );
   }
 
   const filteredContent = mode === "map"
-    ? content.slice(content.findIndex((item) => item.text === env.mapTitle))
+    ? content.slice(content.findIndex((item) => item.text === (language === "en" ? "ENVIRONMENT MAP" : env.mapTitle)))
     : content;
 
   return createDocument(filteredContent, env);
 }
 
-export function buildPdf({ env, form, variant, mode, modeLabel, action, setStatus }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode; modeLabel: string; action: PdfAction; setStatus: (message: string) => void }): void {
-  const doc = makeDoc(env, form, variant, mode);
+export function buildPdf({ env, form, variant, mode, modeLabel, language, action, setStatus }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode; modeLabel: string; language: LanguageCode; action: PdfAction; setStatus: (message: string) => void }): void {
+  const doc = makeDoc(env, form, variant, mode, language);
   const fileName = `monitorowanie-${env.label.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.pdf`;
   const pdf = pdfMake.createPdf(doc as never);
 
   if (action === "download") {
     pdf.download(fileName);
-    setStatus(`PDF gotowy — został pobrany (${modeLabel}).`);
+    setStatus(language === "en" ? `PDF ready — downloaded (${modeLabel}).` : `PDF gotowy — został pobrany (${modeLabel}).`);
     return;
   }
 
   pdf.open();
-  setStatus("PDF gotowy — został otwarty w nowej karcie.");
+  setStatus(language === "en" ? "PDF ready — opened in a new tab." : "PDF gotowy — został otwarty w nowej karcie.");
 }

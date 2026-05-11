@@ -91,6 +91,7 @@ function createFormState() {
       variant: activeVariant.value,
       mode: activeMode.value,
       modeLabel: modeLabel.value,
+      language: language.value,
       action,
       setStatus: (message: string) => {
         status.value = message;
@@ -112,7 +113,8 @@ function createFormState() {
       env: env.value,
       form: form.value,
       variant: activeVariant.value,
-      mode: activeMode.value
+      mode: activeMode.value,
+      language: language.value
     });
     openEmail(email);
     status.value = "E-mail został przygotowany w domyślnym programie pocztowym.";

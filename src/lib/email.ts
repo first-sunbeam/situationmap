@@ -1,6 +1,7 @@
-import { formLabels } from "../config/formLabels";
-import { getIncidentExportSections, getMetaExportSection, mapExportSections, simpleExportSection, type ExportRow } from "../config/exportSections";
+import { getFormLabels } from "../config/formLabels";
+import { getIncidentExportSections, getMapExportSections, getMetaExportSection, getSimpleExportSection, type ExportRow } from "../config/exportSections";
 import { resolveRows } from "./exportUtils";
+import type { LanguageCode } from "../i18n/useLanguage";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, SituationForm } from "../types/form";
 
 type EmailValue = string | string[];
@@ -19,36 +20,42 @@ function section(title: string, rows: string[]): string {
   return [title, ...rows, ""].join("\n");
 }
 
-function rowsToLines(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[]): string[] {
-  return resolveRows(env, form, rows, line);
+function rowsToLines(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[], language: LanguageCode): string[] {
+  return resolveRows(env, form, rows, line, language);
 }
 
-export function buildEmail({ env, form, variant, mode }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode }): EmailContent {
-  const subject = `Formularz monitorowania - ${env.label} - ${variant === "simple" ? "prosty" : "rozszerzony"}`;
+export function buildEmail({ env, form, variant, mode, language }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode; language: LanguageCode }): EmailContent {
+  const labels = getFormLabels(language);
+  const simpleVariant = language === "en" ? "simple" : "prosty";
+  const extendedVariant = language === "en" ? "extended" : "rozszerzony";
+  const subject = language === "en"
+    ? `Monitoring form - ${env.label} - ${variant === "simple" ? simpleVariant : extendedVariant}`
+    : `Formularz monitorowania - ${env.label} - ${variant === "simple" ? simpleVariant : extendedVariant}`;
   const parts = [
-    `Środowisko: ${env.label}`,
-    `Wersja formularza: ${variant === "simple" ? "prosta" : "rozszerzona"}`,
+    language === "en" ? `Environment: ${env.label}` : `Środowisko: ${env.label}`,
+    language === "en" ? `Form version: ${variant === "simple" ? simpleVariant : extendedVariant}` : `Wersja formularza: ${variant === "simple" ? "prosta" : "rozszerzona"}`,
     ""
   ];
 
   if (variant === "simple") {
-    const metaSection = getMetaExportSection(env);
+    const metaSection = getMetaExportSection(env, labels);
+    const simpleSection = getSimpleExportSection(labels);
     parts.push(
-      section(metaSection.title, rowsToLines(env, form, metaSection.rows)),
-      section(simpleExportSection.title, rowsToLines(env, form, simpleExportSection.rows))
+      section(metaSection.title, rowsToLines(env, form, metaSection.rows, language)),
+      section(simpleSection.title, rowsToLines(env, form, simpleSection.rows, language))
     );
   } else {
     if (mode !== "map") {
       const incidentRows = [
-        ...getMetaExportSection(env).rows,
-        ...getIncidentExportSections(env).flatMap((s) => s.rows)
+        ...getMetaExportSection(env, labels).rows,
+        ...getIncidentExportSections(env, labels).flatMap((s) => s.rows)
       ];
-      parts.push(section("Karta zdarzenia", rowsToLines(env, form, incidentRows)));
+      parts.push(section(language === "en" ? "Incident report" : "Karta zdarzenia", rowsToLines(env, form, incidentRows, language)));
     }
 
     if (mode !== "incident") {
-      const mapRowsText = mapExportSections.flatMap((s) => rowsToLines(env, form, s.rows));
-      parts.push(section(formLabels.map.section, mapRowsText));
+      const mapRowsText = getMapExportSections(labels).flatMap((s) => rowsToLines(env, form, s.rows, language));
+      parts.push(section(labels.map.section, mapRowsText));
     }
   }
 
