@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useLanguage } from "../../i18n/useLanguage";
+import { translateOption } from "../../i18n/options";
 import LabelText from "./LabelText.vue";
 import { useFieldIds } from "./useFieldIds";
 
@@ -21,6 +23,7 @@ const {
 }>();
 
 const model = defineModel<string[]>({ required: true });
+const { language } = useLanguage();
 
 const { hintId, errorId, describedBy } = useFieldIds(
   () => hint,
@@ -57,7 +60,7 @@ function toggleOption(option: string): void {
           :aria-invalid="error ? 'true' : undefined"
           @change="toggleOption(item)"
         />
-        {{ item }}
+        {{ translateOption(item, language) }}
       </label>
     </div>
 

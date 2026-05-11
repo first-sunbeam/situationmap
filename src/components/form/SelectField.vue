@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useLanguage } from "../../i18n/useLanguage";
+import { translateOption } from "../../i18n/options";
 import LabelText from "./LabelText.vue";
 import { useFieldIds } from "./useFieldIds";
 
@@ -46,7 +47,7 @@ const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
       :aria-invalid="error ? 'true' : undefined"
     >
       <option value="">{{ resolvedPlaceholder }}</option>
-      <option v-for="item in options" :key="item" :value="item">{{ item }}</option>
+      <option v-for="item in options" :key="item" :value="item">{{ translateOption(item, language) }}</option>
     </select>
 
     <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
