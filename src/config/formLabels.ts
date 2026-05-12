@@ -7,13 +7,12 @@ export const formLabelsByLanguage = {
       date: "Data",
       time: "Godzina",
       place: "Miejsce",
-      initials: "Inicjały dziecka/ucznia",
+      initials: "Inicjały osoby",
       present: "Inne osoby obecne",
     },
     simple: {
       section: "Opis sytuacji",
-      antecedents:
-        "1. Co wydarzyło się tuż przed i jaki był stan dziecka/ucznia?",
+      antecedents: "1. Co wydarzyło się tuż przed i jaki był stan osoby?",
       stateBefore: "Stan przed zdarzeniem",
       beforeLastMinutes: "Co działo się tuż przed (ostatnie 5 minut)?",
       signals:
@@ -22,7 +21,7 @@ export const formLabelsByLanguage = {
       adultReaction: "Reakcja osoby wspierającej / otoczenia",
       behavior: "3. Przebieg sytuacji – co można było zaobserwować?",
       helped: "4. Co pomogło (lub nie pomogło) wyregulować sytuację?",
-      notes: "5. Wpływ i autonomia – zakres kontroli",
+      notes: "5. Wpływ, autonomia i przewidywalność",
       predictability: "Czy dla",
       recoveryTime: "6. Czas do odzyskania gotowości do współpracy",
     },
@@ -54,9 +53,8 @@ export const formLabelsByLanguage = {
       expectations: "Oczekiwania",
       expectationOther: "Jeśli inne, wpisz jakie",
       influence:
-        "Jaki był zakres wpływu i przewidywalności w tym momencie dla osoby?",
-      noInfluence:
-        "Co było nieznane, narzucone albo poza wpływem dziecka/ucznia?",
+        "Jaki był zakres wpływu, autonomii i przewidywalności w tym momencie dla osoby?",
+      noInfluence: "Co było nieznane, narzucone albo poza wpływem osoby?",
       predictability: "Przewidywalność sytuacji",
       predictabilityWhat: "Czy było wiadomo, co się wydarzy?",
       predictabilityDuration: "Czy było wiadomo, jak długo to potrwa?",
@@ -71,12 +69,11 @@ export const formLabelsByLanguage = {
       timeToEscalation: "Ile czasu przed eskalacją?",
       firstSignal: "Co zwykle pojawia się najpierw?",
       maskingContinued:
-        "Czy dziecko/uczeń próbowało kontynuować aktywność mimo narastającego napięcia?",
+        "Czy osoba próbowała kontynuować aktywność mimo narastającego napięcia?",
       maskingStrategies:
-        "Jeśli tak – co pozwoliło dziecku „trzymać się razem” przed eskalacją?",
+        "Jeśli tak – co pozwoliło osobie „trzymać się razem” przed eskalacją?",
       maskingStrategiesOther: "Jeśli inne, wpisz jakie",
-      maskingDuration:
-        "Ile czasu dziecko/uczeń „trzymało się” przed eskalacją?",
+      maskingDuration: "Ile czasu osoba „trzymała się” przed eskalacją?",
       predicts: "Czy zapowiada trudniejsze zachowanie?",
       phase: "Faza napięcia w momencie podjęcia działań",
       interventions: "Działania podjęte przed eskalacją",
@@ -96,8 +93,7 @@ export const formLabelsByLanguage = {
       cognitiveRecoveryTime: "Czas do odzyskania dostępności poznawczej",
       physicalThisWeek: "Interwencja fizyczna w tym tygodniu?",
       physicalCount: "Ile razy?",
-      lowerThreshold:
-        "Czy dziecko/uczeń reagowało szybciej lub mocniej niż zwykle?",
+      lowerThreshold: "Czy osoba reagowała szybciej lub mocniej niż zwykle?",
       physicalNote: "Notatka o interwencji fizycznej",
       endedBy: "Co najbardziej pomogło ZAKOŃCZYĆ eskalację?",
       endedByOther: "Jeśli inne, wpisz jakie",
@@ -171,7 +167,7 @@ export const formLabelsByLanguage = {
         "Mapa opisuje miejsca, aktywności, warunki regulacji i sytuacje zwiększające ryzyko eskalacji.",
       footerBio: "Psycholog · Analityk zachowania (BCBA)",
       simpleStateQuestion: "1. Co wydarzyło się tuż przed i jaki był stan",
-      simpleAutonomyQuestion: "5. Wpływ i autonomia – zakres kontroli dla",
+      simpleAutonomyQuestion: "5. Wpływ, autonomia i przewidywalność dla",
       behaviorSectionHint:
         "Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od intencji lub „nieposłuszeństwa”.",
       afterSectionHint:
@@ -184,15 +180,15 @@ export const formLabelsByLanguage = {
       expectationsSectionHint:
         "W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym.",
       influenceFor:
-        "Jaki był zakres wpływu i przewidywalności w tym momencie dla",
+        "Jaki był zakres wpływu, autonomii i przewidywalności w tym momencie dla",
       influenceHint:
-        "Czy znało kolejny krok, czas trwania lub zakończenie aktywności? Co mogło wybrać, zmienić albo zakończyć?",
+        "Czy znała kolejny krok, czas trwania lub zakończenie aktywności? Co mogła wybrać, zmienić albo zakończyć?",
       noInfluenceFor: "Co było nieznane dla",
       noInfluenceSuffix: "narzucone albo poza wpływem?",
       noInfluenceHint:
-        "Czego nie wiedziało? Co było nagłe, narzucone, nieuniknione albo bez możliwości negocjacji?",
+        "Czego osoba nie wiedziała? Co było nagłe, narzucone, nieuniknione albo bez możliwości negocjacji?",
       maskingSectionHint:
-        "U osób z PDA maskowanie to często nieświadoma strategia „przetrwania” – dziecko kontynuuje mimo przeciążenia, a potem następuje opóźniona eskalacja. Czas maskowania + intensywność późniejszego wybuchu pokazują koszt „trzymania się razem”.",
+        "U osób z PDA maskowanie to często nieświadoma strategia „przetrwania” – osoba kontynuuje mimo przeciążenia, a potem następuje opóźniona eskalacja. Czas maskowania + intensywność późniejszego wybuchu pokazują koszt „trzymania się razem”.",
       maskingContinuedFor:
         "Kontynuowanie aktywności mimo narastającego napięcia przez",
       maskingGroupLegend: "Strategie maskowania i czas „trzymania się”",
@@ -230,12 +226,12 @@ export const formLabelsByLanguage = {
       easiestWhenSuffix: "najłatwiej funkcjonuje, gdy:",
       preferredReason: "Dlaczego te miejsca? Co je wyróżnia?",
       preferredReasonHint:
-        "Np. cisza, samotność, przewidywalność, ulubione przedmioty, dostęp do bliskiej osoby, możliwość kontrolowania bodźców (światło, dźwięk).",
+        "Np. cisza, samotność, przewidywalność, ulubione przedmioty, dostęp do bliskiej osoby, możliwość regulowania bodźców (światło, dźwięk).",
       avoidedPlacesFor: "Z jakich miejsc",
       avoidedPlacesSuffix: "unika lub wychodzi z trudem?",
       avoidedReason: "Co w tych miejscach aktywuje napięcie?",
       avoidedReasonHint:
-        "Np. hałas, tłok, brak kontroli nad bodźcami, nieprzewidywalność, narzucone wymagania, obecność innych osób.",
+        "Np. hałas, tłok, brak wpływu na bodźce, nieprzewidywalność, narzucone wymagania, obecność innych osób.",
       mapActivitiesTitle: "2. Preferowane aktywności i rola",
       likesFor: "W jakie aktywności",
       likesSuffix: "najchętniej się angażuje?",
@@ -244,7 +240,7 @@ export const formLabelsByLanguage = {
       activityRoleFor: "Jaką rolę",
       activityRoleSuffix: "najczęściej przyjmuje w tych aktywnościach?",
       activityRoleHint:
-        "W PDA preferowana rola to często prowadzący — dziecko funkcjonuje najlepiej, gdy ma kontrolę nad przebiegiem aktywności.",
+        "W PDA preferowana rola to często prowadzący — osoba funkcjonuje najlepiej, gdy ma wpływ na przebieg aktywności.",
       mapSupportTitle: "4. Co wspiera i co obniża napięcie",
       cooperatesWithSuffix: "najłatwiej współpracuje z:",
       cooperatesWithHint:
@@ -379,19 +375,19 @@ export const formLabelsByLanguage = {
       date: "Date",
       time: "Time",
       place: "Place",
-      initials: "Child/student initials",
+      initials: "Person's initials",
       present: "Other people present",
     },
     simple: {
       section: "Situation description",
       antecedents:
-        "1. What happened immediately before, and what was the child/student's state?",
+        "1. What happened immediately before, and what was the person's state?",
       stateBefore: "State before the incident",
       beforeLastMinutes: "What happened immediately before (last 5 minutes)?",
       signals:
         "2. What were the first signs of tension and how did support/the environment respond?",
       signalsObserved: "Signals",
-      adultReaction: "Response of the supporting person / environment",
+      adultReaction: "Response from the supporting person / environment",
       behavior: "3. What happened – what could be observed?",
       helped: "4. What helped (or did not help) regulate the situation?",
       notes: "5. Influence, autonomy, and predictability",
@@ -426,9 +422,9 @@ export const formLabelsByLanguage = {
       expectations: "Expectations",
       expectationOther: "If other, specify",
       influence:
-        "What control, choice, and predictability did the child/student have at that moment?",
+        "What influence, autonomy, and predictability did the person have at that moment?",
       noInfluence:
-        "What was unknown, imposed, or outside the child/student's control?",
+        "What was unknown, imposed, or outside the person's influence?",
       predictability: "Situation predictability",
       predictabilityWhat: "Was it clear what would happen?",
       predictabilityDuration: "Was it clear how long it would last?",
@@ -443,12 +439,12 @@ export const formLabelsByLanguage = {
       timeToEscalation: "How long before escalation?",
       firstSignal: "What usually appears first?",
       maskingContinued:
-        "Did the child/student try to continue the activity despite rising tension?",
+        "Did the person try to continue the activity despite rising tension?",
       maskingStrategies:
-        "If yes – what helped the child/student continue the activity before escalation?",
+        "If yes – what helped the person continue the activity before escalation?",
       maskingStrategiesOther: "If other, specify",
       maskingDuration:
-        "How long did the child/student continue the activity before escalation?",
+        "How long did the person continue the activity before escalation?",
       predicts: "Is this a warning sign for more difficult behavior?",
       phase: "Tension phase when actions were taken",
       interventions: "Actions taken before escalation",
@@ -544,8 +540,7 @@ export const formLabelsByLanguage = {
       footerBio: "Psychologist · Behavior Analyst (BCBA)",
       simpleStateQuestion:
         "1. What happened immediately before, and what was the state of",
-      simpleAutonomyQuestion:
-        "5. Influence, autonomy, and predictability for",
+      simpleAutonomyQuestion: "5. Influence, autonomy, and predictability for",
       behaviorSectionHint:
         "A description of observable behavior helps distinguish a nervous system reaction from intention or “disobedience”.",
       afterSectionHint:
@@ -558,15 +553,15 @@ export const formLabelsByLanguage = {
       expectationsSectionHint:
         "In PDA, lack of autonomy and unpredictability activate the nervous system threat response.",
       influenceFor:
-        "What control, choice, and predictability were available at that moment for",
+        "What influence, autonomy, and predictability were available at that moment for",
       influenceHint:
         "Did they know the next step, duration, or end of the activity? What could they choose, change, or stop?",
       noInfluenceFor: "What was unknown to",
-      noInfluenceSuffix: "imposed, or outside their control?",
+      noInfluenceSuffix: "imposed, or outside their influence?",
       noInfluenceHint:
         "What did they not know? What was sudden, imposed, unavoidable, or without an option to negotiate?",
       maskingSectionHint:
-        "In PDA, masking is often an unconscious survival strategy – the child continues despite overload, followed by delayed escalation. Masking time + later escalation intensity show the cost of continuing the activity.",
+        "In PDA, masking is often an unconscious survival strategy – the person continues despite overload, followed by delayed escalation. Masking time + later escalation intensity show the cost of continuing the activity.",
       maskingContinuedFor: "Continuing activity despite rising tension by",
       maskingGroupLegend: "Masking strategies and time continuing the activity",
       maskingDurationFor: "Time continuing the activity before escalation by",
@@ -602,12 +597,12 @@ export const formLabelsByLanguage = {
       easiestWhenSuffix: "does best when:",
       preferredReason: "Why these places? What makes them distinctive?",
       preferredReasonHint:
-        "E.g. silence, being alone, predictability, favorite objects, access to a close person, ability to control stimuli (light, sound).",
+        "E.g. silence, being alone, predictability, favorite objects, access to a close person, ability to regulate stimuli (light, sound).",
       avoidedPlacesFor: "Which places does",
       avoidedPlacesSuffix: "avoid or have difficulty leaving?",
       avoidedReason: "What activates tension in these places?",
       avoidedReasonHint:
-        "E.g. noise, crowding, lack of control over stimuli, unpredictability, imposed demands, presence of other people.",
+        "E.g. noise, crowding, lack of influence over stimuli, unpredictability, imposed demands, presence of other people.",
       mapActivitiesTitle: "2. Preferred activities and role",
       likesFor: "Which activities does",
       likesSuffix: "prefer to engage in?",
@@ -616,12 +611,12 @@ export const formLabelsByLanguage = {
       activityRoleFor: "What role does",
       activityRoleSuffix: "most often take in these activities?",
       activityRoleHint:
-        "In PDA, the preferred role is often leader — the child does best when they have control over how the activity unfolds.",
+        "In PDA, the preferred role is often leader — the person does best when they have influence over how the activity unfolds.",
       mapSupportTitle: "4. What supports and lowers tension",
       cooperatesWithSuffix: "cooperates best with:",
       cooperatesWithHint:
         "E.g. parent, sibling, or a specific person — describe what makes that person supportive.",
-      reducersLabel: "What HELPS REDUCE tension?",
+      reducersLabel: "What helps reduce tension?",
       energySourcesLabel:
         "What gives energy / supports activity despite overload?",
       energySourcesHint:
@@ -634,7 +629,7 @@ export const formLabelsByLanguage = {
       safeBaseSuffix: "feel safest?",
       mapEscalationTitle: "7. Most common escalation situations",
       escalationReducersLabel:
-        "What REDUCES escalation risk in these situations?",
+        "What reduces escalation risk in these situations?",
       escalationReducersHint:
         "In PDA, predictability and autonomy reduce activation of the threat system.",
       noAggressionWhereLabel:
@@ -669,7 +664,7 @@ export const formLabelsByLanguage = {
       expectationsSummary:
         "What was expected at that moment: complete expectations and the influence/predictability field.",
       expectationsMessage:
-        "Select at least one option or enter your own answer and complete the control/predictability field.",
+        "Select at least one option or enter your own answer and complete the influence/predictability field.",
       signalsYesSummary:
         "First signs of rising tension: since signals appeared, indicate which ones.",
       signalsDefaultSummary:
@@ -682,7 +677,7 @@ export const formLabelsByLanguage = {
       actionsSummary: "Actions: complete at least one field.",
       behaviorSummary: "Behavior description: complete at least one field.",
       regulationSummary:
-        "Regulation and impact: select what helped end the escalation the most.",
+        "Regulation and influence: select what helped end the escalation the most.",
       regulationMessage: "Select what helped end the escalation the most.",
       afterSummary: "After the incident: complete at least one field.",
     },
@@ -699,7 +694,8 @@ export const formLabelsByLanguage = {
       simpleBeforeLastMinutes:
         "What happened immediately before (last 5 minutes)?",
       simpleSignalsObserved: "Signals",
-      simpleSupportResponse: "Response of the supporting person / environment",
+      simpleSupportResponse:
+        "Response from the supporting person / environment",
       simpleBehavior: "3. What happened – what could be observed?",
       simpleHelped: "4. What helped (or did not help) regulate the situation?",
       simpleNotesFor:
@@ -725,7 +721,7 @@ export const formLabelsByLanguage = {
       mapSafeBaseFor: "Where/with whom does {subject} feel safest?",
       mapEscalationContexts: "Most common escalation situations",
       mapEscalationReducers:
-        "What REDUCES escalation risk in these situations?",
+        "What reduces escalation risk in these situations?",
       mapNoAggression: "Are there situations without aggression?",
       mapNoAggressionWhere: "Which ones?",
     },
