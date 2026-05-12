@@ -32,7 +32,7 @@ export interface AboutPageContent {
 export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
   pl: {
     title: "Jak czytać formularze monitorowania eskalacji i regulacji",
-    lead: "Formularze pomagają uporządkować opis sytuacji trudnej: co było przed, jakie pojawiły się sygnały napięcia, jak przebiegała eskalacja, co pomogło i co mogło zwiększyć obciążenie.",
+    lead: "Formularze pomagają uporządkować opis sytuacji trudnej: co wydarzyło się wcześniej, jakie pojawiły się sygnały napięcia, jak przebiegała eskalacja, co pomogło i co mogło zwiększyć obciążenie.",
     navTitle: "Spis treści",
     sections: [
       {
@@ -51,7 +51,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
         cards: [
           {
             title: "1. Stan bazowy",
-            text: "Sprawdzamy, z czym osoba weszła w sytuację: sen, głód, ból, liczba bodźców, wcześniejsze zmiany planu.",
+            text: "Sprawdzamy, z czym osoba weszła w sytuację: sen, głód, ból, natężenie bodźców, wcześniejsze zmiany planu.",
           },
           {
             title: "2. Wyzwalacz",
@@ -153,7 +153,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
           {
             section: "7. Co wydarzyło się po zdarzeniu",
             measures:
-              "Dalszy przebieg, kontakt z opiekunem, interwencja fizyczna, powrót do aktywności.",
+              "Dalszy przebieg, kontakt z opiekunem, interwencja fizyczna / fizyczne przytrzymanie, powrót do aktywności.",
             purpose:
               "Daje materiał do oceny bezpieczeństwa, etyki i ryzyka wtórnej eskalacji lub dodatkowego przeciążenia.",
           },
@@ -226,7 +226,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
         badge: "Form overview",
         paragraphs: [
           "The purpose of the forms is to turn chaos and interpretation into data that can be compared across situations. Instead of asking whether someone was “misbehaving”, the form helps ask: what overloaded the nervous system, what early warning signs appeared, and what support was effective.",
-          "Behavior is understood as a possible response to sensory, interoceptive, social, autonomy-related, or predictability-related overload.",
+          "Behavior is viewed as a possible response to sensory, interoceptive, social, autonomy-related, or predictability-related overload.",
         ],
         note: "This is a tool for noticing patterns, not for assigning blame.",
       },
@@ -327,7 +327,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
           {
             section: "5. Behavior description",
             measures:
-              "Facts: words, movements, screaming, withdrawal, self-injury, property damage.",
+              "Facts: words, movements, screaming, withdrawal, self-injury, damage to objects.",
             purpose:
               "Helps move away from judgment and focus on observable data.",
           },
