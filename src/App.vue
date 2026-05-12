@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import AboutFormsPage from "./components/AboutFormsPage.vue";
-import SimpleForm from "./components/SimpleForm.vue";
-import IncidentForm from "./components/IncidentForm.vue";
-import EnvironmentMapForm from "./components/EnvironmentMapForm.vue";
+import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useFormState } from "./composables/useFormState";
 import { useTheme } from "./composables/useTheme";
 import { useLanguage } from "./i18n/useLanguage";
 import SvgIcon from "./components/ui/SvgIcon.vue";
 import IconSprite from "./components/ui/IconSprite.vue";
 
+const router = useRouter();
+const route = useRoute();
 const { isDarkTheme, toggleTheme } = useTheme();
 const { languageLabel, toggleLanguageLabel, toggleLanguage } = useLanguage();
-const activePage = ref<"forms" | "about">("forms");
 
 const {
   activeEnvKey,
-  activeVariant,
-  activeMode,
   status,
   validationErrors,
-  fieldErrors,
   environments,
   env,
   labels,
-  form,
   buildPdf,
   sendEmail,
   resetCurrent,
-  resetSimple,
 } = useFormState();
+
+const currentMode = computed(() => route.params.mode);
+const isAbout = computed(() => route.name === "about");
+const isSimple = computed(() => route.meta.variant === "simple");
+const isExtended = computed(() => route.meta.variant === "extended");
+const isIncident = computed(() => currentMode.value === "incident");
+const isMap = computed(() => currentMode.value === "map");
 </script>
 
 <template>
@@ -80,7 +80,7 @@ const {
             <SvgIcon class="button-icon" :name="isDarkTheme ? 'sun' : 'moon'" />
           </button>
           <button
-            v-if="activeVariant === 'extended'"
+            v-if="isExtended"
             class="icon-button"
             :title="labels.ui.openPdfPreview"
             :aria-label="labels.ui.openPdfPreview"
@@ -89,7 +89,7 @@ const {
             <SvgIcon class="button-icon" name="external" />
           </button>
           <button
-            v-if="activeVariant === 'simple'"
+            v-if="isSimple"
             class="icon-button"
             :title="labels.ui.sendEmail"
             :aria-label="labels.ui.sendEmail"
@@ -98,7 +98,7 @@ const {
             <SvgIcon class="button-icon" name="email" />
           </button>
           <button
-            v-if="activeVariant === 'simple'"
+            v-if="isSimple"
             class="icon-button"
             :title="labels.ui.downloadPdf"
             :aria-label="labels.ui.downloadPdf"
@@ -120,7 +120,7 @@ const {
 
     <main>
       <section class="hero">
-        <template v-if="activePage === 'about'">
+        <template v-if="isAbout">
           <h1>{{ labels.ui.aboutHeroTitle }}</h1>
           <p>{{ labels.ui.aboutHeroText }}</p>
         </template>
@@ -137,67 +137,48 @@ const {
             <div class="mode-switch">
               <button
                 class="mode-button"
-                :class="{
-                  active: activePage === 'forms' && activeVariant === 'simple',
-                }"
-                @click="
-                  activePage = 'forms';
-                  activeVariant = 'simple';
-                "
+                :class="{ active: isSimple }"
+                @click="router.push('/')"
               >
                 <span class="mode-indicator" aria-hidden="true"
-                  ><SvgIcon
-                    v-if="activePage === 'forms' && activeVariant === 'simple'"
-                    name="check"
+                  ><SvgIcon v-if="isSimple" name="check"
                 /></span>
                 <span>{{ labels.ui.simpleVariant }}</span>
               </button>
               <button
                 class="mode-button"
-                :class="{
-                  active:
-                    activePage === 'forms' && activeVariant === 'extended',
-                }"
-                @click="
-                  activePage = 'forms';
-                  activeVariant = 'extended';
-                "
+                :class="{ active: isExtended }"
+                @click="router.push('/extended/incident')"
               >
                 <span class="mode-indicator" aria-hidden="true"
-                  ><SvgIcon
-                    v-if="
-                      activePage === 'forms' && activeVariant === 'extended'
-                    "
-                    name="check"
+                  ><SvgIcon v-if="isExtended" name="check"
                 /></span>
                 <span>{{ labels.ui.extendedVariant }}</span>
               </button>
             </div>
 
-            <template
-              v-if="activePage === 'forms' && activeVariant === 'extended'"
-            >
-              <p class="mode-label" style="margin-top: 14px">
+            <template v-if="isExtended">
+              <p class="mode-label mode-label--spaced">
                 {{ labels.ui.extendedScope }}
               </p>
               <div class="mode-switch">
                 <button
                   class="mode-button"
-                  :class="{ active: activeMode === 'incident' }"
-                  @click="activeMode = 'incident'"
+                  :class="{ active: isIncident }"
+                  @click="router.push('/extended/incident')"
                 >
                   <span class="mode-indicator" aria-hidden="true"
-                    ><SvgIcon v-if="activeMode === 'incident'" name="check"
+                    ><SvgIcon v-if="isIncident" name="check"
                   /></span>
                   <span>{{ labels.ui.incidentMode }}</span>
                 </button>
                 <button
                   class="mode-button"
-                  :class="{ active: activeMode === 'map' }"
-                  @click="activeMode = 'map'"
+                  :class="{ active: isMap }"
+                  @click="router.push('/extended/map')"
                 >
                   <span class="mode-indicator" aria-hidden="true"
-                    ><SvgIcon v-if="activeMode === 'map'" name="check"
+                    ><SvgIcon v-if="isMap" name="check"
                   /></span>
                   <span>{{ labels.ui.mapMode }}</span>
                 </button>
@@ -208,11 +189,11 @@ const {
 
             <button
               class="mode-button sidebar-about-button"
-              :class="{ active: activePage === 'about' }"
-              @click="activePage = 'about'"
+              :class="{ active: isAbout }"
+              @click="router.push('/about')"
             >
               <span class="mode-indicator" aria-hidden="true"
-                ><SvgIcon v-if="activePage === 'about'" name="check"
+                ><SvgIcon v-if="isAbout" name="check"
               /></span>
               <span>{{ labels.ui.aboutFormsView }}</span>
             </button>
@@ -221,7 +202,7 @@ const {
 
         <div class="forms-stack">
           <p
-            v-if="activePage === 'forms' && status"
+            v-if="!isAbout && status"
             class="status"
             aria-live="polite"
           >
@@ -229,7 +210,7 @@ const {
           </p>
 
           <section
-            v-if="activePage === 'forms' && validationErrors.length"
+            v-if="!isAbout && validationErrors.length"
             class="panel validation-panel"
             aria-live="polite"
             tabindex="-1"
@@ -242,23 +223,7 @@ const {
             </ul>
           </section>
 
-          <AboutFormsPage v-if="activePage === 'about'" />
-
-          <SimpleForm
-            v-else-if="activeVariant === 'simple'"
-            :env="env"
-            :form="form"
-            :send-email="sendEmail"
-            :build-pdf="buildPdf"
-            :reset-simple="resetSimple"
-            :field-errors="fieldErrors"
-          />
-
-          <template v-else>
-            <IncidentForm v-show="activeMode !== 'map'" />
-
-            <EnvironmentMapForm v-show="activeMode !== 'incident'" />
-          </template>
+          <RouterView />
         </div>
       </div>
     </main>
@@ -276,7 +241,6 @@ const {
           analiza.tools/map
         </a>
       </p>
-
     </footer>
   </div>
 </template>

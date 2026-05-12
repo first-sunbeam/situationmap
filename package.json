@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "pdfmake": "^0.2.20",
-    "vue": "^3.5.33"
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

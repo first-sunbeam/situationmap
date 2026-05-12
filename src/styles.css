@@ -504,6 +504,10 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
+.mode-label--spaced {
+  margin-top: 14px;
+}
+
 .mode-switch {
   display: grid;
   gap: 8px;
