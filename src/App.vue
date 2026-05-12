@@ -24,7 +24,7 @@ const {
   resetCurrent,
 } = useFormState();
 
-const currentMode = computed(() => route.params.mode);
+const currentMode = computed(() => route.meta.mode);
 const isAbout = computed(() => route.name === "about");
 const isSimple = computed(() => route.meta.variant === "simple");
 const isExtended = computed(() => route.meta.variant === "extended");
@@ -148,7 +148,7 @@ const isMap = computed(() => currentMode.value === "map");
               <button
                 class="mode-button"
                 :class="{ active: isExtended }"
-                @click="router.push('/extended/incident')"
+                @click="router.push('/incident')"
               >
                 <span class="mode-indicator" aria-hidden="true"
                   ><SvgIcon v-if="isExtended" name="check"
@@ -165,7 +165,7 @@ const isMap = computed(() => currentMode.value === "map");
                 <button
                   class="mode-button"
                   :class="{ active: isIncident }"
-                  @click="router.push('/extended/incident')"
+                  @click="router.push('/incident')"
                 >
                   <span class="mode-indicator" aria-hidden="true"
                     ><SvgIcon v-if="isIncident" name="check"
@@ -175,7 +175,7 @@ const isMap = computed(() => currentMode.value === "map");
                 <button
                   class="mode-button"
                   :class="{ active: isMap }"
-                  @click="router.push('/extended/map')"
+                  @click="router.push('/environment')"
                 >
                   <span class="mode-indicator" aria-hidden="true"
                     ><SvgIcon v-if="isMap" name="check"

@@ -7,7 +7,7 @@ import EnvironmentMapForm from "../components/EnvironmentMapForm.vue";
 
 const route = useRoute();
 const { activeVariant, activeMode } = useFormState();
-const mode = computed(() => route.params.mode as "incident" | "map");
+const mode = computed(() => route.meta.mode as "incident" | "map");
 
 watchEffect(() => {
   activeVariant.value = "extended";
