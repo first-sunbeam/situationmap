@@ -12,6 +12,7 @@ export type ExportLabel =
 export interface ExportRow {
   label: ExportLabel;
   value: (env: EnvironmentConfig, form: SituationForm) => ExportValue;
+  shouldInclude?: (env: EnvironmentConfig, form: SituationForm) => boolean;
 }
 
 export interface ExportSection {
@@ -302,10 +303,12 @@ export function getIncidentExportSections(
               form.incident.maskingStrategies,
               form.incident.maskingStrategiesOther,
             ),
+          shouldInclude: (_env, form) => form.incident.maskingContinued === "yes",
         },
         {
           label: labels.incident.maskingDuration,
           value: incidentValue("maskingDuration"),
+          shouldInclude: (_env, form) => form.incident.maskingContinued === "yes",
         },
       ],
     },

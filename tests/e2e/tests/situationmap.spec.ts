@@ -263,6 +263,25 @@ test("opcja inne wymaga opisu i oznacza krok jako błędny", async ({ page }) =>
   await expect(extended.stepperButton("baseline")).not.toHaveClass(/error/);
 });
 
+// ── Extended form – masking section ──────────────────────────────────────────
+
+test("sekcja 3B pokazuje dodatkowy wybór czasu po zaznaczeniu odpowiedzi Tak", async ({
+  page,
+}) => {
+  const app = new SituationMapPage(page);
+  const extended = new ExtendedFormPage(page);
+
+  await app.switchToExtendedVariant();
+  await extended.goToStep("masking");
+
+  await expect(extended.sectionHeading("masking")).toBeVisible();
+  await expect(extended.maskingDurationSelect).not.toBeVisible();
+
+  await extended.maskingContinuedSelect.selectOption("yes");
+
+  await expect(extended.maskingDurationSelect).toBeVisible();
+});
+
 // ── Extended form – before-event section ─────────────────────────────────────
 
 test("sekcja przed zdarzeniem usuwa błąd po uzupełnieniu alternatywnych danych i zachowuje stan między krokami", async ({

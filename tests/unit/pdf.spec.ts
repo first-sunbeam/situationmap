@@ -55,6 +55,21 @@ describe("generowanie PDF", () => {
     expect(content).not.toContain(environments.home.mapTitle);
   });
 
+  it("pomija pola zależne maskowania w PDF, gdy wybrano odpowiedź Nie", () => {
+    const form = createFilledHomeForm();
+    form.incident.maskingContinued = "no";
+    form.incident.maskingStrategies = ["maskowanie_ukrywanie_dyskomfortu_udawanie_ze_wszystko_ok"];
+    form.incident.maskingDuration = "10_30_minut";
+
+    const content = stringifyDoc(makeDoc(environments.home, form, "extended", "incident"));
+
+    expect(content).toContain("Czy osoba próbowała kontynuować aktywność mimo narastającego napięcia?");
+    expect(content).toContain("Nie");
+    expect(content).not.toContain("Jeśli tak – co pozwoliło osobie");
+    expect(content).not.toContain("Ile czasu osoba „trzymała się” przed eskalacją?");
+    expect(content).not.toContain("10-30 minut");
+  });
+
   it("buduje dokument PDF samej mapy bez tytułu incydentu", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "map"));
 

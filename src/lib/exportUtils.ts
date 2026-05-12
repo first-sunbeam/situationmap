@@ -15,5 +15,7 @@ export function resolveRows<T>(
   mapper: (label: string, value: ExportValue) => T,
   language: LanguageCode = "pl"
 ): T[] {
-  return rows.map((row) => mapper(resolveExportLabel(row.label, env, form), translateExportValue(row.value(env, form), language)));
+  return rows
+    .filter((row) => row.shouldInclude?.(env, form) ?? true)
+    .map((row) => mapper(resolveExportLabel(row.label, env, form), translateExportValue(row.value(env, form), language)));
 }

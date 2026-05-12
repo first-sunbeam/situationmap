@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watch } from "vue";
 import { useFormState } from "../../composables/useFormState";
 import { hasOther, hasSelectedOther } from "../../lib/formUtils";
 import ChoiceGroupField from "../form/ChoiceGroupField.vue";
@@ -7,6 +8,17 @@ import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
 
 const { labels, form, fieldErrors, maskingDurationOptions, maskingStrategyOptions, subjectNominative, yesNoUnknown } = useFormState();
+
+watch(
+  () => form.value.incident.maskingContinued,
+  (maskingContinued) => {
+    if (maskingContinued === "yes") return;
+
+    form.value.incident.maskingStrategies = [];
+    form.value.incident.maskingStrategiesOther = "";
+    form.value.incident.maskingDuration = "";
+  },
+);
 </script>
 
 <template>
@@ -17,7 +29,7 @@ const { labels, form, fieldErrors, maskingDurationOptions, maskingStrategyOption
   >
     <div class="field-grid">
       <SelectField v-model="form.incident.maskingContinued" :label="`${labels.ui.maskingContinuedFor} ${subjectNominative}`" :options="yesNoUnknown" />
-      <fieldset v-if="form.incident.maskingContinued === 'Tak'" class="field group-field full">
+      <fieldset v-if="form.incident.maskingContinued === 'yes'" class="field group-field full">
         <legend class="field-label">{{ labels.ui.maskingGroupLegend }}</legend>
         <ChoiceGroupField
           v-model="form.incident.maskingStrategies"

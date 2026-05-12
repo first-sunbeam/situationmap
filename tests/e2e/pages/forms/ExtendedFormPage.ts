@@ -9,6 +9,7 @@ export const EXTENDED_STEPS = {
   baseline: "0. Poziom bazowy i kontekst dnia",
   before: "1. Bezpośrednio przed zdarzeniem",
   expectations: "2. Czego oczekiwano w tym momencie?",
+  masking: "3B. Strategie kompensacyjne i maskowanie",
 } as const;
 
 type StepKey = keyof typeof EXTENDED_STEPS;
@@ -117,6 +118,20 @@ export class ExtendedFormPage {
   get beforeValidationMessage(): Locator {
     return this.page.getByText(
       "Bezpośrednio przed zdarzeniem: zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji."
+    );
+  }
+
+  // ── Masking section (step 3B) ─────────────────────────────────────────────
+
+  get maskingContinuedSelect(): Locator {
+    return this.sectionContainer("masking").getByLabel(
+      /Kontynuowanie aktywności mimo narastającego napięcia przez/
+    );
+  }
+
+  get maskingDurationSelect(): Locator {
+    return this.sectionContainer("masking").getByLabel(
+      /Czas „trzymania się” przed eskalacją przez/
     );
   }
 
