@@ -54,7 +54,7 @@ export const formLabelsByLanguage = {
       expectations: "Oczekiwania",
       expectationOther: "Jeśli inne, wpisz jakie",
       influence:
-        "Jaki był zakres wpływu i przewidywalności w tym momencie dla dziecka/ucznia?",
+        "Jaki był zakres wpływu i przewidywalności w tym momencie dla osoby?",
       noInfluence:
         "Co było nieznane, narzucone albo poza wpływem dziecka/ucznia?",
       predictability: "Przewidywalność sytuacji",
@@ -327,7 +327,7 @@ export const formLabelsByLanguage = {
       simpleSupportResponse: "Reakcja osoby wspierającej / otoczenia",
       simpleBehavior: "3. Przebieg sytuacji – co można było zaobserwować?",
       simpleHelped: "4. Co pomogło (lub nie pomogło) wyregulować sytuację?",
-      simpleNotesFor: "5. Wpływ i autonomia – zakres kontroli dla {subject}",
+      simpleNotesFor: "5. Wpływ, autonomia i przewidywalność dla {subject}",
       simplePredictabilityFor:
         "Czy dla {subject} było wiadomo, co się wydarzy i jak długo to potrwa?",
       simpleRecoveryTime: "6. Czas do odzyskania gotowości do współpracy",
@@ -394,7 +394,7 @@ export const formLabelsByLanguage = {
       adultReaction: "Response of the supporting person / environment",
       behavior: "3. What happened – what could be observed?",
       helped: "4. What helped (or did not help) regulate the situation?",
-      notes: "5. Influence and autonomy – control and choice",
+      notes: "5. Influence, autonomy, and predictability",
       predictability: "Was it clear for",
       recoveryTime: "6. Time to readiness for interaction/activity",
     },
@@ -469,7 +469,7 @@ export const formLabelsByLanguage = {
       physicalThisWeek: "Physical intervention this week?",
       physicalCount: "How many times?",
       lowerThreshold:
-        "Did the child/student react faster or more strongly than usual?",
+        "Did the person react faster or more strongly than usual?",
       physicalNote: "Note about physical intervention",
       endedBy: "What helped stop the escalation the most?",
       endedByOther: "If other, specify",
@@ -545,7 +545,7 @@ export const formLabelsByLanguage = {
       simpleStateQuestion:
         "1. What happened immediately before, and what was the state of",
       simpleAutonomyQuestion:
-        "5. Influence and autonomy – control and choice for",
+        "5. Influence, autonomy, and predictability for",
       behaviorSectionHint:
         "A description of observable behavior helps distinguish a nervous system reaction from intention or “disobedience”.",
       afterSectionHint:
@@ -667,7 +667,7 @@ export const formLabelsByLanguage = {
       beforeMessage:
         "Select at least one option or enter a situation description.",
       expectationsSummary:
-        "What was expected at that moment: complete expectations and the control/predictability field.",
+        "What was expected at that moment: complete expectations and the influence/predictability field.",
       expectationsMessage:
         "Select at least one option or enter your own answer and complete the control/predictability field.",
       signalsYesSummary:
@@ -703,7 +703,7 @@ export const formLabelsByLanguage = {
       simpleBehavior: "3. What happened – what could be observed?",
       simpleHelped: "4. What helped (or did not help) regulate the situation?",
       simpleNotesFor:
-        "5. Influence and autonomy – control and choice for {subject}",
+        "5. Influence, autonomy, and predictability for {subject}",
       simplePredictabilityFor:
         "Was it clear for {subject} what would happen and how long it would last?",
       simpleRecoveryTime: "6. Time to readiness for interaction/activity",
