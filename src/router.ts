@@ -4,7 +4,7 @@ import ExtendedView from "./views/ExtendedView.vue";
 import AboutView from "./views/AboutView.vue";
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
