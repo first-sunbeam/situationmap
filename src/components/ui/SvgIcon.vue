@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { computed, watchEffect } from "vue";
 
-const props = defineProps<{
-  name: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    name: string;
+    size?: string | number;
+  }>(),
+  {
+    size: 24,
+  },
+);
 
 const knownIconNames = new Set([
   "sun",
@@ -17,10 +23,17 @@ const knownIconNames = new Set([
   "reset",
   "check",
   "arrow-left",
-  "arrow-right"
+  "arrow-right",
+  "pdf",
 ]);
 
-const iconHref = computed(() => knownIconNames.has(props.name) ? `#icon-${props.name}` : "#icon-unknown");
+const iconHref = computed(() =>
+  knownIconNames.has(props.name) ? `#icon-${props.name}` : "#icon-unknown",
+);
+
+const iconSize = computed(() =>
+  typeof props.size === "number" ? `${props.size}px` : props.size,
+);
 
 watchEffect(() => {
   if (import.meta.env.DEV && !knownIconNames.has(props.name)) {
@@ -30,7 +43,12 @@ watchEffect(() => {
 </script>
 
 <template>
-  <svg class="svg-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <svg
+    class="svg-icon"
+    :style="{ '--icon-size': iconSize }"
+    aria-hidden="true"
+    focusable="false"
+  >
     <use :href="iconHref" />
   </svg>
 </template>
