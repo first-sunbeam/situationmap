@@ -1,5 +1,7 @@
 import type { LanguageCode } from "../i18n/useLanguage";
 
+const publicPdfPath = (filename: string) => `${import.meta.env.BASE_URL}pdf/${filename}`;
+
 export interface AboutCard {
   title: string;
   text: string;
@@ -36,7 +38,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
     title: "Jak korzystać z formularzy monitorowania",
     lead: "Formularze pomagają opisać sytuację trudną w sposób uporządkowany: co wydarzyło się wcześniej, jakie pojawiły się pierwsze sygnały, jak zareagowało otoczenie, co pomogło i ile trwał powrót do gotowości.",
     navTitle: "Spis treści",
-    pdfLink: "/pdf/jak-korzystac-z-formularzy-monitorowania.pdf",
+    pdfLink: publicPdfPath("jak-korzystac-z-formularzy-monitorowania.pdf"),
     pdfText: "Pobierz opis formularzy PDF",
     sections: [
       {
@@ -270,7 +272,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
     title: "How to use monitoring forms",
     lead: "The forms help describe a difficult situation in a structured way: what happened before, what early signs appeared, how the environment responded, what helped, and how long it took to regain readiness.",
     navTitle: "Contents",
-    pdfLink: "/pdf/how-to-use-monitoring-forms.pdf",
+    pdfLink: publicPdfPath("how-to-use-monitoring-forms.pdf"),
     pdfText: "Download PDF guide",
     sections: [
       {
