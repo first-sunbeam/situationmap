@@ -8,8 +8,8 @@ function isBlank(value: string): boolean {
 }
 
 function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors, summary: string[], labels: FormLabels) {
-  const subject = getSubjectInline(form, "dziecko/uczeń");
-  const subjectStart = getSubjectInline(form, "Dziecko/uczeń");
+  const subject = getSubjectInline(form, "osoba");
+  const subjectStart = getSubjectInline(form, "Osoba");
   const requiredTextFields: Array<[string, string, string]> = [
     ["map.preferredReason", "Dlaczego te miejsca? Co je wyróżnia?", form.map.preferredReason],
     ["map.avoidedReason", "Co w tych miejscach aktywuje napięcie?", form.map.avoidedReason],
@@ -67,7 +67,7 @@ function requireOtherField({
 export function validateForm({ variant, mode, form, labels = formLabels }: { variant: FormVariant; mode: ExtendedMode; form: SituationForm; labels?: FormLabels }): ValidationResult {
   const fieldErrors: FieldErrors = {};
   const summary: string[] = [];
-  const subject = getSubjectInline(form, labels.map.section === "Environment map" ? "the child/student" : "dziecka/ucznia");
+  const subject = getSubjectInline(form, labels.map.section === "Environment map" ? "the person" : "osoby");
   const meta: Array<[string, string, string]> = [
     ["meta.date", "Data", form.meta.date],
     ["meta.time", "Godzina", form.meta.time],
@@ -161,7 +161,7 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
       summary.push(`${labels.map.dependsOn}: ${message}`);
     }
 
-    const subject = getSubjectInline(form, "dziecko/uczeń");
+    const subject = getSubjectInline(form, "osoba");
     requireOtherField({ fieldErrors, summary, selected: form.map.preferredPlaces, value: form.map.preferredPlacesOther, fieldKey: "map.preferredPlacesOther", sectionLabel: `${labels.ui.preferredPlacesFor} ${subject} ${labels.ui.preferredPlacesSuffix}`, labels });
     requireOtherField({ fieldErrors, summary, selected: form.map.avoidedPlaces, value: form.map.avoidedPlacesOther, fieldKey: "map.avoidedPlacesOther", sectionLabel: `${labels.ui.avoidedPlacesFor} ${subject} ${labels.ui.avoidedPlacesSuffix}`, labels });
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: labels.map.escalationContexts, labels });

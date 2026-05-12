@@ -48,19 +48,19 @@ export class SituationMapPage {
   // ── Shared meta fields (used by both Simple and Extended) ─────────────────
 
   get dateField(): Locator {
-    return this.page.getByLabel("Data");
+    return this.page.getByLabel("Data").filter({ visible: true });
   }
 
   get timeField(): Locator {
-    return this.page.getByLabel("Godzina");
+    return this.page.getByLabel("Godzina").filter({ visible: true });
   }
 
   get placeField(): Locator {
-    return this.page.getByLabel("Miejsce");
+    return this.page.getByLabel("Miejsce").filter({ visible: true });
   }
 
   get guardianField(): Locator {
-    return this.page.getByLabel("Rodzic / opiekun prowadzący");
+    return this.page.getByLabel("Rodzic / opiekun prowadzący").filter({ visible: true });
   }
 
   async fillMetaFields(data: {

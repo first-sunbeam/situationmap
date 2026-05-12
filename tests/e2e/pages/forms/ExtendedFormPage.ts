@@ -39,11 +39,11 @@ export class ExtendedFormPage {
   // ── Navigation buttons ────────────────────────────────────────────────────
 
   get nextStepButton(): Locator {
-    return this.page.getByRole("button", { name: "Następny krok →" });
+    return this.page.getByRole("button", { name: /Następny krok/ });
   }
 
   get prevStepButton(): Locator {
-    return this.page.getByRole("button", { name: "← Poprzedni krok" });
+    return this.page.getByRole("button", { name: /Poprzedni krok/ });
   }
 
   async goToNextStep() {
@@ -80,9 +80,9 @@ export class ExtendedFormPage {
   // ── Baseline section (step 0) ─────────────────────────────────────────────
 
   get baselineOtherCheckbox(): Locator {
-    return this.sectionContainer("baseline").getByRole("checkbox", {
-      name: "other",
-    });
+    return this.sectionContainer("baseline")
+      .getByRole("group", { name: "Czynniki obciążające" })
+      .getByRole("checkbox", { name: "inne" });
   }
 
   get baselineOtherDescriptionField(): Locator {

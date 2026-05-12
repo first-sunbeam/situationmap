@@ -18,8 +18,10 @@ export class MapFormPage {
 
   // ── Fields ────────────────────────────────────────────────────────────────
 
-  get preferredPlaceField(): Locator {
-    return this.page.getByLabel("Chętnie przebywa w *");
+  get preferredPlaceCheckbox(): Locator {
+    return this.page
+      .getByRole("group", { name: /W jakich miejscach osoba/ })
+      .getByRole("checkbox", { name: "pokój osoby" });
   }
 
   get noiseCheckbox(): Locator {
@@ -27,7 +29,7 @@ export class MapFormPage {
   }
 
   get dependsDescriptionField(): Locator {
-    return this.page.getByLabel("Opis zależności");
+    return this.page.getByLabel("Jak zmienia się zachowanie?");
   }
 
   get noAggressionSelect(): Locator {
@@ -37,12 +39,12 @@ export class MapFormPage {
   // ── Compound actions ──────────────────────────────────────────────────────
 
   async fillMapFields(data: {
-    preferredPlace: string;
+    preferredPlace?: string;
     noise?: boolean;
     dependsDescription: string;
     noAggression: string;
   }) {
-    await this.preferredPlaceField.fill(data.preferredPlace);
+    await this.preferredPlaceCheckbox.check();
     if (data.noise) await this.noiseCheckbox.check();
     await this.dependsDescriptionField.fill(data.dependsDescription);
     await this.noAggressionSelect.selectOption(data.noAggression);

@@ -9,7 +9,7 @@ export const SIMPLE_VALIDATION_MESSAGES = {
   helped:
     "Formularz prosty: uzupełnij pole „4. Co pomogło (lub nie pomogło) wyregulować sytuację?”.",
   notes:
-    "Formularz prosty: uzupełnij pole „Możliwość decyzji dla dziecka/ucznia”.",
+    "Formularz prosty: uzupełnij pole „Możliwość decyzji dla osoby”.",
 } as const;
 
 export class SimpleFormPage {
@@ -28,7 +28,7 @@ export class SimpleFormPage {
   }
 
   get formHeading(): Locator {
-    return this.page.getByRole("heading", { name: "Formularz prosty - Dom" });
+    return this.page.getByRole("heading", { name: "Prosta - Dom" });
   }
 
   // ── Fields ────────────────────────────────────────────────────────────────
@@ -50,7 +50,7 @@ export class SimpleFormPage {
   }
 
   get influenceField(): Locator {
-    return this.page.getByLabel("Możliwość decyzji dla dziecka/ucznia");
+    return this.page.getByLabel("Możliwość decyzji dla osoby");
   }
 
   // ── Validation messages ───────────────────────────────────────────────────
@@ -78,10 +78,10 @@ export class SimpleFormPage {
     helped: string;
     influence: string;
   }) {
-    await this.page.getByLabel("Data").fill(data.date);
-    await this.page.getByLabel("Godzina").fill(data.time);
-    await this.page.getByLabel("Miejsce").fill(data.place);
-    await this.page.getByLabel("Rodzic / opiekun prowadzący").fill(data.guardian);
+    await this.page.getByLabel("Data").filter({ visible: true }).fill(data.date);
+    await this.page.getByLabel("Godzina").filter({ visible: true }).fill(data.time);
+    await this.page.getByLabel("Miejsce").filter({ visible: true }).fill(data.place);
+    await this.page.getByLabel("Rodzic / opiekun prowadzący").filter({ visible: true }).fill(data.guardian);
     await this.behaviorField.fill(data.behavior);
     await this.helpedField.fill(data.helped);
     await this.influenceField.fill(data.influence);

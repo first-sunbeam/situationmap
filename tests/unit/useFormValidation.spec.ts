@@ -20,24 +20,38 @@ describe("walidacja formularza", () => {
   // ── Formularz prosty ────────────────────────────────────────────────────────
 
   it("zwraca błędy wymaganych pól dla pustego formularza prostego", () => {
-    const result = validateForm({ variant: "simple", mode: "incident", form: createHomeForm() });
+    const result = validateForm({
+      variant: "simple",
+      mode: "incident",
+      form: createHomeForm(),
+    });
 
     expect(result.fieldErrors["meta.date"]).toBe("Uzupełnij pole: Data.");
     expect(result.fieldErrors["meta.time"]).toBe("Uzupełnij pole: Godzina.");
     expect(result.fieldErrors["meta.place"]).toBe("Uzupełnij pole: Miejsce.");
-    expect(result.fieldErrors["meta.lead"]).toBe("Uzupełnij pole: Osoba prowadząca.");
-    expect(result.fieldErrors["simple.behavior"]).toBe("Uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.");
+    expect(result.fieldErrors["meta.lead"]).toBe(
+      "Uzupełnij pole: Osoba prowadząca.",
+    );
+    expect(result.fieldErrors["simple.behavior"]).toBe(
+      "Uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.",
+    );
     expect(result.fieldErrors["simple.helped"]).toContain("Uzupełnij pole");
-    expect(result.fieldErrors["simple.notes"]).toBe("Uzupełnij pole „Możliwość decyzji dla dziecka/ucznia”.");
-    expect(result.summary).toContain("Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.");
+    expect(result.fieldErrors["simple.notes"]).toBe(
+      "Uzupełnij pole „Możliwość decyzji dla osoby”.",
+    );
+    expect(result.summary).toContain(
+      "Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.",
+    );
   });
 
   it("akceptuje formularz prosty po uzupełnieniu wymaganych pól", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.simple.behavior = "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
+    form.simple.behavior =
+      "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
     form.simple.helped = "Przerwa i spokojne miejsce.";
-    form.simple.notes = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
+    form.simple.notes =
+      "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
 
     const result = validateForm({ variant: "simple", mode: "incident", form });
 
@@ -51,12 +65,24 @@ describe("walidacja formularza", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
 
-    const result = validateForm({ variant: "extended", mode: "incident", form });
+    const result = validateForm({
+      variant: "extended",
+      mode: "incident",
+      form,
+    });
 
-    expect(result.fieldErrors["incident.baselineSection"]).toBe("Uzupełnij przynajmniej jedno pole w tej sekcji.");
-    expect(result.fieldErrors["incident.beforeSection"]).toBe("Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.");
-    expect(result.fieldErrors["incident.regulationSection"]).toBe("Zaznacz, co najbardziej pomogło zakończyć eskalację.");
-    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Jaki był zakres wpływu i przewidywalności w tym momencie dla dziecka/ucznia?”.");
+    expect(result.fieldErrors["incident.baselineSection"]).toBe(
+      "Uzupełnij przynajmniej jedno pole w tej sekcji.",
+    );
+    expect(result.fieldErrors["incident.beforeSection"]).toBe(
+      "Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
+    );
+    expect(result.fieldErrors["incident.regulationSection"]).toBe(
+      "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
+    );
+    expect(result.fieldErrors["incident.influence"]).toBe(
+      "Uzupełnij pole „Jaki był zakres wpływu, autonomii i przewidywalności w tym momencie dla osoby?”.",
+    );
   });
 
   it("akceptuje alternatywną wartość w sekcji przed zdarzeniem", () => {
@@ -64,7 +90,11 @@ describe("walidacja formularza", () => {
     fillRequiredMeta(form);
     fillMinimalIncident(form);
 
-    const result = validateForm({ variant: "extended", mode: "incident", form });
+    const result = validateForm({
+      variant: "extended",
+      mode: "incident",
+      form,
+    });
 
     expect(result.fieldErrors["incident.beforeSection"]).toBeUndefined();
     expect(result.fieldErrors["incident.factDescription"]).toBeUndefined();
@@ -75,10 +105,18 @@ describe("walidacja formularza", () => {
     fillRequiredMeta(form);
     form.incident.expectations = ["brak_wymagan"];
 
-    const result = validateForm({ variant: "extended", mode: "incident", form });
+    const result = validateForm({
+      variant: "extended",
+      mode: "incident",
+      form,
+    });
 
-    expect(result.fieldErrors["incident.influence"]).toBe("Uzupełnij pole „Jaki był zakres wpływu i przewidywalności w tym momencie dla dziecka/ucznia?”.");
-    expect(result.summary).toContain("2. Czego oczekiwano w tym momencie?: Uzupełnij pole „Jaki był zakres wpływu i przewidywalności w tym momencie dla dziecka/ucznia?”.");
+    expect(result.fieldErrors["incident.influence"]).toBe(
+      "Uzupełnij pole „Jaki był zakres wpływu, autonomii i przewidywalności w tym momencie dla osoby?”.",
+    );
+    expect(result.summary).toContain(
+      "2. Czego oczekiwano w tym momencie?: Uzupełnij pole „Jaki był zakres wpływu, autonomii i przewidywalności w tym momencie dla osoby?”.",
+    );
   });
 
   it("wymaga szczegółów sygnałów i czasu przed eskalacją, gdy sygnały się pojawiły", () => {
@@ -87,12 +125,24 @@ describe("walidacja formularza", () => {
     fillMinimalIncident(form);
     form.incident.signalsAppeared = "yes"; // nadpisuje "no" z fillMinimalIncident
 
-    const result = validateForm({ variant: "extended", mode: "incident", form });
+    const result = validateForm({
+      variant: "extended",
+      mode: "incident",
+      form,
+    });
 
-    expect(result.fieldErrors["incident.signalsSection"]).toBe("Skoro sygnały się pojawiły, wskaż jakie.");
-    expect(result.fieldErrors["incident.timeToEscalation"]).toBe("Skoro pojawiły się sygnały, podaj ile czasu przed eskalacją.");
-    expect(result.summary).toContain("Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie.");
-    expect(result.summary).toContain("3. Pierwsze oznaki narastającego napięcia: Skoro pojawiły się sygnały, podaj ile czasu przed eskalacją.");
+    expect(result.fieldErrors["incident.signalsSection"]).toBe(
+      "Skoro sygnały się pojawiły, wskaż jakie.",
+    );
+    expect(result.fieldErrors["incident.timeToEscalation"]).toBe(
+      "Skoro pojawiły się sygnały, podaj ile czasu przed eskalacją.",
+    );
+    expect(result.summary).toContain(
+      "Pierwsze oznaki narastającego napięcia: skoro sygnały się pojawiły, wskaż jakie.",
+    );
+    expect(result.summary).toContain(
+      "3. Pierwsze oznaki narastającego napięcia: Skoro pojawiły się sygnały, podaj ile czasu przed eskalacją.",
+    );
   });
 
   it("wymaga szczegółów snu, gdy zaznaczono sen lub odpoczynek w ciągu dnia", () => {
@@ -100,13 +150,17 @@ describe("walidacja formularza", () => {
     fillRequiredMeta(form);
     form.incident.slept = "yes";
 
-    const result = validateForm({ variant: "extended", mode: "incident", form });
+    const result = validateForm({
+      variant: "extended",
+      mode: "incident",
+      form,
+    });
 
     expect(result.fieldErrors["incident.sleepDetails"]).toBe(
-      "Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo."
+      "Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo.",
     );
     expect(result.summary).toContain(
-      "0. Poziom bazowy i kontekst dnia: Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo."
+      "0. Poziom bazowy i kontekst dnia: Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo.",
     );
   });
 
@@ -115,51 +169,145 @@ describe("walidacja formularza", () => {
     fillRequiredMeta(form);
     form.incident.physicalThisWeek = "yes";
 
-    const result = validateForm({ variant: "extended", mode: "incident", form });
+    const result = validateForm({
+      variant: "extended",
+      mode: "incident",
+      form,
+    });
 
     expect(result.fieldErrors["incident.physicalCount"]).toBe(
-      "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy."
+      "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy.",
     );
     expect(result.summary).toContain(
-      "7. Co wydarzyło się po zdarzeniu?: Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy."
+      "7. Co wydarzyło się po zdarzeniu?: Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy.",
     );
   });
 
   // ── Opcja "other" – pola warunkowe ───────────────────────────────────────────
 
   it.each<[string, (form: HomeForm) => void]>([
-    ["incident.burdensOther",       (f) => { f.incident.burdens       = ["other"]; }],
-    ["incident.expectationOther",   (f) => { f.incident.expectations  = ["other"]; }],
-    ["incident.activationSignalsOther", (f) => { f.incident.activationSignals = ["other"]; }],
-    ["incident.interventionDetails",(f) => { f.incident.interventions = ["other"]; }],
-    ["incident.afterOther",         (f) => { f.incident.after         = ["other"]; }],
-    ["incident.endedByOther",       (f) => { f.incident.endedBy       = ["other"]; }],
-  ])("wymaga opisu po zaznaczeniu opcji inne w incydencie: %s", (fieldKey, selectOther) => {
-    const form = createHomeForm();
-    fillRequiredMeta(form);
-    selectOther(form);
+    [
+      "incident.burdensOther",
+      (f) => {
+        f.incident.burdens = ["other"];
+      },
+    ],
+    [
+      "incident.expectationOther",
+      (f) => {
+        f.incident.expectations = ["other"];
+      },
+    ],
+    [
+      "incident.activationSignalsOther",
+      (f) => {
+        f.incident.activationSignals = ["other"];
+      },
+    ],
+    [
+      "incident.interventionDetails",
+      (f) => {
+        f.incident.interventions = ["other"];
+      },
+    ],
+    [
+      "incident.afterOther",
+      (f) => {
+        f.incident.after = ["other"];
+      },
+    ],
+    [
+      "incident.endedByOther",
+      (f) => {
+        f.incident.endedBy = ["other"];
+      },
+    ],
+  ])(
+    "wymaga opisu po zaznaczeniu opcji inne w incydencie: %s",
+    (fieldKey, selectOther) => {
+      const form = createHomeForm();
+      fillRequiredMeta(form);
+      selectOther(form);
 
-    const result = validateForm({ variant: "extended", mode: "incident", form });
+      const result = validateForm({
+        variant: "extended",
+        mode: "incident",
+        form,
+      });
 
-    expect(result.fieldErrors[fieldKey]).toBe(MSG_OTHER);
-  });
+      expect(result.fieldErrors[fieldKey]).toBe(MSG_OTHER);
+    },
+  );
 
   it.each<[string, (form: HomeForm) => void]>([
-    ["baseline",     (f) => { f.incident.burdens       = ["other"]; }],
-    ["baseline",     (f) => { f.incident.slept          = "yes"; }],
-    ["signals",      (f) => { f.incident.signalsAppeared = "yes"; f.incident.activationSignals = ["napiecie_miesniowe"]; }],
-    ["expectations", (f) => { f.incident.expectations  = ["other"]; }],
-    ["expectations", (f) => { f.incident.expectations  = ["brak_wymagan"]; }],
-    ["signals",      (f) => { f.incident.activationSignals = ["other"]; }],
-    ["actions",      (f) => { f.incident.interventions = ["other"]; }],
-    ["after",        (f) => { f.incident.after         = ["other"]; }],
-    ["after",        (f) => { f.incident.physicalThisWeek = "yes"; }],
-    ["regulation",   (f) => { f.incident.endedBy       = ["other"]; }],
-  ])("nie oznacza sekcji incydentu jako ukończonej, gdy brakuje wymaganego pola warunkowego: %s", (sectionId, selectOther) => {
-    const form = createHomeForm();
-    selectOther(form);
+    [
+      "baseline",
+      (f) => {
+        f.incident.burdens = ["other"];
+      },
+    ],
+    [
+      "baseline",
+      (f) => {
+        f.incident.slept = "yes";
+      },
+    ],
+    [
+      "signals",
+      (f) => {
+        f.incident.signalsAppeared = "yes";
+        f.incident.activationSignals = ["napiecie_miesniowe"];
+      },
+    ],
+    [
+      "expectations",
+      (f) => {
+        f.incident.expectations = ["other"];
+      },
+    ],
+    [
+      "expectations",
+      (f) => {
+        f.incident.expectations = ["brak_wymagan"];
+      },
+    ],
+    [
+      "signals",
+      (f) => {
+        f.incident.activationSignals = ["other"];
+      },
+    ],
+    [
+      "actions",
+      (f) => {
+        f.incident.interventions = ["other"];
+      },
+    ],
+    [
+      "after",
+      (f) => {
+        f.incident.after = ["other"];
+      },
+    ],
+    [
+      "after",
+      (f) => {
+        f.incident.physicalThisWeek = "yes";
+      },
+    ],
+    [
+      "regulation",
+      (f) => {
+        f.incident.endedBy = ["other"];
+      },
+    ],
+  ])(
+    "nie oznacza sekcji incydentu jako ukończonej, gdy brakuje wymaganego pola warunkowego: %s",
+    (sectionId, selectOther) => {
+      const form = createHomeForm();
+      selectOther(form);
 
-    const section = incidentSections.find((item) => item.id === sectionId);
+      const section = incidentSections.find((item) => item.id === sectionId);
 
     expect(section?.isComplete(form)).toBe(false);
   });
@@ -182,10 +330,10 @@ describe("walidacja formularza", () => {
     const result = validateForm({ variant: "extended", mode: "map", form });
 
     expect(result.fieldErrors["map.dependsDescription"]).toBe(
-      "Skoro zaznaczono zależności, opisz na czym polega zmiana zachowania."
+      "Skoro zaznaczono zależności, opisz na czym polega zmiana zachowania.",
     );
     expect(result.summary).toContain(
-      "Zachowanie zmienia się w zależności od: Skoro zaznaczono zależności, opisz na czym polega zmiana zachowania."
+      "Zachowanie zmienia się w zależności od: Skoro zaznaczono zależności, opisz na czym polega zmiana zachowania.",
     );
   });
 
@@ -196,25 +344,47 @@ describe("walidacja formularza", () => {
     const result = validateForm({ variant: "extended", mode: "map", form });
 
     expect(result.fieldErrors["map.noAggressionWhere"]).toBe(
-      "Skoro są sytuacje bez agresji, opisz jakie."
+      "Skoro są sytuacje bez agresji, opisz jakie.",
     );
     expect(result.summary).toContain(
-      "Czy są sytuacje bez agresji?: Skoro są sytuacje bez agresji, opisz jakie."
+      "Czy są sytuacje bez agresji?: Skoro są sytuacje bez agresji, opisz jakie.",
     );
   });
 
   it("wymaga obowiązkowych pól mapy w trybie mapy", () => {
-    const result = validateForm({ variant: "extended", mode: "map", form: createHomeForm() });
+    const result = validateForm({
+      variant: "extended",
+      mode: "map",
+      form: createHomeForm(),
+    });
 
-    expect(result.fieldErrors["map.preferredPlaces"]).toBe("Zaznacz przynajmniej jedną opcję: W jakich miejscach dziecko/uczeń najchętniej przebywa?.");
-    expect(result.fieldErrors["map.preferredReason"]).toBe("Uzupełnij pole: Dlaczego te miejsca? Co je wyróżnia?.");
-    expect(result.fieldErrors["map.avoidedPlaces"]).toBe("Zaznacz przynajmniej jedną opcję: Z jakich miejsc dziecko/uczeń unika lub wychodzi z trudem?.");
-    expect(result.fieldErrors["map.avoidedReason"]).toBe("Uzupełnij pole: Co w tych miejscach aktywuje napięcie?.");
-    expect(result.fieldErrors["map.likes"]).toBe("Uzupełnij pole: W jakie aktywności dziecko/uczeń najchętniej się angażuje?.");
-    expect(result.fieldErrors["map.easiestWhen"]).toBe("Zaznacz przynajmniej jedną opcję: Dziecko/uczeń najłatwiej funkcjonuje, gdy.");
-    expect(result.fieldErrors["map.cooperatesWith"]).toBe("Uzupełnij pole: Dziecko/uczeń najłatwiej współpracuje z.");
-    expect(result.fieldErrors["map.reducers"]).toBe("Zaznacz przynajmniej jedną opcję: Co OBNIŻA napięcie.");
-    expect(result.fieldErrors["map.escalationContexts"]).toBe("Zaznacz przynajmniej jedną opcję: Najczęstsze sytuacje eskalacji.");
+    expect(result.fieldErrors["map.preferredPlaces"]).toBe(
+      "Zaznacz przynajmniej jedną opcję: W jakich miejscach osoba najchętniej przebywa?.",
+    );
+    expect(result.fieldErrors["map.preferredReason"]).toBe(
+      "Uzupełnij pole: Dlaczego te miejsca? Co je wyróżnia?.",
+    );
+    expect(result.fieldErrors["map.avoidedPlaces"]).toBe(
+      "Zaznacz przynajmniej jedną opcję: Z jakich miejsc osoba unika lub wychodzi z trudem?.",
+    );
+    expect(result.fieldErrors["map.avoidedReason"]).toBe(
+      "Uzupełnij pole: Co w tych miejscach aktywuje napięcie?.",
+    );
+    expect(result.fieldErrors["map.likes"]).toBe(
+      "Uzupełnij pole: W jakie aktywności osoba najchętniej się angażuje?.",
+    );
+    expect(result.fieldErrors["map.easiestWhen"]).toBe(
+      "Zaznacz przynajmniej jedną opcję: Osoba najłatwiej funkcjonuje, gdy.",
+    );
+    expect(result.fieldErrors["map.cooperatesWith"]).toBe(
+      "Uzupełnij pole: Osoba najłatwiej współpracuje z.",
+    );
+    expect(result.fieldErrors["map.reducers"]).toBe(
+      "Zaznacz przynajmniej jedną opcję: Co OBNIŻA napięcie.",
+    );
+    expect(result.fieldErrors["map.escalationContexts"]).toBe(
+      "Zaznacz przynajmniej jedną opcję: Najczęstsze sytuacje eskalacji.",
+    );
   });
 
   it("akceptuje tryb mapy, gdy obowiązkowe pola mapy są wypełnione", () => {

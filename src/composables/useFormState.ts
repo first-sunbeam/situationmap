@@ -21,14 +21,20 @@ import {
   shutdownSignalOptions,
   tensionLevels,
   yesNoPartial,
-  yesNoUnknown
+  yesNoUnknown,
 } from "../data/environments";
 import { getFormLabels } from "../config/formLabels";
 import { useLanguage } from "../i18n/useLanguage";
 import { buildEmail, openEmail } from "../lib/email";
 import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, PdfAction } from "../types/form";
-import { createForms, hydrateForm, loadState, useFormPersistence, type EnvironmentKey } from "./useFormPersistence";
+import {
+  createForms,
+  hydrateForm,
+  loadState,
+  useFormPersistence,
+  type EnvironmentKey,
+} from "./useFormPersistence";
 import { useValidationFlow } from "./useValidationFlow";
 
 let formState: ReturnType<typeof createFormState> | undefined;
@@ -46,14 +52,21 @@ function createFormState() {
     forms[key] = hydrateForm(key, initial.forms[key]);
   }
 
-  const env = computed<EnvironmentConfig>(() => environments[activeEnvKey.value]);
+  const env = computed<EnvironmentConfig>(
+    () => environments[activeEnvKey.value],
+  );
   const form = computed(() => forms[activeEnvKey.value]);
   const labels = computed(() => getFormLabels(language.value));
   const subject = computed(() => getSubjectInline(form.value));
-  const subjectNominative = computed(() => getSubjectInline(form.value, "dziecko/uczeń"));
-  const modeLabel = computed(() => activeVariant.value === "simple"
-    ? "formularz prosty"
-    : { incident: "karta zdarzenia", map: "mapa środowiska" }[activeMode.value]
+  const subjectNominative = computed(() =>
+    getSubjectInline(form.value, "osoba"),
+  );
+  const modeLabel = computed(() =>
+    activeVariant.value === "simple"
+      ? "formularz prosty"
+      : { incident: "karta zdarzenia", map: "mapa środowiska" }[
+          activeMode.value
+        ],
   );
   const {
     validationErrors,
@@ -62,10 +75,16 @@ function createFormState() {
     clearValidation,
     applyValidation,
     requestValidationNavigation,
-    scrollToValidationTarget
+    scrollToValidationTarget,
   } = useValidationFlow({ activeVariant, activeMode, form, labels });
 
-  useFormPersistence({ activeEnvKey, activeVariant, activeMode, forms, status });
+  useFormPersistence({
+    activeEnvKey,
+    activeVariant,
+    activeMode,
+    forms,
+    status,
+  });
 
   function toggle(list: string[], option: string) {
     const index = list.indexOf(option);
@@ -95,7 +114,7 @@ function createFormState() {
       action,
       setStatus: (message: string) => {
         status.value = message;
-      }
+      },
     });
   }
 
@@ -114,16 +133,18 @@ function createFormState() {
       form: form.value,
       variant: activeVariant.value,
       mode: activeMode.value,
-      language: language.value
+      language: language.value,
     });
     openEmail(email);
-    status.value = "E-mail został przygotowany w domyślnym programie pocztowym.";
+    status.value =
+      "E-mail został przygotowany w domyślnym programie pocztowym.";
   }
 
   function resetCurrent() {
     forms[activeEnvKey.value] = blankForm(env.value);
     clearValidation();
-    status.value = "Wyczyszczono wszystkie formularze dla bieżącego środowiska.";
+    status.value =
+      "Wyczyszczono wszystkie formularze dla bieżącego środowiska.";
   }
 
   function resetSimple() {
@@ -147,9 +168,17 @@ function createFormState() {
   }
 
   watch([activeEnvKey, activeVariant, activeMode], clearValidation);
-  watch(forms, () => {
-    if (validationErrors.value.length || Object.keys(fieldErrors.value).length) applyValidation();
-  }, { deep: true });
+  watch(
+    forms,
+    () => {
+      if (
+        validationErrors.value.length ||
+        Object.keys(fieldErrors.value).length
+      )
+        applyValidation();
+    },
+    { deep: true },
+  );
 
   return {
     activeEnvKey,
@@ -191,7 +220,7 @@ function createFormState() {
     resetCurrent,
     resetSimple,
     resetIncident,
-    resetMap
+    resetMap,
   };
 }
 

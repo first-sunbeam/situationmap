@@ -60,7 +60,7 @@ describe("generowanie PDF", () => {
 
     expect(content).toContain(environments.home.mapTitle);
     expect(content).toContain("1. Miejsca i preferowane przestrzenie");
-    expect(content).toContain("Pokój dziecka");
+    expect(content).toContain("Pokój osoby");
     expect(content).not.toContain(environments.home.incidentTitle);
   });
 

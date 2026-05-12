@@ -29,6 +29,7 @@ test.beforeEach(async ({ page }) => {
   const app = new SituationMapPage(page);
   await app.goto();
   await app.clearStorage();
+  await app.goto();
 });
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
@@ -140,7 +141,7 @@ test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeła
   const homeMap = (stored as any).forms?.home?.map;
   expect((stored as any).activeVariant).toBe("extended");
   expect((stored as any).activeMode).toBe("map");
-  expect(homeMap?.preferred).toBe("Pokój wyciszenia");
+  expect(homeMap?.preferredPlaces).toContain("pokoj_dziecka");
   expect(homeMap?.dependsOn).toContain("halas");
   expect(homeMap?.dependsDescription).toBe(
     "Przy większym hałasie szybciej narasta napięcie.",
@@ -150,7 +151,7 @@ test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeła
   await page.reload();
 
   await expect(mapForm.mapHeading).toBeVisible();
-  await expect(mapForm.preferredPlaceField).toHaveValue("Pokój wyciszenia");
+  await expect(mapForm.preferredPlaceCheckbox).toBeChecked();
   await expect(mapForm.noiseCheckbox).toBeChecked();
   await expect(mapForm.dependsDescriptionField).toHaveValue(
     "Przy większym hałasie szybciej narasta napięcie.",
@@ -177,8 +178,9 @@ test("sekcja danych podstawowych jest ukończona dopiero po wypełnieniu wszystk
   await app.timeField.fill(DEFAULT_META.time);
   await app.placeField.fill(DEFAULT_META.place);
   await app.guardianField.fill(DEFAULT_META.guardian);
+  await extended.goToNextStep();
 
-  await expect(extended.metaStepperButton).toHaveText(/✓/);
+  await expect(extended.metaStepperButton).toHaveClass(/complete/);
 });
 
 test("pozwala przełączać kroki formularza rozszerzonego przyciskami nawigacji i stepperem", async ({
@@ -246,7 +248,9 @@ test("opcja inne wymaga opisu i oznacza krok jako błędny", async ({ page }) =>
   await app.firstPdfButton.click();
 
   await expect(extended.baselineOtherValidationMessage(true)).toBeVisible();
+  await extended.goToStep("before");
   await expect(extended.stepperButton("baseline")).toHaveClass(/error/);
+  await extended.goToStep("baseline");
 
   await extended.baselineOtherDescriptionField.fill(
     "Inny czynnik obciążający.",
