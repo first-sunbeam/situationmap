@@ -7,7 +7,6 @@
   margin: (x: 2.3cm, y: 2cm),
   footer: context [
     #set text(size: 8.5pt, fill: rgb("#6c6a63"))
-
     #grid(
       columns: (1fr, auto, 1fr),
       align: (left, center, right),
@@ -98,7 +97,6 @@
 Formularze pomagają zamienić pojedyncze „incydenty” w dane, które można porównywać między sytuacjami.
 
 Ich celem nie jest ocenianie osoby ani szukanie winy. Mają pomóc odpowiedzieć na pytania:
-
 - co wydarzyło się przed wzrostem napięcia,
 - jakie sygnały pojawiły się wcześniej,
 - co pomogło,
@@ -106,24 +104,22 @@ Ich celem nie jest ocenianie osoby ani szukanie winy. Mają pomóc odpowiedzieć
 - jakie wzorce powtarzają się w czasie.
 
 Formularz pomaga oddzielić:
-
 - opis sytuacji od interpretacji,
 - zachowanie od intencji,
-- uspokojenie od gotowości do dalszego działania,
-- pojedynczy trigger od całego kontekstu dnia.
+- uspokojenie od powrotu do regulacji,
+- pojedynczy wyzwalacz od całego kontekstu dnia.
 
 Dzięki kilku podobnym zapisom można zauważyć wzorce, których nie widać po jednej sytuacji:
-
 - konkretne pory dnia,
 - typy wymagań,
 - zmiany planu,
-- przeciążające warunki,
+- warunki przeciążające,
 - brak przewidywalności,
 - zbyt szybkie przejścia między aktywnościami,
-- długi czas potrzebny na powrót do gotowości.
+- długi czas potrzebny na powrót do regulacji i gotowości.
 
 #note[
-  Formularz nie służy do budowania „listy problemowych zachowań”.\
+  Formularz nie służy do budowania „listy problemowych zachowań”.
   Ma pomagać w planowaniu wsparcia i modyfikacji środowiska.
 ]
 
@@ -134,7 +130,6 @@ Dzięki kilku podobnym zapisom można zauważyć wzorce, których nie widać po 
 Zapisuj to, co można było zobaczyć lub usłyszeć.
 
 Dobrze:
-
 - „zacisnął dłonie”,
 - „powtarzała: nie chcę”,
 - „usiadł pod stołem”,
@@ -142,26 +137,26 @@ Dobrze:
 - „wyszedł z sali”.
 
 Unikaj:
-
 - „manipulował”,
 - „robił specjalnie”,
 - „testował granice”,
 - „był leniwy”,
 - „chciała zwrócić uwagę”.
 
-== 2. Oddziel tło od triggera
+== 2. Oddziel tło od wyzwalacza
 
-Trigger to nie zawsze „duża” sytuacja.
+Wyzwalacz to nie zawsze „duża” sytuacja.
 
 Często jest ostatnim elementem po serii wcześniejszych obciążeń:
 hałasie, zmęczeniu, zmianach planu, bólu, presji albo wielu drobnych wymaganiach.
+
+#pagebreak()
 
 == 3. Zapisuj pierwsze sygnały
 
 Najważniejsze są momenty przed eskalacją.
 
 To mogą być:
-
 - wycofanie,
 - milczenie,
 - szybsze mówienie,
@@ -174,7 +169,6 @@ To mogą być:
 == 4. Notuj reakcję otoczenia
 
 Ważne jest nie tylko to, co zrobiła osoba, ale też:
-
 - jak odpowiedziało otoczenie,
 - czy wsparcie było dostępne,
 - czy pojawiły się dodatkowe wymagania,
@@ -183,7 +177,6 @@ Ważne jest nie tylko to, co zrobiła osoba, ale też:
 == 5. Oddziel uspokojenie od gotowości
 
 To, że osoba przestała płakać, krzyczeć albo protestować, nie zawsze oznacza gotowość do:
-
 - rozmowy,
 - kolejnych poleceń,
 - powrotu do aktywności,
@@ -195,7 +188,6 @@ W formularzu warto zaznaczyć:
 
 #note[
   *Praktycznie:* jeśli po sytuacji nie wiadomo, co wpisać, zacznij od trzech rzeczy:
-
   - co było wcześniej,
   - co było pierwszym sygnałem,
   - co realnie pomogło.
@@ -239,7 +231,7 @@ Najlepiej sprawdza się:
   [Pomijania wpływu środowiska.],
 
   [5. Co pomogło],
-  [Co zmniejszyło napięcie lub ułatwiło powrót.],
+  [Co zmniejszyło napięcie lub ułatwiło powrót do regulacji.],
   [Ogólników typu „uspokoił się”.],
 
   [6. Powrót do gotowości],
@@ -248,7 +240,7 @@ Najlepiej sprawdza się:
 )
 
 #note[
-  Formularz prosty nie ma dawać pełnej diagnozy sytuacji.\
+  Formularz prosty nie ma dawać pełnej diagnozy sytuacji. \
   Ma umożliwić szybki zapis danych, które później można porównać.
 ]
 
@@ -265,14 +257,13 @@ Najlepiej sprawdza się:
 - przy budowaniu hipotez funkcjonalnych.
 
 Pozwala oddzielić:
-
 - obciążenia z całego dnia,
-- bezpośredni trigger,
+- bezpośredni wyzwalacz,
 - wymagania i przewidywalność,
 - pierwsze sygnały,
 - działania otoczenia,
 - przebieg sytuacji,
-- czas powrotu do gotowości.
+- czas powrotu do regulacji i gotowości.
 
 == Sekcje formularza
 
@@ -289,10 +280,10 @@ Pozwala oddzielić:
 
   [1. Bezpośrednio przed],
   [Ostatnie minuty przed wzrostem napięcia.],
-  [Pozwala oddzielić trigger od wcześniejszego tła.],
+  [Pozwala oddzielić wyzwalacz od wcześniejszego tła.],
 
-  [2. Wymagania i wpływ],
-  [Co było jasne, co narzucone, na co był wpływ.],
+  [2. Wymagania i kontrola],
+  [Co było jasne, co narzucone, na co osoba miała wpływ.],
   [Pomaga ocenić rolę przewidywalności i autonomii.],
 
   [3. Pierwsze sygnały],
@@ -341,7 +332,6 @@ Kilka formularzy pozwala zauważyć wzorzec.
 == Czego formularz nie zakłada
 
 Formularz nie zakłada, że:
-
 - każde wymaganie jest szkodliwe,
 - każda trudność wynika wyłącznie z sensoryki,
 - wsparcie oznacza brak granic,
@@ -412,7 +402,6 @@ Czasem potrzeba kilku lub kilkunastu zapisów, żeby zauważyć:
 = Podstawa merytoryczna
 
 Formularz opiera się między innymi na:
-
 - analizie funkcjonalnej zachowania,
 - obserwacji kontekstu środowiskowego,
 - podejściach trauma-informed,
@@ -420,19 +409,12 @@ Formularz opiera się między innymi na:
 - badaniach dotyczących autonomii i przewidywalności.
 
 Najważniejsze źródła:
-
 - Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.
-
 - O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.
-
 - Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility. _Biological Psychology_, 104, 65–74.
-
 - Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception. _Cortex_, 81, 215–220.
-
 - Deci, E. L., & Ryan, R. M. (2000). The "what" and "why" of goal pursuits: Human needs and the self-determination of behavior. _Psychological Inquiry_, 11(4), 227–268.
-
 - O'Nions, E., Christie, P., Gould, J., Viding, E., & Happé, F. (2014). Development of the "Extreme Demand Avoidance Questionnaire" (EDA-Q): Preliminary observations on a trait measure for pathological demand avoidance. _Journal of Child Psychology and Psychiatry_, 55(7), 758–768.
-
 - Substance Abuse and Mental Health Services Administration. (2014). _SAMHSA's Concept of Trauma and Guidance for a Trauma-Informed Approach_. HHS Publication No. SMA 14-4884.
 
 #v(2em)
@@ -443,7 +425,7 @@ Najważniejsze źródła:
   #v(1em)
 
   #text(size: 10pt, fill: rgb("#6c6a63"))[
-    *Małgorzata Mikołajczyk*\
+    *Małgorzata Mikołajczyk* \
     Psycholog · Analityk zachowania (BCBA)\
     #link("http://autyzm.poznan.pl")
   ]
