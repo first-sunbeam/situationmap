@@ -10,7 +10,7 @@ import IconSprite from "./components/ui/IconSprite.vue";
 const router = useRouter();
 const route = useRoute();
 const { isDarkTheme, toggleTheme } = useTheme();
-const { languageLabel, toggleLanguageLabel, toggleLanguage } = useLanguage();
+const { language, languageLabel, toggleLanguageLabel, toggleLanguage } = useLanguage();
 
 const {
   activeEnvKey,
@@ -30,6 +30,13 @@ const isSimple = computed(() => route.meta.variant === "simple");
 const isExtended = computed(() => route.meta.variant === "extended");
 const isIncident = computed(() => currentMode.value === "incident");
 const isMap = computed(() => currentMode.value === "map");
+const printableFormsPdfLink = computed(() =>
+  `${import.meta.env.BASE_URL}pdf/${
+    language.value === "en"
+      ? "blank-monitoring-forms.pdf"
+      : "puste-formularze-monitorowania.pdf"
+  }`,
+);
 </script>
 
 <template>
@@ -186,6 +193,19 @@ const isMap = computed(() => currentMode.value === "map");
             </template>
 
             <div class="note">{{ labels.ui.localStorageNote }}</div>
+
+            <a
+              class="mode-button sidebar-about-button"
+              :href="printableFormsPdfLink"
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+            >
+              <span class="mode-indicator" aria-hidden="true">
+                <SvgIcon name="pdf" />
+              </span>
+              <span>{{ labels.ui.blankFormsPdf }}</span>
+            </a>
 
             <button
               class="mode-button sidebar-about-button"

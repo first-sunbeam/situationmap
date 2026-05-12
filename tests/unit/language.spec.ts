@@ -33,7 +33,7 @@ describe("przełączanie języka", () => {
     const { language, languageLabel, toggleLanguageLabel } = useLanguage();
 
     expect(language.value).toBe("pl");
-    expect(languageLabel.value).toBe("PL");
+    expect(languageLabel.value).toBe("EN");
     expect(toggleLanguageLabel.value).toBe("Switch language to English");
   });
 
@@ -44,7 +44,7 @@ describe("przełączanie języka", () => {
     const { language, languageLabel, toggleLanguageLabel, toggleLanguage } = useLanguage();
 
     expect(language.value).toBe("en");
-    expect(languageLabel.value).toBe("EN");
+    expect(languageLabel.value).toBe("PL");
     expect(toggleLanguageLabel.value).toBe("Przełącz język na polski");
 
     toggleLanguage();

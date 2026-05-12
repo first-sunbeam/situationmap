@@ -31,7 +31,7 @@ watch(language, (value) => {
 export function useLanguage() {
   const isEnglish = computed(() => language.value === "en");
   const nextLanguage = computed<LanguageCode>(() => isEnglish.value ? "pl" : "en");
-  const languageLabel = computed(() => language.value.toUpperCase());
+  const languageLabel = computed(() => nextLanguage.value.toUpperCase());
   const toggleLanguageLabel = computed(() => isEnglish.value ? "Przełącz język na polski" : "Switch language to English");
 
   function setLanguage(value: LanguageCode) {
