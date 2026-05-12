@@ -20,7 +20,7 @@
 )
 
 #set text(font: "Linux Libertine", size: 9.6pt, lang: "pl")
-#set par(justify: false, leading: 0.3em)
+#set par(justify: false, leading: 0.3em, spacing: 0.4em)
 #set heading(numbering: none)
 
 #show heading.where(level: 1): it => block(above: 0.6em, below: 0.6em)[
@@ -57,11 +57,12 @@
 )
 
 #let hint-text(hint) = if hint != none [
-  #v(0.2em)
+  #v(0.1em)
   #text(size: 8.2pt, style: "italic")[#hint]
 ]
 
-#let field(label, height: 0.85cm, hint: none) = block(width: 100%, below: 1em)[
+#let field(label, height: 0.85cm, hint: none) = block(width: 100%, below: 1em, above: 1em)[
+  #v(0.5em)
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #v(1em)
@@ -77,7 +78,7 @@
 
 #let row-fields(a, b) = grid(columns: (1fr, 1fr), column-gutter: 0.3cm, field(a), field(b))
 
-#let checks(items, columns: 2) = block(width: 100%, below:1em, above:0.5em)[
+#let checks(items, columns: 2) = block(width: 100%, below:1em, above:0.4em)[
   #grid(
     columns: if columns == 3 { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
     column-gutter: 0.5em,

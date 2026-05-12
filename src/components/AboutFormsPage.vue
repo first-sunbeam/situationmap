@@ -27,6 +27,7 @@ const content = computed(() => getAboutPageContent(language.value));
           :href="content.pdfLink"
           target="_blank"
           rel="noopener noreferrer"
+          download
           class="about-pdf-link"
         >
           <SvgIcon name="pdf" :size="32" />
