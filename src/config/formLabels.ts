@@ -124,7 +124,7 @@ export const formLabelsByLanguage = {
         "Masz do wyboru wersję prostą i rozszerzoną. W wersji prostej możesz wysłać formularz e-mailem, a w wersji rozszerzonej wygenerować PDF.",
       aboutHeroTitle: "Opis formularzy monitorowania",
       aboutHeroText:
-        "Wyjaśnienie, jak czytać formularze, po co są poszczególne sekcje i jak używać danych bez moralizowania.",
+        "Jak czytać formularze, do czego służą poszczególne sekcje i jak korzystać z danych bez oceniania czy szukania winy.",
       formVersion: "Wersja formularza",
       aboutFormsView: "Opis formularzy",
       simpleVariant: "Prosta",
@@ -497,7 +497,7 @@ export const formLabelsByLanguage = {
         "You can choose the simple or extended version. In the simple version you can send the form by email; in the extended version you can generate a PDF.",
       aboutHeroTitle: "Monitoring form description",
       aboutHeroText:
-        "An explanation of how to read the forms, why each section exists, and how to use the data without moralizing.",
+        "How to read the forms, what each section is for, and how to use the data without judging or looking for someone to blame.",
       formVersion: "Form version",
       aboutFormsView: "Form description",
       simpleVariant: "Simple",
@@ -751,7 +751,7 @@ export const formLabelsByLanguage = {
   },
 } as const;
 
-export type FormLabels = typeof formLabelsByLanguage[LanguageCode];
+export type FormLabels = (typeof formLabelsByLanguage)[LanguageCode];
 
 export const formLabels: FormLabels = formLabelsByLanguage.pl;
 
