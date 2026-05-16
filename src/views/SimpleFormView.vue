@@ -8,7 +8,7 @@ import SelectField from "../components/form/SelectField.vue";
 import TextAreaField from "../components/form/TextAreaField.vue";
 import SvgIcon from "../components/ui/SvgIcon.vue";
 
-const { env, envLabel, form, labels, sendEmail, buildPdf, resetSimple, fieldErrors, activeVariant } = useFormState();
+const { env, envLabel, envLead, form, labels, sendEmail, buildPdf, resetSimple, fieldErrors, activeVariant } = useFormState();
 const subject = computed(() =>
   getSubjectInline(
     form.value,
@@ -44,7 +44,7 @@ watchEffect(() => {
     <div class="sections">
       <section class="section">
         <h3>{{ labels.meta.section }}</h3>
-        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" />
+        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" :lead-label="envLead" />
       </section>
 
       <section class="section">

@@ -14,6 +14,7 @@ const {
   labels,
   env,
   envMapTitle,
+  envLead,
   form,
   buildPdf,
   resetMap,
@@ -87,7 +88,7 @@ const subjectStart = computed(() =>
     <div class="sections">
       <section class="section">
         <h3>{{ labels.meta.section }} <span class="required-mark">*</span></h3>
-        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" />
+        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" :lead-label="envLead" />
       </section>
 
       <section class="section" :class="{ invalidSection: hasMapSectionError }">

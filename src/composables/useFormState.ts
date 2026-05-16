@@ -58,18 +58,26 @@ function createFormState() {
   const form = computed(() => forms[activeEnvKey.value]);
   const labels = computed(() => getFormLabels(language.value));
   const envLabel = computed(() => labels.value.environments[activeEnvKey.value].label);
+  const envIncidentTitle = computed(() => labels.value.environments[activeEnvKey.value].incidentTitle);
   const envMapTitle = computed(() => labels.value.environments[activeEnvKey.value].mapTitle);
+  const envLead = computed(() => labels.value.environments[activeEnvKey.value].lead);
   const subject = computed(() => getSubjectInline(form.value));
   const subjectNominative = computed(() =>
     getSubjectInline(form.value, "osoba"),
   );
-  const modeLabel = computed(() =>
-    activeVariant.value === "simple"
+  const modeLabel = computed(() => {
+    if (language.value === "en") {
+      return activeVariant.value === "simple"
+        ? "simple form"
+        : { incident: "incident report", map: "environment map" }[activeMode.value];
+    }
+
+    return activeVariant.value === "simple"
       ? "formularz prosty"
       : { incident: "karta zdarzenia", map: "mapa środowiska" }[
           activeMode.value
-        ],
-  );
+        ];
+  });
   const {
     validationErrors,
     fieldErrors,
@@ -99,7 +107,7 @@ function createFormState() {
     const result = applyValidation();
     if (result.summary.length) {
       requestValidationNavigation();
-      status.value = "Popraw formularz przed wygenerowaniem PDF.";
+      status.value = language.value === "en" ? "Correct the form before generating the PDF." : "Popraw formularz przed wygenerowaniem PDF.";
       scrollToValidationTarget();
       return;
     }
@@ -124,7 +132,7 @@ function createFormState() {
     const result = applyValidation();
     if (result.summary.length) {
       requestValidationNavigation();
-      status.value = "Popraw formularz przed wysłaniem e-maila.";
+      status.value = language.value === "en" ? "Correct the form before sending the email." : "Popraw formularz przed wysłaniem e-maila.";
       scrollToValidationTarget();
       return;
     }
@@ -138,35 +146,37 @@ function createFormState() {
       language: language.value,
     });
     openEmail(email);
-    status.value =
-      "E-mail został przygotowany w domyślnym programie pocztowym.";
+    status.value = language.value === "en"
+      ? "Email has been prepared in your default email app."
+      : "E-mail został przygotowany w domyślnym programie pocztowym.";
   }
 
   function resetCurrent() {
     forms[activeEnvKey.value] = blankForm(env.value);
     clearValidation();
-    status.value =
-      "Wyczyszczono wszystkie formularze dla bieżącego środowiska.";
+    status.value = language.value === "en"
+      ? "Cleared all forms for the current environment."
+      : "Wyczyszczono wszystkie formularze dla bieżącego środowiska.";
   }
 
   function resetSimple() {
     forms[activeEnvKey.value].meta = blankForm(env.value).meta;
     forms[activeEnvKey.value].simple = blankForm(env.value).simple;
     clearValidation();
-    status.value = "Wyczyszczono tylko formularz prosty.";
+    status.value = language.value === "en" ? "Cleared only the simple form." : "Wyczyszczono tylko formularz prosty.";
   }
 
   function resetIncident() {
     forms[activeEnvKey.value].meta = blankForm(env.value).meta;
     forms[activeEnvKey.value].incident = blankForm(env.value).incident;
     clearValidation();
-    status.value = "Wyczyszczono tylko kartę zdarzenia.";
+    status.value = language.value === "en" ? "Cleared only the incident report." : "Wyczyszczono tylko kartę zdarzenia.";
   }
 
   function resetMap() {
     forms[activeEnvKey.value].map = blankForm(env.value).map;
     clearValidation();
-    status.value = "Wyczyszczono tylko mapę środowiska.";
+    status.value = language.value === "en" ? "Cleared only the environment map." : "Wyczyszczono tylko mapę środowiska.";
   }
 
   watch([activeEnvKey, activeVariant, activeMode], clearValidation);
@@ -193,7 +203,9 @@ function createFormState() {
     environments,
     env,
     envLabel,
+    envIncidentTitle,
     envMapTitle,
+    envLead,
     form,
     labels,
     subject,

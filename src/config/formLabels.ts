@@ -8,20 +8,27 @@ export const formLabelsByLanguage = {
       time: "Godzina",
       place: "Miejsce",
       initials: "Inicjały osoby",
+      lead: "Osoba prowadząca",
       present: "Inne osoby obecne",
     },
     environments: {
       home: {
         label: "Dom",
+        incidentTitle: "KARTA MONITOROWANIA SYTUACJI - DOM",
         mapTitle: "MAPA ŚRODOWISKA DOMOWEGO",
+        lead: "Rodzic / opiekun prowadzący",
       },
       center: {
         label: "Placówka całodobowa",
+        incidentTitle: "KARTA MONITOROWANIA SYTUACJI - PLACÓWKA CAŁODOBOWA",
         mapTitle: "MAPA ŚRODOWISKA - PLACÓWKA CAŁODOBOWA",
+        lead: "Wychowawca / osoba prowadząca",
       },
       school: {
         label: "Szkoła",
+        incidentTitle: "KARTA MONITOROWANIA SYTUACJI - SZKOŁA",
         mapTitle: "MAPA ŚRODOWISKA SZKOLNEGO",
+        lead: "Osoba prowadząca",
       },
     },
     simple: {
@@ -391,20 +398,27 @@ export const formLabelsByLanguage = {
       time: "Time",
       place: "Place",
       initials: "Person's initials",
+      lead: "Person completing the form",
       present: "Other people present",
     },
     environments: {
       home: {
         label: "Home",
+        incidentTitle: "SITUATION MONITORING REPORT - HOME",
         mapTitle: "HOME ENVIRONMENT MAP",
+        lead: "Parent / primary caregiver",
       },
       center: {
         label: "Residential facility",
+        incidentTitle: "SITUATION MONITORING REPORT - RESIDENTIAL FACILITY",
         mapTitle: "ENVIRONMENT MAP - RESIDENTIAL FACILITY",
+        lead: "Educator / person completing the form",
       },
       school: {
         label: "School",
+        incidentTitle: "SITUATION MONITORING REPORT - SCHOOL",
         mapTitle: "SCHOOL ENVIRONMENT MAP",
+        lead: "Person completing the form",
       },
     },
     simple: {

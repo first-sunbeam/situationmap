@@ -95,7 +95,7 @@ export function getMetaExportSection(
         label: labels.meta.initials,
         value: (_env, form) => form.meta.initials,
       },
-      { label: env.lead, value: (_env, form) => form.meta.lead },
+      { label: env.label === "Dom" ? labels.environments.home.lead : env.label === "Placówka całodobowa" ? labels.environments.center.lead : labels.environments.school.lead, value: (_env, form) => form.meta.lead },
       { label: labels.meta.present, value: (_env, form) => form.meta.present },
     ],
   };

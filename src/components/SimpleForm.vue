@@ -23,6 +23,11 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
 const { language } = useLanguage();
 const labels = computed(() => getFormLabels(language.value));
 const envLabel = computed(() => getEnvironmentLabel(env, language.value));
+const envLead = computed(() => {
+  if (env.label === "Dom") return labels.value.environments.home.lead;
+  if (env.label === "Placówka całodobowa") return labels.value.environments.center.lead;
+  return labels.value.environments.school.lead;
+});
 const subject = computed(() => getSubjectInline(form, labels.value.map.section === "Environment map" ? "the person" : "osoby"));
 const readinessOptions = ["5_minut", "10_30_minut", "1_2_godziny", "kilka_godzin_lub_nastepnego_dnia"];
 </script>
@@ -44,7 +49,7 @@ const readinessOptions = ["5_minut", "10_30_minut", "1_2_godziny", "kilka_godzin
     <div class="sections">
       <section class="section">
         <h3>{{ labels.meta.section }}</h3>
-        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" />
+        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" :lead-label="envLead" />
       </section>
 
       <section class="section">

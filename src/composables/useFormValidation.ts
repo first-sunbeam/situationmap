@@ -8,20 +8,20 @@ function isBlank(value: string): boolean {
 }
 
 function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors, summary: string[], labels: FormLabels) {
-  const subject = getSubjectInline(form, "osoba");
-  const subjectStart = getSubjectInline(form, "Osoba");
+  const subject = getSubjectInline(form, labels.map.section === "Environment map" ? "the person" : "osoba");
+  const subjectStart = getSubjectInline(form, labels.map.section === "Environment map" ? "The person" : "Osoba");
   const requiredTextFields: Array<[string, string, string]> = [
-    ["map.preferredReason", "Dlaczego te miejsca? Co je wyróżnia?", form.map.preferredReason],
-    ["map.avoidedReason", "Co w tych miejscach aktywuje napięcie?", form.map.avoidedReason],
-    ["map.likes", `W jakie aktywności ${subject} najchętniej się angażuje?`, form.map.likes],
-    ["map.cooperatesWith", `${subjectStart} najłatwiej współpracuje z`, form.map.cooperatesWith]
+    ["map.preferredReason", labels.ui.preferredReason, form.map.preferredReason],
+    ["map.avoidedReason", labels.ui.avoidedReason, form.map.avoidedReason],
+    ["map.likes", `${labels.ui.likesFor} ${subject} ${labels.ui.likesSuffix}`, form.map.likes],
+    ["map.cooperatesWith", `${subjectStart} ${labels.ui.cooperatesWithSuffix}`, form.map.cooperatesWith]
   ];
 
   const requiredChoiceFields: Array<[string, string, string[]]> = [
-    ["map.preferredPlaces", `W jakich miejscach ${subject} najchętniej przebywa?`, form.map.preferredPlaces],
-    ["map.avoidedPlaces", `Z jakich miejsc ${subject} unika lub wychodzi z trudem?`, form.map.avoidedPlaces],
-    ["map.easiestWhen", `${subjectStart} najłatwiej funkcjonuje, gdy`, form.map.easiestWhen],
-    ["map.reducers", "Co OBNIŻA napięcie", form.map.reducers],
+    ["map.preferredPlaces", `${labels.ui.preferredPlacesFor} ${subject} ${labels.ui.preferredPlacesSuffix}`, form.map.preferredPlaces],
+    ["map.avoidedPlaces", `${labels.ui.avoidedPlacesFor} ${subject} ${labels.ui.avoidedPlacesSuffix}`, form.map.avoidedPlaces],
+    ["map.easiestWhen", `${subjectStart} ${labels.ui.easiestWhenSuffix}`, form.map.easiestWhen],
+    ["map.reducers", labels.ui.reducersLabel, form.map.reducers],
     ["map.escalationContexts", labels.map.escalationContexts, form.map.escalationContexts]
   ];
 
@@ -69,10 +69,10 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
   const summary: string[] = [];
   const subject = getSubjectInline(form, labels.map.section === "Environment map" ? "the person" : "osoby");
   const meta: Array<[string, string, string]> = [
-    ["meta.date", "Data", form.meta.date],
-    ["meta.time", "Godzina", form.meta.time],
-    ["meta.place", "Miejsce", form.meta.place],
-    ["meta.lead", "Osoba prowadząca", form.meta.lead]
+    ["meta.date", labels.meta.date, form.meta.date],
+    ["meta.time", labels.meta.time, form.meta.time],
+    ["meta.place", labels.meta.place, form.meta.place],
+    ["meta.lead", labels.meta.lead, form.meta.lead]
   ];
 
   if (variant === "simple" || mode !== "map") {

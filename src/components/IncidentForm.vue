@@ -17,7 +17,7 @@ import SvgIcon from "./ui/SvgIcon.vue";
 
 const stepComponents = [MetaStep, BaselineStep, BeforeStep, ExpectationsStep, SignalsStep, MaskingStep, ActionsStep, BehaviorStep, RegulationStep, AfterStep] satisfies Component[];
 
-const { env, labels, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
+const { env, envIncidentTitle, labels, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
 
 const steps = computed(() => getIncidentStepDefinitions(labels.value).map((step, index) => ({
   ...step,
@@ -65,7 +65,7 @@ watch(activeStep, (stepId) => {
   <section class="panel form-panel">
     <div class="form-heading">
       <div>
-        <h2>{{ env.incidentTitle }}</h2>
+        <h2>{{ envIncidentTitle }}</h2>
         <p>{{ labels.ui.incidentIntro }}</p>
       </div>
       <div class="heading-actions">

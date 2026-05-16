@@ -104,10 +104,11 @@ function makeSimpleDoc(env: EnvironmentConfig, data: SituationForm, labels: Form
 
 export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: FormVariant, mode: ExtendedMode, language: LanguageCode = "pl"): Record<string, unknown> {
   const labels = getFormLabels(language);
+  const envLabels = env.label === "Dom" ? labels.environments.home : env.label === "Placówka całodobowa" ? labels.environments.center : labels.environments.school;
   if (variant === "simple") return makeSimpleDoc(env, data, labels, language);
 
   const content: PdfContent = [
-    { text: language === "en" ? "INCIDENT REPORT" : env.incidentTitle, style: "title" },
+    { text: envLabels.incidentTitle, style: "title" },
     { text: language === "en" ? "When describing the situation, note not only the behavior itself, but also signs of overload, tiredness, reduced readiness, and environmental conditions." : "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
     metaColumns(env, data, labels, language),
     ...sectionsFromExport(env, data, getIncidentExportSections(env, labels), language)
@@ -115,13 +116,13 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
 
   if (mode !== "incident") {
     content.push(
-      { text: language === "en" ? "ENVIRONMENT MAP" : env.mapTitle, style: "title" },
+      { text: envLabels.mapTitle, style: "title" },
       ...sectionsFromExport(env, data, getMapExportSections(labels, language), language)
     );
   }
 
   const filteredContent = mode === "map"
-    ? content.slice(content.findIndex((item) => item.text === (language === "en" ? "ENVIRONMENT MAP" : env.mapTitle)))
+    ? content.slice(content.findIndex((item) => item.text === envLabels.mapTitle))
     : content;
 
   return createDocument(filteredContent, env);
