@@ -410,6 +410,8 @@ Formularz opiera się między innymi na:
 
 Najważniejsze źródła:
 - Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.
+- Allen et al. (2024). Neurodiversity-Affirming Applied Behavior Analysis. _Behavior Analysis in Practice_.
+- Mathur, S. K., Renz, E., & Tarbox, J. (2024). Affirming Neurodiversity within Applied Behavior Analysis. _Behavior Analysis in Practice_.
 - O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.
 - Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility. _Biological Psychology_, 104, 65–74.
 - Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception. _Cortex_, 81, 215–220.

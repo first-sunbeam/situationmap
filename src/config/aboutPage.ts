@@ -257,6 +257,8 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
         ],
         list: [
           "Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). Applied Behavior Analysis.",
+          "Allen et al. (2024). Neurodiversity-Affirming Applied Behavior Analysis. Behavior Analysis in Practice.",
+          "Mathur, S. K., Renz, E., & Tarbox, J. (2024). Affirming Neurodiversity within Applied Behavior Analysis. Behavior Analysis in Practice.",
           "O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). Functional Assessment and Program Development for Problem Behavior.",
           "Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility.",
           "Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception.",
@@ -492,6 +494,8 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
         ],
         list: [
           "Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). Applied Behavior Analysis.",
+          "Allen et al. (2024). Neurodiversity-Affirming Applied Behavior Analysis. Behavior Analysis in Practice.",
+          "Mathur, S. K., Renz, E., & Tarbox, J. (2024). Affirming Neurodiversity within Applied Behavior Analysis. Behavior Analysis in Practice.",
           "O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). Functional Assessment and Program Development for Problem Behavior.",
           "Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility.",
           "Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception.",
