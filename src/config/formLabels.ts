@@ -152,6 +152,7 @@ export const formLabelsByLanguage = {
       mapMode: "Mapa środowiska",
       localStorageNote:
         "Dane zapisują się lokalnie w tej przeglądarce. E-mail otwiera się w domyślnym programie pocztowym z gotową treścią odpowiedzi.",
+      savedLocally: "Formularz zapisano lokalnie.",
       validationHeading: "Popraw przed dalszą akcją:",
       simpleIntro:
         "Krótka wersja do szybkiego zgłoszenia sytuacji. Możesz otworzyć wiadomość e-mail albo pobrać PDF i załączyć go ręcznie.",
@@ -547,6 +548,7 @@ export const formLabelsByLanguage = {
       mapMode: "Environment map",
       localStorageNote:
         "Data is stored locally in this browser. Email opens in your default email app with prepared response content.",
+      savedLocally: "Form saved locally.",
       validationHeading: "Please correct before continuing:",
       simpleIntro:
         "A short version for quickly reporting a situation. You can open an email or download a PDF and attach it manually.",

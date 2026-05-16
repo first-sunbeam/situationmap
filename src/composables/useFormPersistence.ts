@@ -1,10 +1,10 @@
-import type { Reactive, Ref } from "vue";
+import type { ComputedRef, Reactive, Ref } from "vue";
 import { watch } from "vue";
 import { blankForm, environments } from "../data/environments";
+import type { FormLabels } from "../config/formLabels";
 import type { ExtendedMode, FormVariant, SituationForm } from "../types/form";
 
 const STORAGE_KEY = "situationmap-state-v2";
-const SAVE_STATUS_MESSAGE = "Formularz zapisano lokalnie.";
 
 export type EnvironmentKey = keyof typeof environments;
 export type FormsByEnvironment = Record<EnvironmentKey, SituationForm>;
@@ -94,13 +94,15 @@ export function useFormPersistence({
   activeVariant,
   activeMode,
   forms,
-  status
+  status,
+  labels
 }: {
   activeEnvKey: Ref<EnvironmentKey>;
   activeVariant: Ref<FormVariant>;
   activeMode: Ref<ExtendedMode>;
   forms: Reactive<FormsByEnvironment>;
   status: Ref<string>;
+  labels: ComputedRef<FormLabels>;
 }) {
   let saveStatusTimeout: number | undefined;
 
@@ -112,10 +114,11 @@ export function useFormPersistence({
       forms
     }));
 
+    const saveStatusMessage = labels.value.ui.savedLocally;
     clearTimeout(saveStatusTimeout);
-    status.value = SAVE_STATUS_MESSAGE;
+    status.value = saveStatusMessage;
     saveStatusTimeout = window.setTimeout(() => {
-      if (status.value === SAVE_STATUS_MESSAGE) status.value = "";
+      if (status.value === saveStatusMessage) status.value = "";
     }, 1800);
   }, { deep: true });
 }

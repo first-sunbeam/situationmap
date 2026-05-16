@@ -94,6 +94,7 @@ function createFormState() {
     activeMode,
     forms,
     status,
+    labels,
   });
 
   function toggle(list: string[], option: string) {
