@@ -8,7 +8,7 @@ import SelectField from "../components/form/SelectField.vue";
 import TextAreaField from "../components/form/TextAreaField.vue";
 import SvgIcon from "../components/ui/SvgIcon.vue";
 
-const { env, form, labels, sendEmail, buildPdf, resetSimple, fieldErrors, activeVariant } = useFormState();
+const { env, envLabel, form, labels, sendEmail, buildPdf, resetSimple, fieldErrors, activeVariant } = useFormState();
 const subject = computed(() =>
   getSubjectInline(
     form.value,
@@ -31,7 +31,7 @@ watchEffect(() => {
   <section class="panel form-panel">
     <div class="form-heading">
       <div>
-        <h2>{{ labels.ui.simpleVariant }} - {{ env.label }}</h2>
+        <h2>{{ labels.ui.simpleVariant }} - {{ envLabel }}</h2>
         <p>{{ labels.ui.simpleIntro }}</p>
       </div>
       <div class="heading-actions">

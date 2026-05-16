@@ -1,6 +1,7 @@
 import { getFormLabels } from "../config/formLabels";
 import { getIncidentExportSections, getMapExportSections, getMetaExportSection, getSimpleExportSection, type ExportRow } from "../config/exportSections";
 import { resolveRows } from "./exportUtils";
+import { getEnvironmentLabel } from "./environmentLabel";
 import type { LanguageCode } from "../i18n/useLanguage";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, SituationForm } from "../types/form";
 
@@ -28,11 +29,12 @@ export function buildEmail({ env, form, variant, mode, language }: { env: Enviro
   const labels = getFormLabels(language);
   const simpleVariant = language === "en" ? "simple" : "prosty";
   const extendedVariant = language === "en" ? "extended" : "rozszerzony";
+  const envLabel = getEnvironmentLabel(env, language);
   const subject = language === "en"
-    ? `Monitoring form - ${env.label} - ${variant === "simple" ? simpleVariant : extendedVariant}`
-    : `Formularz monitorowania - ${env.label} - ${variant === "simple" ? simpleVariant : extendedVariant}`;
+    ? `Monitoring form - ${envLabel} - ${variant === "simple" ? simpleVariant : extendedVariant}`
+    : `Formularz monitorowania - ${envLabel} - ${variant === "simple" ? simpleVariant : extendedVariant}`;
   const parts = [
-    language === "en" ? `Environment: ${env.label}` : `Środowisko: ${env.label}`,
+    language === "en" ? `Environment: ${envLabel}` : `Środowisko: ${envLabel}`,
     language === "en" ? `Form version: ${variant === "simple" ? simpleVariant : extendedVariant}` : `Wersja formularza: ${variant === "simple" ? "prosta" : "rozszerzona"}`,
     ""
   ];

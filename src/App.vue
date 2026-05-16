@@ -18,6 +18,7 @@ const {
   validationErrors,
   environments,
   env,
+  envLabel,
   labels,
   buildPdf,
   sendEmail,
@@ -57,7 +58,7 @@ const printableFormsPdfLink = computed(() =>
             @click="activeEnvKey = key"
           >
             <SvgIcon :name="item.icon" />
-            <span>{{ item.label }}</span>
+            <span>{{ labels.environments[key].label }}</span>
           </button>
         </nav>
         <div class="actions">
@@ -132,7 +133,7 @@ const printableFormsPdfLink = computed(() =>
           <p>{{ labels.ui.aboutHeroText }}</p>
         </template>
         <template v-else>
-          <h1>{{ labels.ui.currentEnvironment }} {{ env.label }}</h1>
+          <h1>{{ labels.ui.currentEnvironment }} {{ envLabel }}</h1>
           <p>{{ labels.ui.heroText }}</p>
         </template>
       </section>

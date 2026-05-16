@@ -13,6 +13,7 @@ import SvgIcon from "./ui/SvgIcon.vue";
 const {
   labels,
   env,
+  envMapTitle,
   form,
   buildPdf,
   resetMap,
@@ -62,13 +63,15 @@ const subjectStart = computed(() =>
     labels.value.map.section === "Environment map" ? "The person" : "Osoba",
   ),
 );
+
+
 </script>
 
 <template>
   <section class="panel form-panel">
     <div class="form-heading">
       <div>
-        <h2>{{ env.mapTitle }}</h2>
+        <h2>{{ envMapTitle }}</h2>
         <p>{{ labels.ui.mapIntro }}</p>
       </div>
       <div class="heading-actions">
@@ -83,12 +86,12 @@ const subjectStart = computed(() =>
 
     <div class="sections">
       <section class="section">
-        <h3>Dane podstawowe <span class="required-mark">*</span></h3>
+        <h3>{{ labels.meta.section }} <span class="required-mark">*</span></h3>
         <MetaFields :env="env" :form="form" :field-errors="fieldErrors" />
       </section>
 
       <section class="section" :class="{ invalidSection: hasMapSectionError }">
-        <h3>1. Miejsca i preferowane przestrzenie</h3>
+        <h3>{{ labels.export.mapSectionPlaces }}</h3>
         <div class="field-grid">
           <ChoiceGroupField
             v-model="form.map.preferredPlaces"
@@ -166,7 +169,7 @@ const subjectStart = computed(() =>
       </section>
 
       <section class="section">
-        <h3>3. Warunki optymalnego funkcjonowania</h3>
+        <h3>{{ labels.export.mapSectionConditions }}</h3>
         <div class="field-grid">
           <ChoiceGroupField
             v-model="form.map.easiestWhen"
@@ -236,7 +239,7 @@ const subjectStart = computed(() =>
       </section>
 
       <section class="section">
-        <h3>6. Bezpieczne przestrzenie i osoby</h3>
+        <h3>{{ labels.export.mapSectionSafe }}</h3>
         <p class="section-hint">{{ labels.ui.safeBaseHint }}</p>
         <TextAreaField
           v-model="form.map.safeBase"

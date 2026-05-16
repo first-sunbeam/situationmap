@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { getFormLabels } from "../config/formLabels";
 import { useLanguage } from "../i18n/useLanguage";
+import { getEnvironmentLabel } from "../lib/environmentLabel";
 import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, FieldErrors, PdfAction, SituationForm } from "../types/form";
 import LabelText from "./form/LabelText.vue";
@@ -21,6 +22,7 @@ const { env, form, sendEmail, buildPdf, resetSimple, fieldErrors } = defineProps
 
 const { language } = useLanguage();
 const labels = computed(() => getFormLabels(language.value));
+const envLabel = computed(() => getEnvironmentLabel(env, language.value));
 const subject = computed(() => getSubjectInline(form, labels.value.map.section === "Environment map" ? "the person" : "osoby"));
 const readinessOptions = ["5_minut", "10_30_minut", "1_2_godziny", "kilka_godzin_lub_nastepnego_dnia"];
 </script>
@@ -29,7 +31,7 @@ const readinessOptions = ["5_minut", "10_30_minut", "1_2_godziny", "kilka_godzin
   <section class="panel form-panel">
     <div class="form-heading">
       <div>
-        <h2>{{ labels.ui.simpleVariant }} - {{ env.label }}</h2>
+        <h2>{{ labels.ui.simpleVariant }} - {{ envLabel }}</h2>
         <p>{{ labels.ui.simpleIntro }}</p>
       </div>
       <div class="heading-actions">

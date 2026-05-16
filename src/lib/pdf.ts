@@ -2,6 +2,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { getIncidentExportSections, getMapExportSections, getMetaExportSection, getSimpleExportSection, resolveExportLabel, type ExportRow, type ExportSection, type ExportValue } from "../config/exportSections";
 import { getFormLabels, type FormLabels } from "../config/formLabels";
+import { getEnvironmentLabel } from "./environmentLabel";
 import type { LanguageCode } from "../i18n/useLanguage";
 import { resolveRows } from "./exportUtils";
 import type { EnvironmentConfig, ExtendedMode, FormVariant, PdfAction, SituationForm } from "../types/form";
@@ -92,8 +93,9 @@ function createDocument(content: PdfContent, env: EnvironmentConfig): Record<str
 
 function makeSimpleDoc(env: EnvironmentConfig, data: SituationForm, labels: FormLabels, language: LanguageCode): Record<string, unknown> {
   const simpleSection = getSimpleExportSection(labels, language);
+  const envLabel = getEnvironmentLabel(env, language);
   return createDocument([
-    { text: language === "en" ? `SIMPLE FORM - ${env.label.toUpperCase()}` : `FORMULARZ PROSTY - ${env.label.toUpperCase()}`, style: "title" },
+    { text: language === "en" ? `SIMPLE FORM - ${envLabel.toUpperCase()}` : `FORMULARZ PROSTY - ${envLabel.toUpperCase()}`, style: "title" },
     { text: language === "en" ? "Short situation report prepared for saving or manual email attachment." : "Krótka wersja zgłoszenia sytuacji przygotowana do zapisania lub ręcznego załączenia w wiadomości e-mail.", style: "hint" },
     metaColumns(env, data, labels, language),
     ...section(simpleSection.title, exportRows(env, data, simpleSection.rows, language))
@@ -127,7 +129,8 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
 
 export function buildPdf({ env, form, variant, mode, modeLabel, language, action, setStatus }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode; modeLabel: string; language: LanguageCode; action: PdfAction; setStatus: (message: string) => void }): void {
   const doc = makeDoc(env, form, variant, mode, language);
-  const fileName = `monitorowanie-${env.label.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.pdf`;
+  const envLabel = getEnvironmentLabel(env, language);
+  const fileName = `monitorowanie-${envLabel.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.pdf`;
   const pdf = pdfMake.createPdf(doc as never);
 
   if (action === "download") {

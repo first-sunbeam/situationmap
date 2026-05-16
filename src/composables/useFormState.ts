@@ -57,6 +57,8 @@ function createFormState() {
   );
   const form = computed(() => forms[activeEnvKey.value]);
   const labels = computed(() => getFormLabels(language.value));
+  const envLabel = computed(() => labels.value.environments[activeEnvKey.value].label);
+  const envMapTitle = computed(() => labels.value.environments[activeEnvKey.value].mapTitle);
   const subject = computed(() => getSubjectInline(form.value));
   const subjectNominative = computed(() =>
     getSubjectInline(form.value, "osoba"),
@@ -190,6 +192,8 @@ function createFormState() {
     validationRequestId,
     environments,
     env,
+    envLabel,
+    envMapTitle,
     form,
     labels,
     subject,

@@ -10,6 +10,20 @@ export const formLabelsByLanguage = {
       initials: "Inicjały osoby",
       present: "Inne osoby obecne",
     },
+    environments: {
+      home: {
+        label: "Dom",
+        mapTitle: "MAPA ŚRODOWISKA DOMOWEGO",
+      },
+      center: {
+        label: "Placówka całodobowa",
+        mapTitle: "MAPA ŚRODOWISKA - PLACÓWKA CAŁODOBOWA",
+      },
+      school: {
+        label: "Szkoła",
+        mapTitle: "MAPA ŚRODOWISKA SZKOLNEGO",
+      },
+    },
     simple: {
       section: "Opis sytuacji",
       antecedents: "1. Co wydarzyło się tuż przed i jaki był stan osoby?",
@@ -378,6 +392,20 @@ export const formLabelsByLanguage = {
       place: "Place",
       initials: "Person's initials",
       present: "Other people present",
+    },
+    environments: {
+      home: {
+        label: "Home",
+        mapTitle: "HOME ENVIRONMENT MAP",
+      },
+      center: {
+        label: "Residential facility",
+        mapTitle: "ENVIRONMENT MAP - RESIDENTIAL FACILITY",
+      },
+      school: {
+        label: "School",
+        mapTitle: "SCHOOL ENVIRONMENT MAP",
+      },
     },
     simple: {
       section: "Situation description",
