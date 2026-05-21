@@ -16,10 +16,10 @@ const MSG_OTHER = "Jeśli zaznaczono „Inne”, opisz tę odpowiedź.";
 
 // ── Testy ─────────────────────────────────────────────────────────────────────
 
-describe("walidacja formularza", () => {
+describe("form validation", () => {
   // ── Formularz prosty ────────────────────────────────────────────────────────
 
-  it("zwraca błędy wymaganych pól dla pustego formularza prostego", () => {
+  it("returns required-field errors for an empty simple form", () => {
     const result = validateForm({
       variant: "simple",
       mode: "incident",
@@ -44,7 +44,7 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("akceptuje formularz prosty po uzupełnieniu wymaganych pól", () => {
+  it("accepts the simple form after required fields are filled", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
     form.simple.behavior =
@@ -61,7 +61,7 @@ describe("walidacja formularza", () => {
 
   // ── Formularz rozszerzony – incydent ────────────────────────────────────────
 
-  it("wymaga sekcji incydentu dla PDF formularza rozszerzonego", () => {
+  it("requires incident sections for an extended-form PDF", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
 
@@ -85,7 +85,7 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("akceptuje alternatywną wartość w sekcji przed zdarzeniem", () => {
+  it("accepts an alternative value in the before-event section", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
     fillMinimalIncident(form);
@@ -100,7 +100,7 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["incident.factDescription"]).toBeUndefined();
   });
 
-  it("wymaga opisu wpływu osoby w sekcji oczekiwań", () => {
+  it("requires a description of the person’s influence in the expectations section", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
     form.incident.expectations = ["brak_wymagan"];
@@ -119,7 +119,7 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("wymaga szczegółów sygnałów i czasu przed eskalacją, gdy sygnały się pojawiły", () => {
+  it("requires signal details and time before escalation when signals appeared", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
     fillMinimalIncident(form);
@@ -145,7 +145,7 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("wymaga szczegółów snu, gdy zaznaczono sen lub odpoczynek w ciągu dnia", () => {
+  it("requires sleep details when sleep or daytime rest is selected", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
     form.incident.slept = "yes";
@@ -164,7 +164,7 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("wymaga liczby interwencji, gdy zaznaczono interwencję fizyczną w tym tygodniu", () => {
+  it("requires intervention count when physical intervention this week is selected", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
     form.incident.physicalThisWeek = "yes";
@@ -314,7 +314,7 @@ describe("walidacja formularza", () => {
 
   // ── Mapa środowiska ─────────────────────────────────────────────────────────
 
-  it("wymaga opisu mapy po zaznaczeniu innego kontekstu eskalacji", () => {
+  it("requires map details after selecting another escalation context", () => {
     const form = createHomeForm();
     form.map.escalationContexts = ["other"];
 
@@ -323,7 +323,7 @@ describe("walidacja formularza", () => {
     expect(result.fieldErrors["map.escalationOther"]).toBe(MSG_OTHER);
   });
 
-  it("wymaga opisu zależności, gdy zaznaczono od czego zmienia się zachowanie", () => {
+  it("requires dependency details when behavior-changing factors are selected", () => {
     const form = createHomeForm();
     form.map.dependsOn = ["halas"];
 
@@ -337,7 +337,7 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("wymaga opisu sytuacji bez agresji, gdy zaznaczono że takie sytuacje są", () => {
+  it("requires no-aggression details when such situations are selected", () => {
     const form = createHomeForm();
     form.map.noAggression = "yes";
 
@@ -351,7 +351,7 @@ describe("walidacja formularza", () => {
     );
   });
 
-  it("wymaga obowiązkowych pól mapy w trybie mapy", () => {
+  it("requires map mandatory fields in map mode", () => {
     const result = validateForm({
       variant: "extended",
       mode: "map",
@@ -374,20 +374,20 @@ describe("walidacja formularza", () => {
       "Uzupełnij pole: W jakie aktywności osoba najchętniej się angażuje?.",
     );
     expect(result.fieldErrors["map.easiestWhen"]).toBe(
-      "Zaznacz przynajmniej jedną opcję: Osoba najłatwiej funkcjonuje, gdy.",
+      "Zaznacz przynajmniej jedną opcję: Osoba najłatwiej funkcjonuje, gdy:.",
     );
     expect(result.fieldErrors["map.cooperatesWith"]).toBe(
-      "Uzupełnij pole: Osoba najłatwiej współpracuje z.",
+      "Uzupełnij pole: Osoba najłatwiej współpracuje z:.",
     );
     expect(result.fieldErrors["map.reducers"]).toBe(
-      "Zaznacz przynajmniej jedną opcję: Co OBNIŻA napięcie.",
+      "Zaznacz przynajmniej jedną opcję: Co OBNIŻA napięcie (reguluje w momencie dyskomfortu)?.",
     );
     expect(result.fieldErrors["map.escalationContexts"]).toBe(
       "Zaznacz przynajmniej jedną opcję: Najczęstsze sytuacje eskalacji.",
     );
   });
 
-  it("akceptuje tryb mapy, gdy obowiązkowe pola mapy są wypełnione", () => {
+  it("accepts map mode when mandatory map fields are filled", () => {
     const form = createHomeForm();
     fillMapForm(form);
 

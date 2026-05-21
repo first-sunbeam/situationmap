@@ -28,12 +28,12 @@ function stringifyDoc(doc: Record<string, unknown>): string {
 
 // ── Testy ─────────────────────────────────────────────────────────────────────
 
-describe("generowanie PDF", () => {
+describe("PDF generation", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("buduje dokument PDF formularza prostego z danymi formularza", () => {
+  it("builds a simple-form PDF document with form data", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "simple", "incident"));
 
     expect(content).toContain("FORMULARZ PROSTY - DOM");
@@ -42,7 +42,7 @@ describe("generowanie PDF", () => {
     expect(content).not.toContain(environments.home.incidentTitle);
   });
 
-  it("buduje dokument PDF karty zdarzenia z sekcjami incydentu", () => {
+  it("builds an incident-report PDF document with incident sections", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "incident"));
 
     expect(content).toContain(environments.home.incidentTitle);
@@ -55,7 +55,7 @@ describe("generowanie PDF", () => {
     expect(content).not.toContain(environments.home.mapTitle);
   });
 
-  it("pomija pola zależne maskowania w PDF, gdy wybrano odpowiedź Nie", () => {
+  it("omits dependent masking fields in the PDF when No is selected", () => {
     const form = createFilledHomeForm();
     form.incident.maskingContinued = "no";
     form.incident.maskingStrategies = ["maskowanie_ukrywanie_dyskomfortu_udawanie_ze_wszystko_ok"];
@@ -70,7 +70,7 @@ describe("generowanie PDF", () => {
     expect(content).not.toContain("10-30 minut");
   });
 
-  it("buduje dokument PDF samej mapy bez tytułu incydentu", () => {
+  it("builds a map-only PDF document without the incident title", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "map"));
 
     expect(content).toContain(environments.home.mapTitle);
@@ -79,10 +79,10 @@ describe("generowanie PDF", () => {
     expect(content).not.toContain(environments.home.incidentTitle);
   });
 
-  it("buduje angielski dokument PDF i tłumaczy wartości opcji", () => {
+  it("builds an English PDF document and translates option values", () => {
     const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "incident", "en"));
 
-    expect(content).toContain("INCIDENT REPORT");
+    expect(content).toContain("SITUATION MONITORING REPORT - HOME");
     expect(content).toContain("Baseline and daily context");
     expect(content).toContain("Was it clear what would happen?");
     expect(content).toContain("1 elevated");
@@ -90,7 +90,7 @@ describe("generowanie PDF", () => {
     expect(content).not.toContain("KARTA MONITOROWANIA");
   });
 
-  it("pobiera wygenerowany PDF", () => {
+  it("downloads the generated PDF", () => {
     const setStatus = vi.fn();
 
     buildPdf({
@@ -112,7 +112,7 @@ describe("generowanie PDF", () => {
     expect(setStatus).toHaveBeenCalledWith("PDF gotowy — został pobrany (formularz prosty).");
   });
 
-  it("ustawia angielski status po pobraniu PDF", () => {
+  it("sets the English status after downloading the PDF", () => {
     const setStatus = vi.fn();
 
     buildPdf({
@@ -129,7 +129,7 @@ describe("generowanie PDF", () => {
     expect(setStatus).toHaveBeenCalledWith("PDF ready — downloaded (simple form).");
   });
 
-  it("otwiera wygenerowany PDF", () => {
+  it("opens the generated PDF", () => {
     const setStatus = vi.fn();
 
     buildPdf({

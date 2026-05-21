@@ -72,8 +72,8 @@ function collectOptionValues(): string[] {
   return [...new Set(optionLists.flat())].sort((a, b) => a.localeCompare(b, "pl"));
 }
 
-describe("tłumaczenia opcji formularza", () => {
-  it("ma angielskie tłumaczenie dla każdej predefiniowanej opcji", () => {
+describe("form option translations", () => {
+  it("has an English translation for every predefined option", () => {
     const missingTranslations = collectOptionValues().filter((value) => !(value in optionLabels.en));
 
     expect(missingTranslations).toEqual([]);

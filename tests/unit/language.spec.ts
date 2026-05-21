@@ -20,13 +20,13 @@ function mockLocalStorage(initial: Record<string, string> = {}) {
   return storage;
 }
 
-describe("przełączanie języka", () => {
+describe("language switching", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.unstubAllGlobals();
   });
 
-  it("domyślnie używa języka polskiego", async () => {
+  it("uses Polish by default", async () => {
     mockLocalStorage();
     const { useLanguage } = await import("../../src/i18n/useLanguage");
 
@@ -37,7 +37,7 @@ describe("przełączanie języka", () => {
     expect(toggleLanguageLabel.value).toBe("Switch language to English");
   });
 
-  it("odczytuje zapisany język i zapisuje zmianę w localStorage", async () => {
+  it("reads saved language and persists changes in localStorage", async () => {
     const storage = mockLocalStorage({ "situationmap-language": "en" });
     const { useLanguage } = await import("../../src/i18n/useLanguage");
 

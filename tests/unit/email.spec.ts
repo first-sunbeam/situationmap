@@ -8,8 +8,8 @@ import {
   fillSimpleForm,
 } from "./helpers/formFixtures";
 
-describe("budowanie wiadomości e-mail", () => {
-  it("buduje temat i treść dla formularza prostego", () => {
+describe("email message building", () => {
+  it("builds subject and body for the simple form", () => {
     const form = createHomeForm();
     // Własna wartość `helped` — celowo różna od domyślnej w fillSimpleForm.
     fillRequiredMeta(form);
@@ -41,7 +41,7 @@ describe("budowanie wiadomości e-mail", () => {
     );
   });
 
-  it("renderuje puste pola jako myślniki", () => {
+  it("renders empty fields as dashes", () => {
     const email = buildEmail({
       env: environments.home,
       form: createHomeForm(),
@@ -59,7 +59,7 @@ describe("budowanie wiadomości e-mail", () => {
     );
   });
 
-  it("łączy tablice checkboxów przecinkami", () => {
+  it("joins checkbox arrays with commas", () => {
     const form = createHomeForm();
 
     form.incident.antecedents = ["zmiana_aktywnosci", "czekanie"];
@@ -77,7 +77,7 @@ describe("budowanie wiadomości e-mail", () => {
     );
   });
 
-  it("zawiera pola incydentu w trybie rozszerzonej karty zdarzenia", () => {
+  it("includes incident fields in extended incident-report mode", () => {
     const form = createHomeForm();
 
     form.incident.tension = "1_podwyzszony";
@@ -102,7 +102,7 @@ describe("budowanie wiadomości e-mail", () => {
     expect(email.body).not.toContain("Mapa środowiska");
   });
 
-  it("zawiera mapę w trybie mapy i pomija sekcję incydentu", () => {
+  it("includes the map in map mode and omits the incident section", () => {
     const form = createHomeForm();
 
     fillMapForm(form);
@@ -124,7 +124,7 @@ describe("budowanie wiadomości e-mail", () => {
     expect(email.body).not.toContain("Karta zdarzenia");
   });
 
-  it("buduje angielską treść i tłumaczy wartości checkboxów", () => {
+  it("builds English content and translates checkbox values", () => {
     const form = createHomeForm();
 
     fillMapForm(form);
@@ -137,9 +137,9 @@ describe("budowanie wiadomości e-mail", () => {
       language: "en",
     });
 
-    expect(email.subject).toBe("Monitoring form - Dom - extended");
+    expect(email.subject).toBe("Monitoring form - Home - extended");
 
-    expect(email.body).toContain("Environment: Dom");
+    expect(email.body).toContain("Environment: Home");
 
     expect(email.body).toContain("Form version: extended");
 

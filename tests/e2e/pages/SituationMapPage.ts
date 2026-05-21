@@ -85,6 +85,10 @@ export class SituationMapPage {
     return this.page.getByRole("button", { name: "Wyślij" }).first();
   }
 
+  get firstResetButton(): Locator {
+    return this.page.getByRole("button", { name: "Wyczyść formularz", exact: true }).first();
+  }
+
   // ── Toast / status messages ───────────────────────────────────────────────
 
   get savedLocallyToast(): Locator {
@@ -98,6 +102,7 @@ export class SituationMapPage {
   get pdfFormErrorBanner(): Locator {
     return this.page.getByText("Popraw formularz przed wygenerowaniem PDF.");
   }
+
 
   // ── localStorage helpers ──────────────────────────────────────────────────
 

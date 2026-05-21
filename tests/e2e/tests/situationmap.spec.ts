@@ -34,7 +34,7 @@ test.beforeEach(async ({ page }) => {
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 
-test("przełącza i zapamiętuje ciemny motyw", async ({ page }) => {
+test("switches to dark theme and remembers it", async ({ page }) => {
   const app = new SituationMapPage(page);
   await app.goto();
 
@@ -51,7 +51,7 @@ test("przełącza i zapamiętuje ciemny motyw", async ({ page }) => {
 
 // ── Simple form – validation ──────────────────────────────────────────────────
 
-test("formularz prosty blokuje wysyłkę bez wymaganych danych i usuwa błędy po poprawieniu", async ({
+test("simple form blocks email without required data and clears errors after fixing them", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -76,7 +76,7 @@ test("formularz prosty blokuje wysyłkę bez wymaganych danych i usuwa błędy p
   }
 });
 
-test("formularz prosty blokuje pobranie PDF bez wymaganych danych", async ({
+test("simple form blocks PDF download without required data", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -92,7 +92,7 @@ test("formularz prosty blokuje pobranie PDF bez wymaganych danych", async ({
 
 // ── Simple form – local storage ───────────────────────────────────────────────
 
-test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony", async ({
+test("local storage restores simple-form data after page reload", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -118,9 +118,39 @@ test("zapis lokalny odtwarza dane formularza prostego po przeładowaniu strony",
   );
 });
 
+// ── Simple form – reset ─────────────────────────────────────────────────────
+
+test("simple-form reset clears filled data and local storage", async ({
+  page,
+}) => {
+  const app = new SituationMapPage(page);
+  const form = new SimpleFormPage(page);
+
+  await form.fillAllRequiredFields(DEFAULT_SIMPLE_FIELDS);
+  await form.otherPeopleField.fill("Mama, tata");
+  await expect(app.savedLocallyToast).toBeVisible();
+
+  await app.firstResetButton.click();
+
+  await expect(app.dateField).toHaveValue("");
+  await expect(app.timeField).toHaveValue("");
+  await expect(app.placeField).toHaveValue("");
+  await expect(app.guardianField).toHaveValue("");
+  await expect(form.otherPeopleField).toHaveValue("");
+  await expect(form.behaviorField).toHaveValue("");
+  await expect(form.helpedField).toHaveValue("");
+  await expect(form.influenceField).toHaveValue("");
+
+  await page.reload();
+
+  await expect(form.formHeading).toBeVisible();
+  await expect(app.dateField).toHaveValue("");
+  await expect(form.behaviorField).toHaveValue("");
+});
+
 // ── Extended form – local storage ────────────────────────────────────────────
 
-test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeładowaniu strony", async ({
+test("local storage restores extended mode and environment-map data after page reload", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -161,7 +191,7 @@ test("zapis lokalny odtwarza tryb rozszerzony i dane mapy środowiska po przeła
 
 // ── Extended form – stepper ───────────────────────────────────────────────────
 
-test("sekcja danych podstawowych jest ukończona dopiero po wypełnieniu wszystkich wymaganych pól", async ({
+test("basic-data section is complete only after all required fields are filled", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -183,7 +213,7 @@ test("sekcja danych podstawowych jest ukończona dopiero po wypełnieniu wszystk
   await expect(extended.metaStepperButton).toHaveClass(/complete/);
 });
 
-test("pozwala przełączać kroki formularza rozszerzonego przyciskami nawigacji i stepperem", async ({
+test("allows switching extended-form steps with navigation buttons and the stepper", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -213,7 +243,7 @@ test("pozwala przełączać kroki formularza rozszerzonego przyciskami nawigacji
   await expect(extended.sectionHeading("expectations")).toBeVisible();
 });
 
-test("formularz rozszerzony po nieudanym PDF prowadzi do pierwszej błędnej sekcji danych podstawowych", async ({
+test("extended form navigates to the first invalid basic-data section after failed PDF generation", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -234,7 +264,7 @@ test("formularz rozszerzony po nieudanym PDF prowadzi do pierwszej błędnej sek
 
 // ── Extended form – "other" option ─────────────────────────────────────────────
 
-test("opcja inne wymaga opisu i oznacza krok jako błędny", async ({ page }) => {
+test("other option requires a description and marks the step as invalid", async ({ page }) => {
   const app = new SituationMapPage(page);
   const extended = new ExtendedFormPage(page);
 
@@ -265,7 +295,7 @@ test("opcja inne wymaga opisu i oznacza krok jako błędny", async ({ page }) =>
 
 // ── Extended form – masking section ──────────────────────────────────────────
 
-test("sekcja 3B pokazuje dodatkowy wybór czasu po zaznaczeniu odpowiedzi Tak", async ({
+test("section 3B shows an additional duration select after choosing Yes", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -284,7 +314,7 @@ test("sekcja 3B pokazuje dodatkowy wybór czasu po zaznaczeniu odpowiedzi Tak", 
 
 // ── Extended form – before-event section ─────────────────────────────────────
 
-test("sekcja przed zdarzeniem usuwa błąd po uzupełnieniu alternatywnych danych i zachowuje stan między krokami", async ({
+test("before-event section clears the error after alternative data is filled and preserves state between steps", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
