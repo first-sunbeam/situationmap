@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import LabelText from "./LabelText.vue";
-import { useFieldIds } from "./useFieldIds";
+import FieldShell from "./FieldShell.vue";
 
 const { label, hint, required = false, error } = defineProps<{
   label: string;
@@ -10,27 +9,24 @@ const { label, hint, required = false, error } = defineProps<{
 }>();
 
 const model = defineModel<string>({ required: true });
-
-const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
 </script>
 
 <template>
-  <label class="field full">
-    <span class="field-label">
-      <LabelText :text="label" /> <span v-if="required" class="required-mark">*</span>
-    </span>
-
-    <span v-if="hint" :id="hintId" class="field-hint"><LabelText :text="hint" /></span>
-
+  <FieldShell
+    :label="label"
+    :required="required"
+    full
+    :hint="hint"
+    :error="error"
+    v-slot="{ describedBy, invalid }"
+  >
     <textarea
       v-model="model"
       class="text-area"
-      :class="{ invalid: error }"
+      :class="{ invalid }"
       :required="required"
       :aria-describedby="describedBy"
-      :aria-invalid="error ? 'true' : undefined"
+      :aria-invalid="invalid ? 'true' : undefined"
     ></textarea>
-
-    <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
-  </label>
+  </FieldShell>
 </template>

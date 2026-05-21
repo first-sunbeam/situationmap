@@ -2,8 +2,7 @@
 import { computed } from "vue";
 import { useLanguage } from "../../i18n/useLanguage";
 import { translateOption } from "../../i18n/options";
-import LabelText from "./LabelText.vue";
-import { useFieldIds } from "./useFieldIds";
+import FieldShell from "./FieldShell.vue";
 
 const {
   label,
@@ -26,30 +25,27 @@ const {
 const model = defineModel<string>({ required: true });
 const { language } = useLanguage();
 const resolvedPlaceholder = computed(() => placeholder === "Wybierz" && language.value === "en" ? "Select" : placeholder);
-
-const { hintId, errorId, describedBy } = useFieldIds(() => hint, () => error);
 </script>
 
 <template>
-  <label class="field" :class="{ full }">
-    <span class="field-label">
-      <LabelText :text="label" /> <span v-if="required" class="required-mark">*</span>
-    </span>
-
-    <span v-if="hint" :id="hintId" class="field-hint"><LabelText :text="hint" /></span>
-
+  <FieldShell
+    :label="label"
+    :required="required"
+    :full="full"
+    :hint="hint"
+    :error="error"
+    v-slot="{ describedBy, invalid }"
+  >
     <select
       v-model="model"
       class="text-input"
-      :class="{ invalid: error }"
+      :class="{ invalid }"
       :required="required"
       :aria-describedby="describedBy"
-      :aria-invalid="error ? 'true' : undefined"
+      :aria-invalid="invalid ? 'true' : undefined"
     >
       <option value="">{{ resolvedPlaceholder }}</option>
       <option v-for="item in options" :key="item" :value="item">{{ translateOption(item, language) }}</option>
     </select>
-
-    <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
-  </label>
+  </FieldShell>
 </template>
