@@ -258,8 +258,8 @@ const printableFormsPdfLink = computed(() =>
       </p>
 
       <p>
-        <a href="https://analiza.tools/map" target="_blank" rel="noreferrer">
-          analiza.tools/map
+        <a href="https://analiza.tools" target="_blank" rel="noreferrer">
+          analiza.tools
         </a>
       </p>
     </footer>

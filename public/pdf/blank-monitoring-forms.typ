@@ -14,7 +14,7 @@
       align: (left, center, right),
       [© Małgorzata Mikołajczyk],
       [#counter(page).display("1")],
-      [analiza.tools/map]
+      [analiza.tools]
     )
   ]
 )

@@ -13,7 +13,7 @@
 
       [© Małgorzata Mikołajczyk],
       [#counter(page).display("1")],
-      [#link("https://analiza.tools/map")[analiza.tools/map]]
+      [#link("https://analiza.tools")[analiza.tools]]
     )
   ]
 )
