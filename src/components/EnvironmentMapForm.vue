@@ -183,7 +183,7 @@ const subjectStart = computed(() =>
             <TextAreaField
               v-if="hasOther(form.map.easiestWhen, form.map.easiestWhenOther)"
               v-model="form.map.easiestWhenOther"
-              label="Inne warunki"
+              :label="labels.ui.otherConditions"
             />
           </ChoiceGroupField>
         </div>
@@ -210,7 +210,7 @@ const subjectStart = computed(() =>
             <TextAreaField
               v-if="hasOther(form.map.reducers, form.map.reducersOther)"
               v-model="form.map.reducersOther"
-              label="Inne"
+              :label="labels.ui.other"
             />
           </ChoiceGroupField>
           <TextAreaField
@@ -285,7 +285,7 @@ const subjectStart = computed(() =>
                 )
               "
               v-model="form.map.escalationReducersOther"
-              label="Inne"
+              :label="labels.ui.other"
             />
           </ChoiceGroupField>
           <SelectField
@@ -297,7 +297,7 @@ const subjectStart = computed(() =>
             v-model="form.map.noAggressionWhere"
             :label="labels.ui.noAggressionWhereLabel"
             :hint="labels.ui.noAggressionWhereHint"
-            :required="form.map.noAggression === 'Tak'"
+            :required="form.map.noAggression === 'yes'"
             :error="fieldErrors['map.noAggressionWhere']"
           />
         </div>

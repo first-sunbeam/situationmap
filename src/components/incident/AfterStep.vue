@@ -33,7 +33,7 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
       <InputField
         v-model="form.incident.physicalCount"
         :label="labels.incident.physicalCount"
-        :required="form.incident.physicalThisWeek === 'Tak'"
+        :required="form.incident.physicalThisWeek === 'yes'"
         :error="fieldErrors['incident.physicalCount']"
       />
       <SelectField

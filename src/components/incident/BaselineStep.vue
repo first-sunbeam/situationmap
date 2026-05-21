@@ -44,7 +44,7 @@ const {
       <InputField
         v-model="form.incident.sleepDetails"
         :label="labels.incident.sleepDetails"
-        :required="form.incident.slept === 'Tak'"
+        :required="form.incident.slept === 'yes'"
         :error="fieldErrors['incident.sleepDetails']"
       />
       <template v-if="env.stayStages">

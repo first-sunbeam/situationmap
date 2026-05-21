@@ -8,8 +8,13 @@ function isTheme(value: string | null): value is Theme {
 }
 
 function getInitialTheme(): Theme {
-  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  if (isTheme(savedTheme)) return savedTheme;
+  try {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (isTheme(savedTheme)) return savedTheme;
+  } catch {
+    // Ignore storage errors, e.g. private mode restrictions.
+  }
+
   return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
@@ -19,7 +24,12 @@ export function useTheme() {
 
   watch(theme, (value) => {
     document.documentElement.dataset.theme = value;
-    localStorage.setItem(THEME_STORAGE_KEY, value);
+
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, value);
+    } catch {
+      // Ignore storage errors, e.g. private mode restrictions.
+    }
   }, { immediate: true });
 
   function toggleTheme() {

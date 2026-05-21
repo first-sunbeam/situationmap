@@ -246,6 +246,8 @@ export const formLabelsByLanguage = {
       preferredPlacesFor: "W jakich miejscach",
       preferredPlacesSuffix: "najchętniej przebywa?",
       otherPlace: "Inne miejsce",
+      otherConditions: "Inne warunki",
+      other: "Inne",
       easiestWhenSuffix: "najłatwiej funkcjonuje, gdy:",
       preferredReason: "Dlaczego te miejsca? Co je wyróżnia?",
       preferredReasonHint:
@@ -640,6 +642,8 @@ export const formLabelsByLanguage = {
       preferredPlacesFor: "In which places does",
       preferredPlacesSuffix: "prefer staying?",
       otherPlace: "Other place",
+      otherConditions: "Other conditions",
+      other: "Other",
       easiestWhenSuffix: "does best when:",
       preferredReason: "Why these places? What makes them distinctive?",
       preferredReasonHint:

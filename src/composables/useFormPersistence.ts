@@ -1,5 +1,5 @@
 import type { ComputedRef, Reactive, Ref } from "vue";
-import { watch } from "vue";
+import { onScopeDispose, watch } from "vue";
 import { blankForm, environments } from "../data/environments";
 import type { FormLabels } from "../config/formLabels";
 import type { ExtendedMode, FormVariant, SituationForm } from "../types/form";
@@ -107,12 +107,17 @@ export function useFormPersistence({
   let saveStatusTimeout: number | undefined;
 
   watch([activeEnvKey, activeVariant, activeMode, forms], () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      activeEnvKey: activeEnvKey.value,
-      activeVariant: activeVariant.value,
-      activeMode: activeMode.value,
-      forms
-    }));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        activeEnvKey: activeEnvKey.value,
+        activeVariant: activeVariant.value,
+        activeMode: activeMode.value,
+        forms
+      }));
+    } catch {
+      // Ignore storage errors, e.g. private mode restrictions or quota limits.
+      return;
+    }
 
     const saveStatusMessage = labels.value.ui.savedLocally;
     clearTimeout(saveStatusTimeout);
@@ -121,4 +126,8 @@ export function useFormPersistence({
       if (status.value === saveStatusMessage) status.value = "";
     }, 1800);
   }, { deep: true });
+
+  onScopeDispose(() => {
+    clearTimeout(saveStatusTimeout);
+  });
 }

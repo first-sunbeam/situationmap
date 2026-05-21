@@ -21,7 +21,7 @@ const { labels, form, fieldErrors, activationSignalOptions, sensorySignalOptions
       <InputField
         v-model="form.incident.timeToEscalation"
         :label="labels.incident.timeToEscalation"
-        :required="form.incident.signalsAppeared === 'Tak'"
+        :required="form.incident.signalsAppeared === 'yes'"
         :error="fieldErrors['incident.timeToEscalation']"
       />
       <fieldset class="field group-field full">
