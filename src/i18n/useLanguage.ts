@@ -2,7 +2,6 @@ import { computed, ref, watch } from "vue";
 
 export type LanguageCode = "pl" | "en";
 
-const STORAGE_KEY = "situationmap-language";
 const DEFAULT_LANGUAGE: LanguageCode = "pl";
 
 function isLanguageCode(value: unknown): value is LanguageCode {
@@ -22,27 +21,12 @@ function detectPreferredLanguage(): LanguageCode {
   return DEFAULT_LANGUAGE;
 }
 
-function loadLanguage(): LanguageCode {
-  try {
-    const savedLanguage = localStorage.getItem(STORAGE_KEY);
-    return isLanguageCode(savedLanguage) ? savedLanguage : detectPreferredLanguage();
-  } catch {
-    return detectPreferredLanguage();
-  }
-}
-
-const language = ref<LanguageCode>(loadLanguage());
+const language = ref<LanguageCode>(detectPreferredLanguage());
 
 watch(
   language,
   (value) => {
     document.documentElement.lang = value;
-
-    try {
-      localStorage.setItem(STORAGE_KEY, value);
-    } catch {
-      // Ignore storage errors, e.g. private mode restrictions.
-    }
   },
   { immediate: true },
 );
