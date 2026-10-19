@@ -3,19 +3,20 @@ import { computed, ref, watch } from "vue";
 export type LanguageCode = "pl" | "en";
 
 const DEFAULT_LANGUAGE: LanguageCode = "pl";
+const LANGUAGE_STORAGE_KEY = "situationmap-language";
 
 function isLanguageCode(value: unknown): value is LanguageCode {
   return value === "pl" || value === "en";
 }
 
 function detectPreferredLanguage(): LanguageCode {
-  if (typeof navigator === "undefined") return DEFAULT_LANGUAGE;
-
-  const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
-
-  for (const browserLanguage of browserLanguages) {
-    const code = browserLanguage?.toLowerCase().split("-")[0];
-    if (isLanguageCode(code)) return code;
+  if (typeof localStorage !== "undefined") {
+    try {
+      const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+      if (isLanguageCode(savedLanguage)) return savedLanguage;
+    } catch {
+      // localStorage may be unavailable in private browsing or restricted contexts.
+    }
   }
 
   return DEFAULT_LANGUAGE;
@@ -26,7 +27,15 @@ const language = ref<LanguageCode>(detectPreferredLanguage());
 watch(
   language,
   (value) => {
-    document.documentElement.lang = value;
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = value;
+    }
+
+    try {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
+    } catch {
+      // Ignore unavailable storage; language switching should still work for this session.
+    }
   },
   { immediate: true },
 );
