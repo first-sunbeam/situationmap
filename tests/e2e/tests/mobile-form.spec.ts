@@ -30,11 +30,18 @@ for (const language of ["pl", "en"] as const) {
     };
     for (const stage of ["earlyResponse", "escalationCourse", "postEscalationNeeds"] as const) {
       await page.getByLabel(revision[stage]).fill(values[stage]);
-      await page.getByLabel(`${revision.stageSources} — ${revision.stageNames[stage]}`).fill("O — Observer; P — AAC");
+      const group = page.getByRole("group", { name: `${revision.stageSources} — ${revision.stageNames[stage]}`, exact: true });
+      for (const code of ["O", "P"] as const) await group.getByText(revision.sourceOptions[code], { exact: true }).tap();
+      await page.getByLabel(`${revision.sourceDetails} — ${revision.stageNames[stage]}`, { exact: true }).fill("O — Observer; P — AAC");
     }
     await page.getByLabel(revision.readinessTiming).fill("12:15 — estimate / szacunek");
     await page.reload();
-    for (const stage of ["earlyResponse", "escalationCourse", "postEscalationNeeds"] as const) await expect(page.getByLabel(revision[stage])).toHaveValue(values[stage]);
+    for (const stage of ["earlyResponse", "escalationCourse", "postEscalationNeeds"] as const) {
+      await expect(page.getByLabel(revision[stage])).toHaveValue(values[stage]);
+      const group = page.getByRole("group", { name: `${revision.stageSources} — ${revision.stageNames[stage]}`, exact: true });
+      for (const code of ["O", "P"] as const) await expect(group.getByRole("checkbox", { name: revision.sourceOptions[code], exact: true })).toBeChecked();
+      for (const code of ["R", "H"] as const) await expect(group.getByRole("checkbox", { name: revision.sourceOptions[code], exact: true })).not.toBeChecked();
+    }
     await expect(page.getByText(language === "pl" ? "Popraw formularz przed wygenerowaniem PDF." : "Correct the form before generating the PDF.", { exact: true })).not.toBeVisible();
     const downloadPromise = page.waitForEvent("download");
     await page.getByRole("button", { name: labels.ui.downloadPdf, exact: true }).first().tap();

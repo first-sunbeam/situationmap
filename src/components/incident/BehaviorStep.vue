@@ -12,7 +12,7 @@ const { labels, revision, form, fieldErrors } = useFormState();
 <template>
   <FormSection :title="labels.incident.behaviorSection" :hint="labels.ui.behaviorSectionHint" :error="fieldErrors['incident.behaviorSection']" required>
     <div class="field-grid">
-      <StageResponseField v-model="form.incident.escalationCourse" v-model:sources="form.incident.escalationSources" stage="escalationCourse" />
+      <StageResponseField v-model="form.incident.escalationCourse" v-model:sources="form.incident.escalationSources" v-model:source-types="form.incident.escalationSourceTypes" stage="escalationCourse" />
       <TextAreaField v-model="form.incident.behaviorMeasure" :label="revision.behaviorMeasure" :hint="revision.measureHint" />
       <ChoiceGroupField v-model="form.incident.observedHarms" :label="revision.observedHarms" :options="observedHarmOptions" grouped />
       <TextAreaField v-model="form.incident.consequencesDescription" :label="revision.consequencesDescription" />

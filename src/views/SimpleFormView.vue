@@ -39,9 +39,9 @@ watchEffect(() => { activeVariant.value = "simple"; });
           <TextAreaField v-model="form.simple.stateBefore" :label="labels.simple.stateBefore" :hint="labels.ui.simpleStateBeforeHint" />
           <TextAreaField v-model="form.simple.antecedents" :label="labels.simple.beforeLastMinutes" :hint="labels.ui.simpleBeforeHint" />
           <TextAreaField v-model="form.simple.signals" :label="labels.simple.signalsObserved" :hint="labels.ui.simpleSignalsObservedHint" />
-          <StageResponseField v-model="form.simple.earlyResponse" v-model:sources="form.simple.earlyResponseSources" stage="earlyResponse" />
-          <StageResponseField v-model="form.simple.escalationCourse" v-model:sources="form.simple.escalationSources" stage="escalationCourse" required :error="fieldErrors['simple.escalationCourse']" />
-          <StageResponseField v-model="form.simple.postEscalationNeeds" v-model:sources="form.simple.postEscalationSources" stage="postEscalationNeeds" required :error="fieldErrors['simple.postEscalationNeeds']" />
+          <StageResponseField v-model="form.simple.earlyResponse" v-model:sources="form.simple.earlyResponseSources" v-model:source-types="form.simple.earlyResponseSourceTypes" stage="earlyResponse" />
+          <StageResponseField v-model="form.simple.escalationCourse" v-model:sources="form.simple.escalationSources" v-model:source-types="form.simple.escalationSourceTypes" stage="escalationCourse" required :error="fieldErrors['simple.escalationCourse']" />
+          <StageResponseField v-model="form.simple.postEscalationNeeds" v-model:sources="form.simple.postEscalationSources" v-model:source-types="form.simple.postEscalationSourceTypes" stage="postEscalationNeeds" required :error="fieldErrors['simple.postEscalationNeeds']" />
           <TextAreaField v-model="form.simple.notes" :label="`${labels.ui.decisionPossibilityFor} ${subject}`" :hint="labels.ui.simpleNotesHint" required :error="fieldErrors['simple.notes']" />
           <TextAreaField v-model="form.simple.predictability" :label="`${labels.simple.predictability} ${subject} ${labels.ui.predictabilitySuffix}`" />
           <TextAreaField v-model="form.simple.readinessDetails" :label="revision.readinessTiming" :hint="revision.readinessTimingHint" />

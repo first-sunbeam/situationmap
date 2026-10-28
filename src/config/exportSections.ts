@@ -3,6 +3,7 @@ import { getSubjectInline } from "../lib/subject";
 import type { EnvironmentConfig, SituationForm } from "../types/form";
 import { formLabels, type FormLabels } from "./formLabels";
 import { getMonitoringRevision } from "./monitoringRevision";
+import { formatInformationSources, stageSourceTypeFields } from "./sourceOptions";
 
 export type ExportValue = string | string[];
 export type ExportLabel = string | ((env: EnvironmentConfig, form: SituationForm) => string);
@@ -32,7 +33,8 @@ function stageRows(scope: "simple" | "incident", stage: "earlyResponse" | "escal
   const revision = getMonitoringRevision(language);
   return [
     { label: revision[stage], hint: revision.stageHint, value: (_env, form) => form[scope][stage] },
-    { label: `${revision.stageSources} — ${revision.stageNames[stage]}`, value: (_env, form) => form[scope][sourceKey] },
+    { label: `${revision.stageSources} — ${revision.stageNames[stage]}`, value: (_env, form) => formatInformationSources(form[scope][stageSourceTypeFields[stage]], language) },
+    { label: `${revision.sourceDetails} — ${revision.stageNames[stage]}`, value: (_env, form) => form[scope][sourceKey] },
   ];
 }
 function labelsLanguage(labels: FormLabels): LanguageCode { return labels.meta.section === "Basic information" ? "en" : "pl"; }

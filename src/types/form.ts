@@ -1,3 +1,5 @@
+import type { InformationSource } from "../config/sourceOptions";
+
 export type EnvironmentKey = "home" | "center" | "school";
 export type FormVariant = "simple" | "extended";
 export type ExtendedMode = "incident" | "map";
@@ -39,10 +41,13 @@ export interface MetaForm {
 export interface StageResponses {
   earlyResponse: string;
   earlyResponseSources: string;
+  earlyResponseSourceTypes: InformationSource[];
   escalationCourse: string;
   escalationSources: string;
+  escalationSourceTypes: InformationSource[];
   postEscalationNeeds: string;
   postEscalationSources: string;
+  postEscalationSourceTypes: InformationSource[];
 }
 
 export interface SimpleFormData extends StageResponses {

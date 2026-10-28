@@ -16,6 +16,10 @@ async function downloadPdf(page: Page, info: TestInfo, name: string) {
   expect(bytes.length).toBeGreaterThan(10000);
 }
 async function step(page: Page, name: RegExp) { await page.getByRole("button", { name }).click(); }
+async function selectSources(page: Page, stageName: string, codes: Array<keyof typeof pl.sourceOptions>) {
+  const group = page.getByRole("group", { name: `${pl.stageSources} — ${stageName}`, exact: true });
+  for (const code of codes) await group.getByRole("checkbox", { name: pl.sourceOptions[code], exact: true }).check();
+}
 
 test("old answers remain unchanged without becoming answers to the new stage questions", async ({ page }) => {
   const old = JSON.stringify({ activeEnvKey: "home", activeVariant: "simple", activeMode: "incident", forms: {
@@ -50,6 +54,26 @@ test("old answers remain unchanged without becoming answers to the new stage que
   expect(stored.forms.school.simple.behavior).toBe("Dane szkolne zachowane");
 });
 
+test("source checkboxes support keyboard selection, multiple sources and language changes after reload", async ({ page }) => {
+  await page.goto("/");
+  await selectSources(page, "Pierwsze sygnały", ["O", "P"]);
+  const hypothesis = page.getByRole("group", { name: `${pl.stageSources} — Pierwsze sygnały`, exact: true }).getByRole("checkbox", { name: pl.sourceOptions.H, exact: true });
+  await hypothesis.focus();
+  await hypothesis.press("Space");
+  await expect(hypothesis).toBeChecked();
+  await hypothesis.press("Space");
+  await expect(hypothesis).not.toBeChecked();
+  await page.getByLabel(`${pl.sourceDetails} — Pierwsze sygnały`, { exact: true }).fill("P — komunikator AAC; O — osoba obserwująca.");
+  await page.getByRole("button", { name: /English|angielski|Switch to English/i }).click();
+  await page.reload();
+  const en = getMonitoringRevision("en");
+  const group = page.getByRole("group", { name: `${en.stageSources} — ${en.stageNames.earlyResponse}`, exact: true });
+  for (const code of ["O", "P"] as const) await expect(group.getByRole("checkbox", { name: en.sourceOptions[code], exact: true })).toBeChecked();
+  for (const code of ["R", "H"] as const) await expect(group.getByRole("checkbox", { name: en.sourceOptions[code], exact: true })).not.toBeChecked();
+  await expect(page.getByLabel(`${en.sourceDetails} — ${en.stageNames.earlyResponse}`, { exact: true })).toHaveValue("P — komunikator AAC; O — osoba obserwująca.");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
 test("records the three stages and their sources, validates this-event count, downloads and prints every step", async ({ page }, info) => {
   await page.goto("/incident");
   const app = new SituationMapPage(page);
@@ -69,7 +93,8 @@ test("records the three stages and their sources, validates this-event count, do
   await page.getByLabel("Ile czasu przed eskalacją?").fill("Około 4 minut — szacunek.");
   await page.getByRole("group", { name: "Obserwowane reakcje na otoczenie" }).getByRole("checkbox", { name: "zatykanie uszu", exact: true }).check();
   await page.getByLabel(pl.earlyResponse).fill("O — o 12:05 wyłączono radio. P — AAC: za głośno. O — nadal zasłaniała uszy.");
-  await page.getByLabel(`${pl.stageSources} — Pierwsze sygnały`).fill("O — osoba obserwująca; P — AAC.");
+  await selectSources(page, "Pierwsze sygnały", ["O", "P"]);
+  await page.getByLabel(`${pl.sourceDetails} — Pierwsze sygnały`, { exact: true }).fill("O — osoba obserwująca; P — AAC.");
   await step(page, /3B\. Kontynuowanie/);
   await page.getByLabel("Co obserwowano podczas kontynuowania aktywności?").fill("O — rysowała przez 4 minuty.");
   await page.getByLabel("Co osoba przekazała o wysiłku lub dyskomforcie?").fill("P — AAC: za głośno.");
@@ -79,7 +104,8 @@ test("records the three stages and their sources, validates this-event count, do
   await page.getByLabel("Czy dostęp do wsparcia uzależniono od wykonania polecenia?").selectOption("no");
   await step(page, /5\. Opis zachowania/);
   await page.getByLabel(pl.escalationCourse).fill("O — trzy razy uderzyła dłonią w stół. Wyłączono radio; następnie opuściła dłonie, nadal mówiła głośno. Nie przypisujemy jednej przyczyny.");
-  await page.getByLabel(`${pl.stageSources} — Eskalacja`, { exact: true }).fill("O — osoba obserwująca.");
+  await selectSources(page, "Eskalacja", ["O"]);
+  await page.getByLabel(`${pl.sourceDetails} — Eskalacja`, { exact: true }).fill("O — osoba obserwująca.");
   await page.getByLabel("Nasilenie opisanego zachowania — mierzalna cecha").fill("3 uderzenia w ciągu 1 minuty.");
   await page.getByRole("group", { name: "Skutki / szkody zaobserwowane" }).getByRole("checkbox", { name: "nie zaobserwowano szkód", exact: true }).check();
   await page.getByLabel("Potencjalne zagrożenie — oddzielnie od skutków").fill("Możliwe strącenie szklanki; do tego nie doszło.");
@@ -89,7 +115,8 @@ test("records the three stages and their sources, validates this-event count, do
   await page.getByLabel(pl.readinessTiming).fill("12:16 — ok. 10 min od końca zachowania.");
   await step(page, /7\. Po eskalacji/);
   await page.getByLabel(pl.postEscalationNeeds).fill("Zapewniono przerwę i spokojne miejsce. P — AAC: chcę czytać. O — o 12:16 wybrała książkę i zaczęła czytać.");
-  await page.getByLabel(`${pl.stageSources} — Po eskalacji`).fill("O — osoba obserwująca; P — AAC.");
+  await selectSources(page, "Po eskalacji", ["O", "P"]);
+  await page.getByLabel(`${pl.sourceDetails} — Po eskalacji`, { exact: true }).fill("O — osoba obserwująca; P — AAC.");
   await expect(page.getByLabel("Podstawa oceny: co pomogło / przeszkodziło?")).toHaveCount(0);
   await page.getByLabel("Czy podczas tego zdarzenia była interwencja fizyczna?").selectOption("yes");
   await app.firstPdfButton.click();
@@ -110,7 +137,8 @@ test("simple form exports long Polish text and unobserved readiness on a narrow 
   const simple = new SimpleFormPage(page);
   await simple.fillAllRequiredFields({ date: "2026-10-27", time: "12:00", place: "Dom", guardian: "Osoba obserwująca", behavior: "O — początek opisu. " + "Żółć, źródło, przerwa i obserwacja. ".repeat(180) + " KONIEC-DŁUGIEGO-OPISU.", helped: "Zapewniono przerwę i spokojne miejsce. Gotowości do rozmowy nie zaobserwowano.", influence: "P — AAC: chcę przerwę; była dostępna bez warunków." });
   await page.getByLabel(pl.earlyResponse).fill("O — zmniejszono głośność. P — AAC: za jasno.");
-  await page.getByLabel(`${pl.stageSources} — Pierwsze sygnały`).fill("O — opiekun; P — AAC.");
+  await selectSources(page, "Pierwsze sygnały", ["O", "P"]);
+  await page.getByLabel(`${pl.sourceDetails} — Pierwsze sygnały`, { exact: true }).fill("O — opiekun; P — AAC.");
   await page.getByLabel(pl.readinessTiming).fill("Nie zaobserwowano gotowości do rozmowy do końca obserwacji o 13:00. Brak dokładnego pomiaru.");
   await downloadPdf(page, info, "simple-long-polish");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);

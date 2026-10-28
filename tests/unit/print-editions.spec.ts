@@ -19,6 +19,9 @@ describe("updated printable editions", () => {
     }
     expect(text).toContain(revision.stageHint);
     expect(text).toContain(revision.stageSources);
+    for (const label of Object.values(revision.sourceOptions)) expect(text).toContain(label);
+    expect(text).toContain(revision.sourceDetails);
+    expect(text).toContain('#v(0.65em, weak: false)');
     const simple = text.split(language === "pl" ? "= Formularz prosty" : "= Simple form")[1].split(language === "pl" ? "= Formularz rozszerzony" : "= Extended form")[0];
     expect(simple.match(/#(?:area|stage-field)\(/g)).toHaveLength(9);
     for (const removed of ["Co pomogło lub mogło pomóc zakończyć eskalację?", "Co pomogło lub mogło pomóc wrócić do gotowości?", "Podstawa oceny: co pomogło / przeszkodziło?", "What helped or may have helped end the escalation?", "What helped or may have helped regain readiness?", "Basis for judging what helped / hindered"]) expect(text).not.toContain(removed);
@@ -42,7 +45,7 @@ describe("updated printable editions", () => {
   });
 
   it("explains source fields, separate time anchors, uncertainty and theoretical rather than validation evidence in English", () => {
-    for (const text of ["= Recording and assessment", "= Environment map", "Each description has a source field", "including AAC", "How many minutes after that behavior started", "How many minutes after that behavior ended", "8 minutes after the shouting started", "10 minutes after the shouting ended", "beginning to respond to communication", "Repeated association does not establish causality", "not validation of this form"]) expect(guide).toContain(text);
+    for (const text of ["= Recording and assessment", "= Environment map", "Each description has O/P/R/H source checkboxes; you may select several", "including AAC", "How many minutes after that behavior started", "How many minutes after that behavior ended", "8 minutes after the shouting started", "10 minutes after the shouting ended", "beginning to respond to communication", "Repeated association does not establish causality", "not validation of this form"]) expect(guide).toContain(text);
     expect(guide).not.toContain("Shows the cost of maintaining");
   });
 

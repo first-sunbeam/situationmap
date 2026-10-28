@@ -106,7 +106,7 @@ One form concerns one event. Mark information sources next to entries:
 
 State when your observation began and ended. “Unknown”, “not observed” and “not applicable” mean different things. Missing data is not a negative finding; a blank never means “no”. Record when it is safe to do so and do not guess information you do not have.
 
-Describe responses and actions at the relevant stage: *early signs*, *escalation* or *after escalation*. Include observations and information communicated by the person. If it is difficult to assess — indicate this. Each description has a source field: enter O/P/R/H and identify which information each supports. There is no separate “what helped” summary. Support can be offered before the cause of the difficulty has been established. Record what was done and what was observed afterwards; temporal sequence alone does not prove a cause.
+Describe responses and actions at the relevant stage: *early signs*, *escalation* or *after escalation*. Include observations and information communicated by the person. If it is difficult to assess — indicate this. Each description has O/P/R/H source checkboxes; you may select several. In the optional details field, you may identify who provided the information and which part of the account each source supports. There is no separate “what helped” summary. Support can be offered before the cause of the difficulty has been established. Record what was done and what was observed afterwards; temporal sequence alone does not prove a cause.
 
 Record minutes or clock times and mark estimates. Keep three pieces of information separate:
 - *How long did the described behavior last?* Give its start and end times.

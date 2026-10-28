@@ -60,14 +60,9 @@
   #v(0.12em)
   #rect(width: 100%, height: height, stroke: black, radius: 2pt)
 ]
-#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
-  #area(question, height: height, hint: "Include observations and information communicated by the person. If it is difficult to assess — indicate this.")
-  #field("Sources for this description (O/P/R/H — identify which information each supports) — " + stage)
-]
-
 #let checks(items, columns: 2) = block(width: 100%, below: 0.45em, above: 0.25em)[
   #grid(
-    columns: if columns == 3 { (1fr, 1fr, 1fr) } else if columns == 4 { (1fr, 1fr, 1fr, 1fr) } else { (1fr, 1fr) },
+    columns: if columns == 3 { (1fr, 1fr, 1fr) } else if columns == 4 { (auto, auto, auto, auto) } else { (1fr, 1fr) },
     column-gutter: 0.5em,
     row-gutter: 0.45em,
     ..items.map(item => [#box(width: 0.7em, height: 0.7em, baseline: 10%, stroke: 0.5pt) #item])
@@ -78,6 +73,14 @@
   #hint-text(hint)
   #checks(items, columns: columns)
 ]
+#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+  #area(question, height: height, hint: "Include observations and information communicated by the person. If it is difficult to assess — indicate this.")
+  #v(0.65em, weak: false)
+  #text(weight: "bold")[Sources for this description — #stage]
+  #checks(("O — direct observation", "P — person's communication (including AAC)", "R — another person's report", "H — hypothesis"), columns: 4)
+  #field("Source details (optional) — " + stage)
+]
+
 #let section(title, body, breakable: true) = block(
   breakable: breakable,
   fill: white,
@@ -105,7 +108,7 @@
 #title-page("Situation Monitoring Forms", "Printable version for manual completion")
 = Simple form
 
-Describe one event. Mark information sources: O — direct observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Add the letter next to the entry. Missing data does not mean no difficulty. Record when it is safe to do so. “Unknown”, “not observed” and “not applicable” mean different things; a blank never means “no”.
+Describe one event. Mark information sources: O — direct observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Select the relevant source checkboxes beside each stage description; you may select several. Further details are optional. Missing data does not mean no difficulty. Record when it is safe to do so. “Unknown”, “not observed” and “not applicable” mean different things; a blank never means “no”.
 
 #meta()
 
@@ -125,7 +128,7 @@ Describe one event. Mark information sources: O — direct observation, P — th
 
 = Extended form
 
-One record concerns one event. O — observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Mark the source next to the entry and state when your observation began. Do not guess: enter “missing data” where assessment is not possible. Distinguish unknown, not observed and not applicable.
+One record concerns one event. O — observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Select the source checkboxes beside each stage description; you may select several. Further details are optional. State when your observation began. Do not guess: enter “missing data” where assessment is not possible. Distinguish unknown, not observed and not applicable.
 
 #meta()
 #section("0. Baseline and daily context", [

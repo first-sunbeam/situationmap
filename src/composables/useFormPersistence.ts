@@ -2,7 +2,7 @@ import type { ComputedRef, Reactive, Ref } from "vue";
 import { onScopeDispose, watch } from "vue";
 import { blankForm, environments } from "../data/environments";
 import type { FormLabels } from "../config/formLabels";
-import type { ExtendedMode, FormVariant, SituationForm } from "../types/form";
+import type { ExtendedMode, FormVariant, SituationForm, StageResponses } from "../types/form";
 
 export const STORAGE_KEY = "situationmap-state-v2";
 export const LEGACY_BACKUP_KEY = "situationmap-state-before-monitoring-revision";
@@ -35,14 +35,22 @@ function isExtendedMode(value: unknown): value is ExtendedMode {
   return value === "incident" || value === "map";
 }
 
+function hydrateSourceTypes(value: Partial<StageResponses> | undefined) {
+  return {
+    earlyResponseSourceTypes: Array.isArray(value?.earlyResponseSourceTypes) ? [...value.earlyResponseSourceTypes] : [],
+    escalationSourceTypes: Array.isArray(value?.escalationSourceTypes) ? [...value.escalationSourceTypes] : [],
+    postEscalationSourceTypes: Array.isArray(value?.postEscalationSourceTypes) ? [...value.postEscalationSourceTypes] : []
+  };
+}
+
 export function hydrateForm(envKey: EnvironmentKey, value: PersistedForm | undefined): SituationForm {
   const fallback = blankForm(environments[envKey]);
   if (!value || typeof value !== "object") return fallback;
 
   return {
     meta: { ...fallback.meta, ...(value.meta || {}) },
-    simple: { ...fallback.simple, ...(value.simple || {}) },
-    incident: { ...fallback.incident, ...(value.incident || {}) },
+    simple: { ...fallback.simple, ...(value.simple || {}), ...hydrateSourceTypes(value.simple) },
+    incident: { ...fallback.incident, ...(value.incident || {}), ...hydrateSourceTypes(value.incident) },
     map: {
       ...fallback.map,
       ...(value.map || {}),

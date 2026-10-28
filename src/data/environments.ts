@@ -180,7 +180,11 @@ export const environments = {
 } as const satisfies Record<string, EnvironmentConfig>;
 
 function blankStageResponses(): StageResponses {
-  return { earlyResponse: "", earlyResponseSources: "", escalationCourse: "", escalationSources: "", postEscalationNeeds: "", postEscalationSources: "" };
+  return {
+    earlyResponse: "", earlyResponseSources: "", earlyResponseSourceTypes: [],
+    escalationCourse: "", escalationSources: "", escalationSourceTypes: [],
+    postEscalationNeeds: "", postEscalationSources: "", postEscalationSourceTypes: []
+  };
 }
 
 export function blankForm(env: EnvironmentConfig): SituationForm {

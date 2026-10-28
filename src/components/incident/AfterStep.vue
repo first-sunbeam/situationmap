@@ -18,7 +18,7 @@ const { labels, revision, env, form, fieldErrors, subject, yesNoUnknown } = useF
     required
   >
     <div class="field-grid">
-      <StageResponseField v-model="form.incident.postEscalationNeeds" v-model:sources="form.incident.postEscalationSources" stage="postEscalationNeeds" />
+      <StageResponseField v-model="form.incident.postEscalationNeeds" v-model:sources="form.incident.postEscalationSources" v-model:source-types="form.incident.postEscalationSourceTypes" stage="postEscalationNeeds" />
       <ChoiceGroupWithOther
         v-model="form.incident.after"
         v-model:other="form.incident.afterOther"

@@ -29,7 +29,7 @@ const { labels, form, fieldErrors, activationSignalOptions, sensorySignalOptions
         :label="labels.incident.sensorySignals" :options="sensorySignalOptions"
         :other-label="labels.incident.sensorySignalsOther" :other-error="fieldErrors['incident.sensorySignalsOther']"
       />
-      <StageResponseField v-model="form.incident.earlyResponse" v-model:sources="form.incident.earlyResponseSources" stage="earlyResponse" />
+      <StageResponseField v-model="form.incident.earlyResponse" v-model:sources="form.incident.earlyResponseSources" v-model:source-types="form.incident.earlyResponseSourceTypes" stage="earlyResponse" />
       <InputField v-model="form.incident.firstSignal" :label="labels.incident.firstSignal" />
       <SelectField v-model="form.incident.signalsInOtherRecords" :label="labels.incident.predicts" :options="yesNoUnknown" />
     </div>

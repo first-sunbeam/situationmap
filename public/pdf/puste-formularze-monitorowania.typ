@@ -78,14 +78,9 @@
 
 #let row-fields(a, b) = grid(columns: (1fr, 1fr), column-gutter: 0.3cm, field(a), field(b))
 
-#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
-  #area(question, height: height, hint: "Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to.")
-  #field("Źródła tego opisu (O/P/R/H — wskaż, których informacji dotyczą) — " + stage)
-]
-
 #let checks(items, columns: 2) = block(width: 100%, below: 0.45em, above: 0.25em)[
   #grid(
-    columns: if columns == 3 { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
+    columns: if columns == 4 { (auto, auto, auto, auto) } else if columns == 3 { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
     column-gutter: 0.5em,
     row-gutter: 0.45em,
     ..items.map(item => [#box(width: 0.7em, height: 0.7em, baseline: 10%, stroke: 0.5pt) #item])
@@ -96,6 +91,14 @@
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #checks(items, columns: columns)
+]
+
+#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+  #area(question, height: height, hint: "Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to.")
+  #v(0.65em, weak: false)
+  #text(weight: "bold")[Źródła tego opisu — #stage]
+  #checks(("O — własna obserwacja", "P — przekaz osoby (także AAC)", "R — relacja innej osoby", "H — hipoteza"), columns: 4)
+  #field("Doprecyzowanie źródeł (opcjonalnie) — " + stage)
 ]
 
 #let section(title, body, breakable: true) = block(
@@ -130,7 +133,7 @@
 
 = Formularz prosty
 
-Opisuj jedno zdarzenie. Przy informacjach rozróżniaj: O — własna obserwacja, P — przekaz osoby (także AAC), R — relacja innej osoby, H — hipoteza. Możesz dopisać literę obok wpisu. Brak danych nie oznacza braku trudności. Zapis wykonaj, gdy pozwala na to bezpieczeństwo.
+Opisuj jedno zdarzenie. Przy informacjach rozróżniaj: O — własna obserwacja, P — przekaz osoby (także AAC), R — relacja innej osoby, H — hipoteza. Przy opisach etapów zaznacz źródła w checkboxach; możesz wybrać kilka. Doprecyzowanie jest opcjonalne. Brak danych nie oznacza braku trudności. Zapis wykonaj, gdy pozwala na to bezpieczeństwo.
 
 #meta()
 
@@ -150,7 +153,7 @@ Opisuj jedno zdarzenie. Przy informacjach rozróżniaj: O — własna obserwacja
 
 = Formularz rozszerzony
 
-Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R — relacja innej osoby, H — hipoteza. Zaznacz źródło przy wpisie; podaj, od kiedy obserwowałaś/obserwowałeś. Nie musisz wypełniać pól, których nie da się ocenić — wpisz „brak danych”.
+Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R — relacja innej osoby, H — hipoteza. Przy opisach etapów zaznacz źródła w checkboxach; możesz wybrać kilka. Doprecyzowanie jest opcjonalne. Podaj, od kiedy obserwowałaś/obserwowałeś. Nie musisz wypełniać pól, których nie da się ocenić — wpisz „brak danych”.
 
 #meta()
 
