@@ -26,28 +26,32 @@
 
 #set par(
   justify: true,
-  leading: 0.62em
+  leading: 0.45em,
+  spacing: 0.65em
 )
 
 #set heading(numbering: none)
 
 #show heading.where(level: 1): it => block(
-  above: 1.4em,
-  below: 0.9em
+  sticky: true,
+  above: 1em,
+  below: 0.55em
 )[
   #set text(size: 18pt, weight: "bold")
   #it.body
 ]
 
 #show heading.where(level: 2): it => block(
-  above: 1.1em,
-  below: 0.7em
+  sticky: true,
+  above: 0.8em,
+  below: 0.4em
 )[
   #set text(size: 15pt, weight: "bold")
   #it.body
 ]
 
 #let note(content) = block(
+  breakable: false,
   fill: rgb("#fff8ea"),
   stroke: rgb("#ecd7ab"),
   inset: 11pt,
@@ -123,8 +127,6 @@ Continuing an activity alone does not confirm anxiety, overload or masking. Cate
   The bibliography provides theoretical background. It is not evidence that this form or its categories have been validated.
 ]
 
-#pagebreak()
-
 = Why use monitoring forms
 
 Monitoring forms help turn individual incidents into data that can be compared across situations.
@@ -156,8 +158,6 @@ Several similar records can reveal patterns that are not visible after a single 
   Its purpose is to support planning and environmental adjustments.
 ]
 
-#pagebreak()
-
 = Principles for describing situations
 
 == 1. Describe observable facts
@@ -181,8 +181,6 @@ Avoid:
 == 2. Separate background from the immediately preceding event
 
 The immediately preceding event may be small. Record it separately from earlier conditions such as noise, tiredness, changes of plan, pain, pressure or multiple demands. Do not treat a preceding event as an established cause merely because it happened first.
-
-#pagebreak()
 
 == 3. Record early signs
 
@@ -231,8 +229,6 @@ No shouting or aggression does not demonstrate wellbeing. Contact, readiness and
   - what helped or may have helped, and the observable basis or the person’s communication supporting that judgement.
 ]
 
-#pagebreak()
-
 = Simple form
 
 The simple form is designed for quick recording after a situation.
@@ -250,7 +246,7 @@ It works best:
   stroke: rgb("#d7d2c7"),
   fill: (x, y) => if y == 0 { rgb("#f1efe8") },
 
-  [*Question*], [*What to record*], [*What to avoid*],
+  table.header([*Question*], [*What to record*], [*What to avoid*]),
 
   [1. State before], [Sleep, hunger, pain, conditions and earlier difficulties.], [Judgements such as “bad mood”.],
   [2. Immediately before], [What happened in the preceding minutes.], [Treating it as an established cause.],
@@ -267,8 +263,6 @@ It works best:
   The simple form is not intended to provide a complete explanation of the situation.
   It is meant to create a quick record of data that can later be compared.
 ]
-
-#pagebreak()
 
 = Extended form
 
@@ -296,7 +290,7 @@ It helps separate:
   stroke: rgb("#d7d2c7"),
   fill: (x, y) => if y == 0 { rgb("#f1efe8") },
 
-  [*Section*], [*What it describes*], [*Why it matters*],
+  table.header([*Section*], [*What it describes*], [*Why it matters*]),
 
   [0. Daily context],
   [Sleep, exhaustion, pain, earlier stressors.],
@@ -335,8 +329,6 @@ It helps separate:
   [Records action, consequences and safety, not a weekly intervention total or instructions for physical techniques.]
 )
 
-#pagebreak()
-
 = Environment map
 
 The map records current knowledge, preferences and hypotheses about places, activities, relationships and environmental conditions. Give the *observation period and update date*.
@@ -356,8 +348,6 @@ Record:
 Liking an activity does not demonstrate a reinforcement function. Cooperation does not establish feeling safe, and silence does not mean no burden. When describing possible protective conditions, distinguish observation from a causal hypothesis.
 
 Compare what is similar and different in situations with and without escalation. Give dates, examples and numbers of opportunities if available. Absence of aggression alone does not mean absence of difficulty or a need for support.
-
-#pagebreak()
 
 = How to use the data
 
@@ -401,8 +391,6 @@ The purpose is:
   demands become accessible.
 ]
 
-#pagebreak()
-
 = What the form does not do
 
 == It does not diagnose
@@ -443,8 +431,6 @@ Sometimes several or many records are needed to identify:
   not reduce it to a single interpretation.
 ]
 
-#pagebreak()
-
 = Theoretical background
 
 The form is informed by:
@@ -454,7 +440,7 @@ The form is informed by:
 - research on regulation, interoception, and sensory processing,
 - research on autonomy and predictability.
 
-The references below are preserved from Małgorzata Mikołajczyk’s revised Polish instruction. They provide theoretical background, not validation of this form, its categories or the efficacy of an action in a particular situation. Bibliographic details have not been independently verified.
+The references below are preserved from Małgorzata Mikołajczyk’s revised Polish instruction. They provide theoretical background, not validation of this form, its categories or the efficacy of an action in a particular situation.
 
 Key sources:
 - Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.

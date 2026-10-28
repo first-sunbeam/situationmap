@@ -5,98 +5,98 @@
       "pages": 2,
       "characters": 3015,
       "outOfPageTextAnchors": 0,
-      "sha256": "49f3df9db7e9557c120490f46bac22ccd8ff3f4b7c4b07a1829801631630b3a0"
+      "sha256": "6ba1302c3464687ca57cf85a25603cbb20bc27dae9a7f6729ad6bb8caf9c7724"
     },
     {
       "file": "test-results/tests-mobile-form-mobile-e-ffc95-and-download-the-filled-PDF-mobile-webkit/filled-en-mobile.pdf",
       "pages": 2,
       "characters": 3015,
       "outOfPageTextAnchors": 0,
-      "sha256": "484ec359397ad4d2cb49802214a2bceb9844e2541f3610428d5e5191b96b4a0b"
+      "sha256": "958576047cf07c089d46a005a66c38b67f6afef96fef86551a3142c95a9864a6"
     },
     {
       "file": "test-results/tests-mobile-form-mobile-p-23fef-and-download-the-filled-PDF-mobile-chromium/filled-pl-mobile.pdf",
       "pages": 1,
       "characters": 2681,
       "outOfPageTextAnchors": 0,
-      "sha256": "8941c670458dbb22665c420685d2b1ea24233ac35177bb2d01443962f13529ff"
+      "sha256": "e5833cd4cf02ce3cf5f925df934f9ba029d5f24c312e0cd828dfcf12ab1f37eb"
     },
     {
       "file": "test-results/tests-mobile-form-mobile-p-23fef-and-download-the-filled-PDF-mobile-webkit/filled-pl-mobile.pdf",
       "pages": 1,
       "characters": 2681,
       "outOfPageTextAnchors": 0,
-      "sha256": "640e207a1073c738a36c071a6880a46347d04aaf06fd887549a2cc38e8fe6895"
+      "sha256": "ac50f58dae31c096c225aa382ad94bc01dbe9332cbeeda5695ceb151086b8d99"
     },
     {
       "file": "test-results/tests-monitoring-revision--453be-using-cooperation-as-safety-chromium/map-browser-print.pdf",
       "pages": 3,
       "characters": 3211,
       "outOfPageTextAnchors": 0,
-      "sha256": "f262f02121afb37148ca6440166b42e2f368b0d767327fd1d3a7097308b5d703"
+      "sha256": "ad6025a62c0699cecc4c15cd3ae68a78380551e4b7aa8603d02775a66242ca9b"
     },
     {
       "file": "test-results/tests-monitoring-revision--453be-using-cooperation-as-safety-chromium/map-revised.pdf",
       "pages": 2,
       "characters": 3274,
       "outOfPageTextAnchors": 0,
-      "sha256": "740783717b4fe9a1eb538a95da6913bc7510ec9c146c8d9463846f016be7a040"
+      "sha256": "80abfdb869e4ce56fcc44bc1ad2f9fd24ff62ef04a57c859e75c12b31d9b6a94"
     },
     {
       "file": "test-results/tests-monitoring-revision--87055-eadiness-on-a-narrow-screen-chromium/simple-browser-print.pdf",
       "pages": 3,
       "characters": 9105,
       "outOfPageTextAnchors": 0,
-      "sha256": "9f04946aa1e75aafb276f95007691df15367912a79f40e2e29bcb97e424282f0"
+      "sha256": "cb7e15a00149d853814371027ee348cdf19e2b2b7a0916fe0e1a716feb2ff12d"
     },
     {
       "file": "test-results/tests-monitoring-revision--87055-eadiness-on-a-narrow-screen-chromium/simple-long-polish.pdf",
       "pages": 3,
       "characters": 9588,
       "outOfPageTextAnchors": 0,
-      "sha256": "40d4a460eaeaf6f44e0bd53f0e4b031d98e52b2ed943248b8113e183b61dad4a"
+      "sha256": "ff81a057c04ac436833f9a22391639b6e1a7e6969fd1b79c489a1684039459b9"
     },
     {
       "file": "test-results/tests-monitoring-revision--ad156-loads-and-prints-every-step-chromium/incident-browser-print.pdf",
       "pages": 5,
       "characters": 6758,
       "outOfPageTextAnchors": 0,
-      "sha256": "1e8c052c09d47efb8a0f5999d528818e595dcd3b77a4bffbdf8bcd87d8c1c4fb"
+      "sha256": "b17f3afcfca6c659a444d84c5057d4a6405d09a77436b0307e527e27df02f783"
     },
     {
       "file": "test-results/tests-monitoring-revision--ad156-loads-and-prints-every-step-chromium/incident-revised.pdf",
       "pages": 3,
       "characters": 7296,
       "outOfPageTextAnchors": 0,
-      "sha256": "46c418290f2ff109a6b003e505d0df5caaec8866eded679fdc36f31d7a9acccc"
+      "sha256": "4c76b56e11f76d985bc671f39ea737c071fb9a39eb8613f4bc57a250cacf895f"
     },
     {
       "file": "public/pdf/blank-monitoring-forms.pdf",
-      "pages": 16,
-      "characters": 18284,
+      "pages": 11,
+      "characters": 17720,
       "outOfPageTextAnchors": 0,
-      "sha256": "983abbe76fc0c631c035231f9023730ddcbac4b49719b61268aaa1dadb95eded"
+      "sha256": "50e8b87600066360b2d753dd3f83f0d0e76f2753b4ab6f066998cf3dbe3bdfdb"
     },
     {
       "file": "public/pdf/how-to-use-monitoring-forms.pdf",
-      "pages": 11,
-      "characters": 20316,
+      "pages": 7,
+      "characters": 20084,
       "outOfPageTextAnchors": 0,
-      "sha256": "7e938d4458ab1de41c08e4d67ad063019c0470b989834b40d2f734f64ce9457a"
+      "sha256": "e180a62c435d904b949aab1f14a1480b6e315bd3024fc7b8319cead9e6ad4a3e"
     },
     {
       "file": "public/pdf/jak-korzystac-z-formularzy-monitorowania.pdf",
-      "pages": 10,
-      "characters": 16642,
+      "pages": 6,
+      "characters": 16491,
       "outOfPageTextAnchors": 0,
-      "sha256": "6352c81d3d786b8faf7fc568f9a6917ed656ea001e6246ed9c95ec9fc72dbb77"
+      "sha256": "1f70960978825bbf51cfc8efa4cd3006eb6fdf829d358744630732a9c2fca385"
     },
     {
       "file": "public/pdf/puste-formularze-monitorowania.pdf",
-      "pages": 15,
-      "characters": 16847,
+      "pages": 11,
+      "characters": 16341,
       "outOfPageTextAnchors": 0,
-      "sha256": "c1f94e472f349f985639707b407e0b9a4d890b04903da55e47d21d06d23f630e"
+      "sha256": "b3a0823126e470fbd424b8b38d416e1f09271fed397ae7be05e179d3274dc369"
     }
   ],
   "stageQuestionsAndSourcesChecked": true,

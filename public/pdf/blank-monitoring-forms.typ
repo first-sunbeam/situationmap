@@ -47,14 +47,14 @@
   #v(0.1em)
   #text(size: 8.2pt, style: "italic")[#hint]
 ]
-#let field(label, hint: none) = block(width: 100%, breakable: false, below: 1em, above: 1em)[
+#let field(label, hint: none) = block(width: 100%, breakable: false, below: 0.45em, above: 0.5em)[
   #v(0.5em)
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #v(1em)
   #line(length: 100%, stroke: dotted-stroke)
 ]
-#let area(label, height: 2cm, hint: none) = block(width: 100%, breakable: false, below: 0.1em, above: 1em)[
+#let area(label, height: 2cm, hint: none) = block(width: 100%, breakable: false, below: 0.1em, above: 0.55em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #v(0.12em)
@@ -65,15 +65,15 @@
   #field("Sources for this description (O/P/R/H — identify which information each supports) — " + stage)
 ]
 
-#let checks(items, columns: 2) = block(width: 100%, below: 1em, above: 0.4em)[
+#let checks(items, columns: 2) = block(width: 100%, below: 0.45em, above: 0.25em)[
   #grid(
     columns: if columns == 3 { (1fr, 1fr, 1fr) } else if columns == 4 { (1fr, 1fr, 1fr, 1fr) } else { (1fr, 1fr) },
     column-gutter: 0.5em,
-    row-gutter: 0.55em,
-    ..items.map(item => [☐ #item])
+    row-gutter: 0.45em,
+    ..items.map(item => [#box(width: 0.7em, height: 0.7em, baseline: 10%, stroke: 0.5pt) #item])
   )
 ]
-#let select(label, items, columns: 2, hint: none) = block(width: 100%, breakable: false, below: 0.55em, above: 2em)[
+#let select(label, items, columns: 2, hint: none) = block(width: 100%, breakable: false, below: 0.35em, above: 0.75em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #checks(items, columns: columns)
@@ -85,9 +85,9 @@
   inset: 10pt,
   radius: 6pt,
   width: 100%,
-  below: 2em
+  below: 0.85em
 )[
-  #text(size: 12.5pt, weight: "bold")[#title]
+  #block(sticky: true, below: 0.3em)[#text(size: 12.5pt, weight: "bold")[#title]]
   #body
 ]
 #let meta() = section("Basic information", [
@@ -103,8 +103,6 @@
 ])
 
 #title-page("Situation Monitoring Forms", "Printable version for manual completion")
-#pagebreak()
-
 = Simple form
 
 Describe one event. Mark information sources: O — direct observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Add the letter next to the entry. Missing data does not mean no difficulty. Record when it is safe to do so. “Unknown”, “not observed” and “not applicable” mean different things; a blank never means “no”.
@@ -156,7 +154,6 @@ One record concerns one event. O — observation, P — the person’s communica
   #area("Details of what happened immediately before", height: 2.3cm, hint: "Describe observable facts, without judging or blaming. A preceding event is not an established cause.")
 ])
 
-#pagebreak()
 #section("2. What was expected at that moment?", [
   #area("What did the person have influence over?", height: 1.4cm, hint: "Choice of order, time, place, way of doing the activity or opportunity for a break.")
   #area("What was unknown, imposed or outside the person’s influence?", height: 1.4cm, hint: "Sudden change, lack of information, time pressure or no opportunity to refuse or negotiate.")
@@ -168,7 +165,6 @@ One record concerns one event. O — observation, P — the person’s communica
   ))
 ])
 
-#pagebreak()
 #section("3. First signs of rising tension", [
   #select("Did signs appear?", ("Yes", "No", "Unknown"), columns: 3)
   #field("How long before escalation?", hint: "Minutes or clock times; mark an estimate or missing data.")
@@ -191,9 +187,8 @@ One record concerns one event. O — observation, P — the person’s communica
   #area("What did the person communicate about effort or discomfort?", height: 1.5cm, hint: "The person’s communication (P), including AAC. No communication does not mean no experience.")
   #area("What was noticed later?", height: 1.5cm, hint: "Separate direct observation (O) from others’ reports (R); give time and source.")
   #area("Are compensation or masking being considered — on what basis?", height: 1.2cm, hint: "A hypothesis (H), not a diagnosis. Insufficient basis is a valid answer. The form itself does not measure hidden costs.")
-], breakable: false)
+])
 
-#pagebreak()
 #section("4. Support provided and conditions of access", [
   #select("Actions taken", (
     "reducing sensory input", "increasing autonomy / choice", "providing predictability", "interoceptive support", "time without demands / pause", "sensory regulation", "other: ........................................"
@@ -202,7 +197,6 @@ One record concerns one event. O — observation, P — the person’s communica
   #select("Did the person use this form of support?", ("Yes", "No", "Partly", "Unknown"), columns: 2)
 ])
 
-#pagebreak()
 #section("5. Behavior description", [
   #stage-field("How did the escalation unfold? What actions or changes accompanied its intensification and subsiding?", "Escalation", height: 2.8cm)
   #field("Magnitude of the described behavior", hint: "Give a count, duration or comparable feature, e.g. 3 hand strikes on the table. Do not rate the whole event on an aggression scale.")
@@ -211,14 +205,12 @@ One record concerns one event. O — observation, P — the person’s communica
   #field("Potential risk — separate from actual consequences", hint: "What might have happened or was prevented? Do not record it as a consequence that actually occurred.")
 ])
 
-#pagebreak()
 #section("6. Timing and readiness", [
   #area("Duration of the described behavior", height: 1.5cm, hint: "Give the start and end of the behavior and its duration. Mark estimate / missing data / ongoing at observation end.")
   #area("Reduction in observed signs of tension", height: 1.5cm, hint: "Which signs decreased? How many minutes after the described behavior started was this change observed? Give minutes or clock time. Not observed by observation end / missing data are valid answers.")
   #area("Time until signs of readiness were observed", height: 1.5cm, hint: "How many minutes after the described behavior ended were signs of readiness observed? You may give clock times. Mark estimate / missing data / not observed by observation end. Describe needs and signs of readiness in the After escalation section.")
 ])
 
-#pagebreak()
 #section("7. After escalation", [
   #stage-field("What did the person need before resuming contact or activity? What was provided, and how was readiness recognized?", "After escalation", height: 2.2cm)
   #select("What happened after the event?", (
@@ -228,7 +220,7 @@ One record concerns one event. O — observation, P — the person’s communica
   #field("If so — how many times during this event?", hint: "Enter a count or estimate; mark missing data if unknown.")
   #select("Did the person react faster or more strongly than usual?",  ("Yes", "No", "Unknown"), columns: 3)
   #field("Physical intervention: action, context, consequences / safety",  hint: "Briefly: action, context, consequences, safety and what could change next time. No instructions for physical techniques.")
-])
+], breakable: false)
 
 #pagebreak()
 = Environment map
@@ -288,7 +280,7 @@ Mark sources: O — observation, P — the person’s communication (including A
 #pagebreak()
 #text(size: 17pt, weight: "bold")[Bibliography accompanying the forms]
 #v(8pt)
-#text(size: 9pt)[The references below are preserved from the “Theoretical background” section of Małgorzata Mikołajczyk’s guide “How to Use Monitoring Forms”. They provide accompanying theoretical background, not evidence of validation of this tool or of the accuracy of every category. Bibliographic details have been retained from the guide and have not been independently verified.]
+#text(size: 9pt)[The references below are preserved from the “Theoretical background” section of Małgorzata Mikołajczyk’s guide “How to Use Monitoring Forms”. They provide accompanying theoretical background, not evidence of validation of this tool or of the accuracy of every category.]
 #v(10pt)
 #block(above: 7pt, breakable: false)[#text(size: 10pt)[Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.]]
 #block(above: 7pt, breakable: false)[#text(size: 10pt)[O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.]]

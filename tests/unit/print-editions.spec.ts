@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getMonitoringRevision } from "../../src/config/monitoringRevision";
+import { getAboutPageContent } from "../../src/config/aboutPage";
 
 function source(name: string): string {
   return readFileSync(new URL(`../../public/pdf/${name}.typ`, import.meta.url), "utf8");
@@ -21,6 +22,16 @@ describe("updated printable editions", () => {
     const simple = text.split(language === "pl" ? "= Formularz prosty" : "= Simple form")[1].split(language === "pl" ? "= Formularz rozszerzony" : "= Extended form")[0];
     expect(simple.match(/#(?:area|stage-field)\(/g)).toHaveLength(9);
     for (const removed of ["Co pomogło lub mogło pomóc zakończyć eskalację?", "Co pomogło lub mogło pomóc wrócić do gotowości?", "Podstawa oceny: co pomogło / przeszkodziło?", "What helped or may have helped end the escalation?", "What helped or may have helped regain readiness?", "Basis for judging what helped / hindered"]) expect(text).not.toContain(removed);
+  });
+
+  it.each(["pl", "en"] as const)("keeps page breaks only between independent forms and after the guide contents (%s)", (language) => {
+    const printedForms = source(language === "pl" ? "puste-formularze-monitorowania" : "blank-monitoring-forms");
+    const instruction = source(language === "pl" ? "jak-korzystac-z-formularzy-monitorowania" : "how-to-use-monitoring-forms");
+    expect(printedForms.match(/#pagebreak\(\)/g)).toHaveLength(3);
+    expect(instruction.match(/#pagebreak\(\)/g)).toHaveLength(1);
+    expect(printedForms).toContain("stage-field(question, stage, height: 2cm) = block(breakable: false)");
+    expect(printedForms).toContain("#block(sticky: true");
+    expect(instruction).toContain("table.header(");
   });
 
   it("keeps the revised English observation, measurement and map questions", () => {
@@ -46,6 +57,14 @@ describe("updated printable editions", () => {
       expect(text).toContain("Po ilu minutach od rozpoczęcia tego zachowania");
       expect(text).toContain("Po ilu minutach od zakończenia tego zachowania");
       expect(text).toContain("zaczęła odpowiadać na komunikaty");
+    }
+  });
+
+  it("omits the removed bibliography-verification note from the print and website editions", () => {
+    const content = [forms, guide, polishGuide, source("puste-formularze-monitorowania"), JSON.stringify(getAboutPageContent("pl")), JSON.stringify(getAboutPageContent("en"))];
+    for (const text of content) {
+      expect(text).not.toContain("Dane bibliograficzne zachowano zgodnie z instrukcją; nie weryfikowano ich niezależnie.");
+      expect(text).not.toContain("have not been independently verified");
     }
   });
 

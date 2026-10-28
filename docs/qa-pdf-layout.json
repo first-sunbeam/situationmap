@@ -1,0 +1,42 @@
+[
+  {
+    "file": "public/pdf/puste-formularze-monitorowania.pdf",
+    "beforePages": 15,
+    "afterPages": 11,
+    "bodyTextPreservedExceptRequestedEditorialDeletion": true,
+    "quotedContentPreserved": true,
+    "writingAreaHeightsPreserved": true,
+    "outOfPageTextAnchors": 0,
+    "checkboxesDrawnAsVectors": true
+  },
+  {
+    "file": "public/pdf/blank-monitoring-forms.pdf",
+    "beforePages": 16,
+    "afterPages": 11,
+    "bodyTextPreservedExceptRequestedEditorialDeletion": true,
+    "quotedContentPreserved": true,
+    "writingAreaHeightsPreserved": true,
+    "outOfPageTextAnchors": 0,
+    "checkboxesDrawnAsVectors": true
+  },
+  {
+    "file": "public/pdf/jak-korzystac-z-formularzy-monitorowania.pdf",
+    "beforePages": 10,
+    "afterPages": 6,
+    "bodyTextPreservedExceptRequestedEditorialDeletion": true,
+    "quotedContentPreserved": true,
+    "writingAreaHeightsPreserved": true,
+    "outOfPageTextAnchors": 0,
+    "checkboxesDrawnAsVectors": false
+  },
+  {
+    "file": "public/pdf/how-to-use-monitoring-forms.pdf",
+    "beforePages": 11,
+    "afterPages": 7,
+    "bodyTextPreservedExceptRequestedEditorialDeletion": true,
+    "quotedContentPreserved": true,
+    "writingAreaHeightsPreserved": true,
+    "outOfPageTextAnchors": 0,
+    "checkboxesDrawnAsVectors": false
+  }
+]

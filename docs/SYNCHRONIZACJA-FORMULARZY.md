@@ -36,6 +36,21 @@ Angielski interfejs ponownie prowadzi do aktualnych angielskich PDF-ów; polski 
 
 Zachowano autorstwo Małgorzaty Mikołajczyk i styl materiałów. Angielskie źródła wskazują wprost Libertinus Serif — krój osadzony w dostarczonych polskich PDF-ach. Polskie źródła nadal wskazują Linux Libertine; lokalny Typst stosuje Libertinus Serif jako zastępstwo i zgłasza ostrzeżenie o nieobecnej rodzinie.
 
+## Uporządkowanie składu PDF
+
+Usunięto ręczne podziały pomiędzy sekcjami tego samego formularza oraz prawie wszystkimi rozdziałami instrukcji. Formularz prosty rozpoczyna się bezpośrednio pod tytułem pakietu — nie ma już prawie pustej strony tytułowej. Nowe strony zachowano tylko między niezależnymi formularzami, przed bibliografią formularzy i po spisie treści instrukcji.
+
+Zmniejszono odstępy między blokami; nie zmieniono pytań, podpowiedzi, wielkości pisma ani wysokości miejsc na ręczne odpowiedzi. Pytanie, podpowiedź, miejsce na odpowiedź i pole źródeł etapu pozostają razem. Nagłówki są wiązane z następnym blokiem, a nagłówki tabel powtarzają się po przejściu na następną stronę. Checkboxy są rysowane jako puste kwadraty, bez zależności od brakującego glifu fontu.
+
+| Dokument | Przed | Po |
+| --- | ---: | ---: |
+| Formularze PL | 15 | 11 |
+| Formularze EN | 16 | 11 |
+| Instrukcja PL | 10 | 6 |
+| Instrukcja EN | 11 | 7 |
+
+Kontrola `docs/qa-pdf-layout.json` porównuje treść przed i po zmianie (z pominięciem numeracji, powtórzonych nagłówków tabel, ikon checkboxów oraz usuniętej na prośbę użytkownika uwagi bibliograficznej), wszystkie teksty pytań oraz wysokości pól. Nie wykryto utraty treści ani kotwic tekstowych poza stroną. Przykładowe strony obejrzano po rasteryzacji. Kopia przed zmianą: `../_backups/situationmap-przed-uporzadkowaniem-skladu-20261028-021010/`.
+
 ## Wcześniejsze dane
 
 Dawnych wartości nie kasuje się ani nie przepisuje do nowych opisów etapów. Pozostają w przechowywanym formularzu oraz w osobnej części „Zapis z poprzedniej wersji — bez przeliczania”, także w eksporcie. Archiwalne pytania nie są nowymi polami do wypełniania.
@@ -45,7 +60,7 @@ Dotyczy to m.in. dawnych podsumowań „co pomogło”, opisu zachowania, zbiorc
 ## Kontrola
 
 - `npm run typecheck` — poprawnie.
-- `npm run test:unit` — **66/66**.
+- `npm run test:unit` — **69/69**.
 - `npm run test:e2e -- --reporter=line` — **21/21**.
 - Testy mobilne PL/EN: Chromium z profilem Pixel 7 i WebKit z profilem iPhone 13. Sprawdzono dotknięcie przycisku, walidację, wypełnienie trzech etapów i źródeł, odtworzenie po odświeżeniu oraz pobranie rzeczywistego PDF-a z wpisanymi danymi. To emulacja przeglądarkowa, nie test fizycznych telefonów.
 - Testy obejmują również stare dane, brak walidowania usuniętych podsumowań, obecność dawnych wartości tylko w archiwum, oba języki, długi polski wpis i wydruk wszystkich kroków.
@@ -53,7 +68,7 @@ Dotyczy to m.in. dawnych podsumowań „co pomogło”, opisu zachowania, zbiorc
 - `npm run build` — poprawnie; pozostają ostrzeżenia o rozmiarze pakietu pdfmake i nieaktualnych danych Browserslist.
 - Kontrola tekstu i kotwic tekstowych PDF-ów: `docs/qa-monitoring-pdf.json`. Sprawdzono m.in. trzy pytania, źródła, polskie znaki, koniec długiego wpisu i brak kotwic poza stroną. Nie wykonano fizycznego wydruku.
 
-Bibliografię zachowano zgodnie z siedmioma pozycjami aktualnej polskiej instrukcji. Nie dodawano źródeł z pamięci; dane bibliograficzne nie były niezależnie weryfikowane. Bibliografia jest podstawą teoretyczną, nie dowodem walidacji formularza.
+Bibliografię zachowano zgodnie z siedmioma pozycjami aktualnej polskiej instrukcji. Nie dodawano źródeł z pamięci. Na prośbę użytkownika usunięto z treści dla użytkowników uwagę o niezależnej weryfikacji danych bibliograficznych; samych pozycji bibliografii nie zmieniano. Bibliografia jest podstawą teoretyczną, nie dowodem walidacji formularza.
 
 ## Kopie przed zmianami
 

@@ -90,7 +90,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
         "Dane nadal zapisują się lokalnie. Starsze pola pozostają dostępne w rozwijanej części formularza i w oddzielnej sekcji eksportu. Nowe pytania wymagają własnego wpisu; nie dopisujemy źródeł O/P/R/H do dawnych danych automatycznie.",
       ] },
       { id: "background", title: "Literatura i podstawa merytoryczna", paragraphs: [
-        "Poniższa bibliografia pochodzi z dostarczonej instrukcji Małgorzaty Mikołajczyk. Dotyczy podstaw teoretycznych, a nie walidacji narzędzia. Nie potwierdza trafności każdej kategorii ani skuteczności działań w konkretnej sytuacji. Dane bibliograficzne zachowano zgodnie z instrukcją; nie weryfikowano ich niezależnie.",
+        "Poniższa bibliografia pochodzi z dostarczonej instrukcji Małgorzaty Mikołajczyk. Dotyczy podstaw teoretycznych, a nie walidacji narzędzia. Nie potwierdza trafności każdej kategorii ani skuteczności działań w konkretnej sytuacji.",
       ], list: bibliography },
     ],
   },
@@ -131,7 +131,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
       { id: "using-data", title: "Using the records", paragraphs: ["Compare repeated records, similar situations without escalation and numbers of opportunities. Two events in two opportunities differ from two in twenty. Repeated association and temporal sequence do not establish causality. Consider the person's communication and alternative explanations when forming hypotheses."] },
       { id: "limits", title: "Limits", list: ["No diagnosis of autism, ADHD, PDA, trauma or reaction mechanisms.", "Does not replace diagnosis, functional assessment, a support plan or clinical supervision.", "Not for assigning ill will, justifying punishment or restricting rights.", "Does not assume all demands are harmful, all difficulties sensory or support means no boundaries. Safety remains a responsibility."] },
       { id: "legacy", title: "Previous-version records", paragraphs: [en.legacyHint, "Older answers remain in the expandable previous-version section and in a separate export section. New questions require their own answers. Sources are never assigned to old entries automatically."] },
-      { id: "background", title: "Literature and theoretical background", paragraphs: ["References are preserved from Małgorzata Mikołajczyk's supplied instruction. They are theoretical background, not evidence of validation of this form, its categories or the efficacy of a particular action. Bibliographic details have not been independently verified."], list: bibliography },
+      { id: "background", title: "Literature and theoretical background", paragraphs: ["References are preserved from Małgorzata Mikołajczyk's supplied instruction. They are theoretical background, not evidence of validation of this form, its categories or the efficacy of a particular action."], list: bibliography },
     ],
   },
 };

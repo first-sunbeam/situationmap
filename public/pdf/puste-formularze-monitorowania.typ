@@ -61,7 +61,7 @@
   #text(size: 8.2pt, style: "italic")[#hint]
 ]
 
-#let field(label, height: 0.85cm, hint: none) = block(width: 100%, breakable: false, below: 1em, above: 1em)[
+#let field(label, height: 0.85cm, hint: none) = block(width: 100%, breakable: false, below: 0.45em, above: 0.5em)[
   #v(0.5em)
   #text(weight: "bold")[#label]
   #hint-text(hint)
@@ -69,7 +69,7 @@
   #line(length: 100%, stroke: dotted-stroke)
 ]
 
-#let area(label, height: 2cm, hint: none) = block(width: 100%, breakable: false, below: 0.1em, above: 1em)[
+#let area(label, height: 2cm, hint: none) = block(width: 100%, breakable: false, below: 0.1em, above: 0.55em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #v(0.12em)
@@ -83,16 +83,16 @@
   #field("Źródła tego opisu (O/P/R/H — wskaż, których informacji dotyczą) — " + stage)
 ]
 
-#let checks(items, columns: 2) = block(width: 100%, below:1em, above:0.4em)[
+#let checks(items, columns: 2) = block(width: 100%, below: 0.45em, above: 0.25em)[
   #grid(
     columns: if columns == 3 { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
     column-gutter: 0.5em,
-    row-gutter: 0.55em,
-    ..items.map(item => [☐ #item])
+    row-gutter: 0.45em,
+    ..items.map(item => [#box(width: 0.7em, height: 0.7em, baseline: 10%, stroke: 0.5pt) #item])
   )
 ]
 
-#let select(label, items, columns: 2, hint: none) = block(width: 100%, breakable: false, below: 0.55em, above: 2em)[
+#let select(label, items, columns: 2, hint: none) = block(width: 100%, breakable: false, below: 0.35em, above: 0.75em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #checks(items, columns: columns)
@@ -105,9 +105,9 @@
   inset: 10pt,
   radius: 6pt,
   width: 100%,
-  below: 2em
+  below: 0.85em
 )[
-  #text(size: 12.5pt, weight: "bold")[#title]
+  #block(sticky: true, below: 0.3em)[#text(size: 12.5pt, weight: "bold")[#title]]
   #body
 ]
 
@@ -127,8 +127,6 @@
 ])
 
 #title-page("Formularze monitorowania sytuacji", "Wersja do wydruku i ręcznego wypełnienia")
-
-#pagebreak()
 
 = Formularz prosty
 
@@ -193,8 +191,6 @@ Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R 
   ))
 ])
 
-#pagebreak();
-
 #section("3. Pierwsze oznaki narastającego napięcia", [
   #select("Czy pojawiły się sygnały?", ("Tak", "Nie", "Nie wiem"), columns: 3)
   #field("Ile czasu przed eskalacją?", hint: "Szacunkowo: minuty, kilkanaście minut, wcześniej w ciągu dnia.")
@@ -217,9 +213,8 @@ Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R 
   #area("Co osoba przekazała o wysiłku lub dyskomforcie?", height: 1.5cm, hint: "Przekaz osoby (P), także AAC. Brak komunikatu nie oznacza braku doświadczenia.")
   #area("Co zauważono później?", height: 1.5cm, hint: "Oddziel własną obserwację (O) od relacji innych (R); podaj czas i źródło.")
   #area("Czy rozważamy kompensację lub maskowanie — na jakiej podstawie?", height: 1.2cm, hint: "Hipoteza (H), nie rozpoznanie. Możliwe: brak podstaw do oceny.")
-], breakable: false)
+])
 
-#pagebreak()
 #section("4. Udzielone wsparcie i warunki jego udzielenia", [
   #select("Podjęte działania", (
     "obniżenie bodźców sensorycznych", "zwiększenie autonomii / wybór", "zapewnienie przewidywalności", "wsparcie interoceptywne", "czas bez wymagań / pauza", "regulacja sensoryczna", "inne: ........................................"
@@ -239,14 +234,12 @@ Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R 
 ])
 
 
-#pagebreak()
 #section("6. Czas i gotowość", [
   #area("Czas trwania opisanego zachowania", height: 1.5cm, hint: "Podaj początek i koniec zachowania oraz czas trwania. Zaznacz szacunek / brak danych / trwało do końca obserwacji.")
   #area("Zmniejszenie obserwowanych oznak napięcia", height: 1.5cm, hint: "Jakie oznaki się zmniejszyły? Po ilu minutach od rozpoczęcia opisanego zachowania to zaobserwowano? Podaj minuty lub godzinę. Możliwe: nie zaobserwowano do końca obserwacji / brak danych.")
   #area("Czas do zaobserwowania gotowości", height: 1.5cm, hint: "Po ilu minutach od zakończenia opisanego zachowania zaobserwowano oznaki gotowości? Możesz podać godzinę. Zaznacz szacunek / brak danych / nie zaobserwowano do końca obserwacji. Potrzeby i oznaki gotowości opisz w części „Po eskalacji”.")
 ])
 
-#pagebreak()
 #section("7. Po eskalacji", [
   #stage-field("Czego osoba potrzebowała przed ponownym kontaktem lub aktywnością? Co jej zapewniono i po czym rozpoznano gotowość?", "Po eskalacji", height: 2.2cm)
   #select("Co wydarzyło się po zdarzeniu?", (
@@ -256,7 +249,7 @@ Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R 
   #field("Jeśli tak — ile razy?", hint: "Wpisz liczbę lub przybliżenie.")
   #select("Czy osoba reagowała szybciej lub mocniej niż zwykle?",  ("Tak", "Nie", "Nie wiem"), columns: 3)
   #field("Działanie, kontekst i następstwa interwencji fizycznej / bezpieczeństwo", hint: "Co zrobiono, jakie były skutki i dalsze potrzeby bezpieczeństwa? Bez instrukcji technik fizycznych.")
-])
+], breakable: false)
 
 #pagebreak()
 
@@ -319,7 +312,7 @@ Zaznacz źródło: O — obserwacja, P — przekaz osoby, R — relacja innej os
 #pagebreak()
 #text(size: 17pt, weight: "bold")[Bibliografia towarzysząca formularzom]
 #v(8pt)
-#text(size: 9pt)[Poniższe pozycje przeniesiono z instrukcji Małgorzaty Mikołajczyk „Jak korzystać z formularzy monitorowania”, z sekcji „Podstawa merytoryczna”. Stanowią bibliografię towarzyszącą formularzom, nie potwierdzenie walidacji narzędzia ani trafności każdej jego kategorii. Dane bibliograficzne zachowano zgodnie z instrukcją; nie weryfikowano ich niezależnie.]
+#text(size: 9pt)[Poniższe pozycje przeniesiono z instrukcji Małgorzaty Mikołajczyk „Jak korzystać z formularzy monitorowania”, z sekcji „Podstawa merytoryczna”. Stanowią bibliografię towarzyszącą formularzom, nie potwierdzenie walidacji narzędzia ani trafności każdej jego kategorii.]
 #v(10pt)
 #block(above: 7pt, breakable: false)[#text(size: 10pt)[Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.]]
 #block(above: 7pt, breakable: false)[#text(size: 10pt)[O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.]]

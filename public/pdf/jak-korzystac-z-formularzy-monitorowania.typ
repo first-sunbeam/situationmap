@@ -26,28 +26,32 @@
 
 #set par(
   justify: true,
-  leading: 0.62em
+  leading: 0.45em,
+  spacing: 0.65em
 )
 
 #set heading(numbering: none)
 
 #show heading.where(level: 1): it => block(
-  above: 1.4em,
-  below: 0.9em
+  sticky: true,
+  above: 1em,
+  below: 0.55em
 )[
   #set text(size: 18pt, weight: "bold")
   #it.body
 ]
 
 #show heading.where(level: 2): it => block(
-  above: 1.1em,
-  below: 0.7em
+  sticky: true,
+  above: 0.8em,
+  below: 0.4em
 )[
   #set text(size: 15pt, weight: "bold")
   #it.body
 ]
 
 #let note(content) = block(
+  breakable: false,
   fill: rgb("#fff8ea"),
   stroke: rgb("#ecd7ab"),
   inset: 11pt,
@@ -113,8 +117,6 @@ Nasilenie opisuj mierzalną cechą wybranego zachowania; skutki i potencjalne za
 
 Bibliografia wskazuje podstawy teoretyczne. Nie stanowi dowodu walidacji formularza.
 
-#pagebreak()
-
 = Po co są formularze
 
 Formularze pomagają zamienić pojedyncze „incydenty” w dane, które można porównywać między sytuacjami.
@@ -146,8 +148,6 @@ Dzięki kilku podobnym zapisom można zauważyć wzorce, których nie widać po 
   Ma pomagać w planowaniu wsparcia i modyfikacji środowiska.
 ]
 
-#pagebreak()
-
 = Zasady opisu sytuacji
 
 == 1. Opisuj fakty obserwowalne
@@ -174,8 +174,6 @@ Zdarzenie bezpośrednio poprzedzające nie zawsze jest „dużą” sytuacją.
 
 Często jest ostatnim elementem po serii wcześniejszych obciążeń:
 hałasie, zmęczeniu, zmianach planu, bólu, presji albo wielu drobnych wymaganiach.
-
-#pagebreak()
 
 == 3. Zapisuj pierwsze sygnały
 
@@ -218,8 +216,6 @@ W formularzu warto zaznaczyć:
   - co pomogło i po czym to poznajemy.
 ]
 
-#pagebreak()
-
 = Formularz prosty
 
 Formularz prosty służy do szybkiego zapisu po sytuacji.
@@ -237,7 +233,7 @@ Najlepiej sprawdza się:
   stroke: rgb("#d7d2c7"),
   fill: (x, y) => if y == 0 { rgb("#f1efe8") },
 
-  [*Pytanie*], [*Co wpisywać*], [*Czego unikać*],
+  table.header([*Pytanie*], [*Co wpisywać*], [*Czego unikać*]),
 
   [1. Stan przed sytuacją], [Sen, głód, ból, warunki i wcześniejsze trudności.], [Ocen typu „zły humor”.],
   [2. Bezpośrednio przed], [Co wydarzyło się w ostatnich minutach.], [Uznawania tego za ustaloną przyczynę.],
@@ -254,8 +250,6 @@ Najlepiej sprawdza się:
   Formularz prosty nie ma dawać pełnej diagnozy sytuacji. \
   Ma umożliwić szybki zapis danych, które później można porównać.
 ]
-
-#pagebreak()
 
 = Formularz rozszerzony
 
@@ -283,7 +277,7 @@ Pozwala oddzielić:
   stroke: rgb("#d7d2c7"),
   fill: (x, y) => if y == 0 { rgb("#f1efe8") },
 
-  [*Sekcja*], [*Co opisuje*], [*Po co jest*],
+  table.header([*Sekcja*], [*Co opisuje*], [*Po co jest*]),
 
   [0. Kontekst dnia],
   [Sen, zmęczenie, ból, wcześniejsze obciążenia.],
@@ -321,8 +315,6 @@ Pozwala oddzielić:
   [Potrzeby osoby, zapewnione wsparcie i oznaki gotowości oraz dalsze zdarzenia.],
   [Pozwala ocenić ryzyko wtórnej eskalacji.]
 )
-
-#pagebreak()
 
 = Jak używać danych z formularzy
 
@@ -366,8 +358,6 @@ Celem jest:
   stają się dostępne.
 ]
 
-#pagebreak()
-
 = Czego formularz nie robi
 
 == Nie diagnozuje
@@ -407,8 +397,6 @@ Czasem potrzeba kilku lub kilkunastu zapisów, żeby zauważyć:
   Formularz ma pomagać w myśleniu o sytuacji,\
   nie zamykać jej w jednej interpretacji.
 ]
-
-#pagebreak()
 
 = Podstawa merytoryczna
 
