@@ -46,6 +46,50 @@ describe("revised monitoring records", () => {
     }
   });
 
+  it.each(["pl", "en"] as const)("starts the extended early-signs section with sources but keeps the response question after the signs (%s)", (language) => {
+    const labels = getFormLabels(language);
+    const revision = getMonitoringRevision(language);
+    const form = blankForm(environments.home);
+    form.incident.earlyResponseSourceTypes = ["R"];
+    form.incident.earlyResponseSources = "R — source of the response account only";
+    form.incident.signalsAppeared = "yes";
+    form.incident.timeToEscalation = "4 min";
+    form.incident.activationSignals = ["pot"];
+    form.incident.earlyResponse = "RESPONSE-ACCOUNT";
+    const section = getIncidentExportSections(environments.home, labels).find((item) => item.title === labels.incident.signalsSection)!;
+    const rows = resolveRows(environments.home, form, section.rows, (label, value) => ({ label, value }), language);
+    expect(section.note).toContain(revision.earlyResponseSourceScopeHint);
+    expect(rows.map((row) => row.label)).toEqual([
+      `${revision.stageSources} — ${revision.stageNames.earlyResponse}`,
+      `${revision.sourceDetails} — ${revision.stageNames.earlyResponse}`,
+      labels.incident.signalsAppeared, labels.incident.timeToEscalation,
+      labels.incident.activationSignals, labels.incident.shutdownSignals, labels.incident.sensorySignals,
+      revision.earlyResponse, labels.incident.firstSignal, labels.incident.predicts,
+    ]);
+    expect(rows[0].value).toEqual([revision.sourceOptions.R]);
+    expect(rows[1].value).toBe(form.incident.earlyResponseSources);
+    const email = buildEmail({ env: environments.home, form, variant: "extended", mode: "incident", language });
+    const content = email.body.split(section.title)[1].split(labels.incident.maskingSection)[0];
+    expect(content).toContain(revision.earlyResponseSourceScopeHint);
+    expect(content.indexOf(revision.stageSources)).toBeLessThan(content.indexOf(labels.incident.signalsAppeared));
+    expect(content.indexOf(labels.incident.sensorySignals)).toBeLessThan(content.indexOf(revision.earlyResponse));
+  });
+
+  it("keeps existing early-response sources scoped and unchanged without copying them into other stages", () => {
+    const saved = blankForm(environments.home);
+    saved.incident.earlyResponseSourceTypes = ["R"];
+    saved.incident.earlyResponseSources = "R — tylko opis reakcji, bez źródła dla listy sygnałów";
+    saved.incident.earlyResponse = "Wcześniejszy opis reakcji";
+    saved.incident.activationSignals = ["pot"];
+    const restored = hydrateForm("home", saved);
+    expect(restored.incident.earlyResponseSourceTypes).toEqual(["R"]);
+    expect(restored.incident.earlyResponseSources).toBe(saved.incident.earlyResponseSources);
+    expect(restored.incident.earlyResponse).toBe(saved.incident.earlyResponse);
+    expect(restored.incident.activationSignals).toEqual(["pot"]);
+    expect(restored.incident.escalationSourceTypes).toEqual([]);
+    expect(restored.incident.postEscalationSourceTypes).toEqual([]);
+  });
+
   it("clones source selections on hydration without sharing arrays between stages or forms", () => {
     const saved = blankForm(environments.home);
     saved.simple.earlyResponseSourceTypes = ["O"];

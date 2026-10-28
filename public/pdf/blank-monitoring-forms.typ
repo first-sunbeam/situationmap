@@ -73,11 +73,16 @@
   #hint-text(hint)
   #checks(items, columns: columns)
 ]
-#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+#let stage-sources(stage, hint: none) = block(breakable: false)[
   #v(0.65em, weak: false)
   #text(weight: "bold")[Sources for this description — #stage]
+  #hint-text(hint)
   #checks(("O — direct observation", "P — person's communication (including AAC)", "R — another person's report", "H — hypothesis"), columns: 4)
   #field("Source details (optional) — " + stage)
+]
+
+#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+  #stage-sources(stage)
   #area(question, height: height, hint: "Include observations and information communicated by the person. If it is difficult to assess — indicate this.")
 ]
 
@@ -169,6 +174,7 @@ One record concerns one event. O — observation, P — the person’s communica
 ])
 
 #section("3. First signs of rising tension", [
+  #stage-sources("Early signs", hint: "The selected sources apply to the account of the environment's response and the person's subsequent response below. For other information, specify its sources and the relevant field in the source details.")
   #select("Did signs appear?", ("Yes", "No", "Unknown"), columns: 3)
   #field("How long before escalation?", hint: "Minutes or clock times; mark an estimate or missing data.")
   #select("Observed changes in body and movement", (
@@ -180,7 +186,7 @@ One record concerns one event. O — observation, P — the person’s communica
   #select("Observed responses to surroundings", (
     "covering ears", "covering eyes", "stereotyped movements", "avoiding touch", "leaving the room", "other: ........................................"
   ))
-  #stage-field("How did the environment respond to the first signs of difficulty? What did the person do or communicate after that response?", "Early signs", height: 2.2cm)
+  #area("How did the environment respond to the first signs of difficulty? What did the person do or communicate after that response?", height: 2.2cm, hint: "Include observations and information communicated by the person. If it is difficult to assess — indicate this.")
   #field("What usually appears first?",  hint: "The first small sign that may help identify an opportunity for earlier support.")
   #select("Did these signs precede the described behavior in other records?", ("Yes", "No", "Unknown"), columns: 3)
 ])

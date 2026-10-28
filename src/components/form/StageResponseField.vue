@@ -6,10 +6,11 @@ import { useLanguage } from "../../i18n/useLanguage";
 import InputField from "./InputField.vue";
 import TextAreaField from "./TextAreaField.vue";
 
-const { stage, required = false, error } = defineProps<{
+const { stage, required = false, error, sourceScopeHint } = defineProps<{
   stage: "earlyResponse" | "escalationCourse" | "postEscalationNeeds";
   required?: boolean;
   error?: string;
+  sourceScopeHint?: string;
 }>();
 const description = defineModel<string>({ required: true });
 const sources = defineModel<string>("sources", { required: true });
@@ -25,7 +26,7 @@ const sourceHintId = useId();
 <template>
   <fieldset class="field group-field full" :aria-describedby="sourceHintId">
     <legend class="field-label">{{ sourcesLabel }}</legend>
-    <span :id="sourceHintId" class="field-hint">{{ revision.sourceSelectionHint }}</span>
+    <span :id="sourceHintId" class="field-hint">{{ revision.sourceSelectionHint }} <span v-if="sourceScopeHint">{{ sourceScopeHint }}</span></span>
     <div class="choice-grid">
       <label v-for="option in sourceOptions" :key="option.code" class="choice">
         <input v-model="sourceTypes" type="checkbox" :value="option.code" />
@@ -34,5 +35,6 @@ const sourceHintId = useId();
     </div>
   </fieldset>
   <InputField v-model="sources" :label="detailsLabel" :hint="revision.sourceDetailsHint" full />
+  <slot name="observations" />
   <TextAreaField v-model="description" :label="revision[stage]" :hint="revision.stageHint" :required="required" :error="error" />
 </template>

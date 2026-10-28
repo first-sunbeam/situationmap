@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { SituationMapPage } from "../pages/SituationMapPage";
 import { SimpleFormPage } from "../pages/forms/SimpleFormPage";
 import { getMonitoringRevision } from "../../../src/config/monitoringRevision";
+import { getFormLabels } from "../../../src/config/formLabels";
 const pl = getMonitoringRevision("pl");
 
 async function downloadPdf(page: Page, info: TestInfo, name: string) {
@@ -73,6 +74,62 @@ test("source checkboxes support keyboard selection, multiple sources and languag
   await expect(page.getByLabel(`${en.sourceDetails} — ${en.stageNames.earlyResponse}`, { exact: true })).toHaveValue("P — komunikator AAC; O — osoba obserwująca.");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+for (const language of ["pl", "en"] as const) {
+  test(`extended early-signs sources come first without changing saved answers (${language})`, async ({ page }) => {
+    const original = {
+      signalsAppeared: "yes", timeToEscalation: "4 min — earlier estimate", activationSignals: ["pot"],
+      earlyResponse: "R — earlier response account", earlyResponseSources: "R — response account only; signs have a different source",
+      earlyResponseSourceTypes: ["R", "future-code"],
+    };
+    const raw = JSON.stringify({ schemaVersion: 3, activeEnvKey: "home", activeVariant: "extended", activeMode: "incident", forms: { home: { incident: original } } });
+    await page.addInitScript((value) => {
+      if (!localStorage.getItem("situationmap-state-v2")) localStorage.setItem("situationmap-state-v2", value);
+    }, raw);
+    await page.goto("/incident");
+    if (language === "en") await page.getByRole("button", { name: /English|angielski|Switch to English/i }).click();
+    await step(page, /3\./);
+    const revision = getMonitoringRevision(language);
+    const labels = getFormLabels(language);
+    const section = page.locator("section.section").filter({ has: page.getByRole("heading", { name: /^3\./ }) });
+    const sourceLabel = `${revision.stageSources} — ${revision.stageNames.earlyResponse}`;
+    const group = section.getByRole("group", { name: sourceLabel, exact: true });
+    await expect(section.locator(".field-grid > *").first()).toHaveAccessibleName(sourceLabel);
+    await expect(group).toContainText(revision.earlyResponseSourceScopeHint);
+    await expect(group.getByRole("checkbox", { name: revision.sourceOptions.R, exact: true })).toBeChecked();
+    for (const code of ["O", "P", "H"] as const) await expect(group.getByRole("checkbox", { name: revision.sourceOptions[code], exact: true })).not.toBeChecked();
+    const details = section.getByLabel(`${revision.sourceDetails} — ${revision.stageNames.earlyResponse}`, { exact: true });
+    const appeared = section.getByLabel(labels.incident.signalsAppeared, { exact: true });
+    const time = section.getByLabel(labels.incident.timeToEscalation);
+    const response = section.getByLabel(revision.earlyResponse, { exact: true });
+    const controlIds = await section.locator("input, select, textarea").evaluateAll((controls) => controls.map((control) => control.id));
+    const positions = await Promise.all([details, appeared, time, response].map(async (control) => controlIds.indexOf(await control.getAttribute("id") as string)));
+    expect(positions.every((position) => position >= 0)).toBe(true);
+    expect(positions).toEqual([...positions].sort((a, b) => a - b));
+    await expect(details).toHaveValue(original.earlyResponseSources);
+    await expect(time).toHaveValue(original.timeToEscalation);
+    await expect(response).toHaveValue(original.earlyResponse);
+    const hypothesis = group.getByRole("checkbox", { name: revision.sourceOptions.H, exact: true });
+    await hypothesis.focus();
+    await hypothesis.press("Space");
+    await expect(hypothesis).toBeChecked();
+    await hypothesis.press("Space");
+    await expect(hypothesis).not.toBeChecked();
+    await hypothesis.press("Tab");
+    await expect(details).toBeFocused();
+    await details.press("Tab");
+    await expect(appeared).toBeFocused();
+    await response.fill("R — edited response account");
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("situationmap-state-v2") || "{}").forms?.home?.incident?.earlyResponse)).toBe("R — edited response account");
+    await page.reload();
+    await step(page, /3\./);
+    await expect(page.getByLabel(revision.earlyResponse, { exact: true })).toHaveValue("R — edited response account");
+    await expect(page.getByLabel(`${revision.sourceDetails} — ${revision.stageNames.earlyResponse}`, { exact: true })).toHaveValue(original.earlyResponseSources);
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("situationmap-state-v2") || "{}").forms.home.incident);
+    expect(stored).toMatchObject({ ...original, earlyResponse: "R — edited response account", escalationSourceTypes: [], postEscalationSourceTypes: [] });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+}
 
 test("records the three stages and their sources, validates this-event count, downloads and prints every step", async ({ page }, info) => {
   await page.goto("/incident");

@@ -1,0 +1,31 @@
+{
+  "pages": {
+    "situationmap/public/pdf/blank-monitoring-forms.pdf": 11,
+    "situationmap/public/pdf/how-to-use-monitoring-forms.pdf": 7,
+    "situationmap/public/pdf/jak-korzystac-z-formularzy-monitorowania.pdf": 6,
+    "situationmap/public/pdf/puste-formularze-monitorowania.pdf": 11,
+    "SzkolenieTZ/SZKOLENIE_TZ_FINAL/DLA_UCZESTNIKOW/zeszyt-uczestnika-TZ-dzien-1.pdf": 23,
+    "SzkolenieTZ/SZKOLENIE_TZ_FINAL/DLA_UCZESTNIKOW/zeszyt-uczestnika-TZ-dzien-2.pdf": 9,
+    "SzkolenieTZ/SZKOLENIE_TZ_FINAL/DLA_PROWADZACEJ/jak-korzystac-z-formularzy-monitorowania.pdf": 7,
+    "manual-preview/filled-en.pdf": 3,
+    "manual-preview/filled-pl.pdf": 3,
+    "manual-preview/print-en.pdf": 5,
+    "manual-preview/print-pl.pdf": 5
+  },
+  "geometry_errors": [],
+  "anchor_errors": [],
+  "ghostscript_unreliable_ligature_spans": [],
+  "writing_heights_preserved": true,
+  "source_order_pl_en_filled_blank_browser_print": true,
+  "workbook_references_verified": true,
+  "unit_tests": 75,
+  "e2e_tests": 24,
+  "production_preview": [
+    "desktop Chromium PL/EN",
+    "Pixel 7 Chromium PL/EN",
+    "iPhone 13 WebKit PL/EN"
+  ],
+  "live_site_verified": false,
+  "physical_print_verified": false,
+  "geometry_note": "Ghostscript txtwrite returns impossible coordinates for some fi-ligature spans. Text anchors checked independently with pypdf; affected English form pages rasterized and inspected."
+}

@@ -93,11 +93,16 @@
   #checks(items, columns: columns)
 ]
 
-#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+#let stage-sources(stage, hint: none) = block(breakable: false)[
   #v(0.65em, weak: false)
   #text(weight: "bold")[Źródła tego opisu — #stage]
+  #hint-text(hint)
   #checks(("O — własna obserwacja", "P — przekaz osoby (także AAC)", "R — relacja innej osoby", "H — hipoteza"), columns: 4)
   #field("Doprecyzowanie źródeł (opcjonalnie) — " + stage)
+]
+
+#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+  #stage-sources(stage)
   #area(question, height: height, hint: "Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to.")
 ]
 
@@ -195,6 +200,7 @@ Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R 
 ])
 
 #section("3. Pierwsze oznaki narastającego napięcia", [
+  #stage-sources("Pierwsze sygnały", hint: "Zaznaczenia źródeł dotyczą opisu reakcji otoczenia i odpowiedzi osoby poniżej. Źródła pozostałych informacji dopisz w doprecyzowaniu, wskazując konkretne pole.")
   #select("Czy pojawiły się sygnały?", ("Tak", "Nie", "Nie wiem"), columns: 3)
   #field("Ile czasu przed eskalacją?", hint: "Szacunkowo: minuty, kilkanaście minut, wcześniej w ciągu dnia.")
   #select("Obserwowane zmiany ciała i ruchu", (
@@ -206,7 +212,7 @@ Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R 
   #select("Obserwowane reakcje na otoczenie", (
     "zatykanie uszu", "zasłanianie oczu", "stereotypie", "unikanie dotyku", "ucieczka z pomieszczenia", "inne: ........................................"
   ))
-  #stage-field("Jak zareagowało otoczenie na pierwsze sygnały trudności? Co osoba zrobiła lub zakomunikowała po tej reakcji?", "Pierwsze sygnały", height: 2.2cm)
+  #area("Jak zareagowało otoczenie na pierwsze sygnały trudności? Co osoba zrobiła lub zakomunikowała po tej reakcji?", height: 2.2cm, hint: "Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to.")
   #field("Co zwykle pojawia się najpierw?",  hint: "Pierwszy najmniejszy sygnał, który może pomóc zareagować wcześniej.")
   #select("Czy w innych zapisach te sygnały poprzedzały opisane zachowanie?", ("Tak", "Nie", "Nie wiem"), columns: 3)
 ])

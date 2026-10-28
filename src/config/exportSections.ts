@@ -29,11 +29,12 @@ function subjectLabel(template: string, language: LanguageCode, grammaticalCase:
   const fallback = language === "pl" ? grammaticalCase === "genitive" ? "osoby" : "osoba" : "the person";
   return (_env, form) => template.replaceAll("{subject}", getSubjectInline(form, fallback));
 }
-function stageRows(scope: "simple" | "incident", stage: "earlyResponse" | "escalationCourse" | "postEscalationNeeds", sourceKey: "earlyResponseSources" | "escalationSources" | "postEscalationSources", language: LanguageCode): ExportRow[] {
+function stageRows(scope: "simple" | "incident", stage: "earlyResponse" | "escalationCourse" | "postEscalationNeeds", sourceKey: "earlyResponseSources" | "escalationSources" | "postEscalationSources", language: LanguageCode, observations: ExportRow[] = []): ExportRow[] {
   const revision = getMonitoringRevision(language);
   return [
     { label: `${revision.stageSources} — ${revision.stageNames[stage]}`, value: (_env, form) => formatInformationSources(form[scope][stageSourceTypeFields[stage]], language) },
     { label: `${revision.sourceDetails} — ${revision.stageNames[stage]}`, value: (_env, form) => form[scope][sourceKey] },
+    ...observations,
     { label: revision[stage], hint: revision.stageHint, value: (_env, form) => form[scope][stage] },
   ];
 }
@@ -91,13 +92,15 @@ export function getIncidentExportSections(env: EnvironmentConfig, labels: FormLa
       incidentRow(labels.incident.predictabilityWhat, "predictabilityWhat"), incidentRow(labels.incident.predictabilityDuration, "predictabilityDuration"),
       incidentRow(labels.incident.predictabilityChoice, "predictabilityChoice"), otherRow(labels.incident.expectations, "expectations", "expectationOther"),
     ] },
-    { title: labels.incident.signalsSection, note: labels.ui.signalsSectionHint, rows: [
-      incidentRow(labels.incident.signalsAppeared, "signalsAppeared"),
-      otherRow(labels.incident.activationSignals, "activationSignals", "activationSignalsOther"),
-      otherRow(labels.incident.shutdownSignals, "shutdownSignals", "shutdownSignalsOther"),
-      otherRow(labels.incident.sensorySignals, "sensorySignals", "sensorySignalsOther"),
-      ...stageRows("incident", "earlyResponse", "earlyResponseSources", labelsLanguage(labels)),
-      incidentRow(labels.incident.timeToEscalation, "timeToEscalation"), incidentRow(labels.incident.firstSignal, "firstSignal"), incidentRow(labels.incident.predicts, "signalsInOtherRecords"),
+    { title: labels.incident.signalsSection, note: `${labels.ui.signalsSectionHint} ${revision.earlyResponseSourceScopeHint}`, rows: [
+      ...stageRows("incident", "earlyResponse", "earlyResponseSources", labelsLanguage(labels), [
+        incidentRow(labels.incident.signalsAppeared, "signalsAppeared"),
+        incidentRow(labels.incident.timeToEscalation, "timeToEscalation"),
+        otherRow(labels.incident.activationSignals, "activationSignals", "activationSignalsOther"),
+        otherRow(labels.incident.shutdownSignals, "shutdownSignals", "shutdownSignalsOther"),
+        otherRow(labels.incident.sensorySignals, "sensorySignals", "sensorySignalsOther"),
+      ]),
+      incidentRow(labels.incident.firstSignal, "firstSignal"), incidentRow(labels.incident.predicts, "signalsInOtherRecords"),
     ] },
     { title: labels.incident.maskingSection, note: revision.maskingHint, rows: [
       incidentRow(revision.continuedObservation, "continuedObservation"), incidentRow(revision.personAccount, "personAccount"),

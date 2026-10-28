@@ -108,6 +108,8 @@ State when your observation began and ended. “Unknown”, “not observed” a
 
 Describe responses and actions at the relevant stage: *early signs*, *escalation* or *after escalation*. Include observations and information communicated by the person. If it is difficult to assess — indicate this. Each stage starts with O/P/R/H source checkboxes and optional details, followed by the question and space for the description. You may select several sources. In the optional details field, you may identify who provided the information and which part of the account each source supports. There is no separate “what helped” summary. Support can be offered before the cause of the difficulty has been established. Record what was done and what was observed afterwards; temporal sequence alone does not prove a cause.
 
+In section 3 of the extended form, fields about the occurrence, timing and type of signs appear between the sources and the response account. The selected sources apply to the account of the environment's response and the person's subsequent response below. For other information, specify its sources and the relevant field in the source details. Do not automatically extend earlier source selections to other fields.
+
 Record minutes or clock times and mark estimates. Keep three pieces of information separate:
 - *How long did the described behavior last?* Give its start and end times.
 - *How many minutes after that behavior started did the observed signs of tension decrease?* Describe which signs changed.

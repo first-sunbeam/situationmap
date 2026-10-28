@@ -10,7 +10,9 @@ W wersji prostej i rozszerzonej zastosowano trzy uzgodnione pytania:
 
 Pod każdym jest dokładnie ta podpowiedź: „Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to”. Na początku każdego etapu są checkboxy wielokrotnego wyboru O/P/R/H oraz opcjonalne doprecyzowanie, kto przekazał informację i których fragmentów dotyczą źródła. Następnie pojawiają się uzgodnione pytanie, podpowiedź i miejsce na opis. Ta kolejność obowiązuje w WWW, pustych PDF-ach PL/EN, eksporcie wypełnionego PDF-a, wydruku i e-mailu. Brak zaznaczenia nie oznacza braku informacji od osoby. Źródła nie są przypisywane automatycznie.
 
-Wybrane kody zapisuje się w nowych tablicach `earlyResponseSourceTypes`, `escalationSourceTypes` i `postEscalationSourceTypes`. Dotychczasowe teksty w `earlyResponseSources`, `escalationSources` i `postEscalationSources` pozostają bez zmian jako doprecyzowanie; nie wyprowadza się z nich zaznaczeń. Eksport PDF, e-mail i wydruk pokazują pełne etykiety wybranych źródeł w języku interfejsu, oddzielnie od tekstu doprecyzowania.
+W sekcji 3 formularza rozszerzonego kolejność jest dokładnie taka: **źródła → opcjonalne doprecyzowanie → wystąpienie, czas i rodzaj sygnałów → opis reakcji otoczenia i odpowiedzi osoby**. Zaznaczenia `earlyResponseSourceTypes` nadal dotyczą tego ostatniego opisu, nie całej sekcji. Wyjaśnia to podpowiedź połączona z grupą checkboxów przez `aria-describedby`, uwaga w eksportach PL/EN (również e-mailu) oraz tekst w pustych PDF-ach i instrukcjach. Źródła innych pól można dopisać ze wskazaniem pola w doprecyzowaniu. Nie rozszerza się znaczenia wcześniejszych zaznaczeń, nie zmienia kluczy ani schematu danych.
+
+Wybrane kody zapisuje się w tablicach `earlyResponseSourceTypes`, `escalationSourceTypes` i `postEscalationSourceTypes`. Dotychczasowe teksty w `earlyResponseSources`, `escalationSources` i `postEscalationSources` pozostają bez zmian jako doprecyzowanie; nie wyprowadza się z nich zaznaczeń. Eksport PDF, e-mail i wydruk pokazują pełne etykiety wybranych źródeł w języku interfejsu, oddzielnie od tekstu doprecyzowania.
 
 Usunięto z bieżących formularzy pytania o to, co pomogło zakończyć eskalację, co pomogło wrócić do gotowości, co pogorszyło sytuację oraz odrębne podsumowanie i wniosek na przyszłość. Działania i ich następstwa opisuje się przy odpowiednim etapie. Nie dodano dodatkowego, zbiorczego bloku powtarzającego te opisy.
 
@@ -32,7 +34,7 @@ W `public/pdf/` są aktualne źródła i skompilowane dokumenty:
 - `jak-korzystac-z-formularzy-monitorowania.typ/.pdf` — instrukcja PL;
 - `how-to-use-monitoring-forms.typ/.pdf` — instrukcja EN.
 
-Angielski interfejs ponownie prowadzi do aktualnych angielskich PDF-ów; polski — do polskich. `npm run build` kopiuje je do `dist/pdf/`. Aktualne polskie formularze i instrukcję zsynchronizowano także z plikami `../SzkolenieTZ/formularze-monitorowania-TZ.*` i `../SzkolenieTZ/jak-korzystac-z-formularzy-monitorowania.*`. Zeszyt dnia 1 wczytuje teraz wspólny plik formularzy zamiast przechowywać starszą kopię; przebudowano jego PDF i sprawdzono zgodność wszystkich 11 stron dodatku. Dawne wersje pozostają wyłącznie w kopiach zapasowych.
+Angielski interfejs ponownie prowadzi do aktualnych angielskich PDF-ów; polski — do polskich. `npm run build` kopiuje je do `dist/pdf/`. Aktualne polskie formularze i instrukcję zsynchronizowano także z plikami `../SzkolenieTZ/formularze-monitorowania-TZ.*` i `../SzkolenieTZ/jak-korzystac-z-formularzy-monitorowania.*`. Zeszyt dnia 1 wczytuje teraz wspólny plik formularzy zamiast przechowywać starszą kopię; przebudowano jego PDF i sprawdzono zgodność pól dodatku. Aktualne odsyłacze w zeszytach wskazują formularz prosty na stronach 14–15, rozszerzony na 16–20 i mapę na 21–23 zeszytu dnia 1; plan zespołu to osobne strony 7–8 zeszytu dnia 2. Wskazano jeden wspólny zapis pary lub zespołu zamiast przepisywania do kilku egzemplarzy. Dawne wersje pozostają wyłącznie w kopiach zapasowych.
 
 **PDF generowany z wypełnionej strony** korzysta ze wspólnego opisu pól używanego również przez e-mail i wydruk. Obejmuje bieżące odpowiedzi i źródła. **Puste PDF-y do ręcznego wypełniania** mają te same trzy uzgodnione opisy etapów i pola źródeł. Są uniwersalne dla środowisk; listy wyboru w aplikacji są natomiast dostosowane do domu, szkoły lub placówki. Nie należy mylić zgodności eksportu z deklaracją identyczności każdego podpisu i wariantu listy w uniwersalnym papierowym formularzu.
 
@@ -42,7 +44,7 @@ Zachowano autorstwo Małgorzaty Mikołajczyk i styl materiałów. Angielskie źr
 
 Usunięto ręczne podziały pomiędzy sekcjami tego samego formularza oraz prawie wszystkimi rozdziałami instrukcji. Formularz prosty rozpoczyna się bezpośrednio pod tytułem pakietu — nie ma już prawie pustej strony tytułowej. Nowe strony zachowano tylko między niezależnymi formularzami, przed bibliografią formularzy i po spisie treści instrukcji.
 
-Zmniejszono odstępy między blokami; nie zmieniono pytań, podpowiedzi, wielkości pisma ani wysokości miejsc na ręczne odpowiedzi. Źródła etapu, opcjonalne doprecyzowanie, pytanie, podpowiedź i miejsce na odpowiedź pozostają razem, w tej kolejności. Nagłówki są wiązane z następnym blokiem, a nagłówki tabel powtarzają się po przejściu na następną stronę. Checkboxy są rysowane jako puste kwadraty, bez zależności od brakującego glifu fontu. Po dodaniu checkboxów źródeł zwiększono odstęp nad nagłówkiem „Źródła tego opisu” do `0.65em` w obu językach, bez zmiany wysokości pól; formularze nadal mają po 11 stron.
+Zmniejszono odstępy między blokami; nie zmieniono pytań, podpowiedzi, wielkości pisma ani wysokości miejsc na ręczne odpowiedzi. W zwykłym bloku etapu źródła, opcjonalne doprecyzowanie, pytanie, podpowiedź i miejsce na odpowiedź pozostają razem. W sekcji 3 rozszerzonego formularza źródła z doprecyzowaniem są na początku, a pytanie i niezmieniona przestrzeń na opis reakcji — po polach sygnałów. Nagłówki są wiązane z następnym blokiem, a nagłówki tabel powtarzają się po przejściu na następną stronę. Checkboxy są rysowane jako puste kwadraty, bez zależności od brakującego glifu fontu. Po dodaniu checkboxów źródeł zwiększono odstęp nad nagłówkiem „Źródła tego opisu” do `0.65em` w obu językach, bez zmiany wysokości pól; formularze nadal mają po 11 stron.
 
 | Dokument | Przed | Po |
 | --- | ---: | ---: |
@@ -62,11 +64,11 @@ Dotyczy to m.in. dawnych podsumowań „co pomogło”, opisu zachowania, zbiorc
 ## Kontrola
 
 - `npm run typecheck` — poprawnie.
-- `npm run test:unit` — **72/72**.
-- `npm run test:e2e -- --reporter=line` — **22/22**.
+- `npm run test:unit` — **75/75**.
+- `npm run test:e2e -- --reporter=line` — **24/24**.
 - Testy mobilne PL/EN: Chromium z profilem Pixel 7 i WebKit z profilem iPhone 13. Sprawdzono dotknięcie przycisku, walidację, wypełnienie trzech etapów i źródeł, odtworzenie po odświeżeniu oraz pobranie rzeczywistego PDF-a z wpisanymi danymi. To emulacja przeglądarkowa, nie test fizycznych telefonów.
 - Testy obejmują również stare dane, brak walidowania usuniętych podsumowań, obecność dawnych wartości tylko w archiwum, oba języki, długi polski wpis i wydruk wszystkich kroków.
-- Kolejność źródła → doprecyzowanie → opis sprawdzono w eksportach, źródłach pustych PDF-ów i mobilnym DOM-ie PL/EN.
+- Kolejność źródła → doprecyzowanie → opis (z polami sygnałów przed opisem reakcji w sekcji 3) sprawdzono w eksportach i pustych PDF-ach PL/EN. Nowe testy przeglądarkowe PL/EN potwierdzają kolejność kontrolek, obsługę Tab/Spacja, zachowanie starszych odpowiedzi i zaznaczeń, także nieznanego kodu źródła, po edycji i odświeżeniu.
 - Checkboxy źródeł: sprawdzono wielokrotny wybór, obsługę klawiaturą, przełączenie języka, odtworzenie zaznaczeń po odświeżeniu, pełne etykiety w eksportach oraz zachowanie dawnych doprecyzowań bez automatycznych zaznaczeń.
 - Testy źródeł drukowanych sprawdzają identyczne brzmienie trzech uzgodnionych pytań i podpowiedzi w WWW i obu wariantach formularza papierowego oraz brak usuniętych pytań.
 - `npm run build` — poprawnie; pozostają ostrzeżenia o rozmiarze pakietu pdfmake i nieaktualnych danych Browserslist.

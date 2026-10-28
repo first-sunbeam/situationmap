@@ -102,6 +102,8 @@ Jeden formularz dotyczy jednego zdarzenia. Oznaczaj źródła: O — obserwacja,
 
 Reakcje i działania zapisuj przy odpowiednim etapie: *pierwsze sygnały*, *eskalacja* lub *po eskalacji*. Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to. Na początku każdego etapu są checkboxy źródeł O/P/R/H i opcjonalne doprecyzowanie, a następnie pytanie i miejsce na opis. Możesz zaznaczyć kilka źródeł. W opcjonalnym doprecyzowaniu możesz podać, kto przekazał informację i którego fragmentu opisu dotyczy dane źródło. Nie dodajemy osobnego podsumowania „co pomogło”. Można udzielić wsparcia, zanim ustalimy przyczynę trudności. Zapisz, co zrobiono i co zaobserwowano później.
 
+W sekcji 3 formularza rozszerzonego między źródłami a opisem reakcji są pola o wystąpieniu, czasie i rodzaju sygnałów. Zaznaczenia źródeł dotyczą opisu reakcji otoczenia i odpowiedzi osoby poniżej. Źródła pozostałych informacji dopisz w doprecyzowaniu, wskazując konkretne pole. Wcześniejszych zaznaczeń nie rozszerzaj automatycznie na inne pola.
+
 Czas zapisuj w minutach lub podaj godziny. Jeśli czas jest przybliżony, zaznacz to. Rozdziel trzy informacje:
 - *Jak długo trwało opisane zachowanie?* Podaj, kiedy się rozpoczęło i kiedy się zakończyło.
 - *Po ilu minutach od rozpoczęcia tego zachowania zmniejszyły się obserwowane oznaki napięcia?* Zapisz, jakie oznaki się zmieniły.
