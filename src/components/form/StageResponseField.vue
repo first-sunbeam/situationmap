@@ -23,7 +23,6 @@ const sourceHintId = useId();
 </script>
 
 <template>
-  <TextAreaField v-model="description" :label="revision[stage]" :hint="revision.stageHint" :required="required" :error="error" />
   <fieldset class="field group-field full" :aria-describedby="sourceHintId">
     <legend class="field-label">{{ sourcesLabel }}</legend>
     <span :id="sourceHintId" class="field-hint">{{ revision.sourceSelectionHint }}</span>
@@ -35,4 +34,5 @@ const sourceHintId = useId();
     </div>
   </fieldset>
   <InputField v-model="sources" :label="detailsLabel" :hint="revision.sourceDetailsHint" full />
+  <TextAreaField v-model="description" :label="revision[stage]" :hint="revision.stageHint" :required="required" :error="error" />
 </template>

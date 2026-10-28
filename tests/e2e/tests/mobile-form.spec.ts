@@ -31,6 +31,13 @@ for (const language of ["pl", "en"] as const) {
     for (const stage of ["earlyResponse", "escalationCourse", "postEscalationNeeds"] as const) {
       await page.getByLabel(revision[stage]).fill(values[stage]);
       const group = page.getByRole("group", { name: `${revision.stageSources} — ${revision.stageNames[stage]}`, exact: true });
+      const descriptionId = await page.getByLabel(revision[stage]).getAttribute("id");
+      const detailsId = await page.getByLabel(`${revision.sourceDetails} — ${revision.stageNames[stage]}`, { exact: true }).getAttribute("id");
+      expect(await group.evaluate((node, ids) => {
+        const details = document.getElementById(ids.details!);
+        const description = document.getElementById(ids.description!);
+        return Boolean(details && description && (node.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING) && (details.compareDocumentPosition(description) & Node.DOCUMENT_POSITION_FOLLOWING));
+      }, { details: detailsId, description: descriptionId })).toBe(true);
       for (const code of ["O", "P"] as const) await group.getByText(revision.sourceOptions[code], { exact: true }).tap();
       await page.getByLabel(`${revision.sourceDetails} — ${revision.stageNames[stage]}`, { exact: true }).fill("O — Observer; P — AAC");
     }

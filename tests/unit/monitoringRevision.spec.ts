@@ -33,7 +33,12 @@ describe("revised monitoring records", () => {
       const rows = scope === "simple" ? getSimpleExportSection(getFormLabels(language), language).rows : getIncidentExportSections(environments.home, getFormLabels(language)).flatMap((section) => section.rows);
       const resolved = resolveRows(environments.home, form, rows, (label, value) => ({ label, value }), language);
       for (const stage of Object.keys(stageSourceTypeFields) as Array<keyof typeof stageSourceTypeFields>) {
-        expect(resolved.find((row) => row.label === `${revision.stageSources} — ${revision.stageNames[stage]}`)?.value).toEqual(Object.values(revision.sourceOptions));
+        const sourceLabel = `${revision.stageSources} — ${revision.stageNames[stage]}`;
+        const detailsLabel = `${revision.sourceDetails} — ${revision.stageNames[stage]}`;
+        expect(resolved.find((row) => row.label === sourceLabel)?.value).toEqual(Object.values(revision.sourceOptions));
+        const labels = resolved.map((row) => row.label);
+        expect(labels.indexOf(sourceLabel)).toBeLessThan(labels.indexOf(detailsLabel));
+        expect(labels.indexOf(detailsLabel)).toBeLessThan(labels.indexOf(revision[stage]));
       }
       expect(JSON.stringify(resolved)).toContain(form[scope].earlyResponseSources);
       const email = buildEmail({ env: environments.home, form, variant: scope === "simple" ? "simple" : "extended", mode: "incident", language });

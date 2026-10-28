@@ -94,11 +94,11 @@
 ]
 
 #let stage-field(question, stage, height: 2cm) = block(breakable: false)[
-  #area(question, height: height, hint: "Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to.")
   #v(0.65em, weak: false)
   #text(weight: "bold")[Źródła tego opisu — #stage]
   #checks(("O — własna obserwacja", "P — przekaz osoby (także AAC)", "R — relacja innej osoby", "H — hipoteza"), columns: 4)
   #field("Doprecyzowanie źródeł (opcjonalnie) — " + stage)
+  #area(question, height: height, hint: "Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to.")
 ]
 
 #let section(title, body, breakable: true) = block(

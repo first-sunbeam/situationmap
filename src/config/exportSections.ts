@@ -32,9 +32,9 @@ function subjectLabel(template: string, language: LanguageCode, grammaticalCase:
 function stageRows(scope: "simple" | "incident", stage: "earlyResponse" | "escalationCourse" | "postEscalationNeeds", sourceKey: "earlyResponseSources" | "escalationSources" | "postEscalationSources", language: LanguageCode): ExportRow[] {
   const revision = getMonitoringRevision(language);
   return [
-    { label: revision[stage], hint: revision.stageHint, value: (_env, form) => form[scope][stage] },
     { label: `${revision.stageSources} — ${revision.stageNames[stage]}`, value: (_env, form) => formatInformationSources(form[scope][stageSourceTypeFields[stage]], language) },
     { label: `${revision.sourceDetails} — ${revision.stageNames[stage]}`, value: (_env, form) => form[scope][sourceKey] },
+    { label: revision[stage], hint: revision.stageHint, value: (_env, form) => form[scope][stage] },
   ];
 }
 function labelsLanguage(labels: FormLabels): LanguageCode { return labels.meta.section === "Basic information" ? "en" : "pl"; }

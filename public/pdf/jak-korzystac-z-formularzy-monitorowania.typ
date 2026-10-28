@@ -100,7 +100,7 @@
 
 Jeden formularz dotyczy jednego zdarzenia. Oznaczaj źródła: O — obserwacja, P — przekaz osoby (także AAC), R — relacja innych, H — hipoteza. „Nie wiem”, „nie obserwowano” i „nie dotyczy” oznaczają różne rzeczy.
 
-Reakcje i działania zapisuj przy odpowiednim etapie: *pierwsze sygnały*, *eskalacja* lub *po eskalacji*. Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to. Przy każdym z trzech opisów zaznacz źródła w checkboxach O/P/R/H. Możesz wybrać kilka. W opcjonalnym doprecyzowaniu możesz podać, kto przekazał informację i którego fragmentu opisu dotyczy dane źródło. Nie dodajemy osobnego podsumowania „co pomogło”. Można udzielić wsparcia, zanim ustalimy przyczynę trudności. Zapisz, co zrobiono i co zaobserwowano później.
+Reakcje i działania zapisuj przy odpowiednim etapie: *pierwsze sygnały*, *eskalacja* lub *po eskalacji*. Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to. Na początku każdego etapu są checkboxy źródeł O/P/R/H i opcjonalne doprecyzowanie, a następnie pytanie i miejsce na opis. Możesz zaznaczyć kilka źródeł. W opcjonalnym doprecyzowaniu możesz podać, kto przekazał informację i którego fragmentu opisu dotyczy dane źródło. Nie dodajemy osobnego podsumowania „co pomogło”. Można udzielić wsparcia, zanim ustalimy przyczynę trudności. Zapisz, co zrobiono i co zaobserwowano później.
 
 Czas zapisuj w minutach lub podaj godziny. Jeśli czas jest przybliżony, zaznacz to. Rozdziel trzy informacje:
 - *Jak długo trwało opisane zachowanie?* Podaj, kiedy się rozpoczęło i kiedy się zakończyło.

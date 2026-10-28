@@ -54,7 +54,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
         { title: pl.stageNames.earlyResponse, text: pl.earlyResponse },
         { title: pl.stageNames.escalationCourse, text: pl.escalationCourse },
         { title: pl.stageNames.postEscalationNeeds, text: pl.postEscalationNeeds },
-      ], note: pl.stageHint, paragraphs: ["Przy każdym opisie zaznacz źródła w checkboxach O/P/R/H; możesz wybrać kilka. W opcjonalnym doprecyzowaniu możesz podać, kto przekazał informację i którego fragmentu dotyczy dane źródło. Nie ma osobnego podsumowania „co pomogło”."] },
+      ], note: pl.stageHint, paragraphs: ["Na początku każdego etapu są checkboxy źródeł O/P/R/H, opcjonalne doprecyzowanie, a następnie pytanie i miejsce na opis. Możesz zaznaczyć kilka źródeł. W opcjonalnym doprecyzowaniu możesz podać, kto przekazał informację i którego fragmentu dotyczy dane źródło. Nie ma osobnego podsumowania „co pomogło”."] },
       { id: "simple-form", title: "Formularz prosty", paragraphs: [
         "Krótki zapis po jednym zdarzeniu, gdy pozwala na to bezpieczeństwo. Zachowuje kontekst, pierwsze sygnały, trzy opisy etapów, wpływ osoby, przewidywalność i czas gotowości.",
         "Działania i reakcje zapisuj przy odpowiednim etapie: pierwsze sygnały, eskalacja albo po eskalacji. Możliwe są brak zauważalnej zmiany, nasilenie oznak, różny przebieg i trudność oceny. Można udzielić wsparcia, zanim ustalimy przyczynę trudności. Zapisz, co zrobiono i co zaobserwowano później.",
@@ -113,7 +113,7 @@ export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
         { title: en.stageNames.earlyResponse, text: en.earlyResponse },
         { title: en.stageNames.escalationCourse, text: en.escalationCourse },
         { title: en.stageNames.postEscalationNeeds, text: en.postEscalationNeeds },
-      ], note: en.stageHint, paragraphs: ["Each description has O/P/R/H source checkboxes; you may select several. Optional details can identify who provided the information and which part of the account each source supports. There is no separate what-helped summary."] },
+      ], note: en.stageHint, paragraphs: ["Each stage starts with O/P/R/H source checkboxes and optional details, followed by the question and space for the description. You may select several sources. Optional details can identify who provided the information and which part of the account each source supports. There is no separate what-helped summary."] },
       { id: "simple-form", title: "Simple form", paragraphs: ["A quick record of one event, made when safe: context, early signs, the three stage descriptions, choice, predictability and readiness timing. Record actions and responses at the relevant stage. No noticeable change, increased signs, a mixed course or inability to assess are possible. Do not guess; use unknown, not observed, not applicable or missing data as appropriate. Detailed comparison and hypotheses belong in the extended form."] },
       { id: "extended-form", title: "Extended form — sections 0–7", table: [
         { section: "0. Baseline and context", measures: "Sleep, body state, environmental conditions and earlier load.", purpose: "Observer-rated tension requires individual signs; it is not a diagnostic scale." },

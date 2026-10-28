@@ -74,11 +74,11 @@
   #checks(items, columns: columns)
 ]
 #let stage-field(question, stage, height: 2cm) = block(breakable: false)[
-  #area(question, height: height, hint: "Include observations and information communicated by the person. If it is difficult to assess — indicate this.")
   #v(0.65em, weak: false)
   #text(weight: "bold")[Sources for this description — #stage]
   #checks(("O — direct observation", "P — person's communication (including AAC)", "R — another person's report", "H — hypothesis"), columns: 4)
   #field("Source details (optional) — " + stage)
+  #area(question, height: height, hint: "Include observations and information communicated by the person. If it is difficult to assess — indicate this.")
 ]
 
 #let section(title, body, breakable: true) = block(
