@@ -7,11 +7,13 @@ import ChoiceGroupField from "./form/ChoiceGroupField.vue";
 import InputField from "./form/InputField.vue";
 import SelectField from "./form/SelectField.vue";
 import TextAreaField from "./form/TextAreaField.vue";
+import LegacyRecord from "./form/LegacyRecord.vue";
 import MetaFields from "./form/MetaFields.vue";
 import SvgIcon from "./ui/SvgIcon.vue";
 
 const {
   labels,
+  revision,
   env,
   envMapTitle,
   envLead,
@@ -28,12 +30,12 @@ const {
 
 const mapSectionErrorKeys = [
   "map.preferredPlaces",
-  "map.preferredReason",
+  "map.preferredObservations",
   "map.avoidedPlaces",
-  "map.avoidedReason",
+  "map.avoidedObservations",
   "map.likes",
   "map.easiestWhen",
-  "map.cooperatesWith",
+  "map.chosenContact",
   "map.reducers",
   "map.escalationContexts",
 ];
@@ -85,10 +87,18 @@ const subjectStart = computed(() =>
       </div>
     </div>
 
+    <p class="section-hint">{{ revision.mapSources }}</p>
+    <LegacyRecord scope="map" />
     <div class="sections">
       <section class="section">
-        <h3>{{ labels.meta.section }} <span class="required-mark">*</span></h3>
-        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" :lead-label="envLead" />
+        <div class="field-grid">
+          <InputField v-model="form.map.observationPeriod" :label="revision.observationPeriod" />
+          <InputField v-model="form.map.updatedAt" :label="revision.updatedAt" type="date" />
+        </div>
+      </section>
+      <section class="section">
+        <h3>{{ labels.meta.section }}</h3>
+        <MetaFields :env="env" :form="form" :field-errors="fieldErrors" :lead-label="envLead" :require-event-details="false" />
       </section>
 
       <section class="section" :class="{ invalidSection: hasMapSectionError }">
@@ -115,10 +125,10 @@ const subjectStart = computed(() =>
             />
           </ChoiceGroupField>
           <TextAreaField
-            v-model="form.map.preferredReason"
+            v-model="form.map.preferredObservations"
             :label="labels.ui.preferredReason"
             :hint="labels.ui.preferredReasonHint"
-            :error="fieldErrors['map.preferredReason']"
+            :error="fieldErrors['map.preferredObservations']"
             required
           />
 
@@ -140,10 +150,10 @@ const subjectStart = computed(() =>
             />
           </ChoiceGroupField>
           <TextAreaField
-            v-model="form.map.avoidedReason"
+            v-model="form.map.avoidedObservations"
             :label="labels.ui.avoidedReason"
             :hint="labels.ui.avoidedReasonHint"
-            :error="fieldErrors['map.avoidedReason']"
+            :error="fieldErrors['map.avoidedObservations']"
             required
           />
         </div>
@@ -193,10 +203,10 @@ const subjectStart = computed(() =>
         <h3>{{ labels.ui.mapSupportTitle }}</h3>
         <div class="field-grid">
           <TextAreaField
-            v-model="form.map.cooperatesWith"
+            v-model="form.map.chosenContact"
             :label="`${subjectStart} ${labels.ui.cooperatesWithSuffix}`"
             :hint="labels.ui.cooperatesWithHint"
-            :error="fieldErrors['map.cooperatesWith']"
+            :error="fieldErrors['map.chosenContact']"
             required
           />
           <ChoiceGroupField
@@ -214,7 +224,7 @@ const subjectStart = computed(() =>
             />
           </ChoiceGroupField>
           <TextAreaField
-            v-model="form.map.energySources"
+            v-model="form.map.restorationSources"
             :label="labels.ui.energySourcesLabel"
             :hint="labels.ui.energySourcesHint"
           />
@@ -243,7 +253,7 @@ const subjectStart = computed(() =>
         <h3>{{ labels.export.mapSectionSafe }}</h3>
         <p class="section-hint">{{ labels.ui.safeBaseHint }}</p>
         <TextAreaField
-          v-model="form.map.safeBase"
+          v-model="form.map.restConditions"
           :label="`${labels.ui.safeBaseFor} ${subject} ${labels.ui.safeBaseSuffix}`"
         />
       </section>
@@ -289,16 +299,16 @@ const subjectStart = computed(() =>
             />
           </ChoiceGroupField>
           <SelectField
-            v-model="form.map.noAggression"
-            :label="labels.map.noAggression"
+            v-model="form.map.similarWithoutEscalation"
+            :label="revision.similarWithoutEscalation"
             :options="yesNoUnknown"
           />
           <TextAreaField
-            v-model="form.map.noAggressionWhere"
-            :label="labels.ui.noAggressionWhereLabel"
-            :hint="labels.ui.noAggressionWhereHint"
-            :required="form.map.noAggression === 'yes'"
-            :error="fieldErrors['map.noAggressionWhere']"
+            v-model="form.map.comparisonDetails"
+            :label="revision.comparisonDetails"
+            :hint="revision.comparisonHint"
+            :required="form.map.similarWithoutEscalation === 'yes'"
+            :error="fieldErrors['map.comparisonDetails']"
           />
         </div>
       </section>

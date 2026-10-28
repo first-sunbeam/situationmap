@@ -1,3 +1,5 @@
+import { getLegacyExportSections } from "../config/legacyFields";
+import { getMonitoringRevision } from "../config/monitoringRevision";
 import { getFormLabels } from "../config/formLabels";
 import { getIncidentExportSections, getMapExportSections, getMetaExportSection, getSimpleExportSection, type ExportRow } from "../config/exportSections";
 import { resolveRows } from "./exportUtils";
@@ -36,6 +38,8 @@ export function buildEmail({ env, form, variant, mode, language }: { env: Enviro
   const parts = [
     language === "en" ? `Environment: ${envLabel}` : `Środowisko: ${envLabel}`,
     language === "en" ? `Form version: ${variant === "simple" ? simpleVariant : extendedVariant}` : `Wersja formularza: ${variant === "simple" ? "prosta" : "rozszerzona"}`,
+    "",
+    mode === "map" && variant === "extended" ? getMonitoringRevision(language).mapSources : getMonitoringRevision(language).sources,
     ""
   ];
 
@@ -44,21 +48,27 @@ export function buildEmail({ env, form, variant, mode, language }: { env: Enviro
     const simpleSection = getSimpleExportSection(labels, language);
     parts.push(
       section(metaSection.title, rowsToLines(env, form, metaSection.rows, language)),
-      section(simpleSection.title, rowsToLines(env, form, simpleSection.rows, language))
+      section(simpleSection.title, [simpleSection.note || "", ...rowsToLines(env, form, simpleSection.rows, language)])
     );
   } else {
     if (mode !== "map") {
-      const incidentRows = [
-        ...getMetaExportSection(env, labels).rows,
-        ...getIncidentExportSections(env, labels).flatMap((s) => s.rows)
-      ];
-      parts.push(section(language === "en" ? "Incident report" : "Karta zdarzenia", rowsToLines(env, form, incidentRows, language)));
+      parts.push(language === "en" ? "Incident report" : "Karta zdarzenia");
+      parts.push(section(labels.meta.section, rowsToLines(env, form, getMetaExportSection(env, labels).rows, language)));
+      for (const item of getIncidentExportSections(env, labels)) {
+        parts.push(section(item.title, [item.note || "", ...rowsToLines(env, form, item.rows, language)]));
+      }
     }
 
     if (mode !== "incident") {
-      const mapRowsText = getMapExportSections(labels, language).flatMap((s) => rowsToLines(env, form, s.rows, language));
-      parts.push(section(labels.map.section, mapRowsText));
+      parts.push(section(labels.meta.section, rowsToLines(env, form, getMetaExportSection(env, labels).rows, language)));
+      for (const item of getMapExportSections(labels, language)) {
+        parts.push(section(item.title, [item.note || "", ...rowsToLines(env, form, item.rows, language)]));
+      }
     }
+  }
+
+  for (const item of getLegacyExportSections(form, variant, mode, language)) {
+    parts.push(section(item.title, [getMonitoringRevision(language).legacyHint, ...rowsToLines(env, form, item.rows, language)]));
   }
 
   return {

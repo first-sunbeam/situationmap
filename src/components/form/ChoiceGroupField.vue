@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useLanguage } from "../../i18n/useLanguage";
 import { translateOption } from "../../i18n/options";
 import LabelText from "./LabelText.vue";
@@ -24,6 +25,8 @@ const {
 
 const model = defineModel<string[]>({ required: true });
 const { language } = useLanguage();
+const nonFindingOptions = ["not_sure", "not_observed", "not_applicable", "missing_data", "no_harm_observed"];
+const availableOptions = computed(() => [...new Set([...options, "not_sure", "not_observed", "not_applicable"])]);
 
 const { hintId, errorId, describedBy } = useFieldIds(
   () => hint,
@@ -35,9 +38,14 @@ function isSelected(option: string): boolean {
 }
 
 function toggleOption(option: string): void {
-  model.value = isSelected(option)
-    ? model.value.filter((item) => item !== option)
-    : [...model.value, option];
+  if (isSelected(option)) {
+    model.value = model.value.filter((item) => item !== option);
+  } else if (nonFindingOptions.includes(option)) {
+    model.value = [option];
+  } else {
+    // Only an explicit user choice changes an existing selection; hydration never does.
+    model.value = [...model.value.filter((item) => !nonFindingOptions.includes(item)), option];
+  }
 }
 
 function formatChoiceLabel(value: string): string {
@@ -57,7 +65,7 @@ function formatChoiceLabel(value: string): string {
     <span v-if="error" :id="errorId" class="field-error">{{ error }}</span>
 
     <div class="choice-grid">
-      <label v-for="item in options" :key="item" class="choice">
+      <label v-for="item in availableOptions" :key="item" class="choice">
         <input
           type="checkbox"
           :checked="isSelected(item)"

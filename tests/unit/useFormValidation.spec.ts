@@ -32,24 +32,24 @@ describe("form validation", () => {
     expect(result.fieldErrors["meta.lead"]).toBe(
       "Uzupełnij pole: Osoba prowadząca.",
     );
-    expect(result.fieldErrors["simple.behavior"]).toBe(
-      "Uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.",
+    expect(result.fieldErrors["simple.escalationCourse"]).toBe(
+      "Uzupełnij pole „Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?”.",
     );
-    expect(result.fieldErrors["simple.helped"]).toContain("Uzupełnij pole");
+    expect(result.fieldErrors["simple.postEscalationNeeds"]).toContain("Uzupełnij pole");
     expect(result.fieldErrors["simple.notes"]).toBe(
       "Uzupełnij pole „Możliwość decyzji dla osoby”.",
     );
     expect(result.summary).toContain(
-      "Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.",
+      "Formularz prosty: uzupełnij pole „Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?”.",
     );
   });
 
   it("accepts the simple form after required fields are filled", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.simple.behavior =
+    form.simple.escalationCourse =
       "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
-    form.simple.helped = "Przerwa i spokojne miejsce.";
+    form.simple.postEscalationNeeds = "Przerwa i spokojne miejsce.";
     form.simple.notes =
       "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
 
@@ -78,7 +78,7 @@ describe("form validation", () => {
       "Zaznacz przynajmniej jedną opcję albo wpisz opis sytuacji.",
     );
     expect(result.fieldErrors["incident.regulationSection"]).toBe(
-      "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
+      "Uzupełnij przynajmniej jedno pole; dopuszczalny jest brak danych.",
     );
     expect(result.fieldErrors["incident.influence"]).toBe(
       "Uzupełnij pole „Jaki był zakres wpływu, autonomii i przewidywalności w tym momencie dla osoby?”.",
@@ -145,10 +145,10 @@ describe("form validation", () => {
     );
   });
 
-  it("requires sleep details when sleep or daytime rest is selected", () => {
+  it("requires individual signs when a tension level is selected", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.incident.slept = "yes";
+    form.incident.tension = "1_podwyzszony";
 
     const result = validateForm({
       variant: "extended",
@@ -156,18 +156,15 @@ describe("form validation", () => {
       form,
     });
 
-    expect(result.fieldErrors["incident.sleepDetails"]).toBe(
-      "Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo.",
-    );
-    expect(result.summary).toContain(
-      "0. Poziom bazowy i kontekst dnia: Skoro zaznaczono sen / odpoczynek w ciągu dnia, podaj o której i jak długo.",
-    );
+    expect(result.fieldErrors["incident.tensionSigns"]).toContain("indywidualne oznaki");
+    form.incident.tensionSigns = "O — zaciska dłonie, inaczej niż przed aktywnością.";
+    expect(validateForm({ variant: "extended", mode: "incident", form }).fieldErrors["incident.tensionSigns"]).toBeUndefined();
   });
 
-  it("requires intervention count when physical intervention this week is selected", () => {
+  it("requires a count for physical intervention during this event", () => {
     const form = createHomeForm();
     fillRequiredMeta(form);
-    form.incident.physicalThisWeek = "yes";
+    form.incident.physicalDuringEvent = "yes";
 
     const result = validateForm({
       variant: "extended",
@@ -175,12 +172,8 @@ describe("form validation", () => {
       form,
     });
 
-    expect(result.fieldErrors["incident.physicalCount"]).toBe(
-      "Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy.",
-    );
-    expect(result.summary).toContain(
-      "7. Co wydarzyło się po zdarzeniu?: Skoro zaznaczono interwencję fizyczną w tym tygodniu, podaj ile razy.",
-    );
+    expect(result.fieldErrors["incident.eventPhysicalCount"]).toContain("podczas tego zdarzenia");
+    expect(result.fieldErrors["incident.physicalCount"]).toBeUndefined();
   });
 
   // ── Opcja "other" – pola warunkowe ───────────────────────────────────────────
@@ -216,12 +209,6 @@ describe("form validation", () => {
         f.incident.after = ["other"];
       },
     ],
-    [
-      "incident.endedByOther",
-      (f) => {
-        f.incident.endedBy = ["other"];
-      },
-    ],
   ])(
     "wymaga opisu po zaznaczeniu opcji inne w incydencie: %s",
     (fieldKey, selectOther) => {
@@ -249,7 +236,7 @@ describe("form validation", () => {
     [
       "baseline",
       (f) => {
-        f.incident.slept = "yes";
+        f.incident.tension = "1_podwyzszony";
       },
     ],
     [
@@ -292,7 +279,7 @@ describe("form validation", () => {
     [
       "after",
       (f) => {
-        f.incident.physicalThisWeek = "yes";
+        f.incident.physicalDuringEvent = "yes";
       },
     ],
     [
@@ -310,6 +297,20 @@ describe("form validation", () => {
       const section = incidentSections.find((item) => item.id === sectionId);
 
     expect(section?.isComplete(form)).toBe(false);
+  });
+
+  it("does not validate removed summary fields or use them as the new stage descriptions", () => {
+    const form = createHomeForm();
+    fillRequiredMeta(form);
+    fillMinimalIncident(form);
+    form.incident.endedBy = ["other"];
+    form.incident.recoverySupports = ["other"];
+    form.incident.assessmentBasis = "Dawna ocena";
+    form.incident.earlierWhat = "Dawny wniosek";
+    expect(validateForm({ variant: "extended", mode: "incident", form }).fieldErrors).toEqual({});
+    expect(form.incident.postEscalationNeeds).toBe("");
+    expect(form.incident.earlyResponse).toBe("");
+    expect(form.incident.assessmentBasis).toBe("Dawna ocena");
   });
 
   // ── Mapa środowiska ─────────────────────────────────────────────────────────
@@ -337,18 +338,14 @@ describe("form validation", () => {
     );
   });
 
-  it("requires no-aggression details when such situations are selected", () => {
+  it("requires a comparison when similar situations without escalation are reported", () => {
     const form = createHomeForm();
-    form.map.noAggression = "yes";
+    form.map.similarWithoutEscalation = "yes";
 
     const result = validateForm({ variant: "extended", mode: "map", form });
 
-    expect(result.fieldErrors["map.noAggressionWhere"]).toBe(
-      "Skoro są sytuacje bez agresji, opisz jakie.",
-    );
-    expect(result.summary).toContain(
-      "Czy są sytuacje bez agresji?: Skoro są sytuacje bez agresji, opisz jakie.",
-    );
+    expect(result.fieldErrors["map.comparisonDetails"]).toContain("bez eskalacji");
+    expect(result.fieldErrors["map.noAggressionWhere"]).toBeUndefined();
   });
 
   it("requires map mandatory fields in map mode", () => {
@@ -361,14 +358,14 @@ describe("form validation", () => {
     expect(result.fieldErrors["map.preferredPlaces"]).toBe(
       "Zaznacz przynajmniej jedną opcję: W jakich miejscach osoba najchętniej przebywa?.",
     );
-    expect(result.fieldErrors["map.preferredReason"]).toBe(
-      "Uzupełnij pole: Dlaczego te miejsca? Co je wyróżnia?.",
+    expect(result.fieldErrors["map.preferredObservations"]).toBe(
+      "Uzupełnij pole: Co obserwujesz w tych miejscach i co mówi o nich osoba?.",
     );
     expect(result.fieldErrors["map.avoidedPlaces"]).toBe(
       "Zaznacz przynajmniej jedną opcję: Z jakich miejsc osoba unika lub wychodzi z trudem?.",
     );
-    expect(result.fieldErrors["map.avoidedReason"]).toBe(
-      "Uzupełnij pole: Co w tych miejscach aktywuje napięcie?.",
+    expect(result.fieldErrors["map.avoidedObservations"]).toBe(
+      "Uzupełnij pole: Co obserwujesz w tych miejscach i co może utrudniać sytuację?.",
     );
     expect(result.fieldErrors["map.likes"]).toBe(
       "Uzupełnij pole: W jakie aktywności osoba najchętniej się angażuje?.",
@@ -376,8 +373,8 @@ describe("form validation", () => {
     expect(result.fieldErrors["map.easiestWhen"]).toBe(
       "Zaznacz przynajmniej jedną opcję: Osoba najłatwiej funkcjonuje, gdy:.",
     );
-    expect(result.fieldErrors["map.cooperatesWith"]).toBe(
-      "Uzupełnij pole: Osoba najłatwiej współpracuje z:.",
+    expect(result.fieldErrors["map.chosenContact"]).toBe(
+      "Uzupełnij pole: Osoba wybiera kontakt z — jak ten kontakt przebiega?.",
     );
     expect(result.fieldErrors["map.reducers"]).toBe(
       "Zaznacz przynajmniej jedną opcję: Co OBNIŻA napięcie (reguluje w momencie dyskomfortu)?.",
@@ -394,7 +391,7 @@ describe("form validation", () => {
     const result = validateForm({ variant: "extended", mode: "map", form });
 
     expect(result.fieldErrors["map.preferredPlaces"]).toBeUndefined();
-    expect(result.fieldErrors["map.preferredReason"]).toBeUndefined();
+    expect(result.fieldErrors["map.preferredObservations"]).toBeUndefined();
     expect(result.fieldErrors["map.escalationContexts"]).toBeUndefined();
   });
 });

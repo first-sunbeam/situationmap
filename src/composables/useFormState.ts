@@ -24,6 +24,7 @@ import {
   yesNoUnknown,
 } from "../data/environments";
 import { getFormLabels } from "../config/formLabels";
+import { getMonitoringRevision } from "../config/monitoringRevision";
 import { useLanguage } from "../i18n/useLanguage";
 import { buildEmail, openEmail } from "../lib/email";
 import { getSubjectInline } from "../lib/subject";
@@ -57,6 +58,7 @@ function createFormState() {
   );
   const form = computed(() => forms[activeEnvKey.value]);
   const labels = computed(() => getFormLabels(language.value));
+  const revision = computed(() => getMonitoringRevision(language.value));
   const envLabel = computed(() => labels.value.environments[activeEnvKey.value].label);
   const envIncidentTitle = computed(() => labels.value.environments[activeEnvKey.value].incidentTitle);
   const envMapTitle = computed(() => labels.value.environments[activeEnvKey.value].mapTitle);
@@ -209,6 +211,7 @@ function createFormState() {
     envLead,
     form,
     labels,
+    revision,
     subject,
     subjectNominative,
     activationSignalOptions,

@@ -13,13 +13,13 @@
 
       [© Małgorzata Mikołajczyk],
       [#counter(page).display("1")],
-      [#link("https://analiza.tools")[analiza.tools]]
+      [#link("https://analiza.tools/map")[analiza.tools/map]]
     )
   ]
 )
 
 #set text(
-  font: "Linux Libertine",
+  font: "Libertinus Serif",
   size: 10.5pt,
   lang: "en"
 )
@@ -92,6 +92,39 @@
 
 #pagebreak()
 
+= Recording and assessment
+
+One form concerns one event. Mark information sources next to entries:
+- *O* — direct observation,
+- *P* — the person’s communication, including AAC,
+- *R* — another person’s report,
+- *H* — hypothesis.
+
+State when your observation began and ended. “Unknown”, “not observed” and “not applicable” mean different things. Missing data is not a negative finding; a blank never means “no”. Record when it is safe to do so and do not guess information you do not have.
+
+Describe responses and actions at the relevant stage: *early signs*, *escalation* or *after escalation*. Include observations and information communicated by the person. If it is difficult to assess — indicate this. Each description has a source field: enter O/P/R/H and identify which information each supports. There is no separate “what helped” summary. Support can be offered before the cause of the difficulty has been established. Record what was done and what was observed afterwards; temporal sequence alone does not prove a cause.
+
+Record minutes or clock times and mark estimates. Keep three pieces of information separate:
+- *How long did the described behavior last?* Give its start and end times.
+- *How many minutes after that behavior started did the observed signs of tension decrease?* Describe which signs changed.
+- *How many minutes after that behavior ended were signs of readiness for a specific activity or contact observed?* Specify the activity or contact and the signs of readiness or the person’s communication.
+
+If the change was not observed by the end of observation, record that. If the information is unavailable, enter “missing data”. Stopping shouting or beginning to respond to communication — through words, gestures or AAC — does not mean agreeing to a task. Readiness for an activity and consent to it are separate information.
+
+#note[
+  *Example of calculating the times:* shouting lasted from 12:00 to 12:05 — 5 minutes. At 12:08 the person stopped clenching their hands: this change was observed *8 minutes after the shouting started*. At 12:15 they chose a book and started reading: signs of readiness for reading were observed *10 minutes after the shouting ended*. This does not imply readiness or consent for a different task.
+]
+
+Describe magnitude using a measurable feature of a selected behavior, not a single aggression/risk score. Record actual consequences separately from potential risk. Observer-rated tension requires individual signs and comparison with the person’s usual presentation; it is not a diagnostic scale and must not be added into a total.
+
+Continuing an activity alone does not confirm anxiety, overload or masking. Categories of signs are descriptive aids, not diagnoses of a mechanism. The form itself does not measure hidden costs of functioning.
+
+#note[
+  The bibliography provides theoretical background. It is not evidence that this form or its categories have been validated.
+]
+
+#pagebreak()
+
 = Why use monitoring forms
 
 Monitoring forms help turn individual incidents into data that can be compared across situations.
@@ -107,7 +140,7 @@ The form helps separate:
 - description from interpretation,
 - behavior from intention,
 - calming down from return to regulation,
-- a single trigger from the broader context of the day.
+- the immediately preceding event from the broader context of the day.
 
 Several similar records can reveal patterns that are not visible after a single situation:
 - specific times of day,
@@ -122,6 +155,8 @@ Several similar records can reveal patterns that are not visible after a single 
   The form is not meant to build a “list of problem behaviors.”
   Its purpose is to support planning and environmental adjustments.
 ]
+
+#pagebreak()
 
 = Principles for describing situations
 
@@ -143,12 +178,9 @@ Avoid:
 - “was lazy,”
 - “wanted attention.”
 
-== 2. Separate background from trigger
+== 2. Separate background from the immediately preceding event
 
-A trigger is not always a “big” event.
-
-Often it is the final element after a series of earlier stressors:
-noise, exhaustion, changes in routine, pain, pressure, or many small demands.
+The immediately preceding event may be small. Record it separately from earlier conditions such as noise, tiredness, changes of plan, pain, pressure or multiple demands. Do not treat a preceding event as an established cause merely because it happened first.
 
 #pagebreak()
 
@@ -164,7 +196,9 @@ These may include:
 - jokes or irony,
 - increased need for control,
 - stopping an activity,
-- “freezing.”
+- a pause or marked reduction in movement or response.
+
+Describe what was actually seen or heard rather than assigning a shutdown, freezing or autonomic mechanism.
 
 == 4. Record the environmental response
 
@@ -184,14 +218,17 @@ A person stopping crying, shouting, or protesting does not always mean readiness
 
 It is useful to record:
 - when the behavior stopped,
-- and when the person became ready for contact and cooperation again.
+- when specific observed signs of tension decreased,
+- and when there were signs of readiness for a specified activity or contact.
+
+No shouting or aggression does not demonstrate wellbeing. Contact, readiness and consent are different information.
 
 #note[
   Practical tip: if you are not sure what to write after a situation,
   start with three things:
   - what happened beforehand,
   - what the first warning sign was,
-  - what actually helped.
+  - what helped or may have helped, and the observable basis or the person’s communication supporting that judgement.
 ]
 
 #pagebreak()
@@ -215,29 +252,15 @@ It works best:
 
   [*Question*], [*What to record*], [*What to avoid*],
 
-  [1. State before the situation],
-  [Sleep, hunger, pain, noise, changes in routine, earlier difficulties.],
-  [“Was in a bad mood.”],
-
-  [2. Early signs],
-  [What appeared before escalation.],
-  [“Suddenly exploded for no reason.”],
-
-  [3. Behavior],
-  [Observable facts: words, movements, actions.],
-  [Interpreting intentions.],
-
-  [4. Environmental response],
-  [What adults or the environment did.],
-  [Ignoring the role of the environment.],
-
-  [5. What helped],
-  [What reduced tension or supported a return to regulation and readiness.],
-  [Vague descriptions such as “calmed down.”],
-
-  [6. Return to readiness],
-  [How long it took to return to contact and activity.],
-  [Assuming no protest = readiness.]
+  [1. State before], [Sleep, hunger, pain, conditions and earlier difficulties.], [Judgements such as “bad mood”.],
+  [2. Immediately before], [What happened in the preceding minutes.], [Treating it as an established cause.],
+  [3. Early signs], [Observed changes or the person’s communication.], [Inferring a reaction mechanism.],
+  [4. Response to early signs], [The environmental response and what the person did or communicated afterwards.], [Omitting the person’s response.],
+  [5. Escalation], [Its course and actions or changes accompanying intensification and subsiding.], [Assuming sequence proves cause.],
+  [6. After escalation], [Needs, support provided and signs of readiness.], [Equating silence or responding with consent.],
+  [7. Influence and choice], [What could be chosen or negotiated.], [Inferring intentions.],
+  [8. Predictability], [What was known or unknown.], [Assuming the person knew.],
+  [9. Readiness timing], [Minutes after behavior ended or clock time; mark estimate or missing data.], [Repeating the account of needs.]
 )
 
 #note[
@@ -259,7 +282,7 @@ It works best:
 
 It helps separate:
 - stressors from the entire day,
-- the immediate trigger,
+- the immediately preceding event,
 - demands and predictability,
 - early warning signs,
 - environmental responses,
@@ -281,36 +304,58 @@ It helps separate:
 
   [1. Immediately before],
   [The last minutes before tension increased.],
-  [Separates the trigger from the earlier background.],
+  [Separates the preceding event from earlier context and a hypothesis about cause.],
 
   [2. Demands and control],
   [What was clear, imposed, or under the person’s control.],
   [Helps assess predictability and autonomy.],
 
   [3. Early signs],
-  [Behavior changes before escalation.],
+  [Behavior changes, the environmental response and the person’s subsequent response.],
   [Helps identify opportunities for earlier support.],
 
-  [3B. Masking and compensation],
-  [Whether the person continued despite overload.],
-  [Shows the cost of maintaining “apparent functioning.”],
+  [3B. Continuing activity, compensation and possible masking],
+  [Observations during activity, the person’s account, later observations or reports, and a separate hypothesis.],
+  [Collects information about possible effort or cost; the record does not itself measure it or establish masking.],
 
-  [4. Environmental actions],
-  [Type of support and environmental response.],
-  [Helps identify what reduced or increased difficulty.],
+  [4. Support provided and access conditions],
+  [Type of support and conditions of access.],
+  [Separates access to help, pressure and negotiation without repeating the account of responses.],
 
   [5. Behavior],
-  [Observable facts.],
-  [Separates description from interpretation.],
+  [The course of escalation and accompanying actions or changes; measurable features, actual consequences and potential risk.],
+  [Separates behavior, consequences and risk instead of combining them in one score.],
 
-  [6. Return to readiness],
-  [Time and conditions needed to regain contact.],
-  [Supports planning of further activity.],
+  [6. Timing and readiness],
+  [Behavior duration, reduction in observed signs of tension and readiness for a specified activity or contact.],
+  [Separates three measures with different time anchors. Readiness does not imply consent.],
 
-  [7. What happened afterward],
-  [Further course of the situation.],
-  [Helps assess the risk of secondary escalation.]
+  [7. After escalation],
+  [The person’s needs, support provided, signs of readiness, subsequent events and any physical intervention during this event.],
+  [Records action, consequences and safety, not a weekly intervention total or instructions for physical techniques.]
 )
+
+#pagebreak()
+
+= Environment map
+
+The map records current knowledge, preferences and hypotheses about places, activities, relationships and environmental conditions. Give the *observation period and update date*.
+
+Use the same source markings: O — observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Separate what the person chooses or says they like from observed changes and hypotheses about what helps.
+
+Record:
+- preferred or avoided places and what is observed there,
+- activities the person likes or chooses and their role during those activities,
+- conditions associated with easier participation,
+- chosen contact and what happens during contact,
+- observed signs or the person’s account of rest and recovery,
+- differences across conditions,
+- places and people offering rest without additional demands,
+- similar situations without the described escalation.
+
+Liking an activity does not demonstrate a reinforcement function. Cooperation does not establish feeling safe, and silence does not mean no burden. When describing possible protective conditions, distinguish observation from a causal hypothesis.
+
+Compare what is similar and different in situations with and without escalation. Give dates, examples and numbers of opportunities if available. Absence of aggression alone does not mean absence of difficulty or a need for support.
 
 #pagebreak()
 
@@ -319,7 +364,7 @@ It helps separate:
 The form is most useful when several situations are compared.
 
 One event reflects one day.
-Several forms make patterns visible.
+Several records may suggest a pattern. Also compare similar situations without escalation and the number of opportunities. Two events in two opportunities differ from two in twenty. Repeated association does not establish causality.
 
 == What to look for
 
@@ -400,7 +445,7 @@ Sometimes several or many records are needed to identify:
 
 #pagebreak()
 
-= Knowledge base
+= Theoretical background
 
 The form is informed by:
 - functional behavior analysis,
@@ -409,10 +454,10 @@ The form is informed by:
 - research on regulation, interoception, and sensory processing,
 - research on autonomy and predictability.
 
+The references below are preserved from Małgorzata Mikołajczyk’s revised Polish instruction. They provide theoretical background, not validation of this form, its categories or the efficacy of an action in a particular situation. Bibliographic details have not been independently verified.
+
 Key sources:
 - Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.
-- Allen et al. (2024). Neurodiversity-Affirming Applied Behavior Analysis. _Behavior Analysis in Practice_.
-- Mathur, S. K., Renz, E., & Tarbox, J. (2024). Affirming Neurodiversity within Applied Behavior Analysis. _Behavior Analysis in Practice_.
 - O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.
 - Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility. _Biological Psychology_, 104, 65–74.
 - Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception. _Cortex_, 81, 215–220.

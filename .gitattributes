@@ -1,0 +1,2 @@
+# PDF bytes must not be treated as text (xref rows contain required whitespace).
+*.pdf binary

@@ -26,8 +26,8 @@ export function fillRequiredMeta(form: HomeForm): void {
 /** Wypełnia wszystkie pola wymagane przez formularz prosty. */
 export function fillSimpleForm(form: HomeForm): void {
   fillRequiredMeta(form);
-  form.simple.behavior = "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
-  form.simple.helped = "Przerwa i spokojne miejsce.";
+  form.simple.escalationCourse = "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
+  form.simple.postEscalationNeeds = "Przerwa i spokojne miejsce.";
   form.simple.notes = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
 }
 
@@ -37,6 +37,7 @@ export function fillSimpleForm(form: HomeForm): void {
  */
 export function fillMinimalIncident(form: HomeForm): void {
   form.incident.tension = "1_podwyzszony";
+  form.incident.tensionSigns = "O — zaciska dłonie, inaczej niż zwykle.";
   form.incident.antecedents = ["zmiana_aktywnosci"];
   form.incident.expectations = ["brak_wymagan"];
   form.incident.influence = "Mogła wybrać kolejność, ale zmiana planu była narzucona.";
@@ -44,8 +45,9 @@ export function fillMinimalIncident(form: HomeForm): void {
   form.incident.predictabilityDuration = "not_sure";
   form.incident.predictabilityChoice = "partially";
   form.incident.signalsAppeared = "no";
-  form.incident.phase = "zolta_narastajace_napiecie";
-  form.incident.behavior = "Protest słowny.";
+  form.incident.supportConditional = "no";
+  form.incident.escalationCourse = "Protest słowny.";
+  form.incident.behaviorDuration = "Brak danych o czasie.";
   form.incident.after = ["przejscie_do_spokojniejszego_miejsca"];
   form.incident.endedBy = ["czas / przeczekanie"];
 }
@@ -53,12 +55,12 @@ export function fillMinimalIncident(form: HomeForm): void {
 /** Wypełnia wiersz mapy środowiska i wymagane pola opisowe. */
 export function fillMapForm(form: HomeForm): void {
   form.map.preferredPlaces = ["pokoj_dziecka"];
-  form.map.preferredReason = "Cisza i ulubione przedmioty.";
+  form.map.preferredObservations = "Cisza i ulubione przedmioty.";
   form.map.avoidedPlaces = ["kuchnia_jadalnia"];
-  form.map.avoidedReason = "Hałas i zapachy.";
+  form.map.avoidedObservations = "Hałas i zapachy.";
   form.map.likes = "Klocki";
   form.map.easiestWhen = ["cisza_minimalne_bodzce_sluchowe"];
-  form.map.cooperatesWith = "Rodzic";
+  form.map.chosenContact = "Rodzic";
   form.map.reducers = ["cisza_wyciszenie_bodzcow"];
   form.map.escalationContexts = ["oczekiwanie_czekanie"];
 }

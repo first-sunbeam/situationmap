@@ -13,7 +13,7 @@
 
       [© Małgorzata Mikołajczyk],
       [#counter(page).display("1")],
-      [#link("https://analiza.tools")[analiza.tools]]
+      [#link("https://analiza.tools/map")[analiza.tools/map]]
     )
   ]
 )
@@ -92,6 +92,29 @@
 
 #pagebreak()
 
+= Zasady zapisu i oceny
+
+Jeden formularz dotyczy jednego zdarzenia. Oznaczaj źródła: O — obserwacja, P — przekaz osoby (także AAC), R — relacja innych, H — hipoteza. „Nie wiem”, „nie obserwowano” i „nie dotyczy” oznaczają różne rzeczy.
+
+Reakcje i działania zapisuj przy odpowiednim etapie: *pierwsze sygnały*, *eskalacja* lub *po eskalacji*. Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to. Przy każdym z trzech opisów jest pole na źródła: wpisz O/P/R/H i wskaż, których informacji dotyczą. Nie dodajemy osobnego podsumowania „co pomogło”. Można udzielić wsparcia, zanim ustalimy przyczynę trudności. Zapisz, co zrobiono i co zaobserwowano później.
+
+Czas zapisuj w minutach lub podaj godziny. Jeśli czas jest przybliżony, zaznacz to. Rozdziel trzy informacje:
+- *Jak długo trwało opisane zachowanie?* Podaj, kiedy się rozpoczęło i kiedy się zakończyło.
+- *Po ilu minutach od rozpoczęcia tego zachowania zmniejszyły się obserwowane oznaki napięcia?* Zapisz, jakie oznaki się zmieniły.
+- *Po ilu minutach od zakończenia tego zachowania pojawiły się oznaki gotowości do konkretnej aktywności lub kontaktu?* Wskaż tę aktywność lub kontakt oraz oznaki gotowości albo komunikat osoby.
+
+Jeśli danej zmiany nie zaobserwowano do końca obserwacji, zapisz to. Jeśli nie masz danych, wpisz „brak danych”. To, że osoba przestała krzyczeć lub zaczęła odpowiadać na komunikaty — słowem, gestem lub przez AAC — nie oznacza, że zgadza się wykonać zadanie. Gotowość do określonej aktywności i zgoda na nią to osobne informacje.
+
+#note[
+  *Przykład sposobu liczenia czasu:* krzyk trwał od 12:00 do 12:05, czyli 5 minut. O 12:08 osoba przestała zaciskać dłonie — tę zmianę zaobserwowano *8 minut od początku krzyku*. O 12:15 wybrała książkę i zaczęła czytać — oznaki gotowości do czytania zaobserwowano *10 minut od zakończenia krzyku*. Nie oznacza to gotowości ani zgody na inne zadanie.
+]
+
+Nasilenie opisuj mierzalną cechą wybranego zachowania; skutki i potencjalne zagrożenie opisuj osobno. Kontynuowanie aktywności samo nie potwierdza maskowania. Typy sygnałów są pomocą w opisie, nie rozpoznaniem mechanizmu.
+
+Bibliografia wskazuje podstawy teoretyczne. Nie stanowi dowodu walidacji formularza.
+
+#pagebreak()
+
 = Po co są formularze
 
 Formularze pomagają zamienić pojedyncze „incydenty” w dane, które można porównywać między sytuacjami.
@@ -107,7 +130,7 @@ Formularz pomaga oddzielić:
 - opis sytuacji od interpretacji,
 - zachowanie od intencji,
 - uspokojenie od powrotu do regulacji,
-- pojedynczy wyzwalacz od całego kontekstu dnia.
+- pojedyncze zdarzenie bezpośrednio poprzedzające od całego kontekstu dnia.
 
 Dzięki kilku podobnym zapisom można zauważyć wzorce, których nie widać po jednej sytuacji:
 - konkretne pory dnia,
@@ -122,6 +145,8 @@ Dzięki kilku podobnym zapisom można zauważyć wzorce, których nie widać po 
   Formularz nie służy do budowania „listy problemowych zachowań”.
   Ma pomagać w planowaniu wsparcia i modyfikacji środowiska.
 ]
+
+#pagebreak()
 
 = Zasady opisu sytuacji
 
@@ -143,9 +168,9 @@ Unikaj:
 - „był leniwy”,
 - „chciała zwrócić uwagę”.
 
-== 2. Oddziel tło od wyzwalacza
+== 2. Oddziel tło od zdarzenia bezpośrednio poprzedzającego
 
-Wyzwalacz to nie zawsze „duża” sytuacja.
+Zdarzenie bezpośrednio poprzedzające nie zawsze jest „dużą” sytuacją.
 
 Często jest ostatnim elementem po serii wcześniejszych obciążeń:
 hałasie, zmęczeniu, zmianach planu, bólu, presji albo wielu drobnych wymaganiach.
@@ -190,7 +215,7 @@ W formularzu warto zaznaczyć:
   *Praktycznie:* jeśli po sytuacji nie wiadomo, co wpisać, zacznij od trzech rzeczy:
   - co było wcześniej,
   - co było pierwszym sygnałem,
-  - co realnie pomogło.
+  - co pomogło i po czym to poznajemy.
 ]
 
 #pagebreak()
@@ -214,29 +239,15 @@ Najlepiej sprawdza się:
 
   [*Pytanie*], [*Co wpisywać*], [*Czego unikać*],
 
-  [1. Stan przed sytuacją],
-  [Sen, głód, ból, hałas, zmiany planu, wcześniejsze trudności.],
-  [„Miał zły humor”.],
-
-  [2. Pierwsze sygnały],
-  [To, co pojawiło się przed eskalacją.],
-  [„Nagle wybuchł bez powodu”.],
-
-  [3. Zachowanie],
-  [Fakty obserwowalne: słowa, ruchy, działania.],
-  [Interpretowania intencji.],
-
-  [4. Reakcja otoczenia],
-  [Co zrobiły osoby dorosłe lub otoczenie.],
-  [Pomijania wpływu środowiska.],
-
-  [5. Co pomogło],
-  [Co zmniejszyło napięcie lub ułatwiło powrót do regulacji.],
-  [Ogólników typu „uspokoił się”.],
-
-  [6. Powrót do gotowości],
-  [Ile czasu trwał powrót do kontaktu i aktywności.],
-  [Zakładania, że brak protestu = gotowość.]
+  [1. Stan przed sytuacją], [Sen, głód, ból, warunki i wcześniejsze trudności.], [Ocen typu „zły humor”.],
+  [2. Bezpośrednio przed], [Co wydarzyło się w ostatnich minutach.], [Uznawania tego za ustaloną przyczynę.],
+  [3. Pierwsze sygnały], [Obserwowane zmiany zachowania lub komunikat osoby.], [Przypisywania mechanizmu reakcji.],
+  [4. Reakcja na pierwsze sygnały], [Jak odpowiedziało otoczenie i co osoba zrobiła lub zakomunikowała później.], [Pomijania odpowiedzi osoby.],
+  [5. Eskalacja], [Przebieg oraz działania i zmiany towarzyszące nasilaniu się i ustępowaniu.], [Zakładania, że następstwo oznacza przyczynę.],
+  [6. Po eskalacji], [Potrzeby, zapewnione wsparcie i oznaki gotowości.], [Utożsamiania ciszy lub odpowiadania ze zgodą.],
+  [7. Wpływ i wybór], [Co można było wybrać lub negocjować.], [Dopisywania intencji.],
+  [8. Przewidywalność], [Co było znane i nieznane.], [Zakładania, że osoba wiedziała.],
+  [9. Czas gotowości], [Minuty od zakończenia zachowania lub godzina; zaznacz szacunek albo brak danych.], [Przepisywania opisu potrzeb po raz drugi.]
 )
 
 #note[
@@ -258,7 +269,7 @@ Najlepiej sprawdza się:
 
 Pozwala oddzielić:
 - obciążenia z całego dnia,
-- bezpośredni wyzwalacz,
+- zdarzenie bezpośrednio poprzedzające,
 - wymagania i przewidywalność,
 - pierwsze sygnały,
 - działania otoczenia,
@@ -280,34 +291,34 @@ Pozwala oddzielić:
 
   [1. Bezpośrednio przed],
   [Ostatnie minuty przed wzrostem napięcia.],
-  [Pozwala oddzielić wyzwalacz od wcześniejszego tła.],
+  [Pozwala oddzielić zdarzenie poprzedzające od wcześniejszego tła.],
 
   [2. Wymagania i kontrola],
   [Co było jasne, co narzucone, na co osoba miała wpływ.],
   [Pomaga ocenić rolę przewidywalności i autonomii.],
 
   [3. Pierwsze sygnały],
-  [Zmiany zachowania przed eskalacją.],
+  [Zmiany zachowania, reakcja otoczenia i późniejsza odpowiedź osoby.],
   [Pomaga zauważyć moment na wcześniejsze wsparcie.],
 
-  [3B. Maskowanie i kompensacja],
-  [Czy osoba działała mimo przeciążenia.],
-  [Pokazuje koszt utrzymywania „pozornego funkcjonowania”.],
+  [3B. Kontynuowanie i możliwe maskowanie],
+  [Obserwacje, relację osoby i hipotezę o wysiłku lub maskowaniu.],
+  [Pomaga zebrać informacje o możliwym koszcie; sam zapis go nie mierzy.],
 
-  [4. Działania otoczenia],
-  [Rodzaj wsparcia i reakcję środowiska.],
-  [Pozwala sprawdzić, co pomagało, a co zwiększało trudność.],
+  [4. Udzielone wsparcie i warunki],
+  [Rodzaj wsparcia i warunki dostępu do niego.],
+  [Oddziela dostępność pomocy od nacisku i negocjacji; nie powtarza opisu reakcji.],
 
-  [5. Zachowanie],
-  [Fakty obserwowalne.],
+  [5. Zachowanie / eskalacja],
+  [Przebieg eskalacji oraz towarzyszące działania i zmiany; nasilenie, skutki i ryzyko.],
   [Oddziela opis od interpretacji.],
 
-  [6. Powrót do gotowości],
-  [Czas i warunki potrzebne do odzyskania kontaktu.],
+  [6. Czas i gotowość],
+  [Czas trwania zachowania, zmniejszenia oznak napięcia i zaobserwowania gotowości.],
   [Pomaga planować dalszą aktywność.],
 
-  [7. Co było później],
-  [Dalszy przebieg sytuacji.],
+  [7. Po eskalacji],
+  [Potrzeby osoby, zapewnione wsparcie i oznaki gotowości oraz dalsze zdarzenia.],
   [Pozwala ocenić ryzyko wtórnej eskalacji.]
 )
 
@@ -318,7 +329,7 @@ Pozwala oddzielić:
 Formularz ma sens przede wszystkim wtedy, gdy porównujemy kilka sytuacji.
 
 Jedno zdarzenie pokazuje pojedynczy dzień.
-Kilka formularzy pozwala zauważyć wzorzec.
+Kilka formularzy może wskazać wzorzec. Porównuj również podobne sytuacje bez eskalacji i liczbę okazji. Samo powtarzanie się związku nie potwierdza przyczyny.
 
 == Na co zwracać uwagę
 
@@ -410,8 +421,6 @@ Formularz opiera się między innymi na:
 
 Najważniejsze źródła:
 - Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.
-- Allen et al. (2024). Neurodiversity-Affirming Applied Behavior Analysis. _Behavior Analysis in Practice_.
-- Mathur, S. K., Renz, E., & Tarbox, J. (2024). Affirming Neurodiversity within Applied Behavior Analysis. _Behavior Analysis in Practice_.
 - O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.
 - Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility. _Biological Psychology_, 104, 65–74.
 - Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception. _Cortex_, 81, 215–220.

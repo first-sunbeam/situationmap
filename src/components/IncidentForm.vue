@@ -2,6 +2,7 @@
 import { computed, ref, watch, type Component } from "vue";
 import { useFormState } from "../composables/useFormState";
 import { getIncidentStepDefinitions, type IncidentStepDefinition } from "../config/incidentSteps";
+import LegacyRecord from "./form/LegacyRecord.vue";
 import MetaStep from "./incident/MetaStep.vue";
 import BaselineStep from "./incident/BaselineStep.vue";
 import BeforeStep from "./incident/BeforeStep.vue";
@@ -17,7 +18,7 @@ import SvgIcon from "./ui/SvgIcon.vue";
 
 const stepComponents = [MetaStep, BaselineStep, BeforeStep, ExpectationsStep, SignalsStep, MaskingStep, ActionsStep, BehaviorStep, RegulationStep, AfterStep] satisfies Component[];
 
-const { env, envIncidentTitle, labels, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
+const { env, envIncidentTitle, labels, revision, form, buildPdf, resetIncident, fieldErrors, validationRequestId } = useFormState();
 
 const steps = computed(() => getIncidentStepDefinitions(labels.value).map((step, index) => ({
   ...step,
@@ -74,6 +75,8 @@ watch(activeStep, (stepId) => {
       </div>
     </div>
 
+    <p class="section-hint">{{ revision.sources }}</p>
+    <LegacyRecord scope="incident" />
     <IncidentStepper
       v-model="activeStep"
       :steps="steps"

@@ -9,7 +9,7 @@ export const EXTENDED_STEPS = {
   baseline: "0. Poziom bazowy i kontekst dnia",
   before: "1. Bezpośrednio przed zdarzeniem",
   expectations: "2. Czego oczekiwano w tym momencie?",
-  masking: "3B. Strategie kompensacyjne i maskowanie",
+  masking: "3B. Kontynuowanie aktywności, kompensacja i możliwe maskowanie",
 } as const;
 
 type StepKey = keyof typeof EXTENDED_STEPS;
@@ -123,16 +123,16 @@ export class ExtendedFormPage {
 
   // ── Masking section (step 3B) ─────────────────────────────────────────────
 
-  get maskingContinuedSelect(): Locator {
-    return this.sectionContainer("masking").getByLabel(
-      /Kontynuowanie aktywności mimo narastającego napięcia przez/
-    );
+  get continuedObservationField(): Locator {
+    return this.sectionContainer("masking").getByLabel("Co obserwowano podczas kontynuowania aktywności?");
   }
 
-  get maskingDurationSelect(): Locator {
-    return this.sectionContainer("masking").getByLabel(
-      /Czas „trzymania się” przed eskalacją przez/
-    );
+  get personAccountField(): Locator {
+    return this.sectionContainer("masking").getByLabel("Co osoba przekazała o wysiłku lub dyskomforcie?");
+  }
+
+  get maskingHypothesisField(): Locator {
+    return this.sectionContainer("masking").getByLabel("Czy rozważamy kompensację lub maskowanie — na jakiej podstawie?");
   }
 
   // ── Meta / basic-data section ─────────────────────────────────────────────

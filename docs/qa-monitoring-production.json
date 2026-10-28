@@ -1,0 +1,157 @@
+{
+  "productionRoutes": 24,
+  "errors": [],
+  "basePath": "/map/",
+  "viewports": [
+    390,
+    1365
+  ],
+  "environments": 3,
+  "currentPdfLinks": 4,
+  "checks": [
+    {
+      "width": 390,
+      "env": "Dom",
+      "route": "simple",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Dom",
+      "route": "incident",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Dom",
+      "route": "environment",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Dom",
+      "route": "about",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Placówka całodobowa",
+      "route": "simple",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Placówka całodobowa",
+      "route": "incident",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Placówka całodobowa",
+      "route": "environment",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Placówka całodobowa",
+      "route": "about",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Szkoła",
+      "route": "simple",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Szkoła",
+      "route": "incident",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Szkoła",
+      "route": "environment",
+      "labelledControls": true
+    },
+    {
+      "width": 390,
+      "env": "Szkoła",
+      "route": "about",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Dom",
+      "route": "simple",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Dom",
+      "route": "incident",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Dom",
+      "route": "environment",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Dom",
+      "route": "about",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Placówka całodobowa",
+      "route": "simple",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Placówka całodobowa",
+      "route": "incident",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Placówka całodobowa",
+      "route": "environment",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Placówka całodobowa",
+      "route": "about",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Szkoła",
+      "route": "simple",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Szkoła",
+      "route": "incident",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Szkoła",
+      "route": "environment",
+      "labelledControls": true
+    },
+    {
+      "width": 1365,
+      "env": "Szkoła",
+      "route": "about",
+      "labelledControls": true
+    }
+  ]
+}

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useFormState } from "../../composables/useFormState";
 import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
+import StageResponseField from "../form/StageResponseField.vue";
 import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
+import TextAreaField from "../form/TextAreaField.vue";
 
-const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
+const { labels, revision, env, form, fieldErrors, subject, yesNoUnknown } = useFormState();
 </script>
 
 <template>
@@ -16,6 +18,7 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
     required
   >
     <div class="field-grid">
+      <StageResponseField v-model="form.incident.postEscalationNeeds" v-model:sources="form.incident.postEscalationSources" stage="postEscalationNeeds" />
       <ChoiceGroupWithOther
         v-model="form.incident.after"
         v-model:other="form.incident.afterOther"
@@ -25,16 +28,16 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
         :other-error="fieldErrors['incident.afterOther']"
       />
       <SelectField
-        v-model="form.incident.physicalThisWeek"
-        :label="labels.incident.physicalThisWeek"
+        v-model="form.incident.physicalDuringEvent"
+        :label="revision.physicalDuringEvent"
         :options="yesNoUnknown"
-        :hint="labels.ui.physicalInterventionHint"
+        :hint="revision.physicalHint"
       />
       <InputField
-        v-model="form.incident.physicalCount"
-        :label="labels.incident.physicalCount"
-        :required="form.incident.physicalThisWeek === 'yes'"
-        :error="fieldErrors['incident.physicalCount']"
+        v-model="form.incident.eventPhysicalCount"
+        :label="revision.eventPhysicalCount"
+        :required="form.incident.physicalDuringEvent === 'yes'"
+        :error="fieldErrors['incident.eventPhysicalCount']"
       />
       <SelectField
         v-model="form.incident.lowerThreshold"
@@ -42,10 +45,10 @@ const { labels, env, form, fieldErrors, subject, yesNoUnknown } = useFormState()
         :options="yesNoUnknown"
         :hint="labels.ui.lowerThresholdHint"
       />
-      <InputField
-        v-model="form.incident.physicalNote"
-        :label="labels.incident.physicalNote"
-        full
+      <TextAreaField
+        v-model="form.incident.eventPhysicalNote"
+        :label="revision.eventPhysicalNote"
+        :hint="revision.physicalHint"
       />
     </div>
   </FormSection>

@@ -1,5 +1,6 @@
 import { getIncidentSectionTexts, hasSelectedOther, incidentSections } from "../config/incidentSections";
 import { formLabels, type FormLabels } from "../config/formLabels";
+import { getMonitoringRevision } from "../config/monitoringRevision";
 import { getSubjectInline } from "../lib/subject";
 import type { ExtendedMode, FieldErrors, FormVariant, SituationForm, ValidationResult } from "../types/form";
 
@@ -11,10 +12,10 @@ function validateMapRequiredFields(form: SituationForm, fieldErrors: FieldErrors
   const subject = getSubjectInline(form, labels.map.section === "Environment map" ? "the person" : "osoba");
   const subjectStart = getSubjectInline(form, labels.map.section === "Environment map" ? "The person" : "Osoba");
   const requiredTextFields: Array<[string, string, string]> = [
-    ["map.preferredReason", labels.ui.preferredReason, form.map.preferredReason],
-    ["map.avoidedReason", labels.ui.avoidedReason, form.map.avoidedReason],
+    ["map.preferredObservations", labels.ui.preferredReason, form.map.preferredObservations],
+    ["map.avoidedObservations", labels.ui.avoidedReason, form.map.avoidedObservations],
     ["map.likes", `${labels.ui.likesFor} ${subject} ${labels.ui.likesSuffix}`, form.map.likes],
-    ["map.cooperatesWith", `${subjectStart} ${labels.ui.cooperatesWithSuffix}`, form.map.cooperatesWith]
+    ["map.chosenContact", `${subjectStart} ${labels.ui.cooperatesWithSuffix}`, form.map.chosenContact]
   ];
 
   const requiredChoiceFields: Array<[string, string, string[]]> = [
@@ -67,6 +68,7 @@ function requireOtherField({
 export function validateForm({ variant, mode, form, labels = formLabels }: { variant: FormVariant; mode: ExtendedMode; form: SituationForm; labels?: FormLabels }): ValidationResult {
   const fieldErrors: FieldErrors = {};
   const summary: string[] = [];
+  const revision = getMonitoringRevision(labels.meta.section === "Basic information" ? "en" : "pl");
   const subject = getSubjectInline(form, labels.map.section === "Environment map" ? "the person" : "osoby");
   const meta: Array<[string, string, string]> = [
     ["meta.date", labels.meta.date, form.meta.date],
@@ -85,13 +87,13 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     }
   }
 
-  if (variant === "simple" && isBlank(form.simple.behavior)) {
-    fieldErrors["simple.behavior"] = `${labels.validation.requiredField} „${labels.simple.behavior}”.`;
+  if (variant === "simple" && isBlank(form.simple.escalationCourse)) {
+    fieldErrors["simple.escalationCourse"] = `${labels.validation.requiredField} „${labels.simple.behavior}”.`;
     summary.push(`${labels.validation.simpleForm}: ${labels.validation.requiredField.toLowerCase()} „${labels.simple.behavior}”.`);
   }
 
-  if (variant === "simple" && !String(form.simple.helped || "").trim()) {
-    fieldErrors["simple.helped"] = `${labels.validation.requiredField} „${labels.simple.helped}” ${labels.validation.simpleHelpedRequiredSuffix}`;
+  if (variant === "simple" && isBlank(form.simple.postEscalationNeeds)) {
+    fieldErrors["simple.postEscalationNeeds"] = `${labels.validation.requiredField} „${labels.simple.helped}”.`;
     summary.push(`${labels.validation.simpleForm}: ${labels.validation.requiredField.toLowerCase()} „${labels.simple.helped}”.`);
   }
 
@@ -109,9 +111,9 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
       }
     }
 
-    if (form.incident.slept === "yes" && isBlank(form.incident.sleepDetails)) {
-      const message = labels.validation.sleepDetailsRequired;
-      fieldErrors["incident.sleepDetails"] = message;
+    if (form.incident.tension && isBlank(form.incident.tensionSigns)) {
+      const message = revision.tensionRequired;
+      fieldErrors["incident.tensionSigns"] = message;
       summary.push(`${labels.incident.baselineSection}: ${message}`);
     }
 
@@ -134,18 +136,15 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     requireOtherField({ fieldErrors, summary, selected: form.incident.activationSignals, value: form.incident.activationSignalsOther, fieldKey: "incident.activationSignalsOther", sectionLabel: labels.incident.signalsSection, labels });
     requireOtherField({ fieldErrors, summary, selected: form.incident.shutdownSignals, value: form.incident.shutdownSignalsOther, fieldKey: "incident.shutdownSignalsOther", sectionLabel: labels.incident.signalsSection, labels });
     requireOtherField({ fieldErrors, summary, selected: form.incident.sensorySignals, value: form.incident.sensorySignalsOther, fieldKey: "incident.sensorySignalsOther", sectionLabel: labels.incident.signalsSection, labels });
-    requireOtherField({ fieldErrors, summary, selected: form.incident.maskingStrategies, value: form.incident.maskingStrategiesOther, fieldKey: "incident.maskingStrategiesOther", sectionLabel: labels.incident.maskingSection, labels });
     requireOtherField({ fieldErrors, summary, selected: form.incident.interventions, value: form.incident.interventionDetails, fieldKey: "incident.interventionDetails", sectionLabel: labels.incident.actionsSection, labels });
 
-    if (form.incident.physicalThisWeek === "yes" && isBlank(form.incident.physicalCount)) {
-      const message = labels.validation.physicalCountRequired;
-      fieldErrors["incident.physicalCount"] = message;
+    if (form.incident.physicalDuringEvent === "yes" && isBlank(form.incident.eventPhysicalCount)) {
+      const message = revision.countRequired;
+      fieldErrors["incident.eventPhysicalCount"] = message;
       summary.push(`${labels.incident.afterSection}: ${message}`);
     }
 
     requireOtherField({ fieldErrors, summary, selected: form.incident.after, value: form.incident.afterOther, fieldKey: "incident.afterOther", sectionLabel: labels.incident.afterSection, labels });
-    requireOtherField({ fieldErrors, summary, selected: form.incident.endedBy, value: form.incident.endedByOther, fieldKey: "incident.endedByOther", sectionLabel: labels.incident.regulationSection, labels });
-    requireOtherField({ fieldErrors, summary, selected: form.incident.recoverySupports, value: form.incident.recoverySupportsOther, fieldKey: "incident.recoverySupportsOther", sectionLabel: labels.incident.regulationSection, labels });
 
     if (fieldErrors["incident.beforeSection"]) {
       fieldErrors["incident.factDescription"] = fieldErrors["incident.beforeSection"];
@@ -167,10 +166,10 @@ export function validateForm({ variant, mode, form, labels = formLabels }: { var
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationContexts, value: form.map.escalationOther, fieldKey: "map.escalationOther", sectionLabel: labels.map.escalationContexts, labels });
     requireOtherField({ fieldErrors, summary, selected: form.map.escalationReducers, value: form.map.escalationReducersOther, fieldKey: "map.escalationReducersOther", sectionLabel: labels.ui.escalationReducersLabel, labels });
 
-    if (form.map.noAggression === "yes" && isBlank(form.map.noAggressionWhere)) {
-      const message = labels.validation.noAggressionRequired;
-      fieldErrors["map.noAggressionWhere"] = message;
-      summary.push(`${labels.map.noAggression}: ${message}`);
+    if (form.map.similarWithoutEscalation === "yes" && isBlank(form.map.comparisonDetails)) {
+      const message = revision.comparisonRequired;
+      fieldErrors["map.comparisonDetails"] = message;
+      summary.push(`${revision.similarWithoutEscalation}: ${message}`);
     }
   }
 

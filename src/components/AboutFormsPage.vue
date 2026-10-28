@@ -68,18 +68,18 @@ const content = computed(() => getAboutPageContent(language.value));
             <table class="about-table">
               <thead>
                 <tr>
-                  <th>{{ language === "en" ? "Section" : "Sekcja" }}</th>
-                  <th>
-                    {{ language === "en" ? "What it captures" : "Co mierzy" }}
+                  <th scope="col">{{ language === "en" ? "Section" : "Sekcja" }}</th>
+                  <th scope="col">
+                    {{ language === "en" ? "What it describes" : "Co opisuje" }}
                   </th>
-                  <th>
+                  <th scope="col">
                     {{ language === "en" ? "Why it matters" : "Po co to jest" }}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="row in section.table" :key="row.section">
-                  <td>{{ row.section }}</td>
+                  <th scope="row">{{ row.section }}</th>
                   <td>{{ row.measures }}</td>
                   <td>{{ row.purpose }}</td>
                 </tr>

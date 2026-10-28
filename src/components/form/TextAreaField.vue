@@ -18,10 +18,11 @@ const model = defineModel<string>({ required: true });
     full
     :hint="hint"
     :error="error"
-    v-slot="{ describedBy, invalid }"
+    v-slot="{ controlId, describedBy, invalid }"
   >
     <textarea
       v-model="model"
+      :id="controlId"
       class="text-area"
       :class="{ invalid }"
       :required="required"

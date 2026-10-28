@@ -34,10 +34,11 @@ const resolvedPlaceholder = computed(() => placeholder === "Wybierz" && language
     :full="full"
     :hint="hint"
     :error="error"
-    v-slot="{ describedBy, invalid }"
+    v-slot="{ controlId, describedBy, invalid }"
   >
     <select
       v-model="model"
+      :id="controlId"
       class="text-input"
       :class="{ invalid }"
       :required="required"

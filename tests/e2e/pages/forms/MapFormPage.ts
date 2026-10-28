@@ -32,8 +32,8 @@ export class MapFormPage {
     return this.page.getByLabel("Jak zmienia się zachowanie?");
   }
 
-  get noAggressionSelect(): Locator {
-    return this.page.getByLabel("Czy są sytuacje bez agresji?");
+  get similarWithoutEscalationSelect(): Locator {
+    return this.page.getByLabel("Czy podobne sytuacje zdarzają się bez opisywanej eskalacji?");
   }
 
   // ── Compound actions ──────────────────────────────────────────────────────
@@ -42,11 +42,11 @@ export class MapFormPage {
     preferredPlace?: string;
     noise?: boolean;
     dependsDescription: string;
-    noAggression: string;
+    similarWithoutEscalation: string;
   }) {
     await this.preferredPlaceCheckbox.check();
     if (data.noise) await this.noiseCheckbox.check();
     await this.dependsDescriptionField.fill(data.dependsDescription);
-    await this.noAggressionSelect.selectOption(data.noAggression);
+    await this.similarWithoutEscalationSelect.selectOption(data.similarWithoutEscalation);
   }
 }

@@ -14,9 +14,9 @@ describe("email message building", () => {
     // Własna wartość `helped` — celowo różna od domyślnej w fillSimpleForm.
     fillRequiredMeta(form);
 
-    form.simple.behavior =
+    form.simple.escalationCourse =
       "Protest, płacz i odmowa przejścia do kolejnej aktywności.";
-    form.simple.helped = "Przerwa i cisza.";
+    form.simple.postEscalationNeeds = "Przerwa i cisza.";
 
     const email = buildEmail({
       env: environments.home,
@@ -33,11 +33,11 @@ describe("email message building", () => {
     expect(email.body).toContain("Data: 2026-05-02");
 
     expect(email.body).toContain(
-      "3. Przebieg sytuacji – co można było zaobserwować?: Protest, płacz i odmowa przejścia do kolejnej aktywności.",
+      "Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?: Protest, płacz i odmowa przejścia do kolejnej aktywności.",
     );
 
     expect(email.body).toContain(
-      "4. Co pomogło (lub nie pomogło) wyregulować sytuację?: Przerwa i cisza.",
+      "Czego osoba potrzebowała przed ponownym kontaktem lub aktywnością? Co jej zapewniono i po czym rozpoznano gotowość?: Przerwa i cisza.",
     );
   });
 
@@ -55,7 +55,7 @@ describe("email message building", () => {
     expect(email.body).not.toContain("Krótki opis sytuacji: -");
 
     expect(email.body).toContain(
-      "3. Przebieg sytuacji – co można było zaobserwować?: -",
+      "Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?: -",
     );
   });
 
@@ -81,7 +81,7 @@ describe("email message building", () => {
     const form = createHomeForm();
 
     form.incident.tension = "1_podwyzszony";
-    form.incident.behavior = "Protest słowny.";
+    form.incident.escalationCourse = "Protest słowny.";
 
     const email = buildEmail({
       env: environments.home,
@@ -97,7 +97,7 @@ describe("email message building", () => {
       "Poziom napięcia przed zdarzeniem: 1 podwyższony",
     );
 
-    expect(email.body).toContain("Opis zachowania: Protest słowny.");
+    expect(email.body).toContain("Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?: Protest słowny.");
 
     expect(email.body).not.toContain("Mapa środowiska");
   });

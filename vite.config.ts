@@ -2,8 +2,8 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
 
-export default defineConfig(({ command }) => ({
-  base: command === "serve" ? "/" : "/map/",
+export default defineConfig(({ command, isPreview }) => ({
+  base: command === "serve" && !isPreview ? "/" : "/map/",
   plugins: [
     vue(),
     VitePWA({

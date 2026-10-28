@@ -14,7 +14,7 @@
       align: (left, center, right),
       [© Małgorzata Mikołajczyk],
       [#counter(page).display("1")],
-      [analiza.tools]
+      [analiza.tools/map]
     )
   ]
 )
@@ -61,7 +61,7 @@
   #text(size: 8.2pt, style: "italic")[#hint]
 ]
 
-#let field(label, height: 0.85cm, hint: none) = block(width: 100%, below: 1em, above: 1em)[
+#let field(label, height: 0.85cm, hint: none) = block(width: 100%, breakable: false, below: 1em, above: 1em)[
   #v(0.5em)
   #text(weight: "bold")[#label]
   #hint-text(hint)
@@ -69,7 +69,7 @@
   #line(length: 100%, stroke: dotted-stroke)
 ]
 
-#let area(label, height: 2cm, hint: none) = block(width: 100%, below: 0.1em, above: 1em)[
+#let area(label, height: 2cm, hint: none) = block(width: 100%, breakable: false, below: 0.1em, above: 1em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #v(0.12em)
@@ -77,6 +77,11 @@
 ]
 
 #let row-fields(a, b) = grid(columns: (1fr, 1fr), column-gutter: 0.3cm, field(a), field(b))
+
+#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+  #area(question, height: height, hint: "Uwzględnij obserwacje i informacje przekazane przez osobę. Jeśli trudno ocenić — zaznacz to.")
+  #field("Źródła tego opisu (O/P/R/H — wskaż, których informacji dotyczą) — " + stage)
+]
 
 #let checks(items, columns: 2) = block(width: 100%, below:1em, above:0.4em)[
   #grid(
@@ -87,13 +92,14 @@
   )
 ]
 
-#let select(label, items, columns: 2, hint: none) = block(width: 100%, below: 0.55em, above: 2em)[
+#let select(label, items, columns: 2, hint: none) = block(width: 100%, breakable: false, below: 0.55em, above: 2em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #checks(items, columns: columns)
 ]
 
-#let section(title, body) = block(
+#let section(title, body, breakable: true) = block(
+  breakable: breakable,
   fill: soft,
   stroke: soft-stroke,
   inset: 10pt,
@@ -112,10 +118,11 @@
     field("Miejsce")
   )
   #grid(columns: (1fr, 1fr), column-gutter: 0.3cm,
-    field("Inicjały / imię osoby"),
-    field("Rodzic / opiekun / osoba prowadząca")
+    field("Oznaczenie osoby"),
+    field("Osoba sporządzająca zapis")
   )
   #field("Inne osoby obecne")
+  #field("Początek i koniec obserwacji")
   #select("Środowisko", ("Dom", "Szkoła", "Ośrodek", "Inne: ........................................"), columns: 2)
 ])
 
@@ -125,32 +132,38 @@
 
 = Formularz prosty
 
+Opisuj jedno zdarzenie. Przy informacjach rozróżniaj: O — własna obserwacja, P — przekaz osoby (także AAC), R — relacja innej osoby, H — hipoteza. Możesz dopisać literę obok wpisu. Brak danych nie oznacza braku trudności. Zapis wykonaj, gdy pozwala na to bezpieczeństwo.
+
 #meta()
 
 #section("Szybki opis sytuacji", [
   #area("Jak wyglądał stan osoby przed sytuacją?", height: 2.1cm, hint: "Sen, głód, ból, hałas, zmiany planu, wcześniejsze napięcie.")
   #area("Co działo się bezpośrednio przed sytuacją?", height: 2.1cm, hint: "Opisz ostatnie minuty: wymaganie, zmianę, odmowę, czekanie, kontakt.")
   #area("Pierwsze sygnały narastającego napięcia", height: 1.8cm, hint: "Co pojawiło się zanim sytuacja się nasiliła: ciało, głos, ruch, wycofanie.")
-  #area("Reakcja dorosłych / otoczenia", height: 1.8cm, hint: "Co zrobiły osoby dorosłe lub otoczenie? Co zmieniono, dodano albo wycofano?")
-  #area("Co zrobiła osoba? Opis zachowania — fakty obserwowalne", height: 2.2cm, hint: "Zapisz słowa, ruchy i działania. Unikaj interpretacji intencji.")
-  #area("Co pomogło zmniejszyć napięcie lub wrócić do regulacji?", height: 2cm, hint: "Wpisz konkretne warunki lub działania, nie tylko „uspokoiła/uspokoił się”.")
+  #stage-field("Jak zareagowało otoczenie na pierwsze sygnały trudności? Co osoba zrobiła lub zakomunikowała po tej reakcji?", "Pierwsze sygnały", height: 1.8cm)
+  #stage-field("Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?", "Eskalacja", height: 2.2cm)
+  #stage-field("Czego osoba potrzebowała przed ponownym kontaktem lub aktywnością? Co jej zapewniono i po czym rozpoznano gotowość?", "Po eskalacji", height: 2cm)
   #area("Czy osoba miała wpływ, wybór, możliwość negocjacji lub przerwy?", height: 1.7cm, hint: "Co osoba mogła kontrolować, a co było narzucone lub nieuniknione?")
   #area("Czy sytuacja była przewidywalna? Co było znane / nieznane?", height: 1.5cm, hint: "Czy było wiadomo, co się wydarzy, jak długo potrwa i jaki będzie koniec?")
-  #select("Powrót do gotowości", ("5 minut", "10–30 minut", "1–2 godziny", "kilka godzin lub następnego dnia"), columns: 2, hint: "Gotowość oznacza możliwość kontaktu, rozmowy lub powrotu do aktywności — nie tylko brak eskalacji.")
+  #area("Czas do zaobserwowania gotowości", height: 1.5cm, hint: "Po ilu minutach od zakończenia opisanego zachowania zaobserwowano oznaki gotowości? Możesz podać godzinę. Zaznacz szacunek / brak danych / nie zaobserwowano do końca obserwacji. Potrzeby i oznaki gotowości opisz przy etapie po eskalacji.")
 ])
 
 #pagebreak()
 
 = Formularz rozszerzony
 
+Jeden zapis dotyczy jednego zdarzenia. O — obserwacja, P — przekaz osoby, R — relacja innej osoby, H — hipoteza. Zaznacz źródło przy wpisie; podaj, od kiedy obserwowałaś/obserwowałeś. Nie musisz wypełniać pól, których nie da się ocenić — wpisz „brak danych”.
+
 #meta()
 
 #section("0. Poziom bazowy i kontekst dnia", [
-  #select("Poziom napięcia przed zdarzeniem", ("0 niski / stabilny", "1 podwyższony", "2 wysoki", "3 bardzo wysoki"), columns: 2, hint: "Jak wyglądał stan osoby jeszcze przed bezpośrednim wyzwalaczem?")
-  #select("Czy osoba była zmęczona?", ("Tak", "Nie", "Nie wiem"), columns: 3)
+  #select("Poziom napięcia przed zdarzeniem", ("0 niski / stabilny", "1 podwyższony", "2 wysoki", "3 bardzo wysoki"), columns: 2, hint: "Ocena obserwatora, nie skala diagnostyczna. Dopisz konkretne oznaki i porównaj ze zwykłym funkcjonowaniem osoby; jeśli nie wiesz, pomiń ocenę.")
+  #field("Oznaki będące podstawą oceny napięcia")
+  #select("Czy osoba była zmęczona?",  ("Tak", "Nie", "Nie wiem"), columns: 3)
   #select("Czy osoba spała wystarczająco?", ("Tak", "Nie", "Nie wiem"), columns: 3)
-  #field("Jeśli sen miał znaczenie — doprecyzuj", hint: "Np. krótki sen, pobudki, koszmary, bardzo wczesna pobudka.")
+  #field("Informacje o śnie i ich źródło — jeśli są dostępne", hint: "Np. krótki sen, pobudki, koszmary, bardzo wczesna pobudka.")
   #select("Etap pobytu / kontekst dnia, jeśli dotyczy", ("dzień przyjazdu / zmiany", "dzień wyjazdu / powrotu", "środek tygodnia", "koniec tygodnia", "nie dotyczy"), columns: 2)
+  #select("Czy etap był obciążający? — placówka całodobowa, jeśli dotyczy", ("Tak", "Nie", "Nie wiem", "Nie dotyczy"), columns: 2)
   #select("Czynniki obciążające", (
     "słaby sen / pobudka w nocy", "zmiana planu", "wyjście / powrót / podróż", "wizyta gości / większa liczba osób", "konflikt", "presja czasu", "hałas / tłok", "ból / dyskomfort", "głód / pragnienie", "inne: ........................................"
   ))
@@ -185,85 +198,86 @@
 #section("3. Pierwsze oznaki narastającego napięcia", [
   #select("Czy pojawiły się sygnały?", ("Tak", "Nie", "Nie wiem"), columns: 3)
   #field("Ile czasu przed eskalacją?", hint: "Szacunkowo: minuty, kilkanaście minut, wcześniej w ciągu dnia.")
-  #select("Typ 1: aktywacja", (
+  #select("Obserwowane zmiany ciała i ruchu", (
     "przyspieszone oddychanie", "napięcie mięśniowe", "pot", "drżenie", "rozszerzone źrenice", "ucieczka / walka", "inne: ........................................"
   ))
-  #select("Typ 2: shutdown / zamrożenie", (
+  #select("Obserwowane ograniczenie kontaktu lub aktywności", (
     "patrzenie w jeden punkt / podłogę", "brak reakcji na głos", "spowolnienie ruchów", "opadnięcie ciała", "wycofanie", "inne: ........................................"
   ))
-  #select("Typ 3: sensoryczny", (
+  #select("Obserwowane reakcje na otoczenie", (
     "zatykanie uszu", "zasłanianie oczu", "stereotypie", "unikanie dotyku", "ucieczka z pomieszczenia", "inne: ........................................"
   ))
-  #field("Co zwykle pojawia się najpierw?", hint: "Pierwszy najmniejszy sygnał, który może pomóc zareagować wcześniej.")
-  #select("Czy zapowiada trudniejsze zachowanie?", ("Tak", "Nie", "Nie wiem"), columns: 3)
+  #stage-field("Jak zareagowało otoczenie na pierwsze sygnały trudności? Co osoba zrobiła lub zakomunikowała po tej reakcji?", "Pierwsze sygnały", height: 2.2cm)
+  #field("Co zwykle pojawia się najpierw?",  hint: "Pierwszy najmniejszy sygnał, który może pomóc zareagować wcześniej.")
+  #select("Czy w innych zapisach te sygnały poprzedzały opisane zachowanie?", ("Tak", "Nie", "Nie wiem"), columns: 3)
 ])
 
-#section("3B. Strategie kompensacyjne i maskowanie", [
-  #select("Czy osoba próbowała kontynuować aktywność mimo narastającego napięcia?", ("Tak", "Nie", "Nie wiem"), columns: 3, hint: "Chodzi o „trzymanie się” mimo przeciążenia, nie o świadome udawanie.")
-  #select("Jeśli tak — co pozwoliło osobie „trzymać się razem” przed eskalacją?", (
-    "maskowanie / ukrywanie dyskomfortu", "wycofanie w fantazję / humor / kontrolowanie rozmowy", "wsparcie osoby towarzyszącej", "jasny koniec aktywności", "lęk przed konsekwencjami / oceną", "silna motywacja wewnętrzna", "inne: ........................................"
-  ))
-  #select("Ile czasu osoba „trzymała się” przed eskalacją?", ("kilka minut", "10–30 minut", "ponad 30 minut", "cały dzień — eskalacja później / w domu"), columns: 2)
-])
+#section("3B. Kontynuowanie aktywności, kompensacja i możliwe maskowanie", [
+  #area("Co obserwowano podczas kontynuowania aktywności?", height: 1.5cm, hint: "Zapisz działania, dostępne wsparcie i czas. Samo kontynuowanie nie dowodzi przeciążenia ani maskowania. Możliwe: nie dotyczy / brak danych.")
+  #area("Co osoba przekazała o wysiłku lub dyskomforcie?", height: 1.5cm, hint: "Przekaz osoby (P), także AAC. Brak komunikatu nie oznacza braku doświadczenia.")
+  #area("Co zauważono później?", height: 1.5cm, hint: "Oddziel własną obserwację (O) od relacji innych (R); podaj czas i źródło.")
+  #area("Czy rozważamy kompensację lub maskowanie — na jakiej podstawie?", height: 1.2cm, hint: "Hipoteza (H), nie rozpoznanie. Możliwe: brak podstaw do oceny.")
+], breakable: false)
 
-#section("4. Działania podjęte przed eskalacją", [
-  #select("Faza napięcia w momencie podjęcia działań", ("zielona — możliwa rozmowa", "żółta — narastające napięcie", "czerwona — pełna eskalacja", "trudno określić"), columns: 2)
-  #select("Działania podjęte przed eskalacją", (
+#pagebreak()
+#section("4. Udzielone wsparcie i warunki jego udzielenia", [
+  #select("Podjęte działania", (
     "obniżenie bodźców sensorycznych", "zwiększenie autonomii / wybór", "zapewnienie przewidywalności", "wsparcie interoceptywne", "czas bez wymagań / pauza", "regulacja sensoryczna", "inne: ........................................"
   ))
-  #select("Czy działanie było bezwarunkowe, bez nacisku i negocjacji?", ("Tak", "Nie", "Częściowo", "Nie wiem"), columns: 4)
-  #select("Czy użyto regulatora / strategii regulacyjnej?", ("Tak", "Nie", "Częściowo"), columns: 3)
-  #select("Czy działanie zmniejszyło napięcie?", ("Tak", "Nie", "Częściowo"), columns: 3)
-  #area("Co następnym razem warto zrobić wcześniej?", height: 1.5cm, hint: "Sygnał do wcześniejszej pauzy, obniżenia wymagań, wyboru, regulacji lub zmiany otoczenia.")
+  #select("Czy dostęp do wsparcia uzależniono od wykonania polecenia?", ("Tak", "Nie", "Częściowo", "Nie wiem"), columns: 4)
+  #select("Czy użyto regulatora / strategii regulacyjnej?", ("Tak", "Nie", "Częściowo", "Nie wiem"), columns: 2)
 ])
 
 
 
 #section("5. Opis zachowania", [
-  #area("Opis zachowania — fakty obserwowalne", height: 2.8cm, hint: "Co było widać lub słychać: słowa, ruch, gesty, działania, bez etykiet typu „manipulacja”.")
-  #select("Intensywność", ("0 brak agresji", "1 lekkie", "2 umiarkowane", "3 wysokie ryzyko"), columns: 2)
-  #select("Skutki / szkody, jeśli wystąpiły", ("brak szkód", "krzyk / płacz", "rzucanie przedmiotami", "niszczenie rzeczy", "agresja wobec innych", "autoagresja", "ucieczka / oddalenie się", "inne: ........................................"), columns: 2)
+  #stage-field("Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?", "Eskalacja", height: 2.8cm)
+  #field("Nasilenie opisanego zachowania", hint: "Podaj liczbę, czas lub cechę działania, którą można porównywać. Np. 3 uderzenia dłonią w stół. Nie oceniaj całego zdarzenia skalą agresji.")
+  #select("Skutki / szkody zaobserwowane", ("nie zaobserwowano szkód", "uraz osoby", "uraz innej osoby", "uszkodzenie rzeczy", "przerwanie aktywności", "brak danych", "inne: ........................................"), columns: 2)
+  #field("Opis faktycznych skutków")
+  #field("Potencjalne zagrożenie — oddzielnie od skutków", hint: "Co było możliwym zagrożeniem lub czemu zapobieżono? Nie zapisuj tego jako skutku, który faktycznie nastąpił.")
 ])
 
 
-#section("6. Regulacja i wpływ", [
-  #field("Czas trwania eskalacji", hint: "Od wyraźnego nasilenia do momentu, gdy eskalacja zaczęła opadać.")
-  #select("Czas do pełnego uspokojenia emocjonalnego", ("do 5 minut", "5–15 minut", "15–30 minut", "30–60 minut", "ponad godzinę"), columns: 2)
-  #select("Czas powrotu do gotowości poznawczej / kontaktu", ("od razu po uspokojeniu", "10–30 minut po", "1–2 godziny po", "kilka godzin lub następnego dnia"), columns: 2)
-  #select("Co najbardziej pomogło zakończyć eskalację?", (
-    "czas / przeczekanie bez interwencji", "cisza / wyciszenie bodźców", "obecność bliskiej osoby", "kontakt 1:1", "przerwa od wymagań", "dostęp do regulacji sensorycznej", "wycofanie wymagania", "inne: ........................................"
-  ))
-  #area("Co pogorszyło sytuację albo wydłużyło powrót do regulacji?", height: 1.6cm, hint: "Np. rozmowa za wcześnie, kolejne wymagania, dotyk, hałas, publiczna uwaga.")
-  #select("Co pomogło wrócić do gotowości po sytuacji?", (
-    "cisza i brak bodźców", "sen / drzemka", "jedzenie / picie", "aktywność sensoryczna", "obecność bliskiej osoby bez wymagań", "samotność", "ulubiona aktywność bez presji", "czas", "inne: ........................................"
-  ))
+#pagebreak()
+#section("6. Czas i gotowość", [
+  #area("Czas trwania opisanego zachowania", height: 1.5cm, hint: "Podaj początek i koniec zachowania oraz czas trwania. Zaznacz szacunek / brak danych / trwało do końca obserwacji.")
+  #area("Zmniejszenie obserwowanych oznak napięcia", height: 1.5cm, hint: "Jakie oznaki się zmniejszyły? Po ilu minutach od rozpoczęcia opisanego zachowania to zaobserwowano? Podaj minuty lub godzinę. Możliwe: nie zaobserwowano do końca obserwacji / brak danych.")
+  #area("Czas do zaobserwowania gotowości", height: 1.5cm, hint: "Po ilu minutach od zakończenia opisanego zachowania zaobserwowano oznaki gotowości? Możesz podać godzinę. Zaznacz szacunek / brak danych / nie zaobserwowano do końca obserwacji. Potrzeby i oznaki gotowości opisz w części „Po eskalacji”.")
 ])
 
-#section("7. Po zdarzeniu", [
+#pagebreak()
+#section("7. Po eskalacji", [
+  #stage-field("Czego osoba potrzebowała przed ponownym kontaktem lub aktywnością? Co jej zapewniono i po czym rozpoznano gotowość?", "Po eskalacji", height: 2.2cm)
   #select("Co wydarzyło się po zdarzeniu?", (
     "przejście do spokojniejszego miejsca", "odpoczynek", "rozmowa później", "powrót do aktywności", "sen", "kontakt z bliską osobą", "brak dalszych wymagań", "inne: ........................................"
   ))
-  #select("Czy w tym tygodniu była interwencja fizyczna?", ("Tak", "Nie", "Nie wiem"), columns: 3)
+  #select("Czy podczas tego zdarzenia była interwencja fizyczna?", ("Tak", "Nie", "Nie wiem"), columns: 3)
   #field("Jeśli tak — ile razy?", hint: "Wpisz liczbę lub przybliżenie.")
-  #select("Czy próg reakcji był niższy niż zwykle?", ("Tak", "Nie", "Nie wiem"), columns: 3)
-  #field("Notatka dotycząca interwencji fizycznej / bezpieczeństwa", hint: "Krótko: kontekst, bezpieczeństwo, co można zmienić następnym razem.")
+  #select("Czy osoba reagowała szybciej lub mocniej niż zwykle?",  ("Tak", "Nie", "Nie wiem"), columns: 3)
+  #field("Działanie, kontekst i następstwa interwencji fizycznej / bezpieczeństwo", hint: "Co zrobiono, jakie były skutki i dalsze potrzeby bezpieczeństwa? Bez instrukcji technik fizycznych.")
 ])
 
 #pagebreak()
 
 = Mapa środowiska
 
+#field("Okres obserwacji uwzględniony w mapie")
+#field("Data aktualizacji mapy")
+Zaznacz źródło: O — obserwacja, P — przekaz osoby, R — relacja innej osoby, H — hipoteza. Mapa opisuje aktualną wiedzę, preferencje i przypuszczenia.
+
+
 #meta()
 
 #section("1. Miejsca i preferowane przestrzenie", [
   #select("Gdzie osobie jest najłatwiej?", ("pokój osoby", "salon / wspólna przestrzeń", "kuchnia / jadalnia", "łazienka", "przedpokój / przejścia", "na zewnątrz", "samochód", "inne: ........................................"), columns: 2)
-  #area("Dlaczego te miejsca pomagają?", height: 1.4cm, hint: "Co tam działa: cisza, światło, kontrola bodźców, przewidywalność, osoba towarzysząca.")
+  #area("Co obserwujesz w tych miejscach i co mówi o nich osoba?", height: 1.4cm, hint: "Co tam działa: cisza, światło, kontrola bodźców, przewidywalność, osoba towarzysząca.")
   #select("Jakich miejsc osoba unika albo gdzie jest trudniej?", ("pokój osoby", "salon / wspólna przestrzeń", "kuchnia / jadalnia", "łazienka", "przedpokój / przejścia", "na zewnątrz", "samochód", "inne: ........................................"), columns: 2)
-  #area("Dlaczego te miejsca są trudne?", height: 1.4cm, hint: "Co obciąża: hałas, zapachy, tłok, przejścia, oczekiwanie, brak wpływu.")
+  #area("Co obserwujesz w tych miejscach i co może utrudniać sytuację?", height: 1.4cm, hint: "Co obciąża: hałas, zapachy, tłok, przejścia, oczekiwanie, brak wpływu.")
 ])
 
 #section("2. Aktywności, role i relacje", [
-  #area("Co osoba lubi robić / co ją wzmacnia?", height: 1.4cm, hint: "Aktywności, tematy, relacje, miejsca lub rytuały, które odbudowują zasoby.")
+  #area("Co osoba lubi robić lub wybiera?", height: 1.4cm, hint: "Aktywności, tematy, relacje, miejsca lub rytuały, które odbudowują zasoby.")
   #select("Jaka rola w aktywności jest najłatwiejsza?", (
     "prowadzący / kontrolujący", "uczestnik współpracujący", "obserwator / obecność bez aktywnego udziału", "samodzielnie bez interakcji z innymi"
   ), columns: 2)
@@ -276,7 +290,7 @@
 ])
 
 #section("4. Wsparcie i regulatory", [
-  #area("Z kim osoba najłatwiej współpracuje / przy kim czuje się bezpiecznie?", height: 1.3cm, hint: "Zwróć uwagę na styl kontaktu tej osoby: ton, dystans, brak presji, przewidywalność.")
+  #area("Z kim osoba wybiera kontakt? Jak ten kontakt przebiega?", height: 1.3cm, hint: "Zwróć uwagę na styl kontaktu tej osoby: ton, dystans, brak presji, przewidywalność.")
   #select("Co zmniejsza napięcie?", (
     "cisza / wyciszenie bodźców", "ruch — huśtawka / trampolina / spacer", "ciężar / ucisk", "chłód lub ciepło", "stereotypie / bujanie / skakanie", "jedzenie / picie", "sen / drzemka", "toaleta", "obecność bliskiej osoby bez wymagań", "samotność / wycofanie", "kontakt fizyczny", "dystans / przestrzeń osobista", "wycofanie wymagania", "dostęp do ulubionej aktywności", "wybór / możliwość decyzji", "informacja, ile to potrwa", "inne: ........................................"
   ))
@@ -285,12 +299,12 @@
 
 
 #section("5. Od czego zależy funkcjonowanie?", [
-  #select("Zachowanie / gotowość zależy szczególnie od…", ("hałas", "liczba osób", "zmiana planu", "pora dnia", "sen", "jedzenie / picie", "ból / dyskomfort", "temperatura", "kontakt społeczny", "presja czasu", "oczekiwanie", "przejścia między aktywnościami", "inne: ........................................"), columns: 2)
+  #select("W jakich warunkach obserwujesz różnice zachowania lub gotowości?", ("hałas", "liczba osób", "zmiana planu", "pora dnia", "sen", "jedzenie / picie", "ból / dyskomfort", "temperatura", "kontakt społeczny", "presja czasu", "oczekiwanie", "przejścia między aktywnościami", "inne: ........................................"), columns: 2)
   #area("Jak zmienia się zachowanie w zależności od tych warunków?", height: 1.8cm, hint: "Opisz różnice: kiedy jest łatwiej, kiedy szybciej narasta napięcie, co obniża próg reakcji.")
 ])
 
 #section("6. Bezpieczne przestrzenie i osoby", [
-  #area("Gdzie / przy kim osoba może wracać do regulacji bez dodatkowych wymagań?", height: 2.2cm, hint: "Bez rozmowy naprawczej, pytań i nowych poleceń, dopóki układ nerwowy nie wróci do gotowości.")
+  #area("Gdzie / przy kim osoba może wracać do regulacji bez dodatkowych wymagań?", height: 2.2cm, hint: "Bez rozmowy naprawczej, pytań i nowych poleceń, z uwzględnieniem komunikowanych potrzeb i obserwowanych oznak gotowości.")
 ])
 
 #section("7. Konteksty eskalacji i profilaktyka", [
@@ -298,6 +312,19 @@
   #select("Co może zmniejszyć ryzyko eskalacji?", (
     "uprzedzenie / przygotowanie", "timer / plan wizualny", "wybór kiedy / jak / w jakiej kolejności", "negocjacja / omówienie", "jasny koniec", "brak pośpiechu", "obecność bliskiej osoby", "dostęp do regulacji sensorycznej", "inne: ........................................"
   ), columns: 2)
-  #select("Czy są sytuacje bez agresji mimo trudności?", ("Tak", "Nie", "Nie wiem"), columns: 3)
-  #area("Jeśli tak — gdzie / kiedy i co wtedy pomaga?", height: 1.5cm, hint: "To mogą być warunki ochronne: osoba, miejsce, przewidywalność, wybór, brak presji.")
+  #select("Czy podobne sytuacje zdarzają się bez opisywanej eskalacji?", ("Tak", "Nie", "Nie wiem"), columns: 3)
+  #area("Jeśli tak — co jest podobne, a co inne? Co może pomagać?", height: 1.5cm, hint: "To mogą być warunki ochronne: osoba, miejsce, przewidywalność, wybór, brak presji.")
 ])
+
+#pagebreak()
+#text(size: 17pt, weight: "bold")[Bibliografia towarzysząca formularzom]
+#v(8pt)
+#text(size: 9pt)[Poniższe pozycje przeniesiono z instrukcji Małgorzaty Mikołajczyk „Jak korzystać z formularzy monitorowania”, z sekcji „Podstawa merytoryczna”. Stanowią bibliografię towarzyszącą formularzom, nie potwierdzenie walidacji narzędzia ani trafności każdej jego kategorii. Dane bibliograficzne zachowano zgodnie z instrukcją; nie weryfikowano ich niezależnie.]
+#v(10pt)
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility. _Biological Psychology_, 104, 65–74.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception. _Cortex_, 81, 215–220.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Deci, E. L., & Ryan, R. M. (2000). The "what" and "why" of goal pursuits: Human needs and the self-determination of behavior. _Psychological Inquiry_, 11(4), 227–268.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[O'Nions, E., Christie, P., Gould, J., Viding, E., & Happé, F. (2014). Development of the "Extreme Demand Avoidance Questionnaire" (EDA-Q): Preliminary observations on a trait measure for pathological demand avoidance. _Journal of Child Psychology and Psychiatry_, 55(7), 758–768.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Substance Abuse and Mental Health Services Administration. (2014). _SAMHSA's Concept of Trauma and Guidance for a Trauma-Informed Approach_. HHS Publication No. SMA 14-4884.]]

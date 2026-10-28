@@ -1,0 +1,104 @@
+{
+  "checks": [
+    {
+      "file": "test-results/tests-mobile-form-mobile-e-ffc95-and-download-the-filled-PDF-mobile-chromium/filled-en-mobile.pdf",
+      "pages": 2,
+      "characters": 3015,
+      "outOfPageTextAnchors": 0,
+      "sha256": "49f3df9db7e9557c120490f46bac22ccd8ff3f4b7c4b07a1829801631630b3a0"
+    },
+    {
+      "file": "test-results/tests-mobile-form-mobile-e-ffc95-and-download-the-filled-PDF-mobile-webkit/filled-en-mobile.pdf",
+      "pages": 2,
+      "characters": 3015,
+      "outOfPageTextAnchors": 0,
+      "sha256": "484ec359397ad4d2cb49802214a2bceb9844e2541f3610428d5e5191b96b4a0b"
+    },
+    {
+      "file": "test-results/tests-mobile-form-mobile-p-23fef-and-download-the-filled-PDF-mobile-chromium/filled-pl-mobile.pdf",
+      "pages": 1,
+      "characters": 2681,
+      "outOfPageTextAnchors": 0,
+      "sha256": "8941c670458dbb22665c420685d2b1ea24233ac35177bb2d01443962f13529ff"
+    },
+    {
+      "file": "test-results/tests-mobile-form-mobile-p-23fef-and-download-the-filled-PDF-mobile-webkit/filled-pl-mobile.pdf",
+      "pages": 1,
+      "characters": 2681,
+      "outOfPageTextAnchors": 0,
+      "sha256": "640e207a1073c738a36c071a6880a46347d04aaf06fd887549a2cc38e8fe6895"
+    },
+    {
+      "file": "test-results/tests-monitoring-revision--453be-using-cooperation-as-safety-chromium/map-browser-print.pdf",
+      "pages": 3,
+      "characters": 3211,
+      "outOfPageTextAnchors": 0,
+      "sha256": "f262f02121afb37148ca6440166b42e2f368b0d767327fd1d3a7097308b5d703"
+    },
+    {
+      "file": "test-results/tests-monitoring-revision--453be-using-cooperation-as-safety-chromium/map-revised.pdf",
+      "pages": 2,
+      "characters": 3274,
+      "outOfPageTextAnchors": 0,
+      "sha256": "740783717b4fe9a1eb538a95da6913bc7510ec9c146c8d9463846f016be7a040"
+    },
+    {
+      "file": "test-results/tests-monitoring-revision--87055-eadiness-on-a-narrow-screen-chromium/simple-browser-print.pdf",
+      "pages": 3,
+      "characters": 9105,
+      "outOfPageTextAnchors": 0,
+      "sha256": "9f04946aa1e75aafb276f95007691df15367912a79f40e2e29bcb97e424282f0"
+    },
+    {
+      "file": "test-results/tests-monitoring-revision--87055-eadiness-on-a-narrow-screen-chromium/simple-long-polish.pdf",
+      "pages": 3,
+      "characters": 9588,
+      "outOfPageTextAnchors": 0,
+      "sha256": "40d4a460eaeaf6f44e0bd53f0e4b031d98e52b2ed943248b8113e183b61dad4a"
+    },
+    {
+      "file": "test-results/tests-monitoring-revision--ad156-loads-and-prints-every-step-chromium/incident-browser-print.pdf",
+      "pages": 5,
+      "characters": 6758,
+      "outOfPageTextAnchors": 0,
+      "sha256": "1e8c052c09d47efb8a0f5999d528818e595dcd3b77a4bffbdf8bcd87d8c1c4fb"
+    },
+    {
+      "file": "test-results/tests-monitoring-revision--ad156-loads-and-prints-every-step-chromium/incident-revised.pdf",
+      "pages": 3,
+      "characters": 7296,
+      "outOfPageTextAnchors": 0,
+      "sha256": "46c418290f2ff109a6b003e505d0df5caaec8866eded679fdc36f31d7a9acccc"
+    },
+    {
+      "file": "public/pdf/blank-monitoring-forms.pdf",
+      "pages": 16,
+      "characters": 18284,
+      "outOfPageTextAnchors": 0,
+      "sha256": "983abbe76fc0c631c035231f9023730ddcbac4b49719b61268aaa1dadb95eded"
+    },
+    {
+      "file": "public/pdf/how-to-use-monitoring-forms.pdf",
+      "pages": 11,
+      "characters": 20316,
+      "outOfPageTextAnchors": 0,
+      "sha256": "7e938d4458ab1de41c08e4d67ad063019c0470b989834b40d2f734f64ce9457a"
+    },
+    {
+      "file": "public/pdf/jak-korzystac-z-formularzy-monitorowania.pdf",
+      "pages": 10,
+      "characters": 16642,
+      "outOfPageTextAnchors": 0,
+      "sha256": "6352c81d3d786b8faf7fc568f9a6917ed656ea001e6246ed9c95ec9fc72dbb77"
+    },
+    {
+      "file": "public/pdf/puste-formularze-monitorowania.pdf",
+      "pages": 15,
+      "characters": 16847,
+      "outOfPageTextAnchors": 0,
+      "sha256": "c1f94e472f349f985639707b407e0b9a4d890b04903da55e47d21d06d23f630e"
+    }
+  ],
+  "stageQuestionsAndSourcesChecked": true,
+  "trainingCopiesMatch": true
+}

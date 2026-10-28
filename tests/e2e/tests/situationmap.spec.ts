@@ -162,7 +162,7 @@ test("local storage restores extended mode and environment-map data after page r
     preferredPlace: "Pokój wyciszenia",
     noise: true,
     dependsDescription: "Przy większym hałasie szybciej narasta napięcie.",
-    noAggression: "yes",
+    similarWithoutEscalation: "yes",
   });
 
   await expect(app.savedLocallyToast).toBeVisible();
@@ -176,7 +176,7 @@ test("local storage restores extended mode and environment-map data after page r
   expect(homeMap?.dependsDescription).toBe(
     "Przy większym hałasie szybciej narasta napięcie.",
   );
-  expect(homeMap?.noAggression).toBe("yes");
+  expect(homeMap?.similarWithoutEscalation).toBe("yes");
 
   await page.reload();
 
@@ -186,7 +186,7 @@ test("local storage restores extended mode and environment-map data after page r
   await expect(mapForm.dependsDescriptionField).toHaveValue(
     "Przy większym hałasie szybciej narasta napięcie.",
   );
-  await expect(mapForm.noAggressionSelect).toHaveValue("yes");
+  await expect(mapForm.similarWithoutEscalationSelect).toHaveValue("yes");
 });
 
 // ── Extended form – stepper ───────────────────────────────────────────────────
@@ -295,7 +295,7 @@ test("other option requires a description and marks the step as invalid", async 
 
 // ── Extended form – masking section ──────────────────────────────────────────
 
-test("section 3B shows an additional duration select after choosing Yes", async ({
+test("section 3B keeps observation, the person's account and hypothesis distinct across navigation", async ({
   page,
 }) => {
   const app = new SituationMapPage(page);
@@ -305,11 +305,15 @@ test("section 3B shows an additional duration select after choosing Yes", async 
   await extended.goToStep("masking");
 
   await expect(extended.sectionHeading("masking")).toBeVisible();
-  await expect(extended.maskingDurationSelect).not.toBeVisible();
-
-  await extended.maskingContinuedSelect.selectOption("yes");
-
-  await expect(extended.maskingDurationSelect).toBeVisible();
+  await extended.continuedObservationField.fill("O — dokończyła rysunek przez 4 minuty.");
+  await extended.personAccountField.fill("P — przez AAC: chcę przerwę.");
+  await extended.maskingHypothesisField.fill("H — brak podstaw do oceny maskowania.");
+  await extended.goToStep("before");
+  await extended.goToStep("masking");
+  await expect(extended.personAccountField).toHaveValue("P — przez AAC: chcę przerwę.");
+  await expect(extended.maskingHypothesisField).toHaveValue("H — brak podstaw do oceny maskowania.");
+  const stored = await app.getStoredState();
+  expect((stored as any).forms.home.incident.maskingStrategies).toEqual([]);
 });
 
 // ── Extended form – before-event section ─────────────────────────────────────

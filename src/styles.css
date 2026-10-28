@@ -662,11 +662,14 @@ a:focus-visible {
 }
 
 .about-content {
+  min-width: 0;
   display: grid;
   gap: 18px;
 }
 
 .about-section {
+  min-width: 0;
+  overflow-wrap: anywhere;
   scroll-margin-top: 96px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--line);
@@ -1388,7 +1391,7 @@ a:focus-visible {
 
   .workspace,
   .about-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .about-nav {

@@ -12,10 +12,10 @@ export function resolveRows<T>(
   env: EnvironmentConfig,
   form: SituationForm,
   rows: ExportRow[],
-  mapper: (label: string, value: ExportValue) => T,
+  mapper: (label: string, value: ExportValue, row: ExportRow) => T,
   language: LanguageCode = "pl"
 ): T[] {
   return rows
     .filter((row) => row.shouldInclude?.(env, form) ?? true)
-    .map((row) => mapper(resolveExportLabel(row.label, env, form), translateExportValue(row.value(env, form), language)));
+    .map((row) => mapper(resolveExportLabel(row.label, env, form), translateExportValue(row.value(env, form), language), row));
 }

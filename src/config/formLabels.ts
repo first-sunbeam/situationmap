@@ -1,4 +1,5 @@
 import type { LanguageCode } from "../i18n/useLanguage";
+import { monitoringRevision } from "./monitoringRevision";
 
 export const formLabelsByLanguage = {
   pl: {
@@ -40,9 +41,9 @@ export const formLabelsByLanguage = {
         "2. Jakie były pierwsze sygnały napięcia i jak na nie zareagowano?",
       signalsObserved: "Sygnały",
       adultReaction: "Reakcja osoby wspierającej / otoczenia",
-      behavior: "3. Przebieg sytuacji – co można było zaobserwować?",
-      helped: "4. Co pomogło (lub nie pomogło) wyregulować sytuację?",
-      notes: "5. Wpływ, autonomia i przewidywalność",
+      behavior: monitoringRevision.pl.escalationCourse,
+      helped: monitoringRevision.pl.postEscalationNeeds,
+      notes: "Wpływ, autonomia i przewidywalność",
       predictability: "Czy dla",
       recoveryTime: "6. Czas do odzyskania gotowości do współpracy",
     },
@@ -51,12 +52,12 @@ export const formLabelsByLanguage = {
       beforeSection: "1. Bezpośrednio przed zdarzeniem",
       expectationsSection: "2. Czego oczekiwano w tym momencie?",
       signalsSection: "3. Pierwsze oznaki narastającego napięcia",
-      maskingSection: "3B. Strategie kompensacyjne i maskowanie",
-      actionsSection: "4. Faza napięcia i działania",
+      maskingSection: "3B. Kontynuowanie aktywności, kompensacja i możliwe maskowanie",
+      actionsSection: "4. Udzielone wsparcie i warunki jego udzielenia",
       behaviorSection: "5. Opis zachowania",
-      afterSection: "7. Co wydarzyło się po zdarzeniu?",
+      afterSection: "7. Po eskalacji",
       physicalSection: "7A. Interwencja fizyczna",
-      regulationSection: "6. Zakończenie eskalacji i powrót do równowagi",
+      regulationSection: "6. Czas i gotowość",
       tension: "Poziom napięcia przed zdarzeniem",
       tired: "Zmęczenie / senność",
       slept: "Sen / odpoczynek w ciągu dnia",
@@ -81,11 +82,11 @@ export const formLabelsByLanguage = {
       predictabilityDuration: "Czy było wiadomo, jak długo to potrwa?",
       predictabilityChoice: "Czy była możliwość negocjacji lub wyboru?",
       signalsAppeared: "Czy pojawiły się sygnały?",
-      activationSignals: "Typ 1: Aktywacja (sympatyczny)",
+      activationSignals: "Obserwowane zmiany ciała i ruchu",
       activationSignalsOther: "Jeśli inne, wpisz jakie",
-      shutdownSignals: "Typ 2: Shutdown (zamrożenie/wyłączenie)",
+      shutdownSignals: "Obserwowane ograniczenie kontaktu lub aktywności",
       shutdownSignalsOther: "Jeśli inne, wpisz jakie",
-      sensorySignals: "Typ 3: Sensoryczny",
+      sensorySignals: "Obserwowane reakcje na otoczenie",
       sensorySignalsOther: "Jeśli inne, wpisz jakie",
       timeToEscalation: "Ile czasu przed eskalacją?",
       firstSignal: "Co zwykle pojawia się najpierw?",
@@ -95,13 +96,13 @@ export const formLabelsByLanguage = {
         "Jeśli tak – co pozwoliło osobie „trzymać się razem” przed eskalacją?",
       maskingStrategiesOther: "Jeśli inne, wpisz jakie",
       maskingDuration: "Ile czasu osoba „trzymała się” przed eskalacją?",
-      predicts: "Czy zapowiada trudniejsze zachowanie?",
+      predicts: "Czy w innych zapisach te sygnały poprzedzały opisane zachowanie?",
       phase: "Faza napięcia w momencie podjęcia działań",
-      interventions: "Działania podjęte przed eskalacją",
+      interventions: "Podjęte działania",
       interventionDetails: "Jeśli inne, wpisz jakie",
       unconditional:
         "Czy pomoc/interwencja była dostępna od razu, bez wcześniejszego uspokojenia się, wykonania polecenia lub spełnienia wymagania?",
-      usedRegulator: "Czy skorzystał(a)?",
+      usedRegulator: "Czy użyto regulatora / strategii regulacyjnej?",
       reducedTension: "Czy działanie pomogło na tym etapie?",
       earlierWhat: "Co ta sytuacja pokazuje jako wskazówkę na przyszłość?",
       behavior: "Opis zachowania",
@@ -116,10 +117,10 @@ export const formLabelsByLanguage = {
       physicalCount: "Ile razy?",
       lowerThreshold: "Czy osoba reagowała szybciej lub mocniej niż zwykle?",
       physicalNote: "Notatka o interwencji fizycznej",
-      endedBy: "Co najbardziej pomogło ZAKOŃCZYĆ eskalację?",
+      endedBy: "Co pomogło lub mogło pomóc zakończyć eskalację?",
       endedByOther: "Jeśli inne, wpisz jakie",
       worsened: "Co mogło NASILIĆ napięcie podczas lub po eskalacji?",
-      recoverySupports: "Co pomogło wrócić do RÓWNOWAGI po zdarzeniu?",
+      recoverySupports: "Co pomogło lub mogło pomóc wrócić do gotowości?",
       recoverySupportsOther: "Jeśli inne, wpisz jakie",
     },
     ui: {
@@ -153,17 +154,18 @@ export const formLabelsByLanguage = {
       localStorageNote:
         "Dane zapisują się lokalnie w tej przeglądarce. E-mail otwiera się w domyślnym programie pocztowym z gotową treścią odpowiedzi.",
       savedLocally: "Formularz zapisano lokalnie.",
+      saveFailed: "Nie udało się zapisać danych lokalnie. Nie zamykaj strony; zachowaj zapis przez PDF lub wydruk. Poprzednich danych nie nadpisano, jeśli nie można było utworzyć kopii.",
       validationHeading: "Popraw przed dalszą akcją:",
       simpleIntro:
         "Krótka wersja do szybkiego zgłoszenia sytuacji. Możesz otworzyć wiadomość e-mail albo pobrać PDF i załączyć go ręcznie.",
       simpleStateHint:
-        "Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – to wpływa na szerokość okna tolerancji i ryzyko dysregulacji.",
+        "Oddziel obserwowane oznaki, przekaz osoby, relacje innych i przypuszczenia. Zaznacz źródło O/P/R/H przy wpisie.",
       simpleStateBeforeHint:
         "Np. głód, zmęczenie, przegrzanie, ból, dużo bodźców, słaby sen, zmiana planu wcześniej w dniu.",
       simpleBeforeHint:
         "Np. polecenie, hałas, tłok, koniec aktywności, przejście, korekta zachowania.",
       simpleSignalsHint:
-        "Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja.",
+        "Opisuj konkretne zmiany ciała, głosu, ruchu lub kontaktu. Milczenie i ograniczenie reakcji nie rozpoznają mechanizmu.",
       simpleSignalsObservedHint:
         "Np. milczenie, napięcie ciała, szybsze mówienie, wycofanie, podniesiony głos, zatykanie uszu, ucieczka z pomieszczenia.",
       simpleAdultReactionHint:
@@ -171,14 +173,13 @@ export const formLabelsByLanguage = {
       simpleBehaviorHint:
         "Opisz fakty: słowa, ruchy, odmowa, płacz, krzyk, wycofanie, ucieczka, rzucanie przedmiotami.",
       simpleHelpedHint:
-        "Np. wycofanie wymagania, zmiana miejsca, cisza, czas bez oczekiwań, dostęp do osoby/przedmiotu, wybór. Jeśli nic nie pomogło – wpisz wprost.",
+        "Co zrobiono i jaka zmiana nastąpiła? Po czym to poznajesz lub co przekazała osoba? Możliwe: więcej lub mniej oznak napięcia / brak zauważalnej zmiany / różny przebieg / trudno ocenić.",
       simpleAutonomyHint:
-        "W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym.",
+        "Opisz faktyczne możliwości wyboru, negocjacji, przerwy i odmowy. Nie wyprowadzaj intencji osoby z samego zachowania.",
       decisionPossibilityFor: "Możliwość decyzji dla",
       simpleNotesHint:
         "Czy była możliwość decyzji: kiedy, jak, z kim albo w jakiej kolejności? Czy sytuacja była narzucona, nagła albo bez wyboru?",
-      simpleRecoveryHint:
-        "Od uspokojenia do gotowości na rozmowę/aktywność. Uspokojenie emocjonalne ≠ gotowość poznawcza.",
+      simpleRecoveryHint: monitoringRevision.pl.readinessHint,
       predictabilitySuffix:
         "było wiadomo, co się wydarzy i jak długo to potrwa?",
       incidentIntro:
@@ -192,16 +193,15 @@ export const formLabelsByLanguage = {
       simpleStateQuestion: "1. Co wydarzyło się tuż przed i jaki był stan",
       simpleAutonomyQuestion: "5. Wpływ, autonomia i przewidywalność dla",
       behaviorSectionHint:
-        "Opis obserwowalnego zachowania pomaga odróżnić reakcję układu nerwowego od intencji lub „nieposłuszeństwa”.",
+        "Zapisz słowa, ruchy i działania, bez przypisywania intencji ani mechanizmu. Oddziel zachowanie, rzeczywiste skutki i potencjalne zagrożenie.",
       afterSectionHint:
-        "Ta sekcja opisuje, co wydarzyło się po opanowaniu sytuacji i po powrocie do względnej równowagi.",
-      physicalInterventionHint:
-        "Np. przytrzymanie dla bezpieczeństwa, fizyczne przeniesienie, blokowanie ruchów.",
+        "Opisz dalszy przebieg tego zdarzenia. Nie zakładaj, że samo ustanie zachowania oznacza dobrostan lub gotowość do aktywności.",
+      physicalInterventionHint: monitoringRevision.pl.physicalHint,
       lowerThresholdFor: "Szybsza lub silniejsza reakcja niż zwykle u",
       lowerThresholdHint:
         "Np. napięcie rosło szybciej, trudniej było wrócić do równowagi albo reakcja była silniejsza niż zwykle.",
       expectationsSectionHint:
-        "W PDA brak autonomii i nieprzewidywalność aktywują reakcję zagrożenia w układzie nerwowym.",
+        "Oddziel oczekiwania, dostępne wybory i negocjacje od presji i warunków otrzymania pomocy.",
       influenceFor:
         "Jaki był zakres wpływu, autonomii i przewidywalności w tym momencie dla",
       influenceHint:
@@ -210,82 +210,80 @@ export const formLabelsByLanguage = {
       noInfluenceSuffix: "narzucone albo poza wpływem?",
       noInfluenceHint:
         "Czego osoba nie wiedziała? Co było nagłe, narzucone, nieuniknione albo bez możliwości negocjacji?",
-      maskingSectionHint:
-        "U osób z PDA maskowanie to często nieświadoma strategia „przetrwania” – osoba kontynuuje mimo przeciążenia, a potem następuje opóźniona eskalacja. Czas maskowania + intensywność późniejszego wybuchu pokazują koszt „trzymania się razem”.",
+      maskingSectionHint: monitoringRevision.pl.maskingHint,
       maskingContinuedFor:
         "Kontynuowanie aktywności mimo narastającego napięcia przez",
       maskingGroupLegend: "Strategie maskowania i czas „trzymania się”",
       maskingDurationFor: "Czas „trzymania się” przed eskalacją przez",
       baselineSectionHint:
-        "Osoby autystyczne mogą mieć trudność z rozpoznaniem sygnałów z ciała (interocepcja) i z integracją bodźców zewnętrznych – obie grupy czynników wpływają na szerokość okna tolerancji i ryzyko dysregulacji.",
+        "Zapisz kontekst dnia i źródła informacji. Napięcie jest oceną osoby obserwującej na podstawie indywidualnych oznak, nie wynikiem diagnostycznym.",
       baselineTensionHint: "Jak wyglądał stan osoby przed zdarzeniem?",
       actionsSectionHint:
-        "Interwencja jest skuteczniejsza, gdy odpowiada na typ obciążenia: sensoryczny, interoceptywny, autonomii albo przewidywalności.",
+        "W jednym miejscu opisz działania przed zachowaniem, w jego trakcie i po nim oraz to, co zaobserwowano później. Podaj źródła informacji. Kolejność w czasie sama nie potwierdza przyczyny.",
       phaseHint:
         "Np. możliwa współpraca, narastające napięcie, pełna eskalacja.",
       futureCueHint:
         "Np. co warto zauważyć wcześniej następnym razem albo jakie wsparcie mogłoby pomóc wcześniej.",
       beforeSectionHint:
-        "To, co wydarzyło się bezpośrednio przed, pomaga odróżnić wyzwalacz sytuacyjny od późniejszej reakcji układu nerwowego.",
+        "Zdarzenie bezpośrednio poprzedzające opisuj oddzielnie od wcześniejszego tła. Samo następstwo czasowe nie oznacza ustalonej przyczyny.",
       beforeChoiceHint: "Zaznacz opcje lub dopisz ważny szczegół.",
       beforeDetailsHint:
         "Dopisz fakty, których nie da się jasno zaznaczyć na liście.",
       signalsSectionHint:
-        "Rozróżnienie typu reakcji pomaga dobrać interwencję – shutdown wymaga innego wsparcia niż aktywacja.",
+        "Kategorie pomagają opisać obserwowane zmiany, nie diagnozują aktywacji, shutdown ani zamrożenia. Doprecyzuj, co było widać lub słychać.",
       regulationSectionHint:
-        "Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin.",
+        "Oddziel trwanie zachowania, zmniejszenie obserwowanych oznak napięcia i gotowość do wskazanej aktywności. Brak protestu nie oznacza zgody.",
       escalationRecoveryLegend: "Czas eskalacji i powrotu do dostępności",
       cognitiveRecoveryHintFor:
         "Gotowość na rozmowę, rozumienie poleceń, kontakt wzrokowy lub powrót do aktywności u",
       endedByHint:
-        "To pytanie dotyczy momentu PO pełnej eskalacji – co w końcu zatrzymało kryzys?",
+        "To praktyczna ocena. Opisz podstawę w sekcji po zdarzeniu; możliwe: brak zmiany / trudno ocenić. Zaznaczenie działania nie dowodzi jego skuteczności.",
       worsenedHint:
         "Np. nacisk, pośpiech, hałas, dotyk, obecność dodatkowych osób, próba rozmowy, odmowa, kontynuowanie wymagań.",
-      recoverySupportsHintPrefix:
-        "Uspokojenie emocjonalne ≠ gotowość poznawcza. Układ nerwowy potrzebuje czasu na powrót do trybu „zaangażowania społecznego” – to może trwać od kilku minut do kilku godzin. Szybki „powrót do normy” na zewnątrz przy późniejszej eskalacji wieczorem/w domu może oznaczać kontynuowanie maskowania u",
+      recoverySupportsHintPrefix: monitoringRevision.pl.assessmentHint,
       preferredPlacesFor: "W jakich miejscach",
       preferredPlacesSuffix: "najchętniej przebywa?",
       otherPlace: "Inne miejsce",
       otherConditions: "Inne warunki",
       other: "Inne",
       easiestWhenSuffix: "najłatwiej funkcjonuje, gdy:",
-      preferredReason: "Dlaczego te miejsca? Co je wyróżnia?",
+      preferredReason: "Co obserwujesz w tych miejscach i co mówi o nich osoba?",
       preferredReasonHint:
         "Np. cisza, samotność, przewidywalność, ulubione przedmioty, dostęp do bliskiej osoby, możliwość regulowania bodźców (światło, dźwięk).",
       avoidedPlacesFor: "Z jakich miejsc",
       avoidedPlacesSuffix: "unika lub wychodzi z trudem?",
-      avoidedReason: "Co w tych miejscach aktywuje napięcie?",
+      avoidedReason: "Co obserwujesz w tych miejscach i co może utrudniać sytuację?",
       avoidedReasonHint:
         "Np. hałas, tłok, brak wpływu na bodźce, nieprzewidywalność, narzucone wymagania, obecność innych osób.",
       mapActivitiesTitle: "2. Preferowane aktywności i rola",
       likesFor: "W jakie aktywności",
       likesSuffix: "najchętniej się angażuje?",
       likesHint:
-        "Np. samodzielna zabawa, ekran, ruch (huśtawka, trampolina), tworzenie, czytanie, kontakt z bliską osobą, rutyny.",
+        "Co osoba wybiera lub o czym mówi, że lubi? Oznacz źródło. Preferencja nie jest tym samym co wykazana funkcja wzmacniająca.",
       activityRoleFor: "Jaką rolę",
       activityRoleSuffix: "najczęściej przyjmuje w tych aktywnościach?",
       activityRoleHint:
-        "W PDA preferowana rola to często prowadzący — osoba funkcjonuje najlepiej, gdy ma wpływ na przebieg aktywności.",
+        "Zapisz zaobserwowaną rolę i preferencję osoby oddzielnie; nie zakładaj jednej preferowanej roli na podstawie rozpoznania.",
       mapSupportTitle: "4. Co wspiera i co obniża napięcie",
-      cooperatesWithSuffix: "najłatwiej współpracuje z:",
+      cooperatesWithSuffix: "wybiera kontakt z — jak ten kontakt przebiega?",
       cooperatesWithHint:
         "Np. mama, tata, rodzeństwo, konkretna osoba — opisz, co wyróżnia tę osobę.",
       reducersLabel: "Co OBNIŻA napięcie (reguluje w momencie dyskomfortu)?",
       energySourcesLabel:
-        "Co DAJE energię / motywuje do funkcjonowania mimo przeciążenia?",
+        "Co daje energię / pomaga odbudować zasoby?",
       energySourcesHint:
-        "Np. silne zainteresowanie, ulubiona osoba, satysfakcja z dokończenia, jasny koniec aktywności. W PDA to pokazuje koszt maskowania, a nie brak trudności.",
+        "Oddziel przekaz osoby o odpoczynku od obserwowanej zmiany i hipotezy. Lubienie aktywności nie dowodzi jej funkcji wzmacniającej ani regeneracji.",
       mapDependsTitle: "5. Czynniki zmieniające zachowanie",
       behaviorChangeLabel: "Jak zmienia się zachowanie?",
       safeBaseHint:
-        "Teoria poliwagalna: układ nerwowy potrzebuje „bezpiecznej bazy” — miejsca/osoby, które aktywują tryb zaangażowania społecznego, nie tryb zagrożenia.",
+        "Uwzględnij komunikowane potrzeby, możliwość odmowy i obserwowane oznaki gotowości. Współpraca nie jest dowodem bezpieczeństwa, a cisza — braku obciążenia.",
       safeBaseFor: "Gdzie/z kim",
-      safeBaseSuffix: "czuje się najbezpieczniej?",
+      safeBaseSuffix: "może odpocząć bez dodatkowych wymagań?",
       mapEscalationTitle: "7. Najczęstsze sytuacje eskalacji",
       escalationReducersLabel:
         "Co ZMNIEJSZA ryzyko eskalacji w tych sytuacjach?",
       escalationReducersHint:
-        "W PDA przewidywalność i autonomia zmniejszają aktywację układu zagrożenia.",
+        "Hipotezy do dalszej obserwacji, nie potwierdzone przyczyny. Porównuj podobne sytuacje bez eskalacji i liczbę okazji.",
       noAggressionWhereLabel: "Jakie to sytuacje i co je wyróżnia?",
       noAggressionWhereHint:
         "Sytuacje bez eskalacji pokazują, jakie warunki wspierają regulację. To klucz do projektowania wsparcia.",
@@ -329,8 +327,8 @@ export const formLabelsByLanguage = {
       actionsSummary: "Działania: uzupełnij przynajmniej jedno pole.",
       behaviorSummary: "Opis zachowania: uzupełnij przynajmniej jedno pole.",
       regulationSummary:
-        "Regulacja i wpływ: zaznacz, co najbardziej pomogło zakończyć eskalację.",
-      regulationMessage: "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
+        "Czas i gotowość: opisz trwanie zachowania, zmniejszenie oznak napięcia lub oznaki gotowości; możliwy jest brak danych.",
+      regulationMessage: "Uzupełnij przynajmniej jedno pole; dopuszczalny jest brak danych.",
       afterSummary: "Po zdarzeniu: uzupełnij przynajmniej jedno pole.",
     },
     export: {
@@ -434,9 +432,9 @@ export const formLabelsByLanguage = {
         "2. What were the first signs of tension and how did support/the environment respond?",
       signalsObserved: "Signals",
       adultReaction: "Response from the supporting person / environment",
-      behavior: "3. What happened – what could be observed?",
-      helped: "4. What helped (or did not help) regulate the situation?",
-      notes: "5. Influence, autonomy, and predictability",
+      behavior: monitoringRevision.en.escalationCourse,
+      helped: monitoringRevision.en.postEscalationNeeds,
+      notes: "Influence, autonomy, and predictability",
       predictability: "Was it clear for",
       recoveryTime: "6. Time to readiness for interaction/activity",
     },
@@ -445,12 +443,12 @@ export const formLabelsByLanguage = {
       beforeSection: "1. Immediately before the incident",
       expectationsSection: "2. What was expected at that moment?",
       signalsSection: "3. First signs of rising tension",
-      maskingSection: "3B. Compensatory strategies and masking",
-      actionsSection: "4. Tension phase and actions",
+      maskingSection: "3B. Continuing activity, compensation and possible masking",
+      actionsSection: "4. Support provided and conditions of access",
       behaviorSection: "5. Behavior description",
-      afterSection: "7. What happened after the incident?",
+      afterSection: "7. After escalation",
       physicalSection: "7A. Physical intervention",
-      regulationSection: "6. Ending escalation and returning to balance",
+      regulationSection: "6. Timing and readiness",
       tension: "Tension level before the incident",
       tired: "Tiredness / sleepiness",
       slept: "Sleep / rest during the day",
@@ -476,11 +474,11 @@ export const formLabelsByLanguage = {
       predictabilityDuration: "Was it clear how long it would last?",
       predictabilityChoice: "Was there room for negotiation or choice?",
       signalsAppeared: "Did signals appear?",
-      activationSignals: "Type 1: Activation (sympathetic)",
+      activationSignals: "Observed changes in body and movement",
       activationSignalsOther: "If other, specify",
-      shutdownSignals: "Type 2: Shutdown (freeze/withdrawal)",
+      shutdownSignals: "Observed reduction in contact or activity",
       shutdownSignalsOther: "If other, specify",
-      sensorySignals: "Type 3: Sensory",
+      sensorySignals: "Observed responses to surroundings",
       sensorySignalsOther: "If other, specify",
       timeToEscalation: "How long before escalation?",
       firstSignal: "What usually appears first?",
@@ -491,9 +489,9 @@ export const formLabelsByLanguage = {
       maskingStrategiesOther: "If other, specify",
       maskingDuration:
         "How long did the person continue the activity before escalation?",
-      predicts: "Is this a warning sign for more difficult behavior?",
+      predicts: "Did these signs precede the described behavior in other records?",
       phase: "Tension phase when actions were taken",
-      interventions: "Actions taken before escalation",
+      interventions: "Actions taken",
       interventionDetails: "If other, specify",
       unconditional:
         "Was help/intervention available immediately, without first calming down, following an instruction, or meeting a demand?",
@@ -513,11 +511,11 @@ export const formLabelsByLanguage = {
       lowerThreshold:
         "Did the person react faster or more strongly than usual?",
       physicalNote: "Note about physical intervention",
-      endedBy: "What helped stop the escalation the most?",
+      endedBy: "What helped or may have helped end the escalation?",
       endedByOther: "If other, specify",
       worsened: "What may have increased tension during or after escalation?",
       recoverySupports:
-        "What helped the person return to balance after the incident?",
+        "What helped or may have helped regain readiness?",
       recoverySupportsOther: "If other, specify",
     },
     ui: {
@@ -551,17 +549,18 @@ export const formLabelsByLanguage = {
       localStorageNote:
         "Data is stored locally in this browser. Email opens in your default email app with prepared response content.",
       savedLocally: "Form saved locally.",
+      saveFailed: "Local saving failed. Keep this page open and save a PDF or print the record. Previous data was not overwritten if a backup could not be created.",
       validationHeading: "Please correct before continuing:",
       simpleIntro:
         "A short version for quickly reporting a situation. You can open an email or download a PDF and attach it manually.",
       simpleStateHint:
-        "Autistic people may have difficulty recognizing body signals (interoception) and integrating external stimuli – this affects the window of tolerance and the risk of dysregulation.",
+        "Separate observed signs, the person's communication, others' reports and hypotheses. Mark O/P/R/H next to each piece of information.",
       simpleStateBeforeHint:
         "E.g. hunger, tiredness, overheating, pain, many stimuli, poor sleep, earlier change of plan.",
       simpleBeforeHint:
         "E.g. instruction, noise, crowding, end of activity, transition, behavior correction.",
       simpleSignalsHint:
-        "Distinguishing the reaction type helps choose the intervention – shutdown requires different support than activation.",
+        "Describe concrete changes in body, voice, movement or contact. Silence or reduced response does not establish a mechanism.",
       simpleSignalsObservedHint:
         "E.g. silence, body tension, faster speech, withdrawal, raised voice, covering ears, leaving the room.",
       simpleAdultReactionHint:
@@ -569,14 +568,13 @@ export const formLabelsByLanguage = {
       simpleBehaviorHint:
         "Describe facts: words, movements, refusal, crying, screaming, withdrawal, running away, throwing objects.",
       simpleHelpedHint:
-        "E.g. withdrawing the demand, changing place, silence, time without expectations, access to a person/object, choice. If nothing helped, write that directly.",
+        "What was done and what changed? Give observed signs or the person's communication. More or fewer signs, no noticeable change, mixed course and unable to assess are possible.",
       simpleAutonomyHint:
-        "In PDA, lack of autonomy and unpredictability activate the nervous system threat response.",
+        "Describe actual opportunities for choice, negotiation, breaks and refusal. Behavior alone does not establish intention.",
       decisionPossibilityFor: "Choice available to",
       simpleNotesHint:
         "Was there a choice about when, how, with whom, or in what order? Was the situation imposed, sudden, or without choice?",
-      simpleRecoveryHint:
-        "From calming down to readiness for conversation/activity. Emotional calming ≠ cognitive readiness.",
+      simpleRecoveryHint: monitoringRevision.en.readinessHint,
       predictabilitySuffix: "what would happen and how long it would last?",
       incidentIntro:
         "When describing the situation, record facts, signs of overload, environmental conditions, and actions preceding escalation.",
@@ -590,16 +588,15 @@ export const formLabelsByLanguage = {
         "1. What happened immediately before, and what was the state of",
       simpleAutonomyQuestion: "5. Influence, autonomy, and predictability for",
       behaviorSectionHint:
-        "A description of observable behavior helps distinguish a nervous system reaction from intention or “disobedience”.",
+        "Describe words, movements and actions without inferring intention or mechanism. Separate behavior, actual consequences and potential risk.",
       afterSectionHint:
-        "This section describes what happened after the situation was managed and after returning to relative balance.",
-      physicalInterventionHint:
-        "E.g. holding for safety, physical relocation, blocking movements.",
+        "Record what followed this event. Behavior stopping does not itself establish wellbeing or readiness for activity.",
+      physicalInterventionHint: monitoringRevision.en.physicalHint,
       lowerThresholdFor: "Faster or stronger reaction than usual in",
       lowerThresholdHint:
         "E.g. tension rose faster, returning to balance was harder, or the reaction was stronger than usual.",
       expectationsSectionHint:
-        "In PDA, lack of autonomy and unpredictability activate the nervous system threat response.",
+        "Separate expectations, available choice and negotiation from pressure and conditions for receiving support.",
       influenceFor:
         "What influence, autonomy, and predictability were available at that moment for",
       influenceHint:
@@ -608,80 +605,78 @@ export const formLabelsByLanguage = {
       noInfluenceSuffix: "imposed, or outside their influence?",
       noInfluenceHint:
         "What did they not know? What was sudden, imposed, unavoidable, or without an option to negotiate?",
-      maskingSectionHint:
-        "In PDA, masking is often an unconscious survival strategy – the person continues despite overload, followed by delayed escalation. Masking time + later escalation intensity show the cost of continuing the activity.",
+      maskingSectionHint: monitoringRevision.en.maskingHint,
       maskingContinuedFor: "Continuing activity despite rising tension by",
       maskingGroupLegend: "Masking strategies and time continuing the activity",
       maskingDurationFor: "Time continuing the activity before escalation by",
       baselineSectionHint:
-        "Autistic people may have difficulty recognizing body signals (interoception) and integrating external stimuli – both affect the window of tolerance and the risk of dysregulation.",
+        "Record the day's context and information sources. Tension is observer judgement based on individual signs, not a diagnostic score.",
       baselineTensionHint: "What was the person’s state before the incident?",
       actionsSectionHint:
-        "Intervention is more effective when it matches the type of load: sensory, interoceptive, autonomy, or predictability.",
+        "Use this one block for actions before, during and after the behavior and for subsequent observations. Identify the sources of information. Temporal sequence alone does not establish cause.",
       phaseHint: "E.g. interaction possible, rising tension, full escalation.",
       futureCueHint:
         "E.g. what is worth noticing earlier next time or what support could help earlier.",
       beforeSectionHint:
-        "What happened immediately before helps distinguish a situational trigger from the later nervous system reaction.",
+        "Separate the immediately preceding event from earlier context. Temporal sequence does not establish a cause.",
       beforeChoiceHint: "Select options or add an important detail.",
       beforeDetailsHint:
         "Add facts that cannot be clearly selected from the list.",
       signalsSectionHint:
-        "Distinguishing the reaction type helps choose the intervention – shutdown requires different support than activation.",
+        "These categories describe observed changes, not diagnoses of activation, shutdown or freezing. Specify what was seen or heard.",
       regulationSectionHint:
-        "Emotional calming ≠ cognitive readiness. The nervous system needs time to return to social engagement mode – this may take from minutes to hours.",
+        "Separate behavior duration, reduction in observed signs of tension and readiness for a specified activity. No protest does not mean consent.",
       escalationRecoveryLegend: "Escalation time and return to readiness",
       cognitiveRecoveryHintFor:
         "Readiness for conversation, understanding instructions, eye contact, or return to activity in",
       endedByHint:
-        "This question refers to the moment AFTER full escalation – what finally stopped the crisis?",
+        "A practical judgement. Give its basis after the event; no change / uncertain are possible. Selecting an action does not prove efficacy.",
       worsenedHint:
         "E.g. pressure, hurry, noise, touch, additional people present, trying to talk, refusal, continuing demands.",
-      recoverySupportsHintPrefix:
-        "Emotional calming ≠ cognitive readiness. The nervous system needs time to return to social engagement mode – this may take from minutes to hours. A quick outward “return to normal” with later evening/home escalation may indicate continued masking by",
+      recoverySupportsHintPrefix: monitoringRevision.en.assessmentHint,
       preferredPlacesFor: "In which places does",
       preferredPlacesSuffix: "prefer staying?",
       otherPlace: "Other place",
       otherConditions: "Other conditions",
       other: "Other",
       easiestWhenSuffix: "does best when:",
-      preferredReason: "Why these places? What makes them distinctive?",
+      preferredReason: "What do you observe in these places and what does the person say about them?",
       preferredReasonHint:
         "E.g. silence, being alone, predictability, favorite objects, access to a close person, ability to regulate stimuli (light, sound).",
       avoidedPlacesFor: "Which places does",
       avoidedPlacesSuffix: "avoid or have difficulty leaving?",
-      avoidedReason: "What activates tension in these places?",
+      avoidedReason: "What do you observe in these places and what might make them difficult?",
       avoidedReasonHint:
         "E.g. noise, crowding, lack of influence over stimuli, unpredictability, imposed demands, presence of other people.",
       mapActivitiesTitle: "2. Preferred activities and role",
       likesFor: "Which activities does",
       likesSuffix: "prefer to engage in?",
       likesHint:
-        "E.g. independent play, screen, movement (swing, trampoline), creating, reading, contact with a close person, routines.",
+        "What does the person choose or say they like? Mark the source. Preference is not the same as a demonstrated reinforcing function.",
       activityRoleFor: "What role does",
       activityRoleSuffix: "most often take in these activities?",
       activityRoleHint:
-        "In PDA, the preferred role is often leader — the person does best when they have influence over how the activity unfolds.",
+        "Record observed role and the person's preference separately; do not infer a preferred role from a diagnosis.",
       mapSupportTitle: "4. What supports and lowers tension",
-      cooperatesWithSuffix: "cooperates best with:",
+      cooperatesWithSuffix: "chooses contact with — what happens during contact?",
       cooperatesWithHint:
         "E.g. parent, sibling, or a specific person — describe what makes that person supportive.",
       reducersLabel: "What helps reduce tension?",
       energySourcesLabel:
-        "What gives energy / supports activity despite overload?",
+        "What gives energy / helps restore resources?",
       energySourcesHint:
-        "E.g. strong interest, favorite person, satisfaction from finishing, clear end of activity. In PDA this shows the cost of masking, not lack of difficulty.",
+        "Separate the person's account of rest, observed changes and hypotheses. Liking an activity does not demonstrate reinforcement or recovery.",
       mapDependsTitle: "5. Factors changing behavior",
       behaviorChangeLabel: "How does behavior change?",
       safeBaseHint:
-        "Polyvagal theory: the nervous system needs a “safe base” — places/people that activate social engagement mode, not threat mode.",
+        "Consider communicated needs, opportunities to refuse and observed readiness. Cooperation does not demonstrate safety; silence does not mean no burden.",
       safeBaseFor: "Where/with whom does",
-      safeBaseSuffix: "feel safest?",
+      safeBaseSuffix: "rest without additional demands?",
       mapEscalationTitle: "7. Most common escalation situations",
       escalationReducersLabel:
         "What reduces escalation risk in these situations?",
       escalationReducersHint:
-        "In PDA, predictability and autonomy reduce activation of the threat system.",
+        "Hypotheses for further observation, not established causes. Compare similar situations without escalation and numbers of opportunities.",
       noAggressionWhereLabel:
         "Which situations are these and what makes them distinctive?",
       noAggressionWhereHint:
@@ -727,8 +722,8 @@ export const formLabelsByLanguage = {
       actionsSummary: "Actions: complete at least one field.",
       behaviorSummary: "Behavior description: complete at least one field.",
       regulationSummary:
-        "Regulation and influence: select what helped end the escalation the most.",
-      regulationMessage: "Select what helped end the escalation the most.",
+        "Timing and readiness: record behavior duration, reduced signs of tension or signs of readiness; missing data is possible.",
+      regulationMessage: "Complete at least one field; missing data is a valid answer.",
       afterSummary: "After the incident: complete at least one field.",
     },
     export: {

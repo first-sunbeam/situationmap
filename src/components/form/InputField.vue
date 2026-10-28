@@ -20,10 +20,11 @@ const model = defineModel<string>({ required: true });
     :full="full"
     :hint="hint"
     :error="error"
-    v-slot="{ describedBy, invalid }"
+    v-slot="{ controlId, describedBy, invalid }"
   >
     <input
       v-model="model"
+      :id="controlId"
       class="text-input"
       :class="{ invalid }"
       :type="type"

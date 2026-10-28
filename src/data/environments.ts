@@ -40,7 +40,9 @@ export const optimalConditionOptions = ["cisza_minimalne_bodzce_sluchowe", "przy
 export const reducerOptions = ["cisza_wyciszenie_bodzcow", "ruch_hustawka_trampolina_spacer", "ciezar_ucisk_koc_przytulenie_sciskanie", "chlod_lub_cieplo_zimny_prysznic_ciepla_kapiel", "stereotypie_bujanie_krecenie_podskakiwanie", "jedzenie_picie", "sen_drzemka", "toaleta", "obecnosc_bliskiej_osoby_bez_wymagan_2", "samotnosc_wycofanie_sie", "kontakt_fizyczny_przytulenie", "dystans_przestrzen_osobista", "wycofanie_wymagania", "dostep_do_ulubionej_aktywnosci", "wybor_mozliwosc_decyzji", "informacja_ile_to_potrwa", "other"] as const;
 export const escalationReducerOptions = ["ostrzezenie_przygotowanie_za_5_minut_konczymy", "wizualizacja_timer_plan", "wybor_kiedy_jak_w_jakiej_kolejnosci", "negocjacja_mozliwosc_omowienia_co_sie_wydarzy", "jasny_koniec_konkretna_informacja_ile_potrwa", "brak_pospiechu_elastycznosc_czasowa", "obecnosc_bliskiej_osoby", "dostep_do_regulacji_sensorycznej_np_przedmiot_ruch", "other"] as const;
 
-export const yesNoUnknown = ["yes", "no", "not_sure"] as const;
+export const yesNoUnknown = ["yes", "no", "not_sure", "not_observed", "not_applicable"] as const;
+export const observedChangeOptions = ["fewer_signs", "more_signs", "no_noticeable_change", "mixed_course", "cannot_assess"] as const;
+export const observedHarmOptions = ["no_harm_observed", "injury_to_person", "injury_to_other", "damage_to_objects", "activity_interrupted", "missing_data", "other"] as const;
 export const yesNoPartial = ["yes", "no", "partially"] as const;
 export const tensionLevels = ["0_niski_stabilny", "1_podwyzszony", "2_wysoki", "3_bardzo_wysoki"] as const;
 export const regulationPhase = [
@@ -51,7 +53,7 @@ export const regulationPhase = [
 ];
 export const intensity = ["0_brak_agresji", "1_lekkie", "2_umiarkowane", "3_wysokie_ryzyko"] as const;
 export const calmTime = ["do_5_minut", "5_15_minut", "15_30_minut", "30_60_minut", "ponad_godzine"] as const;
-import type { EnvironmentConfig, SituationForm } from "../types/form";
+import type { EnvironmentConfig, SituationForm, StageResponses } from "../types/form";
 
 export const environments = {
   home: {
@@ -177,10 +179,15 @@ export const environments = {
   }
 } as const satisfies Record<string, EnvironmentConfig>;
 
+function blankStageResponses(): StageResponses {
+  return { earlyResponse: "", earlyResponseSources: "", escalationCourse: "", escalationSources: "", postEscalationNeeds: "", postEscalationSources: "" };
+}
+
 export function blankForm(env: EnvironmentConfig): SituationForm {
   return {
-    meta: { date: "", time: "", place: "", initials: "", lead: "", present: "" },
+    meta: { date: "", time: "", place: "", initials: "", lead: "", present: "", observationFrom: "" },
     simple: {
+      ...blankStageResponses(),
       stateBefore: "",
       antecedents: "",
       signals: "",
@@ -189,9 +196,35 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       helped: "",
       notes: "",
       predictability: "",
-      recoveryTime: ""
+      recoveryTime: "",
+      readinessDetails: ""
     },
     incident: {
+      ...blankStageResponses(),
+      tensionSigns: "",
+      signalsInOtherRecords: "",
+      sleepEnough: "",
+      continuedObservation: "",
+      personAccount: "",
+      laterObservation: "",
+      maskingHypothesis: "",
+      phaseObservation: "",
+      supportConditional: "",
+      actionSequence: "",
+      actionSources: "",
+      observedChange: "",
+      changeEvidence: "",
+      behaviorMeasure: "",
+      observedHarms: [],
+      consequencesDescription: "",
+      potentialRisk: "",
+      behaviorDuration: "",
+      tensionReductionDetails: "",
+      readinessDetails: "",
+      physicalDuringEvent: "",
+      eventPhysicalCount: "",
+      eventPhysicalNote: "",
+      assessmentBasis: "",
       tension: "",
       tired: "",
       slept: "",
@@ -254,6 +287,15 @@ export function blankForm(env: EnvironmentConfig): SituationForm {
       recoverySupportsOther: ""
     },
     map: {
+      observationPeriod: "",
+      preferredObservations: "",
+      avoidedObservations: "",
+      chosenContact: "",
+      restorationSources: "",
+      restConditions: "",
+      updatedAt: "",
+      similarWithoutEscalation: "",
+      comparisonDetails: "",
       preferredPlaces: [],
       preferredPlacesOther: "",
       preferredReason: "",

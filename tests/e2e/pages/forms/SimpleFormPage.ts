@@ -5,9 +5,9 @@ export const SIMPLE_VALIDATION_MESSAGES = {
   time: "Dane podstawowe: uzupełnij pole godzina.",
   place: "Dane podstawowe: uzupełnij pole miejsce.",
   behavior:
-    "Formularz prosty: uzupełnij pole „3. Przebieg sytuacji – co można było zaobserwować?”.",
+    "Formularz prosty: uzupełnij pole „Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?”.",
   helped:
-    "Formularz prosty: uzupełnij pole „4. Co pomogło (lub nie pomogło) wyregulować sytuację?”.",
+    "Formularz prosty: uzupełnij pole „Czego osoba potrzebowała przed ponownym kontaktem lub aktywnością? Co jej zapewniono i po czym rozpoznano gotowość?”.",
   notes:
     "Formularz prosty: uzupełnij pole „Możliwość decyzji dla osoby”.",
 } as const;
@@ -34,15 +34,11 @@ export class SimpleFormPage {
   // ── Fields ────────────────────────────────────────────────────────────────
 
   get behaviorField(): Locator {
-    return this.page.getByLabel(
-      "3. Przebieg sytuacji – co można było zaobserwować?"
-    );
+    return this.page.getByLabel("Jak przebiegała eskalacja? Jakie działania lub zmiany towarzyszyły jej nasilaniu się i ustępowaniu?");
   }
 
   get helpedField(): Locator {
-    return this.page.getByLabel(
-      "4. Co pomogło (lub nie pomogło) wyregulować sytuację?"
-    );
+    return this.page.getByLabel("Czego osoba potrzebowała przed ponownym kontaktem lub aktywnością? Co jej zapewniono i po czym rozpoznano gotowość?");
   }
 
   get otherPeopleField(): Locator {

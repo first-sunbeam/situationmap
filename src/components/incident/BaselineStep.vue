@@ -4,9 +4,11 @@ import ChoiceGroupWithOther from "../form/ChoiceGroupWithOther.vue";
 import FormSection from "../form/FormSection.vue";
 import InputField from "../form/InputField.vue";
 import SelectField from "../form/SelectField.vue";
+import TextAreaField from "../form/TextAreaField.vue";
 
 const {
   labels,
+  revision,
   env,
   form,
   fieldErrors,
@@ -29,7 +31,13 @@ const {
         v-model="form.incident.tension"
         :label="labels.incident.tension"
         :options="tensionLevels"
-        :hint="labels.ui.baselineTensionHint"
+        :hint="revision.tensionHint"
+      />
+      <TextAreaField
+        v-model="form.incident.tensionSigns"
+        :label="revision.tensionSigns"
+        :required="Boolean(form.incident.tension)"
+        :error="fieldErrors['incident.tensionSigns']"
       />
       <SelectField
         v-model="form.incident.tired"
@@ -37,15 +45,13 @@ const {
         :options="yesNoUnknown"
       />
       <SelectField
-        v-model="form.incident.slept"
-        :label="labels.incident.slept"
+        v-model="form.incident.sleepEnough"
+        :label="revision.sleepEnough"
         :options="yesNoUnknown"
       />
       <InputField
         v-model="form.incident.sleepDetails"
-        :label="labels.incident.sleepDetails"
-        :required="form.incident.slept === 'yes'"
-        :error="fieldErrors['incident.sleepDetails']"
+        :label="revision.sleepDetails"
       />
       <template v-if="env.stayStages">
         <SelectField

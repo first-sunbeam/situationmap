@@ -1,513 +1,137 @@
 import type { LanguageCode } from "../i18n/useLanguage";
+import { getMonitoringRevision } from "./monitoringRevision";
 
 const publicPdfPath = (filename: string) => `${import.meta.env.BASE_URL}pdf/${filename}`;
-
-export interface AboutCard {
-  title: string;
-  text: string;
-}
-
-export interface AboutTableRow {
-  section: string;
-  measures: string;
-  purpose: string;
-}
-
+export interface AboutCard { title: string; text: string }
+export interface AboutTableRow { section: string; measures: string; purpose: string }
 export interface AboutSection {
-  id: string;
-  title: string;
-  badge?: string;
-  paragraphs?: string[];
-  note?: string;
-  cards?: AboutCard[];
-  list?: string[];
-  table?: AboutTableRow[];
+  id: string; title: string; badge?: string; paragraphs?: string[]; note?: string;
+  cards?: AboutCard[]; list?: string[]; table?: AboutTableRow[];
+}
+export interface AboutPageContent {
+  title: string; lead: string; navTitle: string; pdfLink: string; pdfText: string; sections: AboutSection[];
 }
 
-export interface AboutPageContent {
-  title: string;
-  lead: string;
-  navTitle: string;
-  pdfLink: string;
-  pdfText: string;
-  sections: AboutSection[];
+// Preserved from the supplied, revised instruction. This is theoretical background,
+// not evidence that the form or its categories have been validated.
+const bibliography = [
+  "Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). Applied Behavior Analysis (3rd ed.). Pearson.",
+  "O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). Functional Assessment and Program Development for Problem Behavior: A Practical Handbook (3rd ed.). Cengage Learning.",
+  "Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility. Biological Psychology, 104, 65–74.",
+  "Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception. Cortex, 81, 215–220.",
+  "Deci, E. L., & Ryan, R. M. (2000). The \"what\" and \"why\" of goal pursuits: Human needs and the self-determination of behavior. Psychological Inquiry, 11(4), 227–268.",
+  "O'Nions, E., Christie, P., Gould, J., Viding, E., & Happé, F. (2014). Development of the \"Extreme Demand Avoidance Questionnaire\" (EDA-Q): Preliminary observations on a trait measure for pathological demand avoidance. Journal of Child Psychology and Psychiatry, 55(7), 758–768.",
+  "Substance Abuse and Mental Health Services Administration. (2014). SAMHSA's Concept of Trauma and Guidance for a Trauma-Informed Approach. HHS Publication No. SMA 14-4884.",
+];
+const pl = getMonitoringRevision("pl");
+const en = getMonitoringRevision("en");
+export function getAboutPageContent(language: LanguageCode): AboutPageContent {
+  return aboutPageByLanguage[language];
 }
 
 export const aboutPageByLanguage: Record<LanguageCode, AboutPageContent> = {
   pl: {
     title: "Jak korzystać z formularzy monitorowania",
-    lead: "Formularze pomagają opisać sytuację trudną w sposób uporządkowany: co wydarzyło się wcześniej, jakie pojawiły się pierwsze sygnały, jak zareagowało otoczenie, co pomogło i ile trwał powrót do gotowości.",
+    lead: "Uporządkowany zapis jednego zdarzenia: kontekst, obserwowane zachowanie, działania otoczenia, późniejsze zmiany i podstawa praktycznej oceny wsparcia.",
     navTitle: "Spis treści",
     pdfLink: publicPdfPath("jak-korzystac-z-formularzy-monitorowania.pdf"),
-    pdfText: "Pobierz opis formularzy PDF",
+    pdfText: "Pobierz instrukcję PDF",
     sections: [
-      {
-        id: "purpose",
-        title: "Po co są formularze",
-        badge: "Instrukcja używania formularzy",
-        paragraphs: [
-          "Formularze pomagają zamienić pojedyncze sytuacje w dane, które można porównywać. Ich celem nie jest ocenianie osoby ani szukanie winy.",
-          "Formularz pomaga sprawdzić: co wydarzyło się przed wzrostem napięcia, jakie sygnały pojawiły się wcześniej, co pomogło, co zwiększyło trudność i jakie wzorce powtarzają się w czasie.",
-          "Dzięki kilku podobnym zapisom można zauważyć powtarzalne pory dnia, typy wymagań, zmiany planu, przeciążające warunki, brak przewidywalności albo długi czas powrotu do gotowości.",
-        ],
-        note: "To narzędzie do zauważania wzorców i planowania wsparcia, nie do budowania listy incydentów.",
-      },
-      {
-        id: "principles",
-        title: "Zasady opisu sytuacji",
-        cards: [
-          {
-            title: "1. Opisuj fakty",
-            text: "Zapisuj to, co można było zobaczyć lub usłyszeć: słowa, ruchy, działania, zmianę tonu głosu, wycofanie albo protest.",
-          },
-          {
-            title: "2. Oddziel tło od triggera",
-            text: "Zaznacz wcześniejsze obciążenia, ale osobno wpisz to, co wydarzyło się bezpośrednio przed wzrostem napięcia.",
-          },
-          {
-            title: "3. Szukaj pierwszych sygnałów",
-            text: "Najważniejsze są momenty przed eskalacją: milczenie, napięcie ciała, przyspieszenie mowy, zamrożenie, wycofanie albo wzrost potrzeby kontroli.",
-          },
-          {
-            title: "4. Notuj reakcję otoczenia",
-            text: "Wpisz, co zrobiły osoby dorosłe lub środowisko: czy wsparcie było dostępne, czy pojawiły się kolejne wymagania, czy osoba miała możliwość przerwy.",
-          },
-          {
-            title: "5. Oddziel uspokojenie od gotowości",
-            text: "Brak krzyku, płaczu lub protestu nie zawsze oznacza gotowość do rozmowy, kolejnych poleceń albo powrotu do aktywności.",
-          },
-        ],
-      },
-      {
-        id: "simple-form",
-        title: "Formularz prosty",
-        paragraphs: [
-          "Formularz prosty służy do szybkiego zapisu po sytuacji. Najlepiej sprawdza się w domu, w szkole i wtedy, gdy nie ma czasu na pełną analizę.",
-          "Zachowuje najważniejsze informacje: stan przed zdarzeniem, pierwsze sygnały, reakcję otoczenia, to, co pomogło, zakres wpływu oraz czas powrotu do gotowości.",
-        ],
-        table: [
-          {
-            section: "1. Stan przed sytuacją",
-            measures:
-              "Sen, głód, ból, hałas, zmiany planu, wcześniejsze trudności.",
-            purpose: "Pokazuje punkt startowy sytuacji.",
-          },
-          {
-            section: "2. Pierwsze sygnały",
-            measures: "To, co pojawiło się przed eskalacją.",
-            purpose:
-              "Pomaga zauważyć moment, w którym wsparcie mogło być potrzebne wcześniej.",
-          },
-          {
-            section: "3. Zachowanie",
-            measures: "Fakty obserwowalne: słowa, ruchy, działania.",
-            purpose: "Oddziela opis od interpretacji intencji.",
-          },
-          {
-            section: "4. Reakcja otoczenia",
-            measures: "Co zrobiły osoby dorosłe lub otoczenie.",
-            purpose:
-              "Pokazuje, czy wsparcie zmniejszało, czy zwiększało trudność.",
-          },
-          {
-            section: "5. Co pomogło",
-            measures: "Co zmniejszyło napięcie lub ułatwiło powrót.",
-            purpose:
-              "Pomaga planować skuteczniejsze wsparcie w podobnych sytuacjach.",
-          },
-          {
-            section: "6. Powrót do gotowości",
-            measures:
-              "Ile czasu trwał powrót do kontaktu, rozmowy lub aktywności.",
-            purpose: "Chroni przed zbyt szybkim dokładaniem kolejnych wymagań.",
-          },
-        ],
-        note: "Formularz prosty nie ma dawać pełnej diagnozy sytuacji. Ma umożliwić szybki zapis danych, które później można porównać.",
-      },
-      {
-        id: "extended-form",
-        title: "Formularz rozszerzony",
-        paragraphs: [
-          "Formularz rozszerzony służy do dokładniejszej analizy sytuacji. Najlepiej sprawdza się przy powtarzających się trudnościach, w pracy zespołowej i podczas planowania wsparcia.",
-          "Pozwala oddzielić obciążenia z całego dnia, bezpośredni trigger, wymagania, przewidywalność, pierwsze sygnały, działania otoczenia, przebieg sytuacji i czas powrotu do gotowości.",
-        ],
-      },
-      {
-        id: "sections",
-        title: "Opis sekcji 0–7",
-        table: [
-          {
-            section: "0. Kontekst dnia",
-            measures:
-              "Sen, zmęczenie, ból, głód, bodźce, wcześniejsze obciążenia.",
-            purpose: "Pomaga ocenić punkt startowy sytuacji.",
-          },
-          {
-            section: "1. Bezpośrednio przed",
-            measures: "Ostatnie minuty przed wzrostem napięcia.",
-            purpose: "Pozwala oddzielić trigger od wcześniejszego tła.",
-          },
-          {
-            section: "2. Wymagania i wpływ",
-            measures: "Co było jasne, co narzucone, na co osoba miała wpływ.",
-            purpose: "Pomaga ocenić rolę przewidywalności, wyboru i autonomii.",
-          },
-          {
-            section: "3. Pierwsze sygnały",
-            measures: "Zmiany zachowania przed eskalacją.",
-            purpose: "Pomaga zauważyć moment na wcześniejsze wsparcie.",
-          },
-          {
-            section: "3B. Maskowanie i kompensacja",
-            measures:
-              "Czy osoba działała dalej mimo widocznych sygnałów trudności.",
-            purpose: "Pokazuje koszt utrzymywania pozornego funkcjonowania.",
-          },
-          {
-            section: "4. Działania otoczenia",
-            measures: "Rodzaj wsparcia i reakcję środowiska.",
-            purpose:
-              "Pozwala sprawdzić, co pomagało, a co zwiększało trudność.",
-          },
-          {
-            section: "5. Zachowanie",
-            measures:
-              "Fakty: słowa, ruchy, krzyk, wycofanie, autoagresja, zniszczenia.",
-            purpose:
-              "Pomaga odejść od oceniania i skupić się na danych obserwowalnych.",
-          },
-          {
-            section: "6. Powrót do gotowości",
-            measures:
-              "Czas i warunki potrzebne do odzyskania kontaktu lub aktywności.",
-            purpose:
-              "Pokazuje, że brak płaczu lub krzyku nie musi oznaczać gotowości do kontaktu.",
-          },
-          {
-            section: "7. Co było później",
-            measures:
-              "Dalszy przebieg sytuacji, kontakt z opiekunem, interwencje, powrót do aktywności.",
-            purpose:
-              "Pozwala ocenić bezpieczeństwo, etykę i ryzyko wtórnej eskalacji.",
-          },
-        ],
-      },
-      {
-        id: "using-data",
-        title: "Jak używać danych z formularzy",
-        paragraphs: [
-          "Formularz ma sens przede wszystkim wtedy, gdy porównujemy kilka sytuacji. Jeden zapis pokazuje pojedynczy dzień. Kilka formularzy pozwala zauważyć wzorzec.",
-        ],
-        list: [
-          "Czy trudności pojawiają się częściej o konkretnej porze dnia?",
-          "Czy wzrost napięcia pojawia się po zmianach planu?",
-          "Czy określony typ wymagań zwiększa trudność?",
-          "Czy osoba potrzebuje długiego czasu na powrót do gotowości?",
-          "Czy konkretne warunki środowiskowe zwiększają obciążenie?",
-          "Czy wsparcie było dostępne wystarczająco wcześnie?",
-        ],
-      },
-      {
-        id: "use",
-        title: "Gdzie można używać formularzy",
-        cards: [
-          {
-            title: "W domu",
-            text: "Wypełniaj krótko po zdarzeniu albo tego samego dnia. Szukaj powtarzalnych wzorców: pory dnia, przejść, hałasu, wymagań i czasu powrotu do gotowości.",
-          },
-          {
-            title: "W szkole",
-            text: "Ustal jeden sposób opisu w zespole. Wpisuj fakty i warunki środowiskowe zamiast interpretacji intencji.",
-          },
-          {
-            title: "W zespole specjalistycznym",
-            text: "Porównuj formularze w serii. Jedno zdarzenie mówi niewiele; kilka podobnych zdarzeń pokazuje wzorzec.",
-          },
-        ],
-      },
-      {
-        id: "limits",
-        title: "Czego formularz nie robi",
-        list: [
-          "Nie diagnozuje autyzmu, ADHD, PDA, traumy ani innych trudności rozwojowych lub psychicznych.",
-          "Nie służy do przypisywania złej woli, oceniania charakteru ani budowania narracji o „trudnym dziecku”.",
-          "Nie służy do uzasadniania kar, wykluczania ani ograniczania praw dziecka.",
-          "Nie zastępuje diagnozy, funkcjonalnej oceny zachowania, planu wsparcia ani superwizji klinicznej.",
-          "Nie daje jednej magicznej odpowiedzi — daje materiał do myślenia, porównywania i testowania hipotez.",
-        ],
-        note: "Formularz ma pomagać w myśleniu o sytuacji, nie zamykać jej w jednej interpretacji.",
-      },
-      {
-        id: "not-assumptions",
-        title: "Czego formularz nie zakłada",
-        list: [
-          "Nie zakłada, że każde wymaganie jest szkodliwe.",
-          "Nie zakłada, że każda trudność wynika wyłącznie z sensoryki.",
-          "Nie zakłada, że wsparcie oznacza brak granic.",
-          "Nie zakłada, że analiza kontekstu wyklucza odpowiedzialność dorosłych za bezpieczeństwo.",
-          "Nie zakłada, że celem jest usunięcie wszystkich wymagań.",
-        ],
-        note: "Celem jest lepsze dawkowanie wymagań, wcześniejsze zauważanie sygnałów, zmniejszanie niepotrzebnego przeciążenia i budowanie bardziej przewidywalnego środowiska.",
-      },
-      {
-        id: "background",
-        title: "Literatura i podstawa merytoryczna",
-        paragraphs: [
-          "Formularze opierają się na analizie funkcjonalnej zachowania, obserwacji kontekstu środowiskowego, podejściach trauma-informed oraz wiedzy dotyczącej regulacji, interocepcji, sensoryki, autonomii i przewidywalności.",
-        ],
-        list: [
-          "Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). Applied Behavior Analysis.",
-          "Allen et al. (2024). Neurodiversity-Affirming Applied Behavior Analysis. Behavior Analysis in Practice.",
-          "Mathur, S. K., Renz, E., & Tarbox, J. (2024). Affirming Neurodiversity within Applied Behavior Analysis. Behavior Analysis in Practice.",
-          "O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). Functional Assessment and Program Development for Problem Behavior.",
-          "Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility.",
-          "Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception.",
-          "Deci, E. L., & Ryan, R. M. (2000). The what and why of goal pursuits: Human needs and the self-determination of behavior.",
-          "O'Nions, E., Christie, P., Gould, J., Viding, E., & Happé, F. (2014). Development of the Extreme Demand Avoidance Questionnaire.",
-          "Substance Abuse and Mental Health Services Administration. (2014). SAMHSA's Concept of Trauma and Guidance for a Trauma-Informed Approach.",
-        ],
-      },
+      { id: "recording", title: "Zasady zapisu i oceny", paragraphs: [pl.sources, pl.assessmentHint], note: "Bibliografia wskazuje podstawy teoretyczne. Nie stanowi dowodu walidacji formularza ani trafności każdej kategorii." },
+      { id: "purpose", title: "Po co są formularze", paragraphs: [
+        "Formularze pomagają porównywać sytuacje i planować wsparcie bez oceniania osoby ani przypisywania winy. Oddzielają wcześniejsze tło, zdarzenie bezpośrednio poprzedzające, zachowanie i działania otoczenia.",
+        "Kilka zapisów może wskazać wzorzec, ale nie ustala przyczyny. Nie jest to lista problemowych zachowań ani narzędzie do uzasadniania kar.",
+      ] },
+      { id: "principles", title: "Zasady opisu sytuacji", cards: [
+        { title: "1. Opisuj fakty obserwowalne", text: "Zapisz słowa, ruchy i działania, np. „zacisnął dłonie”, „powtarzała: nie chcę”. Nie wpisuj „manipulował” ani „testowała granice”. Przekaz osoby (także AAC) oznacz P; interpretację oznacz H." },
+        { title: "2. Oddziel tło od zdarzenia bezpośrednio poprzedzającego", text: "Kontekst dnia i ostatnie minuty to różne informacje. Nie nazywaj zdarzenia ustaloną przyczyną tylko dlatego, że wystąpiło wcześniej." },
+        { title: "3. Zapisuj pierwsze sygnały", text: "Co konkretnie zmieniło się w ruchu, głosie, ciele lub kontakcie? Kategorie sygnałów nie rozpoznają mechanizmu shutdown, zamrożenia ani aktywacji autonomicznej." },
+        { title: "4. Notuj działanie i późniejszą obserwację", text: "Kto, co i kiedy zrobił? Co zmieniono w otoczeniu? Co obserwowano później? Oddziel warunki udzielenia pomocy, presję i negocjację. Dopiero potem oceń, co mogło pomóc." },
+        { title: "5. Oddziel zachowanie, skutki i ryzyko", text: "Nasilenie opisuj liczbą, czasem lub inną mierzalną cechą wybranego zachowania. Uraz lub uszkodzenie rzeczy zapisuj jako skutek, a możliwe zagrożenie osobno. Nie wyliczaj sumy diagnostycznej." },
+        { title: "6. Nie utożsamiaj ciszy ze zgodą", text: "Brak krzyku lub agresji nie dowodzi dobrostanu. Kontakt, gotowość do określonej aktywności i zgoda na nią to różne informacje." },
+      ] },
+      { id: "stages", title: "Trzy etapy opisu", cards: [
+        { title: pl.stageNames.earlyResponse, text: pl.earlyResponse },
+        { title: pl.stageNames.escalationCourse, text: pl.escalationCourse },
+        { title: pl.stageNames.postEscalationNeeds, text: pl.postEscalationNeeds },
+      ], note: pl.stageHint, paragraphs: ["Przy każdym opisie jest pole na źródła O/P/R/H — wskaż, których informacji dotyczą. Nie ma osobnego podsumowania „co pomogło”."] },
+      { id: "simple-form", title: "Formularz prosty", paragraphs: [
+        "Krótki zapis po jednym zdarzeniu, gdy pozwala na to bezpieczeństwo. Zachowuje kontekst, pierwsze sygnały, trzy opisy etapów, wpływ osoby, przewidywalność i czas gotowości.",
+        "Działania i reakcje zapisuj przy odpowiednim etapie: pierwsze sygnały, eskalacja albo po eskalacji. Możliwe są brak zauważalnej zmiany, nasilenie oznak, różny przebieg i trudność oceny. Można udzielić wsparcia, zanim ustalimy przyczynę trudności. Zapisz, co zrobiono i co zaobserwowano później.",
+      ], note: "Nie musisz zgadywać. Wpisz „nie wiem”, „nie obserwowano”, „nie dotyczy” lub „brak danych” zgodnie z sytuacją. Bardziej szczegółowe porównania i hipotezy zostaw do wersji rozszerzonej." },
+      { id: "extended-form", title: "Formularz rozszerzony — sekcje 0–7", table: [
+        { section: "0. Poziom bazowy i kontekst dnia", measures: "Sen, zmęczenie, ból, bodźce, wcześniejsze obciążenia; indywidualne oznaki napięcia.", purpose: "Ocena osoby obserwującej, nie skala diagnostyczna. Przy poziomie napięcia podaj podstawę i porównanie ze zwykłym funkcjonowaniem." },
+        { section: "1. Bezpośrednio przed zdarzeniem", measures: "Obserwowane zdarzenie w ostatnich minutach.", purpose: "Oddziela poprzedzające zdarzenie od tła i hipotezy o przyczynie." },
+        { section: "2. Czego oczekiwano w tym momencie?", measures: "Wymagania, wybór, wpływ, negocjacja i przewidywalność.", purpose: "Opisuje dostępne możliwości, nie domniemany mechanizm reakcji." },
+        { section: "3. Pierwsze oznaki narastającego napięcia", measures: "Zmiany ciała, ruchu, kontaktu i aktywności oraz reakcja otoczenia i późniejsza odpowiedź osoby.", purpose: "Pomaga ustalić obserwowalny sygnał do wcześniejszego wsparcia." },
+        { section: "3B. Kontynuowanie aktywności, kompensacja i możliwe maskowanie", measures: "Działania w trakcie aktywności, przekaz osoby, późniejsze obserwacje i odrębna hipoteza.", purpose: "Kontynuowanie samo nie dowodzi lęku, przeciążenia ani maskowania. Sam formularz nie mierzy ukrytych kosztów." },
+        { section: "4. Udzielone wsparcie i warunki jego udzielenia", measures: "Rodzaj wsparcia i warunki dostępu do niego.", purpose: "Oddziela dostępność pomocy, nacisk i negocjacje. Nie powtarza opisu reakcji." },
+        { section: "5. Opis zachowania", measures: "Przebieg eskalacji i towarzyszące działania lub zmiany; mierzalne nasilenie, skutki i zagrożenie.", purpose: "Nie łączy agresji, skutków i ryzyka w jeden wynik." },
+        { section: "6. Czas i gotowość", measures: "Trwanie zachowania, zmniejszenie oznak napięcia i gotowość do konkretnej aktywności.", purpose: "Rozdziela trzy różne informacje i ich punkty odniesienia w czasie." },
+        { section: "7. Po eskalacji / 7A. Interwencja fizyczna", measures: "Potrzeby, zapewnione wsparcie i oznaki gotowości oraz dalszy przebieg i ewentualna interwencja podczas tego zdarzenia.", purpose: "Opis działania, następstw i bezpieczeństwa, bez instrukcji technik fizycznych. Nie jest to podsumowanie tygodnia." },
+      ] },
+      { id: "time", title: "Jak zapisywać czas i gotowość", list: [pl.durationHint, pl.reductionHint, pl.readinessHint], note: "Przykład sposobu liczenia czasu: krzyk trwał 12:00–12:05 (5 minut). O 12:08 osoba przestała zaciskać dłonie — 8 minut od początku krzyku. O 12:15 wybrała książkę i zaczęła czytać — oznaki gotowości do czytania zaobserwowano 10 minut od zakończenia krzyku. Nie oznacza to gotowości ani zgody na inne zadanie. Nie przeliczaj dawnych przedziałów czasu na dokładne minuty. „Nie zaobserwowano do końca obserwacji” różni się od braku danych." },
+      { id: "environment-map", title: "Mapa środowiska", paragraphs: [pl.mapSources,
+        "Podaj okres obserwacji i datę aktualizacji. Oddziel to, co osoba wybiera lub lubi, od obserwacji jej zachowania i hipotez o warunkach wspierających. Lubienie nie dowodzi funkcji wzmacniającej, a współpraca — poczucia bezpieczeństwa.",
+        "Zapisz również podobne okoliczności bez opisywanej eskalacji. Co było podobne, a co inne? Jakie są źródła i ile było okazji? Nie zakładaj, że cisza oznacza brak obciążenia.",
+      ] },
+      { id: "using-data", title: "Jak używać danych z formularzy", paragraphs: [
+        "Porównuj kilka zapisów, podobne sytuacje bez eskalacji i liczbę okazji. Dwa zdarzenia w dwóch okazjach to inna informacja niż dwa zdarzenia w dwudziestu okazjach. Powtarzalny związek i kolejność czasowa nie potwierdzają przyczyny.",
+        "Szukaj warunków, pór dnia, typów wymagań i momentów dostępu do wsparcia. Formułuj hipotezy do dalszej obserwacji, uwzględniając przekaz osoby i alternatywne wyjaśnienia.",
+      ], note: "Przykład zapisu (fikcyjny): O — o 12:05 wyłączono radio. O — do 12:08 osoba nadal zasłaniała uszy. P — wskazała w AAC „za jasno”. H — do sprawdzenia rola światła. Nie wpisujemy automatycznie, że cisza pomogła." },
+      { id: "limits", title: "Czego formularz nie robi i nie zakłada", list: [
+        "Nie diagnozuje autyzmu, ADHD, PDA, traumy ani mechanizmu reakcji.",
+        "Nie zastępuje diagnozy, funkcjonalnej oceny zachowania, planu wsparcia ani superwizji klinicznej.",
+        "Nie służy do oceniania charakteru, przypisywania złej woli, uzasadniania kar lub ograniczania praw osoby.",
+        "Nie zakłada, że każde wymaganie szkodzi, że każda trudność wynika z sensoryki lub że wsparcie oznacza brak granic.",
+        "Analiza kontekstu nie znosi odpowiedzialności za bezpieczeństwo. Celem nie jest usunięcie wszystkich wymagań, lecz dostosowanie wsparcia i środowiska.",
+      ] },
+      { id: "legacy", title: "Zapisy z poprzedniej wersji", paragraphs: [pl.legacyHint,
+        "Dane nadal zapisują się lokalnie. Starsze pola pozostają dostępne w rozwijanej części formularza i w oddzielnej sekcji eksportu. Nowe pytania wymagają własnego wpisu; nie dopisujemy źródeł O/P/R/H do dawnych danych automatycznie.",
+      ] },
+      { id: "background", title: "Literatura i podstawa merytoryczna", paragraphs: [
+        "Poniższa bibliografia pochodzi z dostarczonej instrukcji Małgorzaty Mikołajczyk. Dotyczy podstaw teoretycznych, a nie walidacji narzędzia. Nie potwierdza trafności każdej kategorii ani skuteczności działań w konkretnej sytuacji. Dane bibliograficzne zachowano zgodnie z instrukcją; nie weryfikowano ich niezależnie.",
+      ], list: bibliography },
     ],
   },
-
   en: {
     title: "How to use monitoring forms",
-    lead: "The forms help describe a difficult situation in a structured way: what happened before, what early signs appeared, how the environment responded, what helped, and how long it took to regain readiness.",
-    navTitle: "Contents",
-    pdfLink: publicPdfPath("how-to-use-monitoring-forms.pdf"),
-    pdfText: "Download PDF guide",
+    lead: "A structured record of one event: context, observed behavior, actions, subsequent changes and the basis for practical judgements about support.",
+    navTitle: "Contents", pdfLink: publicPdfPath("how-to-use-monitoring-forms.pdf"), pdfText: "Download PDF guide",
     sections: [
-      {
-        id: "purpose",
-        title: "Why use these forms",
-        badge: "Form instruction guide",
-        paragraphs: [
-          "The forms help turn individual situations into data that can be compared over time. Their purpose is not to judge the person or assign blame.",
-          "The form helps identify what happened before tension increased, what early signs appeared, what helped, what made the situation harder, and what patterns repeat over time.",
-          "Several similar records can reveal repeated times of day, types of demands, changes in routine, difficult environmental conditions, lack of predictability, or long recovery time.",
-        ],
-        note: "This is a tool for noticing patterns and planning support, not for building a list of incidents.",
-      },
-      {
-        id: "principles",
-        title: "Principles for describing situations",
-        cards: [
-          {
-            title: "1. Describe facts",
-            text: "Record what could be seen or heard: words, movements, actions, changes in tone of voice, withdrawal, or protest.",
-          },
-          {
-            title: "2. Separate background from trigger",
-            text: "Note earlier demands or stressors, but separately record what happened directly before tension increased.",
-          },
-          {
-            title: "3. Look for early signs",
-            text: "The most important moments are before escalation: silence, body tension, faster speech, freezing, withdrawal, or increased need for control.",
-          },
-          {
-            title: "4. Record the environmental response",
-            text: "Describe what adults or the environment did: whether support was available, whether more demands appeared, and whether the person could take a break.",
-          },
-          {
-            title: "5. Separate calming from readiness",
-            text: "The absence of crying, shouting, or protest does not always mean readiness for conversation, new instructions, or return to activity.",
-          },
-        ],
-      },
-      {
-        id: "simple-form",
-        title: "Simple form",
-        paragraphs: [
-          "The simple form is for quick recording after a situation. It works best at home, at school, and whenever there is no time for full analysis.",
-          "It keeps the most important information: state before the event, early signs, environmental response, what helped, degree of control, and time needed to regain readiness.",
-        ],
-        table: [
-          {
-            section: "1. State before the situation",
-            measures:
-              "Sleep, hunger, pain, noise, changes in routine, earlier difficulties.",
-            purpose: "Shows the starting point of the situation.",
-          },
-          {
-            section: "2. Early signs",
-            measures: "What appeared before escalation.",
-            purpose:
-              "Helps identify when earlier support may have been needed.",
-          },
-          {
-            section: "3. Behavior",
-            measures: "Observable facts: words, movements, actions.",
-            purpose: "Separates description from interpretation of intent.",
-          },
-          {
-            section: "4. Environmental response",
-            measures: "What adults or the environment did.",
-            purpose: "Shows whether support reduced or increased difficulty.",
-          },
-          {
-            section: "5. What helped",
-            measures: "What reduced tension or supported recovery.",
-            purpose: "Helps plan more effective support in similar situations.",
-          },
-          {
-            section: "6. Return to readiness",
-            measures:
-              "How long it took to return to contact, conversation, or activity.",
-            purpose: "Protects against adding new demands too early.",
-          },
-        ],
-        note: "The simple form is not meant to provide a full explanation. It creates a quick record of data that can later be compared.",
-      },
-      {
-        id: "extended-form",
-        title: "Extended form",
-        paragraphs: [
-          "The extended form is for more detailed analysis. It works best with repeated difficulties, team-based work, and support planning.",
-          "It separates the daily load, immediate trigger, demands, predictability, early signs, environmental response, course of the situation, and recovery time.",
-        ],
-      },
-      {
-        id: "sections",
-        title: "Sections 0–7",
-        table: [
-          {
-            section: "0. Daily context",
-            measures:
-              "Sleep, tiredness, pain, hunger, stimuli, earlier demands.",
-            purpose: "Helps assess the starting point of the situation.",
-          },
-          {
-            section: "1. Immediately before",
-            measures: "The last minutes before tension increased.",
-            purpose:
-              "Separates the trigger from earlier background conditions.",
-          },
-          {
-            section: "2. Demands and control",
-            measures:
-              "What was clear, what was imposed, and what the person could influence.",
-            purpose:
-              "Helps assess the role of predictability, choice, and autonomy.",
-          },
-          {
-            section: "3. Early signs",
-            measures: "Changes in behavior before escalation.",
-            purpose: "Helps identify the moment for earlier support.",
-          },
-          {
-            section: "3B. Masking and compensation",
-            measures:
-              "Whether the person continued despite visible signs of difficulty.",
-            purpose: "Shows the cost of maintaining apparent functioning.",
-          },
-          {
-            section: "4. Environmental actions",
-            measures: "Type of support and environmental response.",
-            purpose:
-              "Helps identify what helped and what increased difficulty.",
-          },
-          {
-            section: "5. Behavior",
-            measures:
-              "Facts: words, movements, shouting, withdrawal, self-injury, damage.",
-            purpose:
-              "Helps move away from judgment and focus on observable data.",
-          },
-          {
-            section: "6. Return to readiness",
-            measures:
-              "Time and conditions needed to regain contact or activity.",
-            purpose:
-              "Shows that absence of crying or shouting does not necessarily mean readiness for contact.",
-          },
-          {
-            section: "7. What happened later",
-            measures:
-              "Further course of the situation, caregiver contact, interventions, return to activity.",
-            purpose:
-              "Helps review safety, ethics, and risk of renewed escalation.",
-          },
-        ],
-      },
-      {
-        id: "using-data",
-        title: "How to use the data",
-        paragraphs: [
-          "The form is most useful when several situations are compared. One record shows one day. Several forms can reveal a pattern.",
-        ],
-        list: [
-          "Do difficulties appear more often at a specific time of day?",
-          "Does tension increase after changes in routine?",
-          "Does a specific type of demand increase difficulty?",
-          "Does the person need a long time to regain readiness?",
-          "Do specific environmental conditions increase load?",
-          "Was support available early enough?",
-        ],
-      },
-      {
-        id: "use",
-        title: "Where the forms can be used",
-        cards: [
-          {
-            title: "At home",
-            text: "Complete the form soon after the situation or on the same day. Look for repeated patterns: time of day, transitions, noise, demands, and recovery time.",
-          },
-          {
-            title: "At school",
-            text: "Use one shared description approach across the team. Record facts and environmental conditions instead of interpretations of intent.",
-          },
-          {
-            title: "In a specialist team",
-            text: "Compare forms over time. One incident shows little; several similar incidents reveal a pattern.",
-          },
-        ],
-      },
-      {
-        id: "limits",
-        title: "What the form does not do",
-        list: [
-          "It does not diagnose autism, ADHD, PDA, trauma, or other developmental or mental health difficulties.",
-          "It is not for assigning bad intent, judging character, or building a narrative about a difficult child.",
-          "It is not for justifying punishment, exclusion, or restricting a child’s rights.",
-          "It does not replace diagnosis, functional behavior assessment, a support plan, or clinical supervision.",
-          "It does not provide one magic answer — it provides material for thinking, comparison, and hypothesis testing.",
-        ],
-        note: "The form is meant to support thinking about the situation, not close it inside one interpretation.",
-      },
-      {
-        id: "not-assumptions",
-        title: "What the form does not assume",
-        list: [
-          "It does not assume that every demand is harmful.",
-          "It does not assume that every difficulty is purely sensory.",
-          "It does not assume that support means lack of boundaries.",
-          "It does not assume that contextual analysis removes adult responsibility for safety.",
-          "It does not assume that the goal is to remove all demands.",
-        ],
-        note: "The goal is better pacing of demands, earlier noticing of warning signs, reducing unnecessary load, and building a more predictable environment.",
-      },
-      {
-        id: "background",
-        title: "Literature and knowledge base",
-        paragraphs: [
-          "The forms are based on functional behavior assessment, observation of environmental context, trauma-informed approaches, and knowledge related to regulation, interoception, sensory processing, autonomy, and predictability.",
-        ],
-        list: [
-          "Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). Applied Behavior Analysis.",
-          "Allen et al. (2024). Neurodiversity-Affirming Applied Behavior Analysis. Behavior Analysis in Practice.",
-          "Mathur, S. K., Renz, E., & Tarbox, J. (2024). Affirming Neurodiversity within Applied Behavior Analysis. Behavior Analysis in Practice.",
-          "O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). Functional Assessment and Program Development for Problem Behavior.",
-          "Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility.",
-          "Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception.",
-          "Deci, E. L., & Ryan, R. M. (2000). The what and why of goal pursuits: Human needs and the self-determination of behavior.",
-          "O'Nions, E., Christie, P., Gould, J., Viding, E., & Happé, F. (2014). Development of the Extreme Demand Avoidance Questionnaire.",
-          "Substance Abuse and Mental Health Services Administration. (2014). SAMHSA's Concept of Trauma and Guidance for a Trauma-Informed Approach.",
-        ],
-      },
+      { id: "recording", title: "Recording and assessment", paragraphs: [en.sources, en.assessmentHint], note: "The bibliography provides theoretical background, not evidence of validation of the form or its categories." },
+      { id: "purpose", title: "Why use the forms", paragraphs: ["Compare situations and plan support without judging the person or assigning blame. Separate earlier context, the immediately preceding event, behavior and environmental actions. Several records may suggest a pattern; they do not establish a cause."] },
+      { id: "principles", title: "Principles", cards: [
+        { title: "Describe observable facts", text: "Record words, movements and actions, not manipulation or testing boundaries. Mark the person's communication, including AAC, P and your hypothesis H." },
+        { title: "Separate context from the immediately preceding event", text: "An event happening first does not establish that it caused what followed." },
+        { title: "Record concrete changes", text: "Body, voice, movement, contact and response to surroundings. The categories do not diagnose shutdown, freezing or autonomic activation." },
+        { title: "Action, then observation, then judgement", text: "Record who did what and when, conditions for support, pressure and negotiation. Give the observable basis for your judgement. No change and uncertainty are valid outcomes." },
+        { title: "Separate behavior, consequences and risk", text: "Use count, duration or another measurable feature. Record actual injury or damage separately from potential risk; do not calculate a diagnostic total." },
+        { title: "Silence is not consent", text: "No screaming or aggression does not demonstrate wellbeing. Contact, readiness for a specific activity and consent are separate information." },
+      ] },
+      { id: "stages", title: "Three stages of the account", cards: [
+        { title: en.stageNames.earlyResponse, text: en.earlyResponse },
+        { title: en.stageNames.escalationCourse, text: en.escalationCourse },
+        { title: en.stageNames.postEscalationNeeds, text: en.postEscalationNeeds },
+      ], note: en.stageHint, paragraphs: ["Each description has a source field: enter O/P/R/H and identify which information each supports. There is no separate what-helped summary."] },
+      { id: "simple-form", title: "Simple form", paragraphs: ["A quick record of one event, made when safe: context, early signs, the three stage descriptions, choice, predictability and readiness timing. Record actions and responses at the relevant stage. No noticeable change, increased signs, a mixed course or inability to assess are possible. Do not guess; use unknown, not observed, not applicable or missing data as appropriate. Detailed comparison and hypotheses belong in the extended form."] },
+      { id: "extended-form", title: "Extended form — sections 0–7", table: [
+        { section: "0. Baseline and context", measures: "Sleep, body state, environmental conditions and earlier load.", purpose: "Observer-rated tension requires individual signs; it is not a diagnostic scale." },
+        { section: "1. Immediately before", measures: "The immediately preceding event.", purpose: "Separate fact, context and a hypothesis about cause." },
+        { section: "2. Expectations and influence", measures: "Demands, choice, negotiation and predictability.", purpose: "Describe available opportunities rather than an inferred mechanism." },
+        { section: "3. Early signs", measures: "Changes in body, movement, contact and activity, the environmental response and the person's subsequent response.", purpose: "Identify observable cues for earlier support." },
+        { section: "3B. Continuing activity, compensation and possible masking", measures: "Activity observations, the person's account, later observations and a separate hypothesis.", purpose: "Continuing does not prove anxiety, overload or masking. The form does not measure hidden costs." },
+        { section: "4. Support provided and conditions of access", measures: "Type of support and conditions of access.", purpose: "Separates availability of help, pressure and negotiation without repeating the account of responses." },
+        { section: "5. Behavior", measures: "The course of escalation and accompanying actions or changes; measurable features, consequences and risk.", purpose: "Do not combine aggression, consequences and risk into one score." },
+        { section: "6. Timing and readiness", measures: "Behavior duration, reduced signs and activity-specific readiness.", purpose: "Three different measures with different time anchors." },
+        { section: "7. After escalation / 7A. Physical intervention", measures: "Needs, support provided and signs of readiness, subsequent events and any intervention during this event.", purpose: "Record action, consequences and safety, not physical techniques or a weekly total." },
+      ] },
+      { id: "time", title: "Time and readiness", list: [en.durationHint, en.reductionHint, en.readinessHint], note: "Example of calculating the times: shouting lasted 12:00–12:05 (5 minutes). At 12:08 the person stopped clenching their hands — 8 minutes after the shouting started. At 12:15 they chose a book and started reading — signs of readiness for reading were observed 10 minutes after the shouting ended. This does not imply readiness or consent for a different task. Do not convert old time bands into precise minutes. Not observed by observation end differs from missing data." },
+      { id: "environment-map", title: "Environment map", paragraphs: [en.mapSources, "Give the observation period and update date. Separate preference, observation and causal hypotheses. Liking an activity does not demonstrate a reinforcement function. Compare similar situations without escalation and numbers of opportunities."] },
+      { id: "using-data", title: "Using the records", paragraphs: ["Compare repeated records, similar situations without escalation and numbers of opportunities. Two events in two opportunities differ from two in twenty. Repeated association and temporal sequence do not establish causality. Consider the person's communication and alternative explanations when forming hypotheses."] },
+      { id: "limits", title: "Limits", list: ["No diagnosis of autism, ADHD, PDA, trauma or reaction mechanisms.", "Does not replace diagnosis, functional assessment, a support plan or clinical supervision.", "Not for assigning ill will, justifying punishment or restricting rights.", "Does not assume all demands are harmful, all difficulties sensory or support means no boundaries. Safety remains a responsibility."] },
+      { id: "legacy", title: "Previous-version records", paragraphs: [en.legacyHint, "Older answers remain in the expandable previous-version section and in a separate export section. New questions require their own answers. Sources are never assigned to old entries automatically."] },
+      { id: "background", title: "Literature and theoretical background", paragraphs: ["References are preserved from Małgorzata Mikołajczyk's supplied instruction. They are theoretical background, not evidence of validation of this form, its categories or the efficacy of a particular action. Bibliographic details have not been independently verified."], list: bibliography },
     ],
   },
 };
-
-export function getAboutPageContent(language: LanguageCode): AboutPageContent {
-  return aboutPageByLanguage[language] ?? aboutPageByLanguage.pl;
-}

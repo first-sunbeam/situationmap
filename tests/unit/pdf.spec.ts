@@ -55,7 +55,7 @@ describe("PDF generation", () => {
     expect(content).not.toContain(environments.home.mapTitle);
   });
 
-  it("omits dependent masking fields in the PDF when No is selected", () => {
+  it("preserves all old masking answers in a separate section without treating them as new observations", () => {
     const form = createFilledHomeForm();
     form.incident.maskingContinued = "no";
     form.incident.maskingStrategies = ["maskowanie_ukrywanie_dyskomfortu_udawanie_ze_wszystko_ok"];
@@ -63,11 +63,11 @@ describe("PDF generation", () => {
 
     const content = stringifyDoc(makeDoc(environments.home, form, "extended", "incident"));
 
+    expect(content).toContain("Zapis z poprzedniej wersji — bez przeliczania");
     expect(content).toContain("Czy osoba próbowała kontynuować aktywność mimo narastającego napięcia?");
-    expect(content).toContain("Nie");
-    expect(content).not.toContain("Jeśli tak – co pozwoliło osobie");
-    expect(content).not.toContain("Ile czasu osoba „trzymała się” przed eskalacją?");
-    expect(content).not.toContain("10-30 minut");
+    expect(content).toContain("10-30 minut");
+    expect(form.incident.continuedObservation).toBe("");
+    expect(form.incident.maskingHypothesis).toBe("");
   });
 
   it("builds a map-only PDF document without the incident title", () => {
@@ -80,7 +80,13 @@ describe("PDF generation", () => {
   });
 
   it("builds an English PDF document and translates option values", () => {
-    const content = stringifyDoc(makeDoc(environments.home, createFilledHomeForm(), "extended", "incident", "en"));
+    const doc = makeDoc(environments.home, createFilledHomeForm(), "extended", "incident", "en");
+    const content = stringifyDoc(doc);
+    const header = (doc.header as () => { text: string })();
+    const footer = (doc.footer as (page: number, count: number) => { text: string })(1, 2);
+    expect(header.text).toBe("Situation monitoring tool — Home");
+    expect(footer.text).toContain("Reproduction for family and professional use");
+    expect(footer.text).toContain("Małgorzata Mikołajczyk");
 
     expect(content).toContain("SITUATION MONITORING REPORT - HOME");
     expect(content).toContain("Baseline and daily context");

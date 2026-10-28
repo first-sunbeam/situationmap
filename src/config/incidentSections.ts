@@ -49,8 +49,8 @@ export function hasRequiredTimeToEscalation(signalsAppeared: string, timeToEscal
   return signalsAppeared !== "yes" || hasRequiredText(timeToEscalation);
 }
 
-export function hasRequiredPhysicalCount(physicalThisWeek: string, physicalCount: string): boolean {
-  return physicalThisWeek !== "yes" || hasRequiredText(physicalCount);
+export function hasRequiredPhysicalCount(physicalDuringEvent: string, count: string): boolean {
+  return physicalDuringEvent !== "yes" || hasRequiredText(count);
 }
 
 function hasRequiredBaselineOtherValues(form: SituationForm): boolean {
@@ -75,6 +75,8 @@ function hasSignalTypeValue(form: SituationForm): boolean {
 function hasAnySignalsSectionValue(form: SituationForm): boolean {
   return hasAnyValue([
     form.incident.signalsAppeared,
+    form.incident.earlyResponse,
+    form.incident.earlyResponseSources,
     form.incident.activationSignals,
     form.incident.activationSignalsOther,
     form.incident.shutdownSignals,
@@ -83,7 +85,7 @@ function hasAnySignalsSectionValue(form: SituationForm): boolean {
     form.incident.sensorySignalsOther,
     form.incident.timeToEscalation,
     form.incident.firstSignal,
-    form.incident.predicts
+    form.incident.signalsInOtherRecords
   ]);
 }
 
@@ -103,14 +105,9 @@ function isSignalsSectionComplete(form: SituationForm): boolean {
   return hasRequiredSignalDetails && hasRequiredSignalOtherValues(form);
 }
 
-function isMaskingSectionComplete(form: SituationForm): boolean {
-  if (form.incident.maskingContinued !== "yes") return true;
-
-  return hasAnyValue([
-    form.incident.maskingStrategies,
-    form.incident.maskingStrategiesOther,
-    form.incident.maskingDuration
-  ]) && hasRequiredOtherValue(form.incident.maskingStrategies, form.incident.maskingStrategiesOther);
+function isMaskingSectionComplete(_form: SituationForm): boolean {
+  // Optional observations and hypotheses; never require a claim of masking.
+  return true;
 }
 
 export function getIncidentSectionTexts(section: IncidentSectionDefinition, form: SituationForm, labels: FormLabels): { summary: string; message: string } {
@@ -140,13 +137,14 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.baselineSection,
     badge: "0",
     errorKey: "incident.baselineSection",
-    extraErrorKeys: ["incident.sleepDetails", "incident.burdensOther", "incident.bodyStateOther", "incident.sensoryIntensityOther"],
+    extraErrorKeys: ["incident.tensionSigns", "incident.burdensOther", "incident.bodyStateOther", "incident.sensoryIntensityOther"],
     summary: "Poziom bazowy i kontekst dnia: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
       form.incident.tension,
+      form.incident.tensionSigns,
       form.incident.tired,
-      form.incident.slept,
+      form.incident.sleepEnough,
       form.incident.sleepDetails,
       form.incident.stayStage,
       form.incident.stayStageLoad,
@@ -156,7 +154,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
       form.incident.bodyStateOther,
       form.incident.sensoryIntensity,
       form.incident.sensoryIntensityOther
-    ]) && hasRequiredSleepDetails(form.incident.slept, form.incident.sleepDetails) && hasRequiredBaselineOtherValues(form)
+    ]) && (!form.incident.tension || hasRequiredText(form.incident.tensionSigns)) && hasRequiredBaselineOtherValues(form)
   },
   {
     id: "before",
@@ -205,7 +203,7 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.maskingSection,
     badge: "3B",
     errorKey: "incident.maskingSection",
-    extraErrorKeys: ["incident.maskingStrategiesOther"],
+    extraErrorKeys: [],
     summary: "Strategie kompensacyjne i maskowanie: uzupełnij przynajmniej jedno pole albo przejdź dalej, jeśli nie dotyczy.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji albo przejdź dalej, jeśli nie dotyczy.",
     isComplete: isMaskingSectionComplete
@@ -219,13 +217,10 @@ export const incidentSections: IncidentSectionDefinition[] = [
     summary: "Działania: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
-      form.incident.phase,
       form.incident.interventions,
       form.incident.interventionDetails,
-      form.incident.unconditional,
-      form.incident.usedRegulator,
-      form.incident.reducedTension,
-      form.incident.earlierWhat
+      form.incident.supportConditional,
+      form.incident.usedRegulator
     ]) && hasRequiredOtherValue(form.incident.interventions, form.incident.interventionDetails)
   },
   {
@@ -236,9 +231,12 @@ export const incidentSections: IncidentSectionDefinition[] = [
     summary: "Opis zachowania: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
-      form.incident.behavior,
-      form.incident.intensity,
-      form.incident.harms
+      form.incident.escalationCourse,
+      form.incident.escalationSources,
+      form.incident.behaviorMeasure,
+      form.incident.observedHarms,
+      form.incident.consequencesDescription,
+      form.incident.potentialRisk
     ])
   },
   {
@@ -246,37 +244,32 @@ export const incidentSections: IncidentSectionDefinition[] = [
     label: formLabels.incident.regulationSection,
     badge: "6",
     errorKey: "incident.regulationSection",
-    extraErrorKeys: ["incident.endedByOther", "incident.recoverySupportsOther"],
-    summary: "Regulacja i wpływ: zaznacz, co najbardziej pomogło zakończyć eskalację.",
-    message: "Zaznacz, co najbardziej pomogło zakończyć eskalację.",
+    extraErrorKeys: [],
+    summary: "Czas i gotowość: uzupełnij przynajmniej jedno pole; możliwy jest brak danych.",
+    message: "Uzupełnij przynajmniej jedno pole; dopuszczalny jest brak danych.",
     isComplete: (form) => hasAnyValue([
-      form.incident.escalationDuration,
-      form.incident.endedBy,
-      form.incident.endedByOther,
-      form.incident.calmTime,
-      form.incident.cognitiveRecoveryTime,
-      form.incident.recoverySupports,
-      form.incident.recoverySupportsOther
-    ]) && hasRequiredOtherValues(
-      [form.incident.endedBy, form.incident.endedByOther],
-      [form.incident.recoverySupports, form.incident.recoverySupportsOther]
-    )
+      form.incident.behaviorDuration,
+      form.incident.tensionReductionDetails,
+      form.incident.readinessDetails
+    ])
   },
   {
     id: "after",
     label: formLabels.incident.afterSection,
     badge: "7",
     errorKey: "incident.afterSection",
-    extraErrorKeys: ["incident.afterOther", "incident.physicalCount"],
+    extraErrorKeys: ["incident.afterOther", "incident.eventPhysicalCount"],
     summary: "Po zdarzeniu: uzupełnij przynajmniej jedno pole.",
     message: "Uzupełnij przynajmniej jedno pole w tej sekcji.",
     isComplete: (form) => hasAnyValue([
+      form.incident.postEscalationNeeds,
+      form.incident.postEscalationSources,
       form.incident.after,
       form.incident.afterOther,
-      form.incident.physicalThisWeek,
-      form.incident.physicalCount,
+      form.incident.physicalDuringEvent,
+      form.incident.eventPhysicalCount,
       form.incident.lowerThreshold,
-      form.incident.physicalNote
-    ]) && hasRequiredPhysicalCount(form.incident.physicalThisWeek, form.incident.physicalCount) && hasRequiredOtherValue(form.incident.after, form.incident.afterOther)
+      form.incident.eventPhysicalNote
+    ]) && hasRequiredPhysicalCount(form.incident.physicalDuringEvent, form.incident.eventPhysicalCount) && hasRequiredOtherValue(form.incident.after, form.incident.afterOther)
   }
 ];

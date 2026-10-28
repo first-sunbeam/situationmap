@@ -2,6 +2,8 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { getIncidentExportSections, getMapExportSections, getMetaExportSection, getSimpleExportSection, resolveExportLabel, type ExportRow, type ExportSection, type ExportValue } from "../config/exportSections";
 import { getFormLabels, type FormLabels } from "../config/formLabels";
+import { getLegacyExportSections } from "../config/legacyFields";
+import { getMonitoringRevision } from "../config/monitoringRevision";
 import { getEnvironmentLabel } from "./environmentLabel";
 import type { LanguageCode } from "../i18n/useLanguage";
 import { resolveRows } from "./exportUtils";
@@ -41,12 +43,20 @@ function formatLabel(label: string): PdfNode[] {
   return parts;
 }
 
-function fieldLine(label: string, value: ExportValue, language: LanguageCode): PdfNode {
+function fieldLine(label: string, value: ExportValue, language: LanguageCode, hint?: string): PdfNode {
+  if (hint) return {
+    stack: [
+      { text: formatLabel(label) },
+      { text: hint, fontSize: 8.5, color: "#555555", margin: [0, 2, 0, 3] },
+      { text: selectedList(value, language) }
+    ],
+    margin: [0, 3, 0, 5]
+  };
   return { text: [...formatLabel(label), selectedList(value, language)], margin: [0, 2, 0, 2] };
 }
 
 function exportRows(env: EnvironmentConfig, form: SituationForm, rows: ExportRow[], language: LanguageCode): PdfContent {
-  return resolveRows(env, form, rows, (label, value) => fieldLine(label, value, language), language);
+  return resolveRows(env, form, rows, (label, value, row) => fieldLine(label, value, language, row.hint), language);
 }
 
 function section(title: string, body: PdfContent): PdfContent {
@@ -54,28 +64,34 @@ function section(title: string, body: PdfContent): PdfContent {
 }
 
 function sectionsFromExport(env: EnvironmentConfig, form: SituationForm, exportSections: ExportSection[], language: LanguageCode): PdfContent {
-  return exportSections.flatMap((s) => section(s.title, exportRows(env, form, s.rows, language)));
+  return exportSections.flatMap((s) => section(s.title, [
+    ...(s.note ? [{ text: s.note, fontSize: 8.5, color: "#555555", margin: [0, 0, 0, 5] }] : []),
+    ...exportRows(env, form, s.rows, language)
+  ]));
 }
 
 function metaColumns(env: EnvironmentConfig, form: SituationForm, labels: FormLabels, language: LanguageCode): PdfNode {
-  const [date, time, place, initials, lead, present] = getMetaExportSection(env, labels).rows;
+  const [date, time, place, initials, lead, present, observationFrom] = getMetaExportSection(env, labels).rows;
   return {
     columns: [
       [date, time, place, initials].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form), language)),
-      [lead, present].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form), language))
+      [lead, present, observationFrom].map((row) => fieldLine(resolveExportLabel(row.label, env, form), row.value(env, form), language))
     ],
     columnGap: 18,
     margin: [0, 10, 0, 5]
   };
 }
 
-function createDocument(content: PdfContent, env: EnvironmentConfig): Record<string, unknown> {
+function createDocument(content: PdfContent, env: EnvironmentConfig, language: LanguageCode): Record<string, unknown> {
+  const englishUse = env.label === "Dom" ? "family and professional use" : env.label === "Placówka całodobowa" ? "care-setting and family use" : "school use";
+  const headerText = language === "en" ? `Situation monitoring tool — ${getEnvironmentLabel(env, language)}` : env.header;
+  const footerText = language === "en" ? `© 2026 Małgorzata Mikołajczyk | Reproduction for ${englishUse} only in its complete, unaltered form` : env.footer;
   return {
     pageSize: "A4",
     pageMargins: [74, 62, 74, 62],
-    header: () => ({ text: env.header, alignment: "right", fontSize: 8, margin: [0, 24, 74, 0], color: "#555555" }),
+    header: () => ({ text: headerText, alignment: "right", fontSize: 8, margin: [0, 24, 74, 0], color: "#555555" }),
     footer: (currentPage: number, pageCount: number) => ({
-      text: `${env.footer} | ${currentPage}/${pageCount}`,
+      text: `${footerText} | ${currentPage}/${pageCount}`,
       alignment: "center",
       fontSize: 7,
       margin: [74, 0, 74, 18],
@@ -96,10 +112,11 @@ function makeSimpleDoc(env: EnvironmentConfig, data: SituationForm, labels: Form
   const envLabel = getEnvironmentLabel(env, language);
   return createDocument([
     { text: language === "en" ? `SIMPLE FORM - ${envLabel.toUpperCase()}` : `FORMULARZ PROSTY - ${envLabel.toUpperCase()}`, style: "title" },
-    { text: language === "en" ? "Short situation report prepared for saving or manual email attachment." : "Krótka wersja zgłoszenia sytuacji przygotowana do zapisania lub ręcznego załączenia w wiadomości e-mail.", style: "hint" },
+    { text: getMonitoringRevision(language).sources, style: "hint" },
     metaColumns(env, data, labels, language),
-    ...section(simpleSection.title, exportRows(env, data, simpleSection.rows, language))
-  ], env);
+    ...sectionsFromExport(env, data, [simpleSection], language),
+    ...sectionsFromExport(env, data, getLegacyExportSections(data, "simple", "incident", language).map((s) => ({ ...s, note: getMonitoringRevision(language).legacyHint })), language)
+  ], env, language);
 }
 
 export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: FormVariant, mode: ExtendedMode, language: LanguageCode = "pl"): Record<string, unknown> {
@@ -109,7 +126,7 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
 
   const content: PdfContent = [
     { text: envLabels.incidentTitle, style: "title" },
-    { text: language === "en" ? "When describing the situation, note not only the behavior itself, but also signs of overload, tiredness, reduced readiness, and environmental conditions." : "Przy opisie sytuacji warto zwracać uwagę nie tylko na samo zachowanie, ale też na oznaki przeciążenia, zmęczenia, spadku dostępności i warunki środowiskowe.", style: "hint" },
+    { text: getMonitoringRevision(language).sources, style: "hint" },
     metaColumns(env, data, labels, language),
     ...sectionsFromExport(env, data, getIncidentExportSections(env, labels), language)
   ];
@@ -117,6 +134,7 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
   if (mode !== "incident") {
     content.push(
       { text: envLabels.mapTitle, style: "title" },
+      metaColumns(env, data, labels, language),
       ...sectionsFromExport(env, data, getMapExportSections(labels, language), language)
     );
   }
@@ -125,7 +143,10 @@ export function makeDoc(env: EnvironmentConfig, data: SituationForm, variant: Fo
     ? content.slice(content.findIndex((item) => item.text === envLabels.mapTitle))
     : content;
 
-  return createDocument(filteredContent, env);
+  return createDocument([
+    ...filteredContent,
+    ...sectionsFromExport(env, data, getLegacyExportSections(data, variant, mode, language).map((s) => ({ ...s, note: getMonitoringRevision(language).legacyHint })), language)
+  ], env, language);
 }
 
 export function buildPdf({ env, form, variant, mode, modeLabel, language, action, setStatus }: { env: EnvironmentConfig; form: SituationForm; variant: FormVariant; mode: ExtendedMode; modeLabel: string; language: LanguageCode; action: PdfAction; setStatus: (message: string) => void }): void {

@@ -5,7 +5,6 @@
 
 #set page(
   paper: "a4",
-  flipped: false,
   margin: (x: 1.7cm, y: 1.5cm),
   footer: context [
     #set text(size: 8pt, fill: black)
@@ -14,12 +13,13 @@
       align: (left, center, right),
       [© Małgorzata Mikołajczyk],
       [#counter(page).display("1")],
-      [analiza.tools]
+      [analiza.tools/map]
     )
   ]
 )
 
-#set text(font: "Linux Libertine", size: 9.6pt, lang: "en")
+// Libertinus Serif is the face embedded in the supplied Polish print edition.
+#set text(font: "Libertinus Serif", size: 9.6pt, lang: "en")
 #set par(justify: false, leading: 0.3em, spacing: 0.4em)
 #set heading(numbering: none)
 
@@ -27,75 +27,61 @@
   #set text(size: 18pt, weight: "bold")
   #it.body
 ]
-
 #show heading.where(level: 2): it => block(above: 0.65em, below: 0.35em)[
   #set text(size: 13.5pt, weight: "bold")
   #it.body
 ]
-
 #show heading.where(level: 3): it => block(above: 0.45em, below: 0.25em)[
   #set text(size: 11.2pt, weight: "bold")
   #it.body
 ]
 
-#let muted = black
-#let line-stroke = black
-#let soft = white
-#let soft-stroke = black
-
 #let title-page(title, subtitle) = align(center)[
   #v(0.7em)
   #text(size: 23pt, weight: "bold")[#title]
   #v(0.7em)
-  #text(size: 12.5pt, fill: muted)[#subtitle]
+  #text(size: 12.5pt)[#subtitle]
 ]
-
-#let dotted-stroke = stroke(
-  paint: black,
-  thickness: 1pt,
-  dash: "dotted"
-)
-
+#let dotted-stroke = stroke(paint: black, thickness: 1pt, dash: "dotted")
 #let hint-text(hint) = if hint != none [
   #v(0.1em)
   #text(size: 8.2pt, style: "italic")[#hint]
 ]
-
-#let field(label, height: 0.85cm, hint: none) = block(width: 100%, below: 1em, above: 1em)[
+#let field(label, hint: none) = block(width: 100%, breakable: false, below: 1em, above: 1em)[
   #v(0.5em)
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #v(1em)
   #line(length: 100%, stroke: dotted-stroke)
 ]
-
-#let area(label, height: 2cm, hint: none) = block(width: 100%, below: 0.1em, above: 1em)[
+#let area(label, height: 2cm, hint: none) = block(width: 100%, breakable: false, below: 0.1em, above: 1em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #v(0.12em)
-  #rect(width: 100%, height: height, stroke: line-stroke, radius: 2pt)
+  #rect(width: 100%, height: height, stroke: black, radius: 2pt)
+]
+#let stage-field(question, stage, height: 2cm) = block(breakable: false)[
+  #area(question, height: height, hint: "Include observations and information communicated by the person. If it is difficult to assess — indicate this.")
+  #field("Sources for this description (O/P/R/H — identify which information each supports) — " + stage)
 ]
 
-#let row-fields(a, b) = grid(columns: (1fr, 1fr), column-gutter: 0.3cm, field(a), field(b))
-
-#let checks(items, columns: 2) = block(width: 100%, below:1em, above:0.4em)[
+#let checks(items, columns: 2) = block(width: 100%, below: 1em, above: 0.4em)[
   #grid(
-    columns: if columns == 3 { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
+    columns: if columns == 3 { (1fr, 1fr, 1fr) } else if columns == 4 { (1fr, 1fr, 1fr, 1fr) } else { (1fr, 1fr) },
     column-gutter: 0.5em,
     row-gutter: 0.55em,
     ..items.map(item => [☐ #item])
   )
 ]
-
-#let select(label, items, columns: 2, hint: none) = block(width: 100%, below: 0.55em, above: 2em)[
+#let select(label, items, columns: 2, hint: none) = block(width: 100%, breakable: false, below: 0.55em, above: 2em)[
   #text(weight: "bold")[#label]
   #hint-text(hint)
   #checks(items, columns: columns)
 ]
-
-#let section(title, body) = block(
-  fill: soft,
-  stroke: soft-stroke,
+#let section(title, body, breakable: true) = block(
+  breakable: breakable,
+  fill: white,
+  stroke: black,
   inset: 10pt,
   radius: 6pt,
   width: 100%,
@@ -104,200 +90,210 @@
   #text(size: 12.5pt, weight: "bold")[#title]
   #body
 ]
-
 #let meta() = section("Basic information", [
   #grid(columns: (1fr, 1fr, 1fr), column-gutter: 0.3cm,
-    field("Date"),
-    field("Time"),
-    field("Place")
+    field("Date"), field("Time"), field("Place")
   )
   #grid(columns: (1fr, 1fr), column-gutter: 0.3cm,
-    field("Person’s initials / name"),
-    field("Parent / caregiver / lead person")
+    field("Person’s identifier"), field("Person completing the record")
   )
   #field("Other people present")
+  #field("Observation start and end")
   #select("Environment", ("Home", "School", "Care setting", "Other: ........................................"), columns: 2)
 ])
 
 #title-page("Situation Monitoring Forms", "Printable version for manual completion")
-
 #pagebreak()
 
 = Simple form
+
+Describe one event. Mark information sources: O — direct observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Add the letter next to the entry. Missing data does not mean no difficulty. Record when it is safe to do so. “Unknown”, “not observed” and “not applicable” mean different things; a blank never means “no”.
 
 #meta()
 
 #section("Quick situation description", [
   #area("What was the person’s state before the situation?", height: 2.1cm, hint: "Sleep, hunger, pain, noise, changes of plan, earlier tension.")
-  #area("What happened immediately before the situation?", height: 2.1cm, hint: "Describe the last minutes: demand, change, refusal, waiting, contact.")
-  #area("First signs of rising tension", height: 1.8cm, hint: "What appeared before escalation: body, voice, movement, withdrawal.")
-  #area("Adults’ / environment’s response", height: 1.8cm, hint: "What did adults or the environment do? What was changed, added or withdrawn?")
-  #area("What did the person do? Observable facts", height: 2.2cm, hint: "Record words, movements and actions. Avoid interpreting intentions.")
-  #area("What helped reduce tension or return to regulation?", height: 2cm, hint: "Write specific conditions or actions, not only “calmed down”.")
-  #area("Did the person have influence, choice, room to negotiate or pause?", height: 1.7cm, hint: "What could the person control, and what was imposed or unavoidable?")
-  #area("Was the situation predictable? What was known / unknown?", height: 1.5cm, hint: "Was it clear what would happen, how long it would take and how it would end?")
-  #select("Return to readiness", ("5 minutes", "10–30 minutes", "1–2 hours", "several hours or the next day"), columns: 2, hint: "Readiness means ability to connect, talk or return to activity — not only absence of escalation.")
+  #area("What happened immediately before the situation?", height: 2.1cm, hint: "Describe the preceding minutes: a demand, change, refusal, waiting or contact.")
+  #area("First signs of rising tension", height: 1.8cm, hint: "What appeared before the situation intensified: changes in body, voice, movement or contact.")
+  #stage-field("How did the environment respond to the first signs of difficulty? What did the person do or communicate after that response?", "Early signs", height: 1.8cm)
+  #stage-field("How did the escalation unfold? What actions or changes accompanied its intensification and subsiding?", "Escalation", height: 2.2cm)
+  #stage-field("What did the person need before resuming contact or activity? What was provided, and how was readiness recognized?", "After escalation", height: 2cm)
+  #area("Did the person have influence, choice, room to negotiate or take a break?", height: 1.7cm, hint: "What could the person control, and what was imposed or unavoidable?")
+  #area("Was the situation predictable? What was known / unknown?", height: 1.5cm, hint: "Was it clear what would happen, how long it would take and when it would end?")
+  #area("Time until signs of readiness were observed", height: 1.5cm, hint: "How many minutes after the described behavior ended were signs of readiness observed? You may give clock times. Mark estimate / missing data / not observed by observation end. Describe needs and signs of readiness at the After escalation stage.")
 ])
 
 #pagebreak()
 
 = Extended form
 
-#meta()
+One record concerns one event. O — observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. Mark the source next to the entry and state when your observation began. Do not guess: enter “missing data” where assessment is not possible. Distinguish unknown, not observed and not applicable.
 
+#meta()
 #section("0. Baseline and daily context", [
-  #select("Tension level before the event", ("0 low / stable", "1 elevated", "2 high", "3 very high"), columns: 2, hint: "What was the person’s state before the immediate trigger?")
-  #select("Was the person tired?", ("Yes", "No", "Not sure"), columns: 3)
-  #select("Did the person sleep enough?", ("Yes", "No", "Not sure"), columns: 3)
-  #field("If sleep mattered — specify", hint: "E.g. short sleep, waking, nightmares, very early waking.")
+  #select("Tension level before the event", ("0 low / stable", "1 elevated", "2 high", "3 very high"), columns: 2, hint: "Observer judgement, not a diagnostic scale. Describe specific signs compared with this person’s usual presentation; leave the level unrated if unknown. Do not calculate a total.")
+  #field("Individual signs supporting the tension rating")
+  #select("Was the person tired?", ("Yes", "No", "Unknown"), columns: 3)
+  #select("Did the person get sufficient sleep?", ("Yes", "No", "Unknown"), columns: 3)
+  #field("Sleep information and its source — if available", hint: "E.g. short sleep, waking, nightmares or very early waking.")
   #select("Stay stage / daily context, if applicable", ("arrival / change day", "departure / return day", "middle of the week", "end of the week", "not applicable"), columns: 2)
-  #select("Load factors", (
+  #select("Was this stage stressful? — residential care, if applicable", ("Yes", "No", "Unknown", "Not applicable"), columns: 2)
+  #select("Contributing stressors", (
     "poor sleep / night waking", "change of plan", "leaving / returning / travel", "visitors / more people", "conflict", "time pressure", "noise / crowding", "pain / discomfort", "hunger / thirst", "other: ........................................"
   ))
   #select("Body state", (
     "hunger", "thirst", "need for toilet", "pain / discomfort", "physical tiredness", "body temperature — cold/hot", "muscle tension", "other: ........................................"
   ))
-  #select("Sensory intensity", (
+  #select("Sensory conditions", (
     "noise / sounds", "light", "crowding / number of people", "smells", "textures / touch", "room temperature", "other: ........................................"
   ))
 ])
 
 #section("1. Immediately before the event", [
   #select("What happened immediately before the event?", (
-    "activity change", "end of activity", "waiting", "refusal / no access", "request / instruction", "behaviour correction", "social contact", "noise / crowding", "conflict", "transition between places", "other: ........................................"
+    "activity change", "end of activity", "waiting", "refusal / no access", "request / instruction", "behavior correction", "social contact", "noise / crowding", "conflict", "transition between places", "other: ........................................"
   ))
-  #area("Details of what happened immediately before", height: 2.3cm, hint: "Describe observable facts, without judging or blaming.")
+  #area("Details of what happened immediately before", height: 2.3cm, hint: "Describe observable facts, without judging or blaming. A preceding event is not an established cause.")
 ])
 
+#pagebreak()
 #section("2. What was expected at that moment?", [
-  #area("What did the person have influence over?", height: 1.4cm, hint: "Choice of order, time, place, way of doing it, possibility of a break.")
-  #area("What was unknown, imposed or outside the person’s control?", height: 1.4cm, hint: "Sudden change, lack of information, time pressure, no possibility to refuse or negotiate.")
-  #select("Was it clear what would happen?", ("Yes", "No", "Not sure"), columns: 3)
-  #select("Was it clear how long it would take?", ("Yes", "No", "Not sure"), columns: 3)
-  #select("Was there room for negotiation or choice?", ("Yes", "No", "Not sure"), columns: 3)
+  #area("What did the person have influence over?", height: 1.4cm, hint: "Choice of order, time, place, way of doing the activity or opportunity for a break.")
+  #area("What was unknown, imposed or outside the person’s influence?", height: 1.4cm, hint: "Sudden change, lack of information, time pressure or no opportunity to refuse or negotiate.")
+  #select("Was it clear what would happen?", ("Yes", "No", "Unknown"), columns: 3)
+  #select("Was it clear how long it would take?", ("Yes", "No", "Unknown"), columns: 3)
+  #select("Was there room for negotiation or choice?", ("Yes", "No", "Unknown"), columns: 3)
   #select("Expectations / demands", (
     "no demands", "end of activity", "starting a task", "moving to another place", "waiting", "social contact", "following a rule", "self-care task", "other: ........................................"
   ))
 ])
 
-#pagebreak();
-
+#pagebreak()
 #section("3. First signs of rising tension", [
-  #select("Did signs appear?", ("Yes", "No", "Not sure"), columns: 3)
-  #field("How long before escalation?", hint: "Estimate: minutes, several minutes, earlier in the day.")
-  #select("Type 1: activation", (
-    "faster breathing", "muscle tension", "sweat", "trembling", "dilated pupils", "flight / fight", "other: ........................................"
+  #select("Did signs appear?", ("Yes", "No", "Unknown"), columns: 3)
+  #field("How long before escalation?", hint: "Minutes or clock times; mark an estimate or missing data.")
+  #select("Observed changes in body and movement", (
+    "faster breathing", "muscle tension", "sweating", "trembling", "dilated pupils", "fleeing / fighting actions", "other: ........................................"
   ))
-  #select("Type 2: shutdown / freeze", (
+  #select("Observed reduction in contact or activity", (
     "staring at one point / floor", "no response to voice", "slowed movements", "body slumping", "withdrawal", "other: ........................................"
   ))
-  #select("Type 3: sensory", (
+  #select("Observed responses to surroundings", (
     "covering ears", "covering eyes", "stereotyped movements", "avoiding touch", "leaving the room", "other: ........................................"
   ))
-  #field("What usually appears first?", hint: "The first small sign that may help respond earlier.")
-  #select("Does it predict more difficult behaviour?", ("Yes", "No", "Not sure"), columns: 3)
+  #stage-field("How did the environment respond to the first signs of difficulty? What did the person do or communicate after that response?", "Early signs", height: 2.2cm)
+  #field("What usually appears first?",  hint: "The first small sign that may help identify an opportunity for earlier support.")
+  #select("Did these signs precede the described behavior in other records?", ("Yes", "No", "Unknown"), columns: 3)
 ])
 
-#section("3B. Compensatory strategies and masking", [
-  #select("Did the person try to continue the activity despite rising tension?", ("Yes", "No", "Not sure"), columns: 3, hint: "This means “holding it together” despite overload, not deliberate pretending.")
-  #select("If yes — what helped the person “hold it together” before escalation?", (
-    "masking / hiding discomfort", "retreating into fantasy / humour / controlling the conversation", "support from accompanying person", "clear end of activity", "fear of consequences / judgement", "strong internal motivation", "other: ........................................"
-  ))
-  #select("How long did the person “hold it together” before escalation?", ("a few minutes", "10–30 minutes", "over 30 minutes", "all day — escalation later / at home"), columns: 2)
-])
+#section("3B. Continuing activity, compensation and possible masking", [
+  #area("What was observed while the activity continued?", height: 1.5cm, hint: "Record actions, available support and time. Continuing alone does not demonstrate overload or masking. Not applicable / missing data are valid answers.")
+  #area("What did the person communicate about effort or discomfort?", height: 1.5cm, hint: "The person’s communication (P), including AAC. No communication does not mean no experience.")
+  #area("What was noticed later?", height: 1.5cm, hint: "Separate direct observation (O) from others’ reports (R); give time and source.")
+  #area("Are compensation or masking being considered — on what basis?", height: 1.2cm, hint: "A hypothesis (H), not a diagnosis. Insufficient basis is a valid answer. The form itself does not measure hidden costs.")
+], breakable: false)
 
-#section("4. Actions taken before escalation", [
-  #select("Tension phase when actions were taken", ("green — conversation possible", "yellow — rising tension", "red — full escalation", "hard to tell"), columns: 2)
-  #select("Actions taken before escalation", (
+#pagebreak()
+#section("4. Support provided and conditions of access", [
+  #select("Actions taken", (
     "reducing sensory input", "increasing autonomy / choice", "providing predictability", "interoceptive support", "time without demands / pause", "sensory regulation", "other: ........................................"
   ))
-  #select("Was the action unconditional, without pressure or negotiation?", ("Yes", "No", "Partly", "Not sure"), columns: 4)
-  #select("Was a regulator / regulation strategy used?", ("Yes", "No", "Partly"), columns: 3)
-  #select("Did the action reduce tension?", ("Yes", "No", "Partly"), columns: 3)
-  #area("What should be done earlier next time?", height: 1.5cm, hint: "Cue for earlier pause, reduced demands, choice, regulation or environmental change.")
-])
-
-
-
-#section("5. Behaviour description", [
-  #area("Behaviour description — observable facts", height: 2.8cm, hint: "What was seen or heard: words, movement, gestures, actions, without labels like “manipulation”.")
-  #select("Intensity", ("0 no aggression", "1 mild", "2 moderate", "3 high risk"), columns: 2)
-  #select("Effects / harm, if any", ("no harm", "shouting / crying", "throwing objects", "damaging things", "aggression towards others", "self-injury", "running away / leaving", "other: ........................................"), columns: 2)
-])
-
-
-#section("6. Regulation and impact", [
-  #field("Escalation duration", hint: "From clear intensification until escalation began to decrease.")
-  #select("Time to full emotional calming", ("up to 5 minuteses", "5–15 minuteses", "15–30 minutes", "30–60 minutes", "over an hour"), columns: 2)
-  #select("Time to cognitive / contact readiness", ("immediately after calming", "10–30 minuteses after", "1–2 hours after", "several hours or the next day"), columns: 2)
-  #select("What helped end escalation most?", (
-    "time / waiting without intervention", "silence / reducing stimuli", "presence of a close person", "1:1 contact", "break from demands", "access to sensory regulation", "withdrawing the demand", "other: ........................................"
-  ))
-  #area("What made things worse or prolonged return to regulation?", height: 1.6cm, hint: "E.g. talking too early, more demands, touch, noise, public attention.")
-  #select("What helped return to readiness after the situation?", (
-    "silence and no stimuli", "sleep / nap", "food / drink", "sensory activity", "close person without demands", "being alone", "favourite activity without pressure", "time", "other: ........................................"
-  ))
-])
-
-#section("7. After the event", [
-  #select("What happened after the event?", (
-    "moving to a calmer place", "rest", "conversation later", "return to activity", "sleep", "contact with a close person", "no further demands", "other: ........................................"
-  ))
-  #select("Was there physical intervention this week?", ("Yes", "No", "Not sure"), columns: 3)
-  #field("If yes — how many times?", hint: "Enter a number or estimate.")
-  #select("Was the reaction threshold lower than usual?", ("Yes", "No", "Not sure"), columns: 3)
-  #field("Note on physical intervention / safety", hint: "Briefly: context, safety, what could change next time.")
+  #select("Was access to support conditional on following an instruction?", ("Yes", "No", "Partly", "Unknown"), columns: 4, hint: "Separate conditions for receiving help, pressure and opportunities for negotiation.")
+  #select("Did the person use this form of support?", ("Yes", "No", "Partly", "Unknown"), columns: 2)
 ])
 
 #pagebreak()
+#section("5. Behavior description", [
+  #stage-field("How did the escalation unfold? What actions or changes accompanied its intensification and subsiding?", "Escalation", height: 2.8cm)
+  #field("Magnitude of the described behavior", hint: "Give a count, duration or comparable feature, e.g. 3 hand strikes on the table. Do not rate the whole event on an aggression scale.")
+  #select("Observed consequences / harm", ("no harm observed", "injury to the person", "injury to another person", "damage to objects", "activity interrupted", "missing data", "other: ........................................"), columns: 2)
+  #field("Actual consequences — description")
+  #field("Potential risk — separate from actual consequences", hint: "What might have happened or was prevented? Do not record it as a consequence that actually occurred.")
+])
 
+#pagebreak()
+#section("6. Timing and readiness", [
+  #area("Duration of the described behavior", height: 1.5cm, hint: "Give the start and end of the behavior and its duration. Mark estimate / missing data / ongoing at observation end.")
+  #area("Reduction in observed signs of tension", height: 1.5cm, hint: "Which signs decreased? How many minutes after the described behavior started was this change observed? Give minutes or clock time. Not observed by observation end / missing data are valid answers.")
+  #area("Time until signs of readiness were observed", height: 1.5cm, hint: "How many minutes after the described behavior ended were signs of readiness observed? You may give clock times. Mark estimate / missing data / not observed by observation end. Describe needs and signs of readiness in the After escalation section.")
+])
+
+#pagebreak()
+#section("7. After escalation", [
+  #stage-field("What did the person need before resuming contact or activity? What was provided, and how was readiness recognized?", "After escalation", height: 2.2cm)
+  #select("What happened after the event?", (
+    "moving to a calmer place", "rest", "conversation later", "return to activity", "sleep", "contact with a close person", "no further demands", "other: ........................................"
+  ))
+  #select("Was there physical intervention during this event?", ("Yes", "No", "Unknown"), columns: 3)
+  #field("If so — how many times during this event?", hint: "Enter a count or estimate; mark missing data if unknown.")
+  #select("Did the person react faster or more strongly than usual?",  ("Yes", "No", "Unknown"), columns: 3)
+  #field("Physical intervention: action, context, consequences / safety",  hint: "Briefly: action, context, consequences, safety and what could change next time. No instructions for physical techniques.")
+])
+
+#pagebreak()
 = Environment map
+
+#field("Observation period covered by the map")
+#field("Map update date")
+Mark sources: O — observation, P — the person’s communication (including AAC), R — another person’s report, H — hypothesis. The map records current knowledge, preferences and hypotheses. Liking an activity does not demonstrate reinforcement; cooperation does not establish feeling safe; silence does not mean no burden.
 
 #meta()
 
 #section("1. Places and preferred spaces", [
   #select("Where is it easiest for the person?", ("person’s room", "living room / shared space", "kitchen / dining room", "bathroom", "hallway / transitions", "outside", "car", "other: ........................................"), columns: 2)
-  #area("Why do these places help?", height: 1.4cm, hint: "What works there: silence, light, control of stimuli, predictability, accompanying person.")
-  #select("Which places does the person avoid or find harder?", ("person’s room", "living room / shared space", "kitchen / dining room", "bathroom", "hallway / transitions", "outside", "car", "other: ........................................"), columns: 2)
-  #area("Why are these places difficult?", height: 1.4cm, hint: "What loads the person: noise, smells, crowding, transitions, waiting, lack of influence.")
+  #area("What do you observe in these places, and what does the person say about them?", height: 1.4cm, hint: "Consider quiet, light, control of stimuli, predictability and accompanying people. Separate observation from a hypothesis about what helps.")
+  #select("Which places does the person avoid, or where is it harder?", ("person’s room", "living room / shared space", "kitchen / dining room", "bathroom", "hallway / transitions", "outside", "car", "other: ........................................"), columns: 2)
+  #area("What do you observe in these places, and what might make the situation difficult?", height: 1.4cm, hint: "Consider noise, smells, crowding, transitions, waiting and lack of influence. Mark hypotheses H.")
 ])
 
 #section("2. Activities, roles and relationships", [
-  #area("What does the person like doing / what strengthens them?", height: 1.4cm, hint: "Activities, topics, relationships, places or rituals that rebuild resources.")
+  #area("What does the person like doing or choose?", height: 1.4cm, hint: "Activities, topics, relationships, places or routines. Separate preference from observed signs of recovery.")
   #select("Which role in an activity is easiest?", (
-    "leading / controlling", "cooperating participant", "observer / present without active participation", "alone without interaction with others"
+    "leading / controlling", "cooperating participant", "observer / present without active participation", "independently without interaction with others"
   ), columns: 2)
 ])
 
 #section("3. Conditions for optimal functioning", [
   #select("It is easiest for the person when…", (
-    "there is silence / little auditory input", "light is dimmed / natural", "the environment is calm", "they can control stimuli", "they have solitude / time without demands", "a close person is present without demands", "contact is 1:1", "contact can be parallel, without direct communication", "they influence how the activity unfolds", "they know what will happen and how long it will take", "they can negotiate or choose", "there are routines / repetition", "they have eaten / drunk", "they are rested", "temperature is comfortable", "there is no pain / discomfort", "other: ........................................"
+    "there is quiet / little auditory input", "light is dimmed / natural", "the surroundings are calm", "they can control stimuli", "they have solitude / time without demands", "a close person is present without demands", "contact is 1:1", "parallel activity is possible without direct communication", "they influence how the activity unfolds", "they know what will happen and how long it will take", "they can negotiate or choose", "there are routines / repetition", "they have eaten / drunk", "they are rested", "temperature is comfortable", "there is no pain / discomfort", "other: ........................................"
   ))
 ])
 
 #section("4. Support and regulators", [
-  #area("Who does the person cooperate with most easily / feel safe with?", height: 1.3cm, hint: "Notice that person’s contact style: tone, distance, lack of pressure, predictability.")
+  #area("Whom does the person choose to contact? What happens during contact?", height: 1.3cm, hint: "Notice contact style: tone, distance, absence of pressure and predictability.")
   #select("What reduces tension?", (
-    "silence / reducing stimuli", "movement — swing / trampoline / walk", "weight / pressure", "cold or warmth", "stereotyped movements / rocking / jumping", "food / drink", "sleep / nap", "toilet", "close person without demands", "solitude / withdrawal", "physical contact", "distance / personal space", "withdrawing the demand", "access to favourite activity", "choice / ability to decide", "information about how long it will take", "other: ........................................"
+    "quiet / reducing stimuli", "movement — swing / trampoline / walk", "weight / pressure", "cold or warmth", "stereotyped movements / rocking / jumping", "food / drink", "sleep / nap", "toilet", "a close person without demands", "solitude / withdrawal", "physical contact", "distance / personal space", "withdrawing the demand", "access to a preferred activity", "choice / ability to decide", "information about duration", "other: ........................................"
   ))
-  #area("What gives energy / helps rebuild resources?", height: 1.2cm, hint: "Not only what calms, but what truly restores after load.")
+  #area("What gives energy / helps restore resources?", height: 1.2cm, hint: "Not only what appears calming: record the person’s account or observed signs of recovery after effort, separately from hypotheses.")
 ])
 
-
 #section("5. What does functioning depend on?", [
-  #select("Behaviour / readiness depends especially on…", ("noise", "number of people", "change of plan", "time of day", "sleep", "food / drink", "pain / discomfort", "temperature", "social contact", "time pressure", "waiting", "transitions between activities", "other: ........................................"), columns: 2)
-  #area("How does behaviour change depending on these conditions?", height: 1.8cm, hint: "Describe differences: when it is easier, when tension rises faster, what lowers the threshold.")
+  #select("Under which conditions do you observe differences in behavior or readiness?", ("noise", "number of people", "change of plan", "time of day", "sleep", "food / drink", "pain / discomfort", "temperature", "social contact", "time pressure", "waiting", "transitions between activities", "other: ........................................"), columns: 2)
+  #area("How does behavior differ across these conditions?", height: 1.8cm, hint: "Describe when it is easier and when signs of tension appear sooner. An observed difference does not by itself establish a cause.")
 ])
 
 #section("6. Safe spaces and people", [
-  #area("Where / with whom can the person return to regulation without additional demands?", height: 2.2cm, hint: "Without repair talk, questions or new instructions until the nervous system returns to readiness.")
+  #area("Where / with whom can the person return to regulation without additional demands?", height: 2.2cm, hint: "Without a repair conversation, questions or new instructions; consider communicated needs and observed signs of readiness. Cooperation is not evidence of feeling safe.")
 ])
 
 #section("7. Escalation contexts and prevention", [
-  #select("When does the risk of escalation most often increase?", ("waiting", "end of activity", "change of plan", "noise / crowding", "social contact", "behaviour correction", "lack of influence", "moving to another place", "tiredness / hunger / pain", "other: ........................................"), columns: 2)
-  #select("What can reduce the risk of escalation?", (
-    "warning / preparation", "timer / visual plan", "choice when / how / in what order", "negotiation / discussion", "clear ending", "no rush", "presence of a close person", "access to sensory regulation", "other: ........................................"
+  #select("When does escalation risk most often increase?", ("waiting", "end of activity", "change of plan", "noise / crowding", "social contact", "behavior correction", "lack of influence", "moving to another place", "tiredness / hunger / pain", "other: ........................................"), columns: 2)
+  #select("What might reduce escalation risk?", (
+    "advance notice / preparation", "timer / visual plan", "choice of when / how / in what order", "negotiation / discussion", "clear ending", "no rush", "presence of a close person", "access to sensory regulation", "other: ........................................"
   ), columns: 2)
-  #select("Are there situations without aggression despite difficulty?", ("Yes", "No", "Not sure"), columns: 3)
-  #area("If yes — where / when and what helps then?", height: 1.5cm, hint: "These may be protective conditions: person, place, predictability, choice, no pressure.")
+  #select("Do similar situations occur without the described escalation?", ("Yes", "No", "Unknown"), columns: 3)
+  #area("If so — what is similar or different? What might help?", height: 1.5cm, hint: "Consider people, place, predictability, choice and pressure. Give examples and numbers of opportunities if available. Repeated association does not establish causality.")
 ])
+
+#pagebreak()
+#text(size: 17pt, weight: "bold")[Bibliography accompanying the forms]
+#v(8pt)
+#text(size: 9pt)[The references below are preserved from the “Theoretical background” section of Małgorzata Mikołajczyk’s guide “How to Use Monitoring Forms”. They provide accompanying theoretical background, not evidence of validation of this tool or of the accuracy of every category. Bibliographic details have been retained from the guide and have not been independently verified.]
+#v(10pt)
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Cooper, J. O., Heron, T. E., & Heward, W. L. (2020). _Applied Behavior Analysis_ (3rd ed.). Pearson.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[O'Neill, R. E., Albin, R. W., Storey, K., Horner, R. H., & Sprague, J. R. (2015). _Functional Assessment and Program Development for Problem Behavior: A Practical Handbook_ (3rd ed.). Cengage Learning.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Garfinkel, S. N., Seth, A. K., Barrett, A. B., Suzuki, K., & Critchley, H. D. (2015). Knowing your own heart: Distinguishing interoceptive accuracy from interoceptive sensibility. _Biological Psychology_, 104, 65–74.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Shah, P., Hall, R., Catmur, C., & Bird, G. (2016). Alexithymia, not autism, is associated with impaired interoception. _Cortex_, 81, 215–220.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Deci, E. L., & Ryan, R. M. (2000). The "what" and "why" of goal pursuits: Human needs and the self-determination of behavior. _Psychological Inquiry_, 11(4), 227–268.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[O'Nions, E., Christie, P., Gould, J., Viding, E., & Happé, F. (2014). Development of the "Extreme Demand Avoidance Questionnaire" (EDA-Q): Preliminary observations on a trait measure for pathological demand avoidance. _Journal of Child Psychology and Psychiatry_, 55(7), 758–768.]]
+#block(above: 7pt, breakable: false)[#text(size: 10pt)[Substance Abuse and Mental Health Services Administration. (2014). _SAMHSA's Concept of Trauma and Guidance for a Trauma-Informed Approach_. HHS Publication No. SMA 14-4884.]]

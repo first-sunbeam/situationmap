@@ -33,9 +33,19 @@ export interface MetaForm {
   initials: string;
   lead: string;
   present: string;
+  observationFrom: string;
 }
 
-export interface SimpleFormData {
+export interface StageResponses {
+  earlyResponse: string;
+  earlyResponseSources: string;
+  escalationCourse: string;
+  escalationSources: string;
+  postEscalationNeeds: string;
+  postEscalationSources: string;
+}
+
+export interface SimpleFormData extends StageResponses {
   stateBefore: string;
   antecedents: string;
   signals: string;
@@ -44,10 +54,36 @@ export interface SimpleFormData {
   helped: string;
   notes: string;
   predictability: string;
-  recoveryTime: string;
+  recoveryTime: string; // Legacy time bands; never converted to a precise measurement.
+  readinessDetails: string;
 }
 
-export interface IncidentFormData {
+export interface IncidentFormData extends StageResponses {
+  tensionSigns: string;
+  signalsInOtherRecords: string;
+  sleepEnough: string;
+  continuedObservation: string;
+  personAccount: string;
+  laterObservation: string;
+  maskingHypothesis: string;
+  phaseObservation: string;
+  supportConditional: string;
+  actionSequence: string;
+  actionSources: string;
+  observedChange: string;
+  changeEvidence: string;
+  behaviorMeasure: string;
+  observedHarms: string[];
+  consequencesDescription: string;
+  potentialRisk: string;
+  behaviorDuration: string;
+  tensionReductionDetails: string;
+  readinessDetails: string;
+  physicalDuringEvent: string;
+  eventPhysicalCount: string;
+  eventPhysicalNote: string;
+  assessmentBasis: string;
+  // Previous fields remain stored and are exported separately with their original labels.
   tension: string;
   tired: string;
   slept: string;
@@ -117,6 +153,15 @@ export interface MapRow {
 }
 
 export interface EnvironmentMapFormData {
+  observationPeriod: string;
+  preferredObservations: string;
+  avoidedObservations: string;
+  chosenContact: string;
+  restorationSources: string;
+  restConditions: string;
+  updatedAt: string;
+  similarWithoutEscalation: string;
+  comparisonDetails: string;
   preferredPlaces: string[];
   preferredPlacesOther: string;
   preferredReason: string;

@@ -4,12 +4,13 @@ import { blankForm, environments } from "../data/environments";
 import type { FormLabels } from "../config/formLabels";
 import type { ExtendedMode, FormVariant, SituationForm } from "../types/form";
 
-const STORAGE_KEY = "situationmap-state-v2";
+export const STORAGE_KEY = "situationmap-state-v2";
+export const LEGACY_BACKUP_KEY = "situationmap-state-before-monitoring-revision";
 
 export type EnvironmentKey = keyof typeof environments;
 export type FormsByEnvironment = Record<EnvironmentKey, SituationForm>;
 
-type PersistedForm = Partial<SituationForm> & { map?: Partial<SituationForm["map"]> };
+type PersistedForm = { [K in keyof SituationForm]?: Partial<SituationForm[K]> };
 
 export interface PersistedState {
   activeEnvKey: EnvironmentKey;
@@ -108,14 +109,28 @@ export function useFormPersistence({
 
   watch([activeEnvKey, activeVariant, activeMode, forms], () => {
     try {
+      // Keep the original payload before the first new-version save. Never translate
+      // weekly counts, old scales, time bands or unconditional-help answers.
+      const previous = localStorage.getItem(STORAGE_KEY);
+      if (previous && !localStorage.getItem(LEGACY_BACKUP_KEY)) {
+        let needsBackup = true;
+        try {
+          needsBackup = (JSON.parse(previous) as { schemaVersion?: number } | null)?.schemaVersion !== 3;
+        } catch {
+          // Even malformed data must remain recoverable before replacing it.
+        }
+        if (needsBackup) localStorage.setItem(LEGACY_BACKUP_KEY, previous);
+      }
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        schemaVersion: 3,
         activeEnvKey: activeEnvKey.value,
         activeVariant: activeVariant.value,
         activeMode: activeMode.value,
         forms
       }));
     } catch {
-      // Ignore storage errors, e.g. private mode restrictions or quota limits.
+      // Do not overwrite an older record if its backup cannot be created.
+      status.value = labels.value.ui.saveFailed;
       return;
     }
 

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useFormState } from "./composables/useFormState";
 import { useTheme } from "./composables/useTheme";
 import { useLanguage } from "./i18n/useLanguage";
+import PrintableRecord from "./components/PrintableRecord.vue";
 import SvgIcon from "./components/ui/SvgIcon.vue";
 import IconSprite from "./components/ui/IconSprite.vue";
 
@@ -32,17 +33,13 @@ const isExtended = computed(() => route.meta.variant === "extended");
 const isIncident = computed(() => currentMode.value === "incident");
 const isMap = computed(() => currentMode.value === "map");
 const printableFormsPdfLink = computed(() =>
-  `${import.meta.env.BASE_URL}pdf/${
-    language.value === "en"
-      ? "blank-monitoring-forms.pdf"
-      : "puste-formularze-monitorowania.pdf"
-  }`,
+  `${import.meta.env.BASE_URL}pdf/${language.value === "en" ? "blank-monitoring-forms.pdf" : "puste-formularze-monitorowania.pdf"}`,
 );
 </script>
 
 <template>
   <IconSprite />
-  <div class="app-shell">
+  <div class="app-shell" :class="{ 'printing-form': !isAbout }">
     <header class="topbar">
       <div class="topbar-inner">
         <div class="brand">
@@ -264,4 +261,13 @@ const printableFormsPdfLink = computed(() =>
       </p>
     </footer>
   </div>
+  <PrintableRecord v-if="!isAbout" />
 </template>
+
+<style>
+@media print {
+  @page { size: A4; margin: 17mm; }
+  .app-shell.printing-form { display: none; }
+  html, body, #app { background: white !important; color: black !important; overflow: visible !important; }
+}
+</style>
